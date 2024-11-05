@@ -240,6 +240,7 @@ def write_plumx_stat(mydois):
 		f = opener.open("https://plu.mx/api/v1/artifact/doi/"+doi)
 		data = json.load(f)
 		output[doi]=build_doi(data, doi)
+		print(output[doi])
 		time.sleep(1.0)
 	plumx = 'var art_metrics = ' + str(output) + ';'
 	plumx = plumx.replace(", '", ",'").replace("': ", "':")
@@ -251,9 +252,10 @@ def write_plumx_stat(mydois):
 
 def xcopy(folder, ext):
   import subprocess
-  subprocess.run(["xcopy", folder+'/*.'+ext, "../cv.github/"+folder, "/d"]) 
+  subprocess.run(['xcopy', folder+'\\*.'+ext, '..\\cv.github\\'+folder, "/D", "/Y"]) 
 
 def copy_to_github():
+  import time
   xcopy('.', 'html')
   xcopy('.', 'txt')
   xcopy('.', 'xml')

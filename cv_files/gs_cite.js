@@ -1,3 +1,3 @@
-var gs_cites=[{"year": 2017, "value": 96}, {"year": 2018, "value": 214}, {"year": 2019, "value": 401}, {"year": 2020, "value": 526}, {"year": 2021, "value": 852}, {"year": 2022, "value": 1395}, {"year": 2023, "value": 1579}, {"year": 2024, "value": 1672}, {"year": 2025, "value": 1777}, {"year": 2026, "value": 764}];
+var gs_cites=[{"year": 2017, "value": 96}, {"year": 2018, "value": 214}, {"year": 2019, "value": 401}, {"year": 2020, "value": 526}, {"year": 2021, "value": 854}, {"year": 2022, "value": 1395}, {"year": 2023, "value": 1579}, {"year": 2024, "value": 1674}, {"year": 2025, "value": 1773}, {"year": 2026, "value": 793}];
 var hindex=50;
-var tot_cites=9390;
+var tot_cites=9418;

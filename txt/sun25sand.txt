@@ -1,0 +1,1456 @@
+Sand Stiffness Variability Induced by Stochastic Distributions of Calcite Precipitates: A
+Monte Carlo-DEM Study
+Sun, M.1; Liu, P.F. 2; Chen, Y.X. 2; Bate, B. 2*; Xue, F. 3
+1
+
+5
+2
+3
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong, SAR, China; formerly,
+Institute of Geotechnical Engineering, College of Civil Engineering and Architecture, Zhejiang University, Hangzhou,
+China, 310058
+Institute of Geotechnical Engineering, College of Civil Engineering and Architecture, Zhejiang University, Hangzhou,
+China, 310058
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong, SAR, China
+
+10
+This is the authors’ version of the paper:
+Sun, M., Liu, P. F., Chen, Y. X., Bate, B., & Xue, F. (2025). Sand stiffness variability
+induced by stochastic distributions of calcite precipitates: a Monte Carlo-DEM study.
+Acta Geotechnica, 25: 2539, DOI: 10.1007/s11440-025-02539-5.
+This file is shared for personal and academic use only, under the license CC BYNC-ND 4.0 (Non-Commercial, No Derivatives, and with an Attributed citation
+when you use). The final published version of this paper can be found at:
+https://doi.org/10.1007/s11440-025-02539-5.
+
+15
+
+20
+
+25
+
+30
+
+ABSTRACT
+The inclusion of calcite precipitates (CaCO3) in soft soil can improve the mechanical properties.
+Understanding the variability in sand stiffness due to heterogeneous precipitates is crucial for
+stiffness evaluation and prediction. A novel Discrete Element-Monte Carlo (DE-MC) method
+was proposed to quantify the sand stiffness variability induced by stochastic distributions of
+calcite precipitates, specifically focusing on shear wave velocity (Vs) as an indicator of soil
+stiffness. A total of 1972 samples were constructed to simulate stochastic spatial distributions
+of calcite precipitates. Through joint stochastic analysis, the preferential paths formed by
+calcite clusters were identified as significant contributors to Vs variability. The normalized
+connectivity per unity distance contact weight (Cd,n) exhibited the most correlated relation with
+Vs. Two weight selection methods were applicable for using Cd,n to characterize and predict Vs.
+The results suggest that the DE-MC method has the potential to assess the variability in sand
+stiffness quantitatively.
+Keywords
+Monte Carlo simulation; discrete element method; variability; shear wave velocity; calcite
+precipitation
+1 Introduction
+Due to the demand for infrastructure and engineering construction, the need for various types
+of buildings and construction land has increased sharply. However, construction land resources
+are relatively limited, highlighting the significance of reinforcing and solidifying soft soil on
+the construction site [1, 2]. On the other hand, Sustainable Development Goal (SDG) 11, titled
+“Sustainable Cities and Communities”, advocates for an environmentally-friendly approach to
+1
+
+addressing existing soft ground soil, aiming to reach the target of carbon neutrality [3, 4].
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+65
+
+70
+
+The inclusion of calcite precipitates induced by either microbes or enzymes in a porous medium
+represents an innovative eco-friendly method for cementing and strengthening soft soil. This
+approach typically results in increases in stiffness and strength, as well as reductions in
+hydraulic conductivity [5-8]. The shear stiffness property of cemented soil can vary
+significantly in different affiliation forms between soil particles and calcite precipitates [9],
+which can be calculated by
+(1 )
+G0 = ρV2s ,
+where G0 is the small strain shear modulus, ρ is the overall sample density, and Vs is the shear
+wave velocity. Uniform surface coating assumption of the calcite precipitates on coarse-grained
+soils prevails decades ago [10, 11]. Precipitations at particle contacts and pore filling are also
+considered alternative affiliation forms on coarse-grained soils [6, 12-15]. The effect of spatial
+variability on the evolution of Vs is further revealed through both column tests and
+microstructural experiments. Bate et al. [16] employed spectral-induced polarization (SIP) to
+quantify both the content and the size of calcite clusters. Scanning electron microscopy (SEM)
+and energy-dispersive X-ray spectroscopy (EDS) revealed the preferential precipitation of
+calcite at the particle contacting area [16-18], while the pore throat area and pore void were
+occupied by calcite, especially at high calcite content [6, 15]. In field applications, spatial
+variability prevails and still poses challenges for engineering applications [19-22]. Due to the
+natural spatial variability of calcite inclusion, quantification of the geotechnical properties has
+not been sufficiently investigated.
+Recently, the discrete element method (DEM) has gained popularity in predicting the
+geotechnical properties of soil enhanced using microbially induced carbonate precipitation
+(MICP) [12, 23-26]. With the advancement in the DEM technique, spatial variability of calcite
+inclusion was investigated. For example, Wu et al. [12] proposed a novel DEM modeling
+scheme to reproduce various precipitation patterns of calcite and quantitatively investigated the
+microstructural characteristics and their evolution upon external loading. They classified the
+initial interparticle bonds into effective, partially effective, surface coating, and pore filling.
+Sun et al. [23] demonstrated that the Vs increased with the connectivity of the calcite
+aggregation cluster. However, DEM simulation of the spatial variability of calcite inclusion is
+very limited but highly desired.
+The Monte Carlo method, known as random sampling or statistical testing method, unveils
+fundamental mechanisms via statistical analysis of the many instances or realizations of a
+stochastic process or state. By setting random numbers to simulate various physical processes,
+population properties can be inferred from samples. Zhou et al. [27] used the Monte Carlo
+method to address parameter uncertainty problems and produce a spatial slope failure
+probability distribution map. Saifuddin et al. [28] examined the applicability of the Markov2
+
+75
+
+chain Monte Carlo method in inversions of surface-wave phase velocity, obtaining a variation
+of S-wave velocity profiles from the inversion. Ma et al. [29] combined the Monte Carlo
+method with the fictitious domain method to improve the accuracy of the hydrodynamic force
+acting on the particle in a viscous fluid. In this paper, we used a combined DEM and Monte
+Carlo method to randomize the spatial distribution of calcite precipitation based on the authors’
+prior research [23].
+
+80
+
+85
+
+The following tasks were conducted to quantify the sand stiffness variability induced by
+stochastic distributions of calcite precipitates: (1) A total of 1972 DEM models were
+established to account for the spatial variability of the calcite precipitates based on a proposed
+Discrete Element-Monte Carlo (DE-MC) method. (2) Interval prediction and confidence
+interval estimation were performed for the estimator Vs, and statistical analysis was carried out.
+(3) The correlation analysis between several contact-related features and Vs was conducted. (4)
+A quantified formula between Cd,n and Vs was fitted based on the results of DE-MC simulation.
+2 The proposed Discrete Element-Monte Carlo (DE-MC) method
+
+DEM Simulation
+System
+
+Start
+
+Establish the DEM model of cementing sand soil and define paramters
+
+Identify the design space: the distribution characteristic of calcite (CaCO3Ps and CaCO 3-Cs) during cementation sample in different groups
+
+① Define a ran dom variable X see d to represent t he rand om distribution
+characteristic of CaCO3-Ps (Xp) and CaCO 3-Cs (Xc) in each group
+
+Monte-Carlo
+Process
+
+95
+
+② Gen erate a set of n sample groups, whi ch is 1 16 in this stud y, wit h
+different random seeds (Xseed)
+③ Sol ve V s and V s ~<X p , X c >, as well as analyze mean and sta ndard
+deviation of Vs statistically
+
+Joint
+stochastic
+-analysis
+
+90
+
+2.1 Overview of the DE-MC method
+Given the variability in the spatial distribution of calcite cementation within the sand matrix,
+variations in shear wave velocity (Vs) are to be expected but have not been quantified. In this
+case, the Monte-Carlo method could be applied in the quantitative prediction and interval
+estimation of Vs. In this paper, a Discrete Element-Monte Carlo (DE-MC) method was
+proposed, which consists of DEM simulation, Monte-Carlo process, and joint stochastic
+analysis (Fig. 1). A total of 116 groups of randomized calcite distribution were established, with
+17 calcite content samples in each group.
+
+Conduct stochastic analysis based on both DEM simulation and MonteCarlo method
+
+3
+
+Fig. 1 Procedures of Monte-Carlo simulation in this study [30, 31]
+
+2.2 DEM simulation
+100
+
+105
+
+110
+
+115
+
+2.2.1 Virtual entity of generated calcite in the DEM model
+In the EICP experiment, newly generated calcite cementing sand soil was transferred from a
+sample with a single uncemented contact model to a sand-calcite mixture [13, 16, 32]. The
+generated sand-calcite mixture sample, which contained two calcite precipitate forms: CaCO3P and CaCO3-C [23], had the following characteristics: a. the calcite appeared as a small nonspherical entity; b. the formation space of calcite cementation was limited; c. the ratios of sand
+and calcite content were extremely uneven (Fig. 2a,b). Thus, an innovative DEM sample
+generation method, the virtual entity method, was adopted rather than traditional direct
+generation methods. In the DEM simulation, to be specific, Hertz-Mindlin model was used for
+sand-sand contacts due to the incompressible and unbonded nature of sand; linear parallel bond
+model (Linearpbond) was used to characterize the single calcite precipitate (CaCO3-P, Fig. 2c)
+and calcite aggregation (CaCO3-C, Fig. 2d), considering the model is appropriate for simulating
+finite-sized pieces of cement-like materials [33, 34]. The DEM model generated calcite by
+changing the original contact model between sand particles, and a toroidal model was used to
+calculate the mass and volume. Since sand particles were simulated as elastic spheres in the
+DEM, the toroidal model was applied with the cylindrical assumption of calcite precipitates at
+particle contacts (contact cementation association pattern) in prior research (Fig. 3, Eq. 2),
+which is elaborated by EDS image and theoretical calculation [13, 23, 35, 36]. The total volume
+of calcite precipitation at particle contacts was calculated using the toroidal assumption, as
+elaborated in a prior study [23] by
+
+120
+Fig. 2 (a) EDS image: Si-green color and Ca-purple color, (b)SEM image: example of sand-calcite clusters,
+(c)(d) precipitate forms in DEM model, blue denotes pure sand, orange denotes sand-calcite clusters, black
+denotes Hertz-Mindlin contact and red denotes Linearpbond contact.
+
+4
+
+125
+
+Fig. 3 Calculation of particle cementation volume.
+
+hi =
+vcntct = dc
+
+130
+
+135
+
+140
+
+145
+
+150
+
+di
+2
+
+hi -
+
+d
+
+1 - cos arcsin c
+di
+
+,
+
+d2i
+dc dc di
+arcsin - hi
+4
+di 2 2
+
+,
+
+(2)
+
+where hi = [h1, h2], which denotes the height of the toroidal area of each disk; di = [d1, d2],
+which denotes the diametral sizes of the two disks; dc is the cementation diameter; vcntct is total
+cementation volume. By changing the original contact model between sand particles, the virtual
+entity method is able to break through the limitation of basic physical properties of cementation
+such as mass, volume, and shape, so that it can be applied with high degrees of freedom in
+DEM simulation where only spherical particles can be generated. The validity of objective
+DEM modeling relies on the rationality of condition setting and parameter selection. SEM
+images from previous studies provide distribution and morphological characteristics of
+cementation [16, 23]; Bender element measurement provides data on Vs for calibrating
+microscopic parameters; SIP provides size information of cementation. These prerequisites
+enable cementation to exist as a virtual entity and yield nature-like experimental results.
+2.2.2 Sample preparation
+A 2D rectangular stripe (height × width = 0.3 m × 0.1 m) with rigid, frictionless walls was
+created in PFC2D, within which particles (expressed as disks) were then generated by a fivestep expansion method, reaching the two-dimensional porosity of 0.192 [23]. A vertical stress
+of 5 kPa under the plane strain condition was then applied using a rigid servo system. Following
+this, a high-damping boundary (α=1.0) was set in this model to simulate the continuous
+medium, enabling the dynamic effect to conform to the actual propagation law [37]. The
+parameters used in the model are listed in Table 1. For the measurement of Vs, a pair of virtual
+“walls” with a coefficient of friction of 0.7, called the transmitter and the receiver, were set in
+the samples at a distance of 0.1m (Fig. 4) [38]. A sinusoidal velocity pulse ( v0 = 5(1.0 cos ( 2πft)) m/s) with the excitation frequency (f) close to the natural frequency of the sample
+was applied to the transmitter in the y-direction, aiming to maximize the received vibration
+signal and to minimize the errors caused by noises and P-waves [39, 40]. The received vibration
+5
+
+at the receiver end was recorded for Vs calculation.
+Table 1 Parameters of the sample in the DEM model
+Parameter
+
+Sand
+
+CaCO3
+
+Sample
+
+Diameter (mm)
+
+-
+
+-
+
+Shear modulus (Pa)
+
+2.12-3
+6.5×1011
+
+-
+
+-
+
+Poisson ratio
+Density (kg/m3)
+Friction coefficient
+
+0.25
+2650
+0.5
+
+-
+
+Tensile strength (Pa)
+
+-
+
+2600
+0.5
+5.0×109
+
+Cohesion
+
+-
+
+2.0×1010
+
+-
+
+Effective modulus (Pa)
+
+-
+
+8.0×1010
+
+-
+
+Viscous damping factor
+Local damping factor
+Relative density
+Porosity Lab
+Porosity 2D
+Confining pressure (kPa)
+Soil density (kg/m3)
+
+0
+0.3
+-
+
+-
+
+0.85
+0.37
+0.192
+5
+1659
+
+-
+
+155
+
+Fig. 4 Shear wave measurement in the DEM model
+
+160
+
+165
+
+CaCO3-P (represents individual calcite precipitation) was assigned to contacts when calcite
+content was below 1%, beyond which CaCO3-C (represents calcite aggregation) was assigned.
+The quantity of CaCO3-P precipitation at particle contacts increases with calcite content
+increment, while CaCO3-C only forms when calcite content exceeds 1%. In this study, the
+formation of calcite precipitates was achieved by randomly adjusting the contact model at local
+contacts with the precipitates [23] (Fig. 5). Based on an experimental study, the simplified size
+of CaCO3-P and CaCO3-C in the DEM model are 1.06mm/1.33mm and 12mm respectively
+[23].
+
+6
+
+Fig. 5 Cemented sample (Blue denotes pure sand, orange denotes sand coated with CaCO3-C, and red denotes
+CaCO3 in the model figures)
+
+170
+
+175
+
+180
+
+185
+
+190
+
+195
+
+2.3 Monte Carlo algorithm process
+The detailed Monte-Carlo simulation process is as follows:
+(1) Construct probability process. Unlike the single uncertain variable of most Monte-Carlo
+simulations, double variables in this study—the distribution characteristic of CaCO3-Ps (Xp)
+and CaCO3-Cs (Xc)—had a complex interrelation spatially and quantitatively under a certain
+calcite content [30, 41]. To address this challenge, a fundamental tool for Monte Carlo
+simulation, the random-seed variable (Xseed), was employed in the FISH Function to generate
+the Xp and Xc. The FISH Function is the only object that can be executed in the FISH (an
+embedded programming language within PFC) to manipulate DEM samples. In this way, the
+simple Xseed representing the overall random distribution of calcite cementation, can be
+executed instead of the Xp and Xc representing the random distribution characteristic of the two
+calcite forms in each sample group (Eq. 3). The methodology adopted in this study is outlined
+with reference to a prior study [23]. This redefinition simplified the generation of randomized
+116 sample groups.
+(2) Sample from a known probability distribution. Given that the calcite generation was evenly
+distributed within the region, Xp and Xc, represented by Xseed, also followed a uniform
+distribution. The sample matrix was set to represent the relationship among samples, variables,
+and estimators (Eq. 4). In Matrix 1, total m*n samples were generated, where the number of
+columns (n) represents the number of groups of samples, and the number of rows (m) represents
+the sample numbering in each group. Matrix 2 indicated mathematically that each sample was
+determined by two variables -- Xseed for n and CaCO3% for m. Through modeling each sample
+in Matrix 2, the Vs estimator matrix can be achieved as shown in Matrix 3. In this study, n=116
+and 116 Xseed were allocated to 116 DEM sample groups to simulate the Vs.
+(3) Solve and analyze estimators Vs. Vs was measured as the target estimator in the process, and
+the corresponding confidence interval was obtained. Statistically, the relationship between
+estimators Vs and uncertain variables (Xp, Xc), as well as the mean and standard deviation of Vs,
+ought to be analyzed.
+Table 2 Calcite contents and excitation frequencies of 116 groups
+
+m*
+1
+
+CaCO3% Frequency（kHz）
+0
+
+4
+
+7
+
+m*
+
+CaCO3%
+
+Frequency（kHz）
+
+10
+
+2.55
+
+8
+
+2
+3
+4
+5
+
+0.11
+0.23
+0.34
+0.45
+
+4
+5
+7
+8
+
+11
+12
+13
+14
+
+3.17
+4
+5
+6
+
+8
+10
+15
+20
+
+6
+7
+8
+9
+
+0.55
+0.66
+1.24
+1.88
+
+8
+8
+8
+8
+
+15
+16
+17
+
+7
+8
+9
+
+25
+25
+25
+
+The m refers to the sample numbering.
+
+200
+
+Sn-m =F(Xseedn ,CaCO3 %)=F Xc ,Xp =
+
+pp Xp , CaCO3 %≤0.66%
+pc Xc , CaCO3 %>0.66%
+
+(3 )
+
+,
+
+Sn-m refers to the sample with sample number m in the nth group; Xp and Xc are the distribution
+characteristic of CaCO3-Ps and CaCO3-Cs, respectively; pp and pc are the variation coefficients
+of CaCO3-Ps and CaCO3-Cs, respectively.
+
+205
+
+210
+
+215
+
+S1-1
+
+S2-1
+
+⋯
+
+Sn-1
+
+F(Xseed1 ,0)
+
+F(Xseed2 ,0)
+
+⋯
+
+F(Xseedn ,0)
+
+Vs1-1
+
+Vs2-1
+
+⋯
+
+Vsn-1
+
+⎛ ⋮
+⎜
+⎜ S1-m
+⎜
+⋮
+
+⋮
+
+⋱
+
+⋱
+⋯
+
+Vs2-m
+
+⋯
+
+⋮
+
+⋱
+
+⋮
+
+⋱
+
+⎛ ⋮
+⎜
+⎜ Vs1-m
+⎜
+⋮
+
+⋱
+
+F(Xseed2 ,CaCO3 %)
+
+⎞
+⎟
+F(Xseedn ,CaCO3 %)⎟
+⎟
+⋮
+
+⋮
+
+⋯
+
+⎛
+⋮
+⎜
+⎜F(Xseed1 ,CaCO3 %)
+⎜
+⋮
+
+⋮
+
+S2-m
+
+⋮ ⎞
+⎟
+Sn-m ⎟
+⎟
+⋮
+
+⋮
+
+⋱
+
+⋮ ⎞
+⎟
+Vsn-m ⎟
+⎟
+⋮
+
+⎝S1-17
+
+S2-17
+
+⋯
+
+Sn-17 ⎠
+
+F(Xseed1 ,9%)
+
+F(Xseed2 ,9%)
+
+⋯
+
+F(Xseedn ,9%)
+
+⎝Vs1-17
+
+Vs2-17
+
+⋯
+
+Vsn-17 ⎠
+
+Matrix 1: sample number
+
+=
+
+⎝
+
+⋮
+
+⎠
+
+Matrix 2: model expression
+
+~
+
+(4)
+
+Matrix 3: the estimator
+
+The particle packing of an uncemented sand matrix was selected for all 1972 samples to
+eliminate variations in Vs caused by contact arrangements. In addition, the post-processing and
+data calculation could be simplified by using the same initial particle packing in the preceding
+DEM simulation. Shear wave measurements were performed on these samples after reaching
+equilibrium.
+2.4 Joint stochastic-analysis
+In the joint stochastic analysis, the random distribution of macro-level Vs and the variation of
+micro-spatial cementation are described to estimate the evolution interval of Vs and interpret
+the relation between shear wave velocity and spatial variability.
+A Jarque-Bera test was used to test the normal goodness of fit for the Vs distribution, which
+was based on the sample skewness and kurtosis [42]. The test statistics were defined as:
+
+220
+
+S2 (K-3)2
+JB=
++
+,
+6/n 24/n
+1 n
+∑i=1(xi -x)3
+μ3
+n
+S= =
+,
+3/2
+σ3 1 n
+2
+∑ (x -x)
+n i=1 i
+
+8
+
+(5)
+(6)
+
+1 n
+∑i=1(xi -x)4
+n
+K= =
+,
+4/2
+σ4 1 n
+2
+∑ (x -x)
+n i=1 i
+μ4
+
+225
+
+230
+
+235
+
+240
+
+(7)
+
+where n is the number of samples, S is the sample skewness, and K is the sample kurtosis. The
+skewness and kurtosis of a standard normal distribution are 0 and 3, respectively. The
+hypothesis was that the Vs of different calcite content obeyed a normal distribution with
+unknown mean and variance, which were tested using the sample skewness and kurtosis.
+Moreover, the Vs results were considered not to follow a normal distribution if the random
+value of the 2-freedom chi-square distribution (P-value) for the test statistics was less than 5%.
+Quantifying spatial distribution variability in Vs typically requires thousands of Monte Carlo
+samples, which is computationally intensive, time-consuming and lacks theoretical background.
+An indicator, the normalized connectivity per unity distance(Cd,n), was introduced to represent
+the connectivity of the sample [23]. The DEM model can be seen as a weighted undirected
+graph by graph theory with weighting systems on Linearpbond contacts and Hertz contacts, in
+which vertexes and edges symbolize particles and contacts, respectively. The shortest path (also
+known as preferential propagation path in the DEM model) and weighted shortest distance
+(also known as shortest propagation distance in the DEM model) from the transmitter to the
+receiver can be calculated by Dijkstra's algorithm in reference to the prior study [23]. A
+preliminary indicator, Cd, was used to represent the weighted shortest propagation distance.
+However, Cd represents absolute distance, which cannot allow quantitative comparison of
+samples with different sizes. The Cd,n, normalizing the shortest propagation distance to
+represent the connectivity of all samples, was thereby introduced and defined as [23]:
+1
+ωh = 2/3
+C ,
+(8)
+1
+ωLPB =
+C
+Cd = ω Nh + ωLPB NLPB
+⎧
+L
+⎪
+Cd - ωLPB (
+- 1)
+d50
+,
+(9)
+⎨Cd, n =
+L
+L
+⎪
+ω (
+- 1) - ωLPB (
+- 1)
+d50
+d50
+⎩
+
+245
+
+250
+
+where C is the coordination number in the sample; ωh and ωLPB are weights of Hertz contacts
+and Linearpbond contacts; Nh and NLPB are the numbers of the Hertz contact model and the
+Linearpbond model, respectively; L is the distance between the transmitter and the receiver; Cd
+is the connectivity, represented as the weighted shortest path; Cd,n is the normalized
+connectivity per unity distance, represented as the normalized weighted shortest path. A lower
+value of Cd,n indicates a shorter preferential propagation path and greater connectivity.
+
+9
+
+3 Results
+3.1 Sensitivity analysis
+255
+
+×100
+
+260
+
+3.1.1 Peak-to-peak time determination
+Shear wave velocity (Vs) was determined by dividing the propagation distance (0.1m) by the
+time. A comparison between the peak-to-peak and first-arrival time methods (Fig. 6) revealed
+that the Vs calculated by both two methods were steady at low frequency (<8kHz). However,
+the determination of shear wave propagation time using the first arrival method is subjective
+due to the influence of near-field effects (i.e., compression waves and reflected shear waves)
+[43]. Although both the two methods exhibited some dispersion at high frequency (>16kHz),
+it was particularly pronounced in the first arrival method. Therefore, the peak-to-peak method
+was selected in the subsequent analysis.
+30
+0.66% Peak-Peak
+25
+
+3.17% Peak-Peak
+6% Peak-Peak
+
+Vs (m/s)
+
+20
+
+8% Peak-Peak
+0.66% First Arrival
+
+15
+
+3.17% First Arrival
+6% First Arrival
+
+10
+
+8% First Arrival
+5
+0
+1
+
+10
+Excitation Frequency (kHz)
+
+100
+
+Fig. 6 Vs measured by two methods under four typical calcite content (0.66%, 3.17%, 6%, 8%)
+
+265
+
+270
+
+275
+
+3.1.2 Damping coefficients
+In DEM simulation, damping contains two components, the viscous damping coefficient and
+local damping coefficient. The former is not applicable to dry, non-viscous materials, so it was
+set to 0 to avoid a reduction in output frequency. The range of the latter of [0.1, 0.7] was tested
+in DEM simulations (Fig. 7a). Using experimentally measured shear wave velocity (Vs,exp) from
+a prior study [16], an optimal damping coefficient was determined as follows. Compared with
+the experimentally measured arrival time (tar, calculated by Vs,exp), local damping coefficients
+exceeding 0.3 delayed wave arrival (Fig. 7a). However, high-frequency noise appeared at α<0.2
+(Fig. 7b). In view of the above results, the local damping factor (α) was set to 0.3, and the
+damping ratio was D = α⁄π =0.095 , which was within the small-strain damping ratios of
+cemented sands of [0.02, 0.15] (Fig. 8) [44, 45].
+
+10
+
+Fig. 7 Signals of the receiver under CaCO3% = 0.11% (a) and 0.66% (b) with local damping factors (α) of [0.1,
+0.7]; tar, L, Vs, exp are the wave propagation time, propagation distance and Vs from experiments [16].
+
+280
+Fig. 8 Damping ratio and cementation content relationships [44-46]
+
+285
+
+290
+
+295
+
+3.1.3 Excitation frequency
+It was observed that Vs was greatly affected by different excitation frequencies in both
+experiments and simulations [47-49]. Sets of samples with four calcite contents were tested for
+sensitivity analysis of excitation frequency (Fig. 9). For samples of the same calcite content,
+varying excitation frequencies could cause differences in the calculated Vs, with a maximum
+variation of 358m/s at 8% CaCO3. This variation, attributed to wave dispersion, was
+particularly obvious when the cementation content was high, significantly impacting both
+experimental and simulation results. Therefore, characterizing the relationship properly
+between input and output frequencies is essential to accurately determine Vs [48, 50]. The input
+frequency should fall within the range of its linear relationship with the output frequency, and
+thus this threshold can be considered a reasonable input frequency [48]. For the same sample
+of four different calcite contents, it was found that the input and output frequencies could be
+well matched when the excitation frequencies of the samples were selected as 8kHz, 8kHz,
+20kHz, and 25kHz, and their frequencies fell within the reasonable threshold (Fig. 9), which
+meant that the cementation content is positively correlated with the inherent frequency of the
+sample. Excitation frequencies near the inherent frequencies of each calcite content group were
+used (Table 2). The propagation distance (L) and excitation frequency used in the shear wave
+11
+
+300
+
+simulation ought to be both satisfied by λ/d50 < 10 and L/λ > 2, where λ is the wavelength
+and d50 is the median particle size [38, 48]
+
+Fig. 9 Excitation frequency characterization of samples with different calcium carbonate content
+
+3.2 Evidence from DE-MC
+305
+
+310
+
+315
+
+320
+
+3.2.1 Macro-level results of DE-MC: Typical Vs vs CaCO3% relationship
+The stochastic analysis results of Vs in the DE-MC are shown in Table 3, Fig. 10, and Fig. 11.
+The growth of shear wave velocity can be divided into four stages (Sun et al., 2022): (1) In
+Stage I (CaCO3 ≤ 0.66%, CaCO3-P only), the mean Vs increased monotonically with the calcite
+content at a rate of 308.98m/s, as evidenced by the slope. The Vs frequency histograms
+displayed a normal distribution with a variance of [9.76, 35.49]. Samples in Stage I
+demonstrated positive skewness, implying a higher dispersion above the mean Vs and
+aggregation in the low-speed region. (2) In Stage II (0.66%≤ CaCO3 ≤ 2.55%, CaCO3-C
+appeared), the Vs increased slower than Stage I, at a rate of 164.62m/s. The variance was [62.38,
+171.20]. The kurtosis exceeded twice that of the standard normal distribution, indicating a
+deviation from normality. It suggested that, despite the generation of cemented clusters, the
+spatial variability was slight, and Vs remained relatively unaffected. Furthermore, the
+histograms had a positive (left) skew distribution, suggesting that a small number of samples
+exhibited high-speed regions, likely due to the formation of calcite clusters that facilitated wave
+propagation. (3) In Stage III (2.55%≤ CaCO3 ≤ 6%), the increasing rate of Vs was 262.18m/s,
+which was the highest of the four stages. The Vs frequency histograms displayed a normal
+distribution with a variance of [220.15, 260.74]. (4) In Stage IV (6%≤ CaCO3 ≤ 9%), the
+increasing rate was reduced to 189.81m/s. The histograms displayed a normal distribution, and
+the variance was [137.91, 203.39]. Samples in Stage IV demonstrated negative skewness,
+implying a higher dispersion below the mean Vs and aggregation in the high-speed region. In
+summary, the actual Vs for calcium carbonate reinforcement tended to be lower than the
+
+12
+
+325
+
+predicted velocity in Stages I and II, and slightly higher than that in Stage IV.
+Table 3 Vs distribution of samples with different calcite content
+
+Stage
+
+Ⅰ
+
+Ⅱ
+
+Ⅲ
+
+Ⅳ
+
+CaCO3%
+
+Vs (m/s)
+
+Standard
+deviation(m/s)
+
+Skewness
+
+Kurtosis
+
+Normal
+distribution
+
+0.11
+0.23
+0.34
+0.45
+0.55
+0.66
+1.24
+1.88
+2.55
+3.17
+4.00
+5.00
+6.00
+7.00
+8.00
+9.00
+
+210.40
+227.78
+248.97
+282.13
+322.39
+380.34
+447.77
+525.58
+640.11
+765.48
+958.21
+1211.31
+1482.56
+1756.64
+1974.69
+2136.25
+
+9.76
+14.22
+18.29
+22.98
+24.89
+35.49
+62.38
+92.21
+124.69
+171.20
+220.15
+260.74
+238.12
+203.39
+154.59
+137.91
+
+-0.13
+0.16
+0.67
+0.91
+0.68
+0.38
+1.77
+1.48
+1.20
+1.44
+0.64
+0.36
+-0.15
+-0.19
+-0.34
+-0.70
+
+2.77
+4.15
+3.93
+6.49
+3.75
+3.24
+11.97
+6.36
+5.68
+6.75
+3.09
+2.60
+2.49
+3.11
+2.89
+3.47
+
+○
+○
+○
+○
+○
+○
+×
+×
+×
+×
+○
+○
+○
+○
+○
+○
+
+Fig. 10 Variation range of Vs [16, 51]
+
+13
+
+330
+
+335
+
+340
+
+Fig. 11 Vs frequency histogram with different calcium carbonate content. The red line is the normal distribution
+fitting curve
+
+3.2.2 Micro-scope spatial distribution of calcite-sand clusters
+A close look at the shear wave propagation path could reveal influencing factors at the particle
+contact level. Three samples at 5% calcite content showed three preferential paths through
+which the shear wave arrived at the receiving end first (Fig. 10, Fig. 12). The optimal path of
+Sample 1 passed through the most calcite clusters and had the longest consecutive Linearpbond
+contact length, with the measured Vs of 1700m/s; although the optimal path of Sample 2 passed
+through most calcite clusters, there was a node remained uncemented, resulting in a continuous
+Linearpbond contact length shorter than that of Sample 1, with the measured Vs of 1255m/s;
+the optimal path of Sample 3 passes through the least number of calcite clusters, and there were
+four nodes remained uncemented, resulting in the shortest continuous Linearpbond contact
+length, with the measured Vs of 838m/s. Through the comparison of the above three paths, it
+can be seen that the larger the proportion of calcite clusters (Linearpbond contact) and the
+continuous Linearpbond contact length, the faster the transmission of the shear wave.
+
+14
+
+345
+Fig. 12 Distribution of calcite-sand clusters in Samples 1, 2, and 3 at 5% calcite content. Black lines indicate the
+optimal wave propagation paths; red arrows indicate uncemented particles; Cd,n refers to the normalized
+coordination number along the shear wave propagation path [23].
+
+4 Discussion
+350
+
+355
+
+360
+
+365
+
+4.1 Significance and implications
+The Monte-Carlo application verified the rationality of the DEM simulation of calcitecemented samples. Plenty of sample data also revealed evidence at the macro and micro levels.
+Based on the constructed sample dataset and valid sample generation method, features of
+quantifying spatial variability of calcite precipitates and relations between macro-level Vs and
+micro-level Cd,n can be further discussed.
+4.2 Feature correlation analysis
+The validity of Cd,n characterizing Vs can be evaluated based on the dataset constructed from
+1972 samples. The lists of transmitters and receivers of 1972 samples were traversed, and
+Dijkstra’s algorithm was used to calculate the optimal path of each sample. A Pearson
+correlation analysis was carried out of the eight contact-related features and the target value Vs
+(Fig. 13). The features pertaining to the Linearpbond contact were all strongly positively
+correlated with Vs (>0.8), with QLLC exhibiting the highest correlation. This indicates that
+continuous cementation contributed more to the increase in Vs than dispersed cementation.
+However, it is worth noting that QLLC was an absolute variable and may not be applicable
+when parameters such as wave propagation distance and particle size change. Therefore,
+characterization indicators should be chosen from relative variables, including LP, PLLC and
+Cd,n, rather than absolute features. Among these relative values, Cd,n exhibited the strongest
+correlation with Vs, suggesting that the contact weight, based on physical significance, is a
+
+15
+
+reasonable means of characterizing Vs.
+
+370
+Fig. 13 Correlation analysis between features and Vs. (a) Correlation matrix; (b) An example sample shortest
+propagation path; (c) The feature definitions and examples
+
+375
+
+380
+
+385
+
+390
+
+4.3 Quantitative characterization of Cd,n-Vs
+Since Cd,n represented the characteristic of the shortest distance in the microscopic scope, the
+empirical relationship of Cd,n-Vs can quantify the contribution of calcite cementation, predict
+Vs, and analyze sample variability.
+The first step to calculate Cd,n was selecting the weights of contacts. The above weights result
+was calculated by the coordination number, which was based on physical meaning (Eq. 8).
+More samples provided statistics information to select weights based on the Monte-Carlo
+method. The optimal values and appropriate intervals for the contact model weight can be
+calculated using the Monte-Carlo method, and the Cd,n-Vs correlation was found to be the most
+negative when the weight ratio is 0.83 (Fig. 14).
+The quantified Cd,n relationships based on physical meanings and the Monte-Carlo method
+were compared in Table 4. Both methods could characterize Vs without considering calcite
+content, but each had advantages and disadvantages. Weight selection based on physical
+meanings resulted in greater aggregation of wave velocity points, less error with the fitted curve,
+and more accurate Vs predictions, but the weights need to be recalculated in different
+simulations. The weights selected based on the Monte-Carlo method can be applied as
+constants, but the Vs of different samples were more discrete and less accurately predicted.
+Both weight selection results are applicable for using Cd,n to characterize Vs, and making
+reasonable predictions.
+
+16
+
+395
+
+Fig. 14 The degree of correction between Cd,n and Vs under different ωLPB /ωh
+Table 4 Comparison of two methods of weight selection for contact model
+
+Based on Physical meanings
+
+Based on Monte-Carlo method
+
+ωh
+ωLPB
+Cd,n range
+
+0.475
+0.328
+[0.145, 1.303]
+
+1
+0.83
+[0.318, 1.643]
+
+Vs-Cd,n fitting equation
+
+Vs =623C-1.01
+d,n -338
+
+Vs =1415C-1.06
+d,n -725
+
+Vs-Cd,n fitting figure
+
+400
+
+405
+
+5 Limitations and future work
+Though the DE-MC method provides significant evidence for studying sand stiffness
+variability induced by stochastic distributions of calcite precipitates, it also has several
+limitations in quantitative analysis. Firstly, all samples were kept in the same K0 stress state
+(i.e., the stress state was not considered); other microscopic features such as contact force,
+coordination number change, and force chain distribution were neglected. A recommended
+future direction was to expand the quantification of indicators like Cd,n to consider different
+stress states and incorporate the aforementioned microstructural features. Secondly, the sizes
+of samples and particles were fixed and the diversity was not enough. Therefore, the
+generalization ability of the Cd,n-Vs derived formula needs further verification. Further study
+can focus on building a more complete physical-informed database based on existing
+simulation methods, to solve the huge computational problem of traditional numerical methods.
+
+17
+
+410
+
+415
+
+6 Conclusions
+In this study, an innovative Discrete Element-Monte Carlo (DE-MC) method was applied in
+samples of calcite-cemented soil to quantify the sand stiffness variability induced by stochastic
+distributions of calcite precipitates. During the Monte Carlo process, a random variable Xseed
+represented the random distribution characteristic of CaCO3-Ps (Xp) and CaCO3-Cs (Xc) in
+different samples. A total of 1972 DEM samples were established. Cementation spatial
+distribution and Vs in the simulation were presented, and microscopic features were further
+constructed and analyzed. The following conclusions are drawn:
+(1) The Vs frequency histograms and 95% confidence intervals revealed the difference of Vs
+in different samples, which was attributed to the preferential paths caused by calcite-sand
+
+420
+
+clusters. Typically, the spatial distribution variability of calcite-sand clusters started to
+stand out in Stage II, and was the most obvious in Stage III, thereby leading to the
+significant distribution difference of Vs.
+(2) Contact-related features of the sample dominated preferential paths, which can predict Vs.
+The correlation between eight selected contact-related features and Vs was calculated. The
+
+425
+
+normalized connectivity per unity distance contact weight Cd,n was the most correlated
+among relative variables.
+(3) The availability of Cd,n was evaluated by weighting contacts to quantify the cementation
+contribution. A lower Cd,n value indicated greater connectivity and higher Vs. Two methods
+of weight selection, physical meanings and Monte-Carlo, were provided and compared,
+
+430
+
+both showing advantages in practical prediction. The fitted formulas are Vs =623C-1.01
+d,n -338
+and Vs =1415C-1.06
+d,n -725, respectively.
+
+435
+
+440
+
+Acknowledgments
+The work presented in this paper was supported by the National Natural Science Foundation
+of China (Award No.: 42177118), the Basic Science Center Program for Multiphase Evolution
+in Hypergravity of the National Natural Science Foundation of China (Award No.: 51988101),
+and Hong Kong Research Grants Council (RGC) (No. 17200123). The authors would also like
+to acknowledge the MOE Key Laboratory of Soft Soils and Geo-environmental Engineering.
+
+References
+[1] D.-S. Cho, J. Kim, Stability of the front wall and the horizontal behavior of composite
+reinforced-earth retaining walls, Acta Geotechnica (2024).
+
+18
+
+445
+
+450
+
+455
+
+460
+
+465
+
+470
+
+475
+
+480
+
+[2] J. Wang, H. Duan, K. Chen, I.Y.S. Chan, F. Xue, N. Zhang, X. Chen, J. Zuo, Role of Urban
+Underground-Space Development in Achieving Carbon Neutrality: A National-Level
+Analysis in China, Engineering (2024).
+[3] J. Geng, J. Wang, J. Huang, D. Zhou, J. Bai, J. Wang, H. Zhang, H. Duan, W. Zhang,
+Quantification of the carbon emission of urban residential buildings: The case of the
+Greater Bay Area cities in China, Environmental Impact Assessment Review 95 (2022)
+106775.
+[4] J. Wang, Y. Huang, Y. Teng, B. Yu, J. Wang, H. Zhang, H. Duan, Can buildings sector
+achieve the carbon mitigation ambitious goal: Case study for a low-carbon demonstration
+city in China?, Environmental Impact Assessment Review 90 (2021) 106633.
+[5] M. Nemati, Modification of porous media permeability, using calcium carbonate produced
+enzymatically in situ, Enzyme and Microbial Technology 33(5) (2003) 635-642.
+[6] X. Pan, J. Chu, Y. Yang, L. Cheng, A new biogrouting method for fine to coarse sand, Acta
+Geotechnica 15(1) (2019) 1-16.
+[7] M.-J. Cui, J. Chu, H.-J. Lai, Optimization of one-phase-low-pH enzyme-induced carbonate
+precipitation method for soil improvement, Acta Geotechnica (2024).
+[8] I. Ahenkorah, M.M. Rahman, M.R. Karim, S. Beecham, Cyclic liquefaction resistance of
+MICP- and EICP-treated sand in simple shear conditions: a benchmarking with the critical
+state of untreated sand, Acta Geotechnica (2024).
+[9] A. Nafisi, Q. Liu, B.M. Montoya, Effect of stress path on the shear response of biocemented sands, Acta Geotechnica 16(10) (2021) 3239-3251.
+[10] J.C. Santamarina, A. Klein, M.A. Fam, Soils and waves:Particulate materials behavior,
+characterization and process monitoring, Journal of Soils and Sediments 1(2) (2001) 130130.
+[11] H. Lin, M.T. Suleiman, D.G. Brown, Investigation of pore-scale CaCO3 distributions and
+their effects on stiffness and permeability of sands treated by microbially induced
+carbonate precipitation (MICP), Soils and Foundations 60(4) (2020) 944-961.
+[12] H. Wu, W. Wu, W. Liang, F. Dai, H. Liu, Y. Xiao, 3D DEM modeling of biocemented sand
+with fines as cementing agents, International Journal for Numerical and Analytical
+Methods in Geomechanics 47(2) (2022) 212-240.
+[13] B. Bate, J. Cao, C. Zhang, N. Hao, S. Wang, Monitoring lime and cement improvement
+using spectral induced polarization and bender element techniques, Journal of Rock
+Mechanics and Geotechnical Engineering 13(1) (2021) 202-211.
+[14] F. Tagliaferri, J. Waller, E. Andò, S.A. Hall, G. Viggiani, P. Bésuelle, J.T. DeJong,
+Observing strain localisation processes in bio-cemented sand using x-ray imaging,
+Granular Matter 13(3) (2011) 247-250.
+[15] M.-J. Cui, J.-J. Zheng, R.-J. Zhang, H.-J. Lai, J. Zhang, Influence of cementation level on
+the strength behaviour of bio-cemented sand, Acta Geotechnica 12(5) (2017) 971-986.
+[16] B. Bate, J. Cao, C. Zhang, N. Hao, Spectral induced polarization study on enzyme induced
+carbonate precipitations: influences of size and content on stiffness of a fine sand, Acta
+Geotechnica 16(3) (2020) 841-857.
+
+19
+
+485
+
+490
+
+495
+
+500
+
+505
+
+510
+
+515
+
+520
+
+525
+
+[17] H. Lin, M.T. Suleiman, D.G. Brown, E. Kavazanjian, Mechanical Behavior of Sands
+Treated by Microbially Induced Carbonate Precipitation, Journal of Geotechnical and
+Geoenvironmental Engineering 142(2) (2016).
+[18] M. Sarkis, A. Naillon, F. Emeriault, C. Geindreau, Tensile strength measurement of the
+calcite bond between bio-cemented sand grains, Acta Geotechnica 19(3) (2024) 15551570.
+[19] J. He, J. Chu, S.-f. Wu, J. Peng, Mitigation of soil liquefaction using microbially induced
+desaturation, Journal of Zhejiang University-SCIENCE A 17(7) (2016) 577-588.
+[20] C. Zeng, Y. Veenis, C.A. Hall, E.S. Young, W.R.L. van der Star, J.-j. Zheng, L.A. van
+Paassen, Experimental and Numerical Analysis of a Field Trial Application of Microbially
+Induced Calcite Precipitation for Ground Stabilization, Journal of Geotechnical and
+Geoenvironmental Engineering 147(7) (2021).
+[21] H.-l. Kou, C. Wu, B.-A. Jang, D. Wang, Spatial Distribution of CaCO3 in Biocemented
+Sandy Slope Using Surface Percolation, Journal of Materials in Civil Engineering 33(6)
+(2021) 06021004.
+[22] L.A.v. Paassen, R. Ghose, T.J.M.v.d. Linden, W.R.L.v.d. Star, M.C.M.v. Loosdrecht,
+Quantifying Biomediated Ground Improvement by Ureolysis: Large-Scale Biogrout
+Experiment, Journal of Geotechnical and Geoenvironmental Engineering 136(12) (2010)
+1721-1728.
+[23] M. Sun, J. Cao, J. Cao, S. Zhang, Y. Chen, B. Bate, Discrete element modeling of shear
+wave propagation in carbonate precipitate–cemented particles, Acta Geotechnica 17(7)
+(2022) 2633-2649.
+[24] P. Yang, E. Kavazanjian, N. Neithalath, Particle-Scale Mechanisms in Undrained Triaxial
+Compression of Biocemented Sands: Insights from 3D DEM Simulations with Flexible
+Boundary, International Journal of Geomechanics 19(4) (2019) 04019009.
+[25] K. Feng, B.M. Montoya, T.M. Evans, Discrete element method simulations of biocemented sands, Computers and Geotechnics 85 (2017) 139-150.
+[26] E. Kashizadeh, A. Mukherjee, A. Tordesillas, Experimental and numerical investigation
+on heap formation of granular soil sparsely cemented by bacterial calcification, Powder
+Technology 360 (2020) 253-263.
+[27] G. Zhou, T. Esaki, Y. Mitani, M. Xie, J. Mori, Spatial probabilistic modeling of slope
+failure using an integrated GIS Monte Carlo simulation approach, Engineering Geology
+68(3) (2003) 373-386.
+[28] Saifuddin, H. Yamanaka, K. Chimoto, Variability of shallow soil amplification from
+surface-wave inversion using the Markov-chain Monte Carlo method, Soil Dynamics and
+Earthquake Engineering 107 (2018) 141-151.
+[29] S. Ma, Z. Wei, X. Chen, CFD-DEM combined the fictitious domain method with monte
+carlo method for studying particle sediment in fluid, Particulate Science and Technology
+36(8) (2017) 920-933.
+[30] F. Kalateh, M. Kheiry, A Review of Stochastic Analysis of the Seepage Through Earth
+Dams with a Focus on the Application of Monte Carlo Simulation, Archives of
+Computational Methods in Engineering 31(1) (2023) 47-72.
+
+20
+
+530
+
+535
+
+540
+
+545
+
+550
+
+555
+
+560
+
+565
+
+[31] X. Peng, D.-Q. Li, Z.-J. Cao, W. Gong, C.H. Juang, Reliability-based robust geotechnical
+design using Monte Carlo simulation, Bulletin of Engineering Geology and the
+Environment 76(3) (2017) 1217-1227.
+[32] E. Kavazanjian, E. Iglesias, I. Karatas, Biopolymer soil stabilization for wind erosion
+control, 17th International Conference on Soil Mechanics and Geotechnical Engineering,
+ICSMGE 2009, 2009, pp. 881-884.
+[33] R.D. Mindlin, H. Deresiewicz, Elastic Spheres in Contact Under Varying Oblique Forces,
+Journal of Applied Mechanics 20(3) (1953) 327-344.
+[34] D.O. Potyondy, P.A. Cundall, A bonded-particle model for rock, International Journal of
+Rock Mechanics and Mining Sciences 41(8) (2004) 1329-1364.
+[35] A.L. Fernandez, J.C. Santamarina, Effect of cementation on the small-strain parameters of
+sands, Canadian Geotechnical Journal 38(1) (2001) 191-199.
+[36] M.H. Sadd, G. Adhikari, F. Cardoso, DEM simulation of wave propagation in granular
+materials, Powder Technology 109(1-3) (2000) 222-233.
+[37] X. Zhou, Q. Sheng, Z. Cui, Dynamic boundary setting for discrete element method
+considering the seismic problems of rock masses, Granular Matter 21(3) (2019) 66.
+[38] X.M. Xu, D.S. Ling, Y.P. Cheng, Y.M. Chen, Correlation between liquefaction resistance
+and shear wave velocity of granular soils: a micromechanical perspective, Géotechnique
+65(5) (2015) 337-348.
+[39] J. Ahn, G. Biscontin, J.M. Roesset, Wave propagation in nonlinear one‐dimensional soil
+model, International Journal for Numerical and Analytical Methods in Geomechanics 33(4)
+(2008) 487-509.
+[40] A.V. da Fonseca, C. Ferreira, M. Fahey, A Framework Interpreting Bender Element Tests,
+Combining Time-Domain and Frequency-Domain Methods, GEOTECHNICAL
+TESTING JOURNAL 32(2) (2009) 91-107.
+[41] L. Wang, T. Xiao, S. Liu, W. Zhang, B. Yang, L. Chen, Quantification of model uncertainty
+and variability for landslide displacement prediction based on Monte Carlo simulation,
+Gondwana Research 123 (2023) 27-40.
+[42] C.M. Jarque, Jarque-Bera Test, in: M. Lovric (Ed.), International Encyclopedia of
+Statistical Science, Springer Berlin Heidelberg, Berlin, Heidelberg, 2011, pp. 701-702.
+[43] Q.-y. DONG, Y.-q. CAI, C.-j. XU, J. WANG, H.-l. SUN, C. GU, Measurement of smallstrain shear modulus Gmax of dry and saturated sands by bender element and resonant
+column tests, Chinese Journal of Geotechnical Engineering 35(12) (2013) 2283-2289.
+[44] K.M. Rollins, M.D. Evans, N.B. Diehl, W.D.D. Iii, Shear Modulus and Damping
+Relationships for Gravels, Journal of geotechnical and geoenvironmental engineering (5)
+(1998) 124.
+[45] X. Zhang, Y. Chen, H. Liu, Z. Zhang, X. Ding, Performance evaluation of a MICP-treated
+calcareous sandy foundation using shake table tests, Soil Dynamics and Earthquake
+Engineering 129 (2020) 105959.
+[46] L. Yang, L. Salvati, Small Strain Properties of Sands with Different Cement Types,
+(2010).
+
+21
+
+570
+
+575
+
+580
+
+[47] J. O’Donovan, E. Ibraim, C. O’Sullivan, S. Hamlin, D. Muir Wood, G. Marketos,
+Micromechanics of seismic wave propagation in granular materials, Granular Matter 18(3)
+(2016) 56.
+[48] X. Gu, X. Liang, Y. Shan, X. Huang, A. Tessari, Discrete element modeling of shear wave
+propagation using bender elements in confined granular materials of different grain sizes,
+Computers and Geotechnics 125 (2020).
+[49] Z. Ning, A. Khoubani, T.M. Evans, Shear wave propagation in granular assemblies,
+Computers and Geotechnics 69 (2015) 615-626.
+[50] X.-m. XU, D.-s. LING, B. HUANG, Y.-m. CHEN, Determination of shear wave velocity
+in granular materials by shear vibration within discrete element simulation, Chinese
+Journal of Geotechnical Engineering 33(09) (2011) 1462-1468.
+[51] B.C. Martinez, J.T. DeJong, T.R. Ginn, B.M. Montoya, T.H. Barkouki, C. Hunt, B. Tanyu,
+D. Major, Experimental Optimization of Microbial-Induced Carbonate Precipitation for
+Soil Improvement, Journal of Geotechnical and Geoenvironmental Engineering 139(4)
+(2013) 587-598.
+
+22
+
+

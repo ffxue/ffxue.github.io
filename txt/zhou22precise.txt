@@ -1,0 +1,493 @@
+Precise Urban Green Volume-enabled Building and Environment Simulation:
+Sub-Meter Voxel Modeling of Airborne and Hand-held 3D Scans of Urban Trees
+Qianyun Zhou 1*, Jiajia Wang 2, Bin Chen 3, Fan Xue 4
+This is the authors’ version of the paper:
+Zhou, Q., Wang, J., Chen, B. & Xue, F. (2022). Precise urban green volumeenabled building and environment simulation: Sub-meter voxel modeling of
+airborne and hand-held 3D scans of urban trees. Proceedings of the 27th
+International Symposium on Advancement of Construction Management and
+Real Estate (CRIOCM2022), pp. 1651–1659, Springer, DOI: 10.1007/978981-99-3626-7_127.
+This file is shared for personal and academic use only, under the license CC
+BY-NC-ND 4.0 (Non-Commercial, No Derivatives, and with an Attributed
+citation when you use). The final published version of this paper can be found at:
+https://doi.org/10.1007/978-981-99-3626-7_127.
+
+5
+
+10
+
+15
+
+Abstract: High-rise high-density cities around the world suffer from severe urban heat
+island effects. Greenery has the potential to heal urban microclimates, such as shading,
+lowered air temperatures, and increased humidity, apart from other benefits to urban
+health. Existing numerical simulation studies employing simplified, proxy greenery
+models have validated the potential at a macro level; However, the human-centric threedimensional nature of greenery (e.g., tree crown volume, canopy density, and leaf area
+index) was ignored, leading to inaccurate results for buildings and blocks, especially in
+the high-rise high-density settings. This research proposes a precise voxel modeling of
+urban green volume for building and environment simulations. First, two scans, i.e., the
+airborne scan of tree canopies and hand-held LiDAR scan of lower parts, are registered
+and merged into a voxel model at 0.5-m resolution. Then, simulations and analysis of
+the voxelized green volume are conducted using Rhinoceros and Grasshopper. A
+preliminary experiment of shading on a university campus in Hong Kong proved the
+concept of this study. Future work will be directed to analysis of the voxel resolution
+and more types of simulations such as winds and urban thermal exposure.
+Keywords: Urban green volume; Urban heat island; Building and environment
+simulation; LiDAR point cloud; Voxelization; Numerical simulation
+
+Qianyun Zhou
+* Corresponding author, Department of Real Estate & Construction, The university of Hong Kong, China
+E-mail: qianyunz@hku.hk
+
+1
+
+Jiajia Wang
+Department of Real Estate & Construction, The university of Hong Kong, China
+
+2
+
+Bin Chen
+Division of Landscape Architecture, The University of Hong Kong, China
+
+3
+
+Fan Xue
+Department of Real Estate & Construction, The university of Hong Kong, China
+
+4
+
+1
+
+1 Introduction
+20
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+The intensive urbanization process and anthropogenic activities have increased the
+vulnerability of cities to climate change. The climate hazard is expected to trigger more
+frequent natural disasters, such as severe and protracted heat waves, which further harm
+economic, social, and environmental perspectives of the built environment [1]. For
+intensive land use and high-density cities, the increasing and long-term air temperatures
+are frequently associated with intense urban heat island (UHI) effects. UHI not only
+leads to heat stress among citizens but also raises urban energy consumption (e.g., air
+conditioning in buildings) and has a detrimental influence on the sustainability of the
+urban environment [1]. Thus, United Nations’ Sustainable Development Goal-11 (SDG11) calls for actions to resolve sustainability issues for cities and communities.
+Existing studies in the literature have confirmed urban greenery’s positive and
+negative effects on mitigating UHI. For example, the crown shape and leaf features
+have been shown to have cooling potential due to their influence on solar exposure, air
+humidity, and wind environment [2]. Morakinyo, et al. [2] found that dense foliage tall
+tree species play a significant role in cooling cities through field surveys and model
+validation, while Chen, et al. [3] extracted and mapped greening coverages with satellite
+remote sensing to analyze the multi-scale difference in greenspace exposure. Yet, Oshio,
+et al. [4] showed that urban greenery can significantly reduce wind speeds in streets, thus
+hindering the local microclimate. Therefore, holistic and accurate quantitative studies
+are demanded to assess three-dimensional greenery.
+In recent years, 3D scanning, including airborne drone photogrammetry and mobile
+LiDAR, has been widely used for building and city information models [5]. The related
+remote sensing technologies obtain the coordinates (X, Y, Z), sometimes with the color
+(R, G, B) or laser intensity (I), from the points on the objects. Airborne 3D scan data
+was used to assess urban greening and its effects on mitigating UHI [4]. However, the
+airborne data that reflects the top parts of tree crowns cannot provide sufficient 3D
+vegetation features holistic and accurate quantitative studies.
+This study presents a sub-meter voxel modeling method for integrating airborne
+and hand-held 3D scans of urban trees for building and environment simulation. The
+main contribution of this study is twofold. Firstly, the findings plot a technological
+pathway to integrate multi-source 3D scans of urban trees into computable voxels of
+3D greenery; Secondly, it showed that the sub-meter green volume model could
+improve the accuracy of building and environment simulation at an ignorable cost of
+computational load.
+
+2 Methodology
+55
+
+60
+
+65
+
+This study employs a point cloud-based scan registration for 3D greenery. First,
+photogrammetry of airborne scans generates high-resolution 3D color points composed
+of 18,431,241 points. Then, a total of 558,158 points of urban greenery can be collected
+from semantic analysis of urban models based on machine learning [5, 6] or by color
+filtering and segmentation, which separates target greenery from the surrounding
+environment, as shown in Figure 1. Then, handheld LiDAR scanning collects more of
+a human perspective on the three-dimensional greening features, with 18,146,233
+colorful points. The collected information (e.g., the bottom of the tree crown, tree trunks,
+and ground shrubs) aptly complements the airborne scans. Similarly, the points of
+interest of 3D greenery can be collected using automatic or manual processing (e.g.,
+functions in Cloud Compare). Figure 2 shows an example of pre-processed handheld
+laser-scanned greenery data. A complete 3D greenery data registers the airborne and
+2
+
+70
+
+handheld scans, as shown in Figure 3. The distance between the overlapping parts of
+the two source point clouds is calculated by the distance function in Cloud Compare,
+resulting in 0.3702m for average distance and 0.3104 for root-mean-square deviation
+(RMSD). The registered 3D greenery data is saved as a point cloud in the LASzip
+Compressed Lidar (.las) format, consisting of spatial coordinates (X, Y, and Z), source
+of points, and related variables.
+
+Figure 1. Pre-processing of airborne scanning data
+75
+
+Figure 2. Pre-processing of handheld scanning data
+
+Figure 3. Registration results of airborne (in dark green) and handheld (in light green) 3D scans
+80
+
+85
+
+90
+
+Then, a voxelization modeling method for greening crown shapes is applied to
+crown volumes for measurement and visualization. A voxel is a 3D cubic representation
+of volume. Poux [7] presents an automation workflow for transforming point clouds
+into 3D voxels with Python codes. The voxelization process in this research is based on
+three Python (ver. 3.8) libraries: laspy (ver. 2.0.3), open3d (ver. 0.11.2), and NumPy
+(ver. 1.21.2). The voxels are assembled from the dataset’s spatial bounding box, and
+the voxel location is generated as a relative value to the initial bounding box. The voxel
+model can be transformed into other 3D formats, such as .obj format, for further
+computation and simulation. Such transformations can be done through the open3d
+library. As a result, 3D greenery volume is calculated by voxel quantities, as shown
+in Figure 4.
+
+3
+
+Figure 4. Transforming the point cloud of a tree to voxel model
+
+95
+
+100
+
+105
+
+Numerical simulations can finally be conducted using the voxel model. Numerical
+simulation is often promising for assessing the influence of urban greening on the
+environment. Previous research has utilized environmental models to study the
+association between greening and urban air temperatures, local microclimate, and
+outdoor thermal comfort [2, 4]. Although parametric simulation tools are becoming
+increasingly well-established, the 3D features of greening in urban microclimate studies
+were generally replaced by theoretical, empirical values, or oversimplified (e.g., a
+conical-shaped tree crown). The complex characteristics of real greenery (e.g., the
+density of tree canopy, tree crown volume, and leaf area index) were seldom addressed
+in numerical simulations [8]. Therefore, it is essential to represent the urban environment
+via a high-precision vegetation modeling and simulation. In addition, the voxel-based
+approach allows for the numerical simulation of the urban thermal environment with
+changeable resolutions.
+
+3 Preliminary experiment
+3.1 Study area and settings
+110
+
+115
+
+The preliminary study was established on a university campus (22°16’58.17” N, 114°
+8’18.25” E) in sub-tropical Hong Kong, as shown in Figure 5. The city suffers from the
+severe UHI effect, while greenery significantly provides outdoor thermal comfort
+through shading [2]. Both the airborne and handheld scans were collected around Mong
+Kwok Ping Garden by the authors using a DJI Marvic 2 drone (with Pix4D Mapper)
+and a Paracosm PX-80 scanner, respectively. The scanned 3D point clouds were preprocessed in CloudCompare (including de-noising, filtering, and segmentation) and
+then the composite sources were registered and merged. The two types of point cloud
+data were then exported for simulations and further processing.
+
+Figure 5. Location of study area
+
+120
+
+The voxelization process was coded on the Spyder IDE environment, which reads
+the full 3D greenery data (.las format). The selection of voxel size significantly impacts
+4
+
+125
+
+130
+
+135
+
+140
+
+145
+
+150
+
+the spatial structure and volume of the vegetation (especially tree canopies). In general,
+larger voxels produce faster visualization results but only summarize the trees’
+structural information. In contrast, smaller voxels can convert more comprehensive
+vegetation information but require a longer time [8]. For this experiment, the
+transformed voxel model was set up at 0.5m resolution to balance computational time
+with the abundance of greenery information, as shown in Figure 6.
+Lastly, simulations were based on Rhino/Grasshopper3D, with an open-source
+environmental plugin named Ladybug V.1.5.0. The daylighting engine in Ladybug
+V.1.5.0 follows ray-tracing algorithm from Radiance and combines imported weather
+data files (.epw) to calculate readable plots as well as interactivity data. [9] In the raytracing algorithm for computing daylight, the following integral equation enables
+recursive evaluation for testing points on each surface [10]:
+2𝜋𝜋 𝜋𝜋
+𝐿𝐿𝑟𝑟 �θ𝑟𝑟, ∅𝑟𝑟 � = 𝐿𝐿𝑒𝑒 �θ𝑟𝑟, ∅𝑟𝑟 � + ∫0 ∫0 𝐿𝐿𝑖𝑖 (θ𝑖𝑖 , ∅𝑖𝑖 )ρ𝑏𝑏𝑏𝑏 (θ𝑖𝑖 , ∅𝑖𝑖 ; θ𝑟𝑟 , ∅𝑟𝑟 )|cos θ𝑖𝑖 |sin θ𝑖𝑖 𝑑𝑑θ𝑖𝑖 𝑑𝑑∅𝑖𝑖
+(1)
+Where:
+θ means the surface normal polar angle;
+∅ means the surface normal azimuthal angle;
+𝐿𝐿𝑒𝑒 �θ𝑟𝑟, ∅𝑟𝑟 � is the emitted radiance;
+𝐿𝐿𝑟𝑟 �θ𝑟𝑟, ∅𝑟𝑟 � is the reflected radiance;
+𝐿𝐿𝑖𝑖 (θ𝑖𝑖 , ∅𝑖𝑖 ) is the incident radiance;
+ρ𝑏𝑏𝑏𝑏 (θ𝑖𝑖 , ∅𝑖𝑖 ; θ𝑟𝑟 , ∅𝑟𝑟 ) is the function for bidirectional reflectance-transmittance distribution.
+The greening model was imported into Rhinoceros in .obj format, and the
+surrounding
+built
+environment
+was
+obtained
+from
+OpenStreetMap
+(https://www.openstreetmap.org) by blender. The daylight experiment started by
+importing
+both
+geometries
+and
+local
+meteorological
+data
+(https://www.ladybug.tools/epwmap/), and then simulated direct sunlight hours in
+Hong Kong during the summer (June to August). It also measured the total sunlight
+hours, single simulation time, and green volume under different greening model
+accuracy.
+
+3.2 Results
+155
+
+Figure 6. Voxelized 3D greenery model of the study area
+
+This experiment compares and analyses the results of five digital modeling simulations:
+5
+
+160
+
+165
+
+the model of the built environment without greenery, the oversimplified proxy greenery
+model, the airborne/handheld scanned voxelized greenery model, and the hybrid
+voxelized greenery model. The numerical simulations were compared with
+consistent .epw weather data, the target season (summer), and the surrounding built
+environment. Table 1 depicts the simulation results for the five greening precision
+models, as well as the greening volume, total sunshine duration, and simulation
+completion time. It can be observed that the integrated greenery voxel model
+demonstrates the lowest total solar exposure hours, which means that this model
+provides the largest area of shade.
+Table 1. Comparison of radiation simulation results with varying accuracy models
+Type
+Experimental Subjects
+Green
+Simulation Visualization
+Volume/m3
+1
+
+No greenery model
+
+2
+
+Conventional oversimplified proxy greenery
+model
+
+3
+
+4
+
+5
+
+170
+
+The airborne scanned
+greenery model
+(no handheld, 0.5m
+resolution)
+
+The handheld scanned
+greenery model
+(no airborne, 0.5m
+resolution)
+
+The precise urban green
+volume model
+(This study, 0.5m
+resolution)
+
+Total
+Radiation/h
+
+Time/
+s
+
+-
+
+596.63
+
+40s
+
+3200
+
+579.71
+
+70s
+
+1841
+
+561.46
+
+75s
+
+3022.25
+
+576.24
+
+90s
+
+4863.25
+
+560.38
+
+100s
+
+The experimental results indicated that registering two source point cloud data
+increased the overall volume of greenery by 34.2% over the traditional simplified
+version of the greening model. Moreover, with the increase of the projected area, the
+total radiation duration is correspondingly reduced by 3.33%. This sub-meter voxel
+6
+
+175
+
+model collects point cloud data from a multi-directional field of view, which
+complements airborne photogrammetry with handheld scanning data, and makes the
+numeric model more closely resemble real-world vegetation. This method boosts the
+precision of the digital simulation, contributing to further urban microclimate analysis.
+Furthermore, the voxelized greenery model offers an automated solution for
+quantifying greening volumes.
+
+4 Discussion and future work
+
+180
+
+185
+
+190
+
+195
+
+200
+
+Urban greenery is commonly convinced to relieve urban heat, due to its function of
+providing shadows. [2] However, the quantity and density of urban forests can also
+impede the urban wind environment (especially in intensive development areas),
+causing an impact on the local microclimate [4]. The majority of computational
+simulations used for validation employ hypothetical greening models. These digital
+representations of vegetation are frequently replaced by empirical values or overly
+simple geometries, making the simulation results that do not accurately reflect the real
+urban environment [8]. This research proposes a technical solution for integrating
+scanned point cloud data from multiple sources, acting as the semantic enrichment of
+city information models. [5] Subsequently, a Python-based automated program
+efficiently converts the point cloud model into a sub-meter quantifiable voxel model.
+This voxel model can contribute to urban greening planning by raising the accuracy of
+numerical simulations without increasing the computational load considerably.
+Nevertheless, this study also has some limitations. Firstly, the voxelized greening
+model was only presented at a resolution of 0.5m in the experiments, thus lacking
+comparative analysis of the impact of other resolution values of voxel models on
+environmental simulations. The optimal voxel resolution for specific urban
+morphologies (e.g., high density, low density, enclosed areas, semi-open areas, open
+areas) should be further investigated. Moreover, this study only employed point cloud
+processing software to align multi-source scanned data. A more intelligent and
+automated technique may be required for future experiments on complex urban
+environments to extend the model's applicability. Finally, the initial simulation
+validation in this test has focused on the shading effects of urban greenery, and future
+work will pay more attention to urban wind simulation (CFD) and outdoor thermal
+comfort studies.
+
+5 Conclusion
+205
+
+210
+
+215
+
+Urban greenery has a positive impact on improving urban thermal comfort; however,
+the volume and density of the tree crown may also affect the urban microclimate. In
+recent years, numerical simulations have been frequently employed to validate and
+quantify the influence of greenery on urban outdoor comfort and environment, but
+lacking highly accurate vegetation models. In this study, the fusion of multi-source
+scanned greening point clouds (detailing the three-dimensional attributes of the top and
+middle crown layers, as well as the lower shrub vegetation) is proposed and automated
+to generate a sub-meter resolution voxelized greening model. This semi-automated
+technique enables the reconstruction of the urban forest from an actual physical
+environment at a low cost, thereby effectively boosting the accuracy and credibility of
+the environmental simulation. Future work includes optimal voxel resolution in urban
+environments with different densities and comprehensive urban microclimate
+simulations (e.g., CFD wind environment studies).
+7
+
+Acknowledgment
+The work presented in this paper was supported by the Hong Kong Research Grants
+Council (RGC) (Grant No. T22-504/21-R).
+220
+
+225
+
+230
+
+235
+
+240
+
+245
+
+250
+
+References
+[1]C. Rosenzweig, W. D. Solecki, S. A. Hammer, and S. Mehrotra, Climate change and cities: First
+assessment report of the urban climate change research network. Cambridge University Press,
+2011.
+[2]T. E. Morakinyo, K. K.-L. Lau, C. Ren, and E. Ng, "Performance of Hong Kong's common trees
+species for outdoor temperature regulation, thermal comfort and energy saving," Building and
+Environment,
+vol.
+137,
+pp.
+157-170,
+2018/06/01/
+2018,
+doi:
+https://doi.org/10.1016/j.buildenv.2018.04.012 .
+[3]B. Chen et al., "Beyond green environments: Multi-scale difference in human exposure to
+greenspace in China," Environment International, vol. 166, p. 107348, 2022/08/01/ 2022, doi:
+https://doi.org/10.1016/j.envint.2022.107348 .
+[4]H. Oshio, T. Kiyono, and T. Asawa, "Numerical simulation of the nocturnal cooling effect of
+urban trees considering the leaf area density distribution," Urban Forestry & Urban Greening,
+vol. 66, p. 127391, 2021/12/01/ 2021, doi: https://doi.org/10.1016/j.ufug.2021.127391 .
+[5]F. Xue, L. Wu, and W. Lu, "Semantic enrichment of building and city information models: A tenyear review," Advanced Engineering Informatics, vol. 47, p. 101245, 2021/01/01/ 2021, doi:
+https://doi.org/10.1016/j.aei.2020.101245 .
+[6]M. Li, F. Xue, Y. Wu, and A. G. O. Yeh, "A room with a view: Automatic assessment of window
+views for high-rise high-density areas using City Information Models and deep transfer
+learning," Landscape and Urban Planning, vol. 226, p. 104505, 2022/10/01/ 2022, doi:
+https://doi.org/10.1016/j.landurbplan.2022.104505 .
+[7]F. Poux and R. Billen, "Voxel-based 3D Point Cloud Semantic Segmentation: Unsupervised
+Geometric and Relationship Featuring vs Deep Learning Methods," ISPRS International
+Journal of Geo-Information, vol. 8, no. 5, p. 213, 2019. [Online]. Available:
+https://www.mdpi.com/2220-9964/8/5/213 .
+[8]H. Xu, C. C. Wang, X. Shen, and S. Zlatanova, "3D tree reconstruction in support of urban
+microclimate simulation: A comprehensive literature review," Buildings, vol. 11, no. 9, p. 417,
+2021.
+[9]M. Pak, A. Smith, and G. Gill, "Ladybug: A Parametric Environmental Plugin For Grasshopper
+To Help Designers Create An Environmentally-conscious Design," Building Simulation
+Conference Proceedings, 2013.
+[10]G. J. Ward, "The RADIANCE lighting simulation and rendering system," in Proceedings of the
+21st annual conference on Computer graphics and interactive techniques, 1994, pp. 459-472.
+
+8
+
+

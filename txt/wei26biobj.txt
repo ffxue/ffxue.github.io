@@ -1,0 +1,1179 @@
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+Contents lists available at ScienceDirect
+
+Resources, Conservation & Recycling Advances
+journal homepage: www.sciencedirect.com/journal/
+Resources-Conservation-and-Recycling-Advances
+
+Bi-objective optimization of low-carbon, low-cost scaffolding design using
+bamboo and steel with a study in China
+Xi Wei a , Fan Xue a,* , Jiajia Wang a , Dong Liang b
+a
+b
+
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong Special Administrative Region of China
+Department of Industrial and Systems Engineering, The Hong Kong Polytechnic University, Hong Kong Special Administrative Region of China
+
+A R T I C L E I N F O
+
+A B S T R A C T
+
+Keywords:
+Bamboo-steel hybrid scaffolding
+Bi-objective optimization
+Net-zero energy building
+Sustainable construction
+Life cycle analysis
+
+Sustainable structures in construction are increasingly promoted, yet sustainable temporary structures such as
+scaffolding remain underexamined. Conventional scaffolding is predominantly constructed with either bamboo
+or steel. Bamboo has low carbon emissions but raises regulatory and safety challenges sometimes. Steel ensures
+high strength but produces high emissions. This paper proposes a low-carbon, low-cost bamboo-steel hybrid
+scaffolding (BSHS) that leverages the environmental benefits of bamboo with the safety advantages of steel. A biobjective optimization model is formulated to minimize life cycle carbon emissions and total cost subjecting to
+constraints of overweighted safety regulations; the baseline solver is Non-Dominated Sorting Genetic Algorithm
+II (NSGA-II). A case study in Shenzhen, China, demonstrated that BSHS can reduce scaffolding-related carbon
+emissions by up to 99.6 % compared to the baseline steelwork solution at a 4.7 % cost increase, while confidently
+satisfying all safety requirements. Our findings also confirmed that the slight cost overrun will be offset and
+eventually result in cost savings through the scale effect and easier learning curves, once the technology is widely
+adopted. The contribution of this paper is two-fold. First, it formulates a bi-objective optimization framework for
+sustainable scaffolding design. Secondly, the findings provided empirical evidence that BSHS reduces life cycle
+carbon footprint while maintaining cost-effectiveness and regulatory compliance.
+
+1. Introduction
+Sustainable development is defined as “development that meets the
+needs of the present without compromising the ability of future gener­
+ations to meet their own needs” (Brundtland, 1987). Rapid urbanization
+has created multiple challenges in the built environment, such as
+increased construction waste, carbon emissions, and resource depletion.
+The United Nations proposed 17 Sustainable Development Goals (SDGs),
+comprising 169 specific targets (UN 2015). Goal 11 “Sustainable Cities
+and Communities” issues an urgent call to action in the construction
+industry to advance sustainable development.
+The energy consumption and associated carbon footprint throughout
+a building’s life cycle are central to sustainable development in the
+construction industry (Sizirici et al., 2021). The built environment
+contributes over 37 % of global energy-related carbon emissions (UNEP
+2023). Buildings emit carbon across all stages, from construction,
+operation, maintenance, to demolition (Chen et al., 2022). Some
+buildings achieve carbon neutrality in operation and maintenance
+through optimized designs (Lu et al., 2024), energy models (Meng et al.,
+
+2026), advanced technologies, and green retrofitting (Rayegan et al.,
+2024). Yet, other stages still produce a heavy carbon footprint.
+Scaffolding is a critical yet often overlooked component of sustain­
+able construction. Scaffolding contributes about 10–25 % of total con­
+struction costs and 18–30 % of on-site labor (Yin and Caldas, 2022),
+while the global scaffolding market was projected to reach USD 75
+billion by 2030 (Tejas, 2025). However, carbon footprint of scaffolding
+receives less attention than permanent structures in both practice and
+literature. One possible reason is that scaffold designs were often
+excluded from architectural and tender drawings (Kim and Teizer,
+2014). Another possible reason was outsourcing of scaffolding to
+specialized small firms relying on single-material systems, regardless of
+site-specific conditions, scaffolding efficiency, and carbon emissions.
+Sustainable scaffolding systems, thus, will be meaningful for achieving
+net-zero energy building targets (Ibrahim et al., 2024).
+Steel and bamboo are the two predominant scaffolding materials.
+Bamboo scaffolds have prevailed in South and East Asia and Africa
+(Sanni-Anibire et al., 2022), while steel dominates in the rest of the
+world (Amede et al., 2022). Fig. 1 shows that bamboo’s sustainability
+
+* Corresponding author.
+E-mail addresses: weixi@connect.hku.hk (X. Wei), xuef@hku.hk (F. Xue), wjiajia@connect.hku.hk (J. Wang), leodong@connect.hku.hk (D. Liang).
+https://doi.org/10.1016/j.rcradv.2026.200334
+Available online 1 April 2026
+2667-3789/© 2026 The Author(s). Published by Elsevier B.V. This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+advantages, as it grows rapidly in 3–5 years and sequesters carbon as
+about 50 % of dry weight (Sujarwo, 2016). After service life in site, reuse
+in wastewater treatment or gardening applications can further reduce
+the carbon footprint (Chang et al., 2018; Choy et al., 2005). In contrast,
+steelwork generates notably more carbon emissions across stages: min­
+ing, smelting, manufacturing, transportation, and recycling. Therefore,
+in Hong Kong, bamboo scaffolding temporarily remains dominant under
+local codes (HKLD 2024). While its use is declining due to safety con­
+cerns, new regulations, and insufficient training programs for bamboo
+scaffolders (HKDevB 2025).
+Multi-objective optimization (MOO) methods optimize conflicting
+goals simultaneously (Gunantara, 2018). MOO/BOO can provide theo­
+retical computational approaches for studying bamboo-steel hybrid
+scaffolding (BSHS), in order to integrate the advantages with regard to
+structural safety and environmental sustainability.
+This paper presents a modular, low-carbon BSHS design and its BOO
+formulation. The objectives to minimize are life cycle carbon footprint
+and total cost with constraints of minimum structural strength and given
+site conditions, whereas the variables to determine include framework
+configuration and material properties. Typical MOO algorithms, such as
+Non-dominated Sorting Genetic Algorithm II (NSGA-II), can solve this
+BOO problem for each site.
+Contribution of this paper is two-fold. First, the BOO formulation of
+BSHS quantifies sustainability and cost goals of bi-material scaffolding.
+Second, the BOO results confirmed that BSHS considerably reduces life
+cycle carbon footprint and maintains cost efficiency and safety
+compliance.
+
+for projects exceeding CNY 600,000 (approximately USD 84,000).
+However, increased reliance on steel accelerates carbon emissions
+throughout construction. For instance, China produced 1.005 billion
+tons of crude steel in 2024, which is more than half of the world (Cai and
+Zhu, 2025).
+On the contrary, bamboo scaffolding was used in over 95 % of
+Buildings Department-registered projects in Hong Kong in 1990s,
+including large developments such as the Hong Kong Convention and
+Exhibition Centre (Chang and Yu, 2002). Even though part of the
+large-scale public projects has been shifted to steelworks in recent years,
+bamboo remains a main scaffolding material in Hong Kong, India,
+Nigeria, and several other regions. The Hong Kong Buildings Depart­
+ment possesses detailed regulatory codes regarding the installation, use,
+maintenance, and dismantling of bamboo scaffolding.
+Bamboo scaffolding has several key advantages in Hong Kong. First,
+Hong Kong is adjacent to bamboo sources of Guangdong and Guangxi
+provinces (Fang et al., 2004). Bamboo’s light weight also reduces
+transportation, installation, and dismantling costs compared with
+steelwork (Amede et al., 2021). Additionally, its flexibility also suits
+Hong Kong’s dense urban environment. Licensed scaffolders can do
+on-site adjustments in length and positioning (Crolla, 2018). Bamboo
+scaffolding is also time-saving due to its rapid assembly, requiring only
+one-sixth the time of steelwork (Gebremariam et al., 2024).
+2.2. Bamboo-steel hybrid applications in construction
+Bamboo-steel hybrid materials have been applied to the construction
+field to enhance sustainability. Bamboo’s carbon sequestration rate is
+6–13 mg/ha/yr (Nath et al., 2015), which sheds light for a
+carbon-efficient bamboo-steel hybrid structure (Zhang et al., 2021).
+Although natural bamboo has a limited and varied service life in scaf­
+folds, some processed bamboo building components, such as floor tiles,
+can achieve a lifespan of 30–40 years (Gichohi, 2014).
+The bamboo-steel hybrid composition can also provide considerable
+structural strength. These hybrids can withstand compressive stresses of
+up to 3656 kg/cm² (358.53 MPa) (Paudel, 2008). Bamboo’s tensile
+strength reaches approximately 28,000 N/m² (0.028 MPa) (Nurdiah,
+2016). Bamboo provides significant weight reduction while maintains
+high structural strength for lightweight construction projects (Adier
+et al., 2023).
+
+2. Literature review
+2.1. Bamboo scaffolding
+Bamboo scaffolding has been widely used across South and East Asia
+and parts of Africa, particularly in China and India, with abundant
+bamboo resources. Fig. 2. shows historical records of bamboo protoscaffolding in China’s Sui and Tang dynasties (581–907 CE) (Li and
+Kobayashi, 2004; Shi et al., 2013). The Northern Song dynasty
+(960–1127 CE) marked systematic use of bamboo poles and wooden
+rods for temporary architectural elements (Dlamini et al., 2022).
+The use of bamboo in construction has decreased due to industrial­
+ization. China’s governments have restricted bamboo scaffolding since
+2000s due to its limitations, including insufficient material strength,
+lack of standardization, decay, and flammability (Liu et al., 2022;
+Ramanathan, 2008). The Ministry of Housing and Urban-Rural Devel­
+opment (MOHURD) (2021) prohibited bamboo and timber scaffolding
+
+2.3. Optimization in scaffolding design
+Optimization algorithms, along with deep learning technologies
+driven by optimization, have been applied in scaffolding engineering to
+
+Fig. 1. Life cycle comparison of bamboo and steel scaffolding.
+2
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+Fig. 2. The history of bamboo scaffolding in China and Japan.
+
+improve construction safety and management efficiency. Dzeng et al.
+(2024) developed an automated system that leverages the YOLO algo­
+rithm and augmented reality devices to detect defects in scaffolding
+installations. Johansson and Jernek (2022) incorporated a
+multi-objective genetic algorithm and linear programming to solve
+constrained optimization problems in the scaffolding industry against
+various building shapes and plot sizes. Takva et al. (2023) conducted a
+cost analysis of H-frame façade scaffolding configurations about hori­
+zontal and vertical dimensions. Blockchain technology has also been
+applied in scaffolding project management (Yang et al., 2022; Kong
+et al., 2025).
+
+parameterized. The NSGA-II algorithm, together with Grasshopper and
+Wallacei X software, was used for iterative computation to generate the
+pareto frontier.
+3.1. Site selection and analysis
+The selected case site was an office building developed by China
+Vanke Co., Ltd., as shown in Fig. 4. The site was located in Bao’an
+District, Shenzhen, Guangdong Province. For this site, steel scaffolding
+served as the primary type. The selected steel pipe type is Ф48 × 3, with
+an outer diameter of 48 mm and a wall thickness of 3 mm. The weight of
+this pipe type was approximately 3.329 kg/m. The bamboo pipes used
+on this site followed the local technical code (MOHURD 2012), and
+employed Moso bamboo (Phyllostachys edulis) with an average weight of
+approximately 1.5 kg/m.
+
+3. Research methods
+Fig. 3 illustrates the four phases of the BSHS approach proposed in
+this paper. Section 3.1 describes the site analysis phase. A construction
+site in Shenzhen was selected, and the regional scaffolding codes under
+the China’s National Standards (GB) were reviewed.
+Section 3.2 defines the formulation phase. Structural safety clauses
+from relevant regulations were quantified as material ratio constraints
+(steel-to-bamboo) for the BSHS system. The life cycle carbon footprint
+and total cost were modeled as the two optimization objectives.
+Section 3.3 presents the optimization phase. Key variables—such as
+structural framework configuration and material properties—were
+
+3.2. BOO formulation definition
+For all the pipes within the original scaffolding, define set U = {u1,
+u2, …, uk}, k = | U |, ui is a single pipe position within the original
+scaffolding design. For all the possible positions of pipe that can be
+replaced by bamboo poles, define set X = {x1 , x2 ,...,xn },n = |X|, and xi
+is one pole.
+The BOO formulation consists of two objectives, as shown in Eq. (1).
+
+Fig. 3. Research method.
+3
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+Fig. 4. Case site information (a) Building plan with scaffolding scheme. (b) Module of the scaffolding scheme.
+
+optimized F(X){= min CE(X),}TC(X)
+subject to X = x1 , x2 , …, xy , xi ∈ X, and 1 ≤ i ≤ y ≤ n,
+C(X) ≥ 0
+
+where esp2 is the carbon sink factor (CSF) of bamboo.
+esp2 can be inferred from (Lv et al., 2025). In the transportation stage,
+carbon emissions are primarily determined by vehicle energy con­
+sumption, which includes direct emissions from the combustion of
+gasoline and diesel, as well as indirect emissions from fuel production.
+These two components of emissions are typically combined into emis­
+sion factors. The carbon emission of BSHS from transportation stage Ct
+is:
+
+(1)
+
+where X ⊆ X is a subset of bamboo poles; x ∈ X represents a bamboo
+pole; CE(X) and TC(X) are the two objective functions regarding carbon
+emissions and total cost, respectively; and y = | X | is the quantity of
+bamboo poles in the design. The generalized constraints, C(X), represent
+a series of mandatory requirements that must be satisfied. Define that
+the distances from the case site to the steel scaffolding factory and the
+bamboo scaffolding factory are d1 and d2, respectively. The weight of all
+the bamboo poles in X is w1, and the weight of all steel pipes in U-X is w2,
+respectively. To calculate the total weight of the two materials based on
+the member lengths, overlapping factors (OFs) are necessary due to the
+overlapping lengths requirement at the lashing nodes of components
+intersections. According to the report from the Occupational safety and
+Health Council of Hong Kong (2016), the OF for bamboo members is 1.5,
+which means the effective length of a bamboo pole per unit length re­
+quires 1.5 times the actual bamboo poles length. Similarly, the OF for
+steel pipes is 1.16. Due to the different frame densities of bamboo
+scaffolding and steel scaffolding, after replacing the steel pipes, the
+density of bamboo needs to be increased at the replacement location to
+ensure the rigidity of the structural strength.
+
+Ct = et ⋅(d1 ⋅w1 + d2 ⋅w2 )
+
+where et is the transport carbon emission factor per unit weightdistance, d1 the distance from case site to steel scaffolding factory, and
+d2 the distance from case site to bamboo scaffolding factory.
+et is mainly determined by the types of different transport vehicles
+according to the standard GB-T51366–2019. Within this case site
+context, the value of et is 0.179 kgCO2e /(t*km). At disposal phase,
+common practices for steelwork involve smelting and recycling, which
+saves carbon emissions from raw material extraction and processing.
+Therefore, the carbon reduction benefits of steel recycling can be
+quantified as Sp1:
+Sp1 = esp1 ⋅w1
+
+(2)
+
+where ep1 is the carbon emission factor (CEF) of steel, and w1 is the
+weight of all the bamboo poles in X.
+As the steel pipe type is Ф48 × 3 carbon steel, the value of ep1 should
+be 2310kgCO2e/t according to the standard GB-T51366–2019
+(MOHURD 2019). The carbon emissions of bamboo material Cp2 is:
+Cp2 = ep2 ⋅w2
+
+(3)
+
+where ep2 is the CEF of bamboo scaffolding, w2 is the weight of all steel
+pipes in U-X.
+The value of ep2 is 327 kgCO2e/t (Zhang et al., 2023). Meanwhile,
+during the growth phase of bamboo, the carbon sequestration process
+must also be accounted for alongside carbon emissions. The carbon
+sequestration of bamboo material Sp2 is:
+Sp2 = esp2 ⋅w2
+
+(6)
+
+where esp1 is the carbon sink factor (CSF) of steel material.
+esp1 of steel is about 1280 kg CO2e/t (Wang et al., 2024). Common
+disposal methods for bamboo include landfill, incineration for power
+generation, recycling and reuse, and composting. When bamboo is
+landfilled, it produces methane as a by-product. According to the IPCC
+model, the carbon emissions from bamboo landfill (el) are about 0.75 kg
+CO2e/kg (Ximenes et al., 2018). Incineration for power generation can
+substitute coal combustion, resulting in net emission reduction for the
+whole process. The carbon emissions (er) for this disposal method is
+about − 0.4 kg CO2e/kg (Phuangchik et al., 2023). Recycling contains
+sorting bamboo for reuse in construction or processing into furniture or
+handicrafts, etc., which can extend the carbon storage duration. Carbon
+emissions from composting are similar to landfill because of the reduc­
+tion in emissions from chemical fertilizer production.
+Bamboo scaffolding currently only accounts for a low proportion in
+Shenzhen’s construction industry. The specialized statistics on bamboo
+disposal are thus lacking. This paper adopts a simplified calculation
+model based on Hong Kong’s patterns (Hossain et al., 2016) and
+Shenzhen’s current construction waste classification and incineration
+(Zhang et al., 2024; Yi et al., 2024). The disposal proportions are: 60 %
+incineration for power generation, 20 % recycling and reuse, and 20 %
+landfill treatment (Liang, 2022; Yu et al., 2020). Therefore, the carbon
+emissions of BSHS from disposal stage Cd is:
+
+3.2.1. Formulation for sustainability
+The primary objective of this paper is to optimize the carbon foot­
+print across the life cycle of scaffolding. A cradle-to-grave Life Cycle
+Assessment (LCA) typically consists of four stages: production, trans­
+portation, use, and disposal (Asdrubali et al., 2024; Laleicke et al.,
+2015). In calculating carbon emissions, only those generated from
+resource and energy consumption are considered, while human factors
+are excluded. During the production stage, the carbon emission of steel
+material Cp1 is:
+Cp1 = ep1 ⋅w1
+
+(5)
+
+Cd = w2 ⋅(0.2⋅el + 0.6⋅er )
+
+(7)
+
+Where: el is the unit carbon emissions from bamboo landfill, and er is the
+unit carbon emissions from bamboo recycling.
+Finally, during the service phase of scaffolding, different materials
+
+(4)
+
+4
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+exhibit distinct usage cycles. Define the service life of steel scaffolding as
+l1, and that of bamboo scaffolding as l2, while the actual usage duration
+at the case site is denoted as P. Since scaffolding components are reus­
+able, their utilization period at the case site constitutes only a portion of
+their full life cycle. Therefore, for calculating carbon emissions during
+the production and disposal phases of steel and bamboo components,
+proportionality coefficients of P/l1 and P/l2 should be applied
+respectively.
+The total carbon emissions of BSHS CE(X) are thus as follows:
+)
+)
+(
+(
+CE(X) = P/l1 ⋅ Cp1 − Sp1 + P/l2 ⋅ Cp2 − Sp2 + Cd + Ct
+(8)
+
+around 692 CNY. Considering that the BSHS is in the initial stage of
+promotion, the bamboo scaffolders require extra training to be licensed
+(SCMP 2025), the daily salary of bamboo scaffolders will be calculated
+with a training cost coefficient f of 1.2. In the BSHS, both
+bamboo-bamboo joint and bamboo-steel joint must be executed by
+licensed scaffolders. Therefore, the total cost is the sum of rental cost and
+labor cost:
+TC(X) = RC + LC
+
+3.2.3. Constraint
+The constraint of this optimization is to fulfill the mandatory struc­
+tural requirement of Shenzhen’s scaffolding regulation. According to the
+safety and technical standard (HCBSM 2023) issued by the Shenzhen
+Government, the Comprehensive Safety Factor β for normal working
+scaffolding should meet the condition that β≥2.0, and the newly
+developed scaffolding should fulfill the requirement that β≥2.2. In this
+paper, β≥2.2 is taken as the safety constraint. The Comprehensive Safety
+Factor β is defined as:
+
+where P is the actual usage duration at the case site, l1 is the service life
+of steel scaffolding, and l2 is the service life of bamboo scaffolding.
+For this project, installation of the tower’s exterior scaffolding
+commenced on September 5, 2018, and its dismantlement was
+completed on October 20, 2019, resulting in a total service period of
+13.5 months. This paper adopts 120 months as the service life for steel
+fastener-type scaffolding and 30 months for bamboo scaffolding
+(Gebremariam et al., 2024; Zhang et al., 2010).
+
+β = γ 0 ⋅γu ⋅γm ⋅γʹm
+
+3.2.2. Formulation for cost
+For the rental cost part, the total rental cost RC of the two materials
+is:
+RC = w1 ⋅p1 + w2 ⋅p2
+
+(12)
+
+where γ 0 is the coefficient for importance of a structure, γ u is the
+weighted average of load factor coefficients, γ m is the partial safety factor
+for resistance of material, and γʹm is the material strength adjustment
+coefficient.
+For the coefficient for importance of a structure γ0 , the value of which
+should be determined by the safety level. Within the context of the case
+site, the building height exceeds 40 m, and the type of scaffolding is
+landing working scaffolding, the safety level thus should be type II,
+which means γ0 =1.0, on the basis of the standard.
+For the weighted average of load factor coefficients γu , the value of this
+variable is 1.395 for working scaffolding and 1.318 for shoring scaf­
+folding in the light of the standard, γu =1.395 in the context of the case
+site.
+For the partial safety factor for resistance of material γ m , the value
+should be 1.165 according to relevant provisions of the current national
+standard Technical code of cold-formed thin-wall steel structures GB
+50018–2002 (MOHURD 2002) for steel-pipe scaffolding. For the
+bamboo scaffolding, the Standard for design of engineered bamboo struc­
+tures T/CECS 1101–2022 (CECS 2022) set the lowest partial safety factor
+for resistance of material of each grade of bamboo to 1.03. For the newly
+developed scaffolding:
+
+(9)
+
+where p1 is the unit rental price of steel pipe, p2 is the unit rental price of
+bamboo pole. According to the estimated market prices for scaffolding
+rentals. The ratio of p1 to p2 is around 2.5, p1 equals to CNY184/t, thus p2
+equals CNY73.6/t.
+For the labor cost part, the joints between components are the pri­
+mary consideration. The labor cost of the case site LC is:
+LC = f(n1 + n3 )⋅(1/te1 + 1/td1 )⋅s1 + n2 ⋅(1/te2 + 1/td2 )⋅s2
+
+(11)
+
+(10)
+
+Where: n1 is the number of bamboo-bamboo joints;
+• n2 is the number of steel-steel joints;
+• n3 is the number of bamboo-steel joints;
+• te1 is the average number of bamboo joint erection per worker per
+day;
+• te2 is the average number of steel joint erection per worker per day;
+• td1 is the average number of bamboo joint dismantled per worker per
+day;
+• td2 is the average number of steel joint dismantled per worker per
+day;
+• s1 is the average daily salary of metal scaffolders; and
+• s2 is the average daily salary of bamboo scaffolders.
+
+γ m = 1.165a + 1.03(1 − a)
+
+(13)
+
+Where: a is the ratio of steel-pipe to the BSHS.
+For the material strength adjustment coefficient γʹm , the value of this
+variable for the stability bearing capacity of newly developed working
+scaffolding should be 1.433.
+Therefore, in the context of the case site, the Comprehensive Safety
+Factor should meet the conditions below:
+
+According to the statistics from Hong Kong Occupational Safety and
+Health Council (HKOSHC 2016), bamboo scaffolding demonstrates
+significantly shorter erection and dismantling times than steel scaf­
+folding due to its lightweight nature and band strapping assembly
+method. Using average values, a bamboo scaffolder can erect 247 joints
+per day (te1), while metal scaffolders can erect 133 joints per day (te2).
+And the number of dismantling joints is 702 (td1) and 213 (td2) for
+bamboo and metal scaffolders, respectively. To simplify the calculation
+process, for the bamboo-steel joints, the erection and dismantling speed
+is the average of those of bamboo-bamboo joint and steel-steel joint.
+Only licensed scaffolders can take the job of erecting and dismantling
+bamboo scaffolding. According to the report of Hong Kong media (HK01
+2025), the daily salary of bamboo scaffolders is around 3000 HKD, while
+the daily salary of normal metal scaffolders is about 1300 HKD, the ratio
+is around 2.3:1. Taken this ratio as reference, the average daily salary of
+metal scaffolders (s1) in Shenzhen region is 300 CNY. Thus, the daily
+salary of bamboo scaffolders (s2) in Shenzhen region can be inferred
+
+C(X) = β − 2.2 ≥ 0⇒a ≥ 0.52
+
+(14)
+
+This means that the ratio of steel pipes to the BSHS should be no less
+than 52 %.
+3.3. Optimization algorithm and analysis
+This paper applies NSGA-II algorithm (Deb et al., 2002) to solve the
+BOO problem. Alternatively, there are some other algorithms that can be
+applied in BOO/MOO problems including Tree-structured Parzen esti­
+mator (TPE) (Bergstra et al., 2011), Ant Colony Optimization (ACO)
+(Dorigo et al., 1996), and Strength Pareto Evolutionary Algorithm 2
+(SPEA-2) (Zitzler et al., 2001). NSGA-II is an algorithm with more
+balanced performance in all aspects among the above algorithms.
+Fig. 5 illustrates characteristic points typically observed in BOO
+5
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+Fig. 6. Examples of Pareto solutions for the scaffolding module.
+Fig. 5. Characteristic points in the result of solving typical BOO problems.
+
+4.2.2. Pareto frontier and the knee point
+Each pink or blue point in Fig. 7 represents a BOO solution, where
+the x- and y-coordinates correspond to the two objective function values.
+Pink points denote Pareto-optimal solutions. The results indicate a
+curved pareto frontier, demonstrating a negative correlation between
+the two objectives.
+The knee point on the pareto frontier was selected as follows. First,
+we normalized the two objectives based on the maximum and minimum
+values in
+Fig. 7; Then, the point (113,323, 32) closest to the Utopia point was
+identified as the knee point. The reference steelwork baseline at the
+point of (108,245, 9957) is also marked in the figure, which represents
+the total cost and carbon emissions of the steelwork scaffolding,
+respectively. Compared to the steelwork baseline, the knee point ach­
+ieved a 99.6 % reduction in life cycle carbon emissions with only a 4.7 %
+increase in total cost. Fig. 8 shows the schematic rendering of the knee
+point. Green pipes represent bamboo elements, while silver pipes indi­
+cate steel components.
+
+solutions. The two Anker points in orange represent the solutions where
+the minimum values of the two objectives are achieved. These two
+minima collectively define the ‘Utopia point’, which represents the ideal
+but unattainable solution for this BOO problem (Zhou and Xue, 2023).
+The Nadir point, by contrast, represents the least desirable solution. The
+Pareto solutions in pink indicate solutions for which no other alternative
+is superior in both objectives simultaneously. Collectively, all Pareto
+solutions form the pareto frontier. Solutions excluded from the Pareto set
+are dominated solutions, as they are inferior on one or both objectives
+compared to Pareto solutions. The Knee point is the point on the pareto
+frontier closest to the Utopia point, and it can theoretically be taken as
+the final solution.
+However, in real construction projects, the decision-maker can select
+the final solution that best matches the site conditions from the Pareto
+Frontier based on different weights of the two optimization objectives.
+Furthermore, across different deployment stages, cities, and site condi­
+tions, the coefficients in the formulations can be changed, to deliver
+scenario-based design and analyses.
+4. Experimental result and analysis
+4.1. Experimental settings
+The experiments were performed on a desktop computer equipped
+with a 13th-generation Intel® Core™ i7–13,700 K (3.40 GHz) processor
+and 128 GB of memory. The optimization process employed the NSGA-II
+algorithm (Hamdy et al., 2016) through the Wallacei X plugin (ver. 2.7)
+(Makki, 2025) on the Grasshopper platform (ver. 1.0), which is a
+graphical algorithm editor tightly integrated with Rhino (ver. 7)’s 3D
+modeling tools (McNeel, 2025). The NSGA-II parameters were set to
+default values after preliminary testing: crossover probability = 0.9,
+mutation distribution index = 20, and crossover distribution index = 20.
+Remainders of NSGA-II parameters followed established guidelines in
+the literature (Yusoff et al., 2011; Verma et al., 2021). Each generation
+included 100 individuals, and 100 generations were executed, resulting
+in 10,000 evaluated solutions.
+4.2. Experimental results of the BOO problem
+4.2.1. Experimental results
+The total computation time was 92 min and 11 s to solve the BOO
+problem using NSGA-II using Wallacei X on Grasshopper. A total of 537
+Pareto-optimal solutions were obtained from 100 generations. Fig. 6
+presents three example scaffolding modules derived from the Pareto
+solutions.
+
+Fig. 7. Pareto frontier and solution analysis.
+6
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+Fig. 8. Schematic rendering of the solution located at (113,323, 32).
+
+4.3. Scenarios-based analysis
+4.3.1. Structural reduction factor analysis
+The final solution may vary depending on the applied partial safety
+factor. In the early stage of BSHS adoption, data on material strength are
+limited, and practical experience remains inadequate. To reflect such
+constraints in the formulation, we moderate the structural reduction
+factor to γm (the partial safety factor for resistance of material) of BSHS. For
+example, when the reduction factors were 0.9 and 0.8, the corre­
+sponding constraints became a ≥ 0.72 and a ≥ 0.81, respectively. The
+results are shown in Table 1 and Fig. 9. The results indicate that varying
+the reduction factor primarily affects the overall steel proportion in the
+BSHS, ranging from 52 % to 81 %. Nevertheless, all selected optima
+denotes that a modest increase in total cost results in a substantial
+reduction in life cycle carbon emissions.
+In practice, the final BSHS solution could be altered from the knee
+point by decision-makers. For example, factors such as the national
+Emissions Trading System (ETS), technological and workforce readiness,
+and government incentives must be considered. Depending on the spe­
+cific situations, the weights of the two objectives should be adjusted, and
+the most suitable solution on the pareto frontier will be selected as the
+final solution.
+
+Fig. 9. Pareto solutions under different constraint requirements.
+
+regression process, with the results shown in Fig. 10 and Table 2.
+When f value decreases, the relationship between the two optimi­
+zation objectives BOO simulation output gradually changes from nega­
+tive correlation to positive correlation. The light blue area in Fig. 10
+represents the range of feasible solutions under the constraint. When f =
+1.15 and 1.1, certain regions of the solution distribution (light pink area)
+exhibit a near-linear positive correlation trend. However, many feasible
+solutions still show a near-linear negative correlation, and no solution
+can completely dominate the original solution. The carbon reduction
+costs of the optimal solutions selected at these points are 246.6 % and
+327.6 % of the current carbon trading price, respectively.
+When f = 1.05, solutions in the pink area show a trend of near-linear
+positive correlation. In addition, most solutions in this area dominate
+the original solution. However, due to the existence of constraints, there
+is still no solution within the feasible range that can completely domi­
+nate the original solution. At this point, the carbon reduction cost of the
+optimal solution within the feasible range is only 33.7 % of the current
+carbon trading price. This also means the promotion and application of
+bamboo-steel hybrid scaffolding begin to yield practical benefits at this
+point.
+When f = 1, that is the ideal situation, the distribution of all solutions
+approaches a near-linear positive correlation, meaning the minimum
+values that simultaneously satisfy both the carbon emissions and total
+cost optimization objectives can be achieved. Within the feasible range,
+solutions that can completely dominate the original solution have
+emerged. Compared to the all-steel solution, the BSHS can reduce both
+the life cycle carbon footprint and total cost simultaneously at this point.
+Overall, the training cost coefficient f will gradually decrease as the
+BSHS becomes more widespread in real projects. Although a high f value
+in the early stages of promoting BSHS will cause the carbon reduction
+cost to be much higher than the average carbon trading price, once f falls
+back to a reasonable range (around 1.05), the carbon reduction cost of
+
+4.3.2. Comparison to the carbon trading price
+The carbon trading price in China has been trending upward in
+recent years (Wang et al., 2024). The current average secondary market
+price in China is CNY 95.96 per t/CO2e (ICAP 2024). The selected
+optimal solution to the BOO problem is (113,323, 32), indicating a
+carbon reduction cost of CNY 511.63 per tCO2e compared with the
+original all-steel solution (108,245, 9957). As mentioned in Section
+3.2.2, at the very initial stage of promoting the BSHS, the training cost
+for the bamboo scaffolders should be considered in the total labor cost.
+In the above experiment, the training cost coefficient f in Eq. (10) was set
+to 1.2 to reflect this concern. However, the training cost coefficient will
+gradually decrease as the BSHS becomes more widespread in real pro­
+jects, eventually returning to f = 1. This paper also conducted BOO
+experiments for f values of 1.0, 1.05, 1.1, and 1.15 to simulate the
+
+Table 1
+Pareto solution analysis of three reduction factor values.
+Reduction factor
+
+Constraint
+
+min CE(X)
+
+min TC(X)
+
+Selected solution
+
+Improvement in CE(X)
+
+Improvement in TC(X)
+
+1
+0.9
+0.8
+
+a ≥ 0.52
+a ≥ 0.72
+a ≥ 0.81
+
+− 3420
+1770
+4300
+
+108,245
+108,245
+108,245
+
+(113,323, 32)
+(112,550, 1929)
+(111,425, 4389)
+
+99.6 %
+80.6 %
+55.9 %
+
+− 4.7 %
+− 4.0 %
+− 2.9 %
+
+7
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+Fig. 10. Solutions for different f values.
+
+should be taken into the grading criteria.
+Secondly, government and regulators can leverage carbon marketassisted mechanisms to promote BSHS. Carbon sequestration benefit
+achieved by substituting steel with bamboo can be traded in commercial
+programs such as Emission Trading Schemes (ETS). The initial cost
+premium of BSHS can thus be offset.
+Last but not least, government and regulators should include hybrid
+configurations into the temporary structure code. Moreover, a certifi­
+cation category for "hybrid scaffolders" should also be established to
+ensure workforce competency in assembly of mixed materials.
+
+Table 2
+Carbon reduction cost for different f values.
+f
+value
+
+Final solution
+
+Carbon reduction cost
+per t/CO2e
+
+Percentage to current carbon
+trading price
+
+1.20
+1.15
+
+(113,323, 32)
+(111,023,
+1121)
+(109,675,
+3916)
+(108,664,
+− 2981)
+(105,639,
+− 2981)
+
+511.63
+314.39
+
+533.1 %
+327.6 %
+
+236.71
+
+246.6 %
+
+32.38
+
+33.7 %
+
+− 201.42
+
+− 209.8 %
+
+1.10
+1.05
+1.00
+
+5.3. Limitations and future works
+Nevertheless, this study has three major limitations. First, the anal­
+ysis focuses only on the two dominant material choices in current
+scaffolding markets. With ongoing advances in material science,
+emerging sustainable materials, such as recycled plastic composites
+(Acuña-Pizano et al., 2022), bio-based polymers (Skoczinski et al.,
+2024), recycled aluminum (Thalmaier et al., 2025), and 3D-Printed
+biodegradable materials (Alkhalidi and Hatuqay, 2020) are gradually
+introduced to the market. Second, the discussion addresses only sus­
+tainability and cost issues during the initial stage. Additional aspects
+could be incorporated as further optimization objectives. Third, in
+defining the formulations, various standards and documents related to
+bamboo materials are involved. However, calculations may contain
+deviations since that some references are outdated, and regulations
+differ between Hong Kong and mainland China.
+Therefore, future work is suggested in four aspects. First is about
+material selection. Future studies will examine different hybrid mate­
+rials, including newly developed ones. And for optimization objectives,
+practical considerations such as construction time, overall weight, wind
+resistance, fire resistance, moisture, and corrosion performance will be
+included. Thus, the BOO model can be extended into a more compre­
+hensive MOO framework (Jin et al., 2020). Moreover, alternative al­
+gorithms of BOO problems can be tested to identify the most efficient
+ones in the context of BSHS. Lastly, emerging technologies such as
+Generative Artificial Intelligence (GenAI) and information
+entropy-enhancement for NSGA-II (Zhou and Xue, 2025) can be adopted
+into the MOO/BOO framework.
+
+BSHS projects will be lower than the market carbon trading price. In the
+ideal case where f = 1, it is even possible to achieve a win-win situation
+of both cost savings and carbon emission reduction.
+5. Discussion
+5.1. Practical considerations and underlying mechanisms
+To promote BSHS, the licensed bamboo scaffolder is a decisive factor.
+Thus, the certification programs are required. Currently, limited engi­
+neering experience with the hybrid scaffolding and the need to license
+bamboo scaffolders from scratch increase short-term adjustment costs,
+making BSHS slightly more expensive in terms of carbon reduction than
+the current average carbon trading price. However, as the new scaf­
+folding is scaled up and widely adopted, the cost premium will gradually
+decline. An optimized BSHS can achieve significant reductions in carbon
+footprint with only a minimal cost increase—or potentially no increase
+at all. The main contributor to the carbon reduction is bamboo’s carbon
+sequestration capability. Another considerable contributor is the reuse
+and recycling of disposed bamboo poles.
+The optimized BSHS integrates two building materials with distinct
+mechanical properties. To mitigate potential safety risks brought by this
+integration, this paper suggests two approaches. One is localizing the
+structural reduction factor in Eq. (13). Decision-makers can adjust this
+reduction factor for strength redundancy with reference to the analysis
+in Section 4.3.1. The other is rigorous on-site protocols in practice.
+Licensed scaffolders and multi-stage on-site safety inspections are the
+two key levers in practical construction safety.
+
+6. Conclusion
+Scaffolding is a primary type of temporary structure, which accounts
+for 10–25 % of total construction costs and 18–30 % of on-site labor
+requirements. It is urgently needed for sustainable transformation to
+fulfill the requirements of SDGs. Bamboo is an ideal scaffolding material
+due to its sustainability, strength, flexibility, and long history of use.
+This paper proposes a BOO approach for BSHS, with carbon emission
+and total cost defined as two optimization objectives. A case site in
+Shenzhen, China, was introduced to evaluate the BOO-BSHS framework.
+After the selection among 91 Pareto-optimal solutions, the final design
+achieved a 99.6 % reduction in life cycle carbon emissions with only a
+
+5.2. Policy implications
+Government and regulators always play a key role in the local econotechnological evaluation and adoption of BSHS. Standardization
+regarding local materials and building standards is the first thing should
+be established in parallel with a few exemplar pilot projects. Strict
+criteria for scaffolding bamboo processing are crucial to ensure uniform
+structural integrity. Key features about bamboo poles, such as the har­
+vesting age, diameter variations, moisture, and chemical treatments,
+8
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+X. Wei et al.
+
+4.7 % increase in total cost compared to the steelwork. Further analysis
+suggests that BSHS is potential to achieve simultaneous reductions in
+both carbon emissions and cost when it is widely adopted and worker
+training costs decline. This represents a possible win-win scenario for
+the scaffolding industry.
+The contributions of this study are two-fold. First, the BOO formu­
+lation of BSHS quantifies sustainability and cost goals of bi-material
+scaffolding. Second, the BOO results confirmed that BSHS consider­
+ably reduces life cycle carbon footprint and maintains cost efficiency
+and safety compliance. The field of temporary construction structures is
+always overlooked by mainstream sustainable building research. This
+paper expands the application of BOO into the field of scaffolding,
+establishing a methodological framework. The framework captures the
+trade-offs between the two scaffolding materials regarding environ­
+mental impacts and economic costs.
+The BOO framework can be applied beyond the pilot case in
+Shenzhen. It can be adopted to other urbanizing regions adjacent to
+bamboo-producing area such as South and East Asia and Africa. What’s
+more, the optimization framework serves as an adaptive template that
+can be customized for any hybrid-material scaffolding, not only bamboo
+and steel. Nevertheless, this study is limited by its focus on common
+scaffolding materials, incomplete project objectives, and the reliance on
+outdated regional bamboo codes.
+Future research will thus test more materials, integrate additional
+objectives into an MOO framework, explore more efficient algorithms
+for BOO problems, and apply emerging technologies such as GenAI and
+Vision-Language Models (VLMs) to enhance site analysis and hybrid
+scaffolding design. These advancements are expected to accelerate the
+scaffolding industry’s transition toward sustainable development.
+
+Alkhalidi, A., Hatuqay, D., 2020. Energy efficient 3D printed buildings: material and
+techniques selection worldwide study. J. Build. Eng. 30, 101286. https://doi.org/
+10.1016/j.jobe.2020.101286.
+Amede, E.A., Hailemariama, E.K., Hailemariam, L.M., Nuramo, D.A., 2021. A review of
+codes and standards for bamboo structural design. Adv. Mater. Sci. Eng. 2021 (1),
+4788381. https://doi.org/10.1155/2021/4788381.
+Amede, E.A., Hailemariama, E.K., Hailemariam, L.M., Nuramo, D.A., 2022. Identification
+of factors on the possibility of bamboo as a scaffolding and a formwork material in
+Ethiopia. Cogent. Eng. 9 (1), 2051692. https://doi.org/10.1080/
+23311916.2022.2051692.
+Asdrubali, F., Colladon, A.F., Segneri, L., Gandola, D.M., 2024. LCA and energy efficiency
+in buildings: mapping more than twenty years of research. Energy Build., 114684
+https://doi.org/10.1016/j.enbuild.2024.114684.
+Bergstra, J., Bardenet, R., Bengio, Y., Kégl, B., 2011. Algorithms for hyper-parameter
+optimization. In: Advances in Neural Information Processing Systems, 24. Curran
+Associates, Inc, Red Hook, NY, USA, pp. 2546–2554. Retrieved from. https
+://proceedings.neurips.cc/paper_files/paper/2011/file/86e8f7ab32cfd12577bc261
+9bc635690-Paper.pdf.
+Brundtland, G.H., 1987. Our common future—Call for action. Env. Conserv. 14 (4), 291.
+https://doi.org/10.1017/S0376892900016805, 29.
+Cai, Z., Zhu, M., 2025. The Control Technology For Slab Surface Crack during Continuous
+Casting of Micro-Alloyed Steel. Springer Nature. https://doi.org/10.1007/978-98196-7171-7.
+CECS, 2022. Standard For Design of Engineered Bamboo Structures (In Chinese). (China
+Association for Engineering Construction Standardization, Ed.). China Planning
+Press, Beijing, China.
+Chang, C., Yu, T.X., 2002. An Engineering Study For Improving Safety and Reliability of
+Bamboo Scaffoldings. Hong Kong: Occupational Safety and Health Council, Hong
+Kong, China. Retrieved from. https://www.oshc.org.hk/oshc_data/files/OS
+HInformation/Full%20report-e.pdf.
+Chang, F.C., Chen, K.S., Yang, P.Y., Ko, C.H., 2018. Environmental benefit of utilizing
+bamboo material based on life cycle assessment. J. Clean. Prod. 204, 60–69. https://
+doi.org/10.1016/j.jclepro.2018.08.248.
+Chen, Y., Fang, Y., Feng, W., Zhang, Y., Zhao, G.X., 2022. How to minimise the carbon
+emission of steel building products from a cradle-to-site perspective: a systematic
+review of recent global research. J. Clean. Prod. 368, 133156. https://doi.org/
+10.1016/j.jclepro.2022.133156.
+Choy, K.K., Barford, J.P., McKay, G., 2005. Production of activated carbon from bamboo
+scaffolding waste—Process design, evaluation and sensitivity analysis. Chem. Eng. J.
+109 (1–3), 147–165. https://doi.org/10.1016/j.cej.2005.02.030.
+Crolla, K., 2018. Bending bamboo rules: beyond century-old typologies. J. Archit. Educ.
+72 (1), 135–145. https://doi.org/10.1080/10464883.2018.1410669.
+Deb, K., Pratap, A., Agarwal, S., Meyarivan, T.A., 2002. A fast and elitist multiobjective
+genetic algorithm: NSGA-II. IEEE Trans. Evol. Comput. 6 (2), 182–197. https://doi.
+org/10.1109/4235.996017.
+Dlamini, L.C., Fakudze, S., Makombe, G.G., Muse, S., Zhu, J., 2022. Bamboo as a valuable
+resource and its utilization in historical and modern-day China. BioResources 17 (1),
+1926–1938. https://doi.org/10.15376/biores.17.1.Dlamini.
+Dorigo, M., Maniezzo, V., Colorni, A., 1996. Ant system: optimization by a colony of
+cooperating agents. IEEE Trans. Syst. Man Cybern. B (Cybern.) 26 (1), 29–41.
+https://doi.org/10.1109/3477.484436.
+Dzeng, R.J., Cheng, C.W., Cheng, C.Y., 2024. A scaffolding assembly deficiency detection
+system with deep learning and augmented reality. Buildings 14 (2), 385. https://doi.
+org/10.3390/buildings14020385.
+Fang, D., Wu, S., Wong, F.K., Shen, Q.P., 2004. A comparative study on safety and use of
+bamboo and metal scaffolding in Hong Kong. Construction Safety Management
+Systems. Spon Press, London, pp. 373–386.
+Gebremariam, H., Amede, E., Hailemariam, L., 2024. Unlocking the potential of existing
+bamboo scaffold connections: a comprehensive review on reusability. Eur. J. Mater.
+Sci. Eng. 9, 93–108. https://doi.org/10.36868/ejmse.2024.09.02.093.
+Gichohi, R.N., 2014. Factors influencing the use of Bamboo as a flooring construction
+material: a case of garden city project–Nairobi County, Kenya. Doctoral dissertation.
+University of Nairobi.
+Gunantara, N., 2018. A review of multi-objective optimization: methods and its
+applications. Cogent. Eng. 5 (1), 1502242. https://doi.org/10.1080/
+23311916.2018.1502242.
+Hamdy, M., Nguyen, A.T., Hensen, J.L., 2016. A performance comparison of multiobjective optimization algorithms for solving nearly-zero-energy-building design
+problems. Energy Build. 121, 57–71. https://doi.org/10.1016/j.
+enbuild.2016.03.035.
+HCBSM, 2023. Safety and Technical Standard of Scaffolding in Construction (SJG 1342023, in Chinese). Housing and Construction Bureau of Shenzhen Municipality,
+Shenzhen, China. Retrieved from. https://zjj.sz.gov.cn/attachment/1/1383/1
+383661/10961562.pdf.
+HK01, 2025. Tear of Scaffolding Workers | High-Risk Industry: Hk$ 300,000 Annual
+Insurance Premiums, Small Companies Can't Afford, Many Scaffolding Workers
+Work Without Insurance, 2 13. Hong Kong 01 news, Hong Kong. Retrieved from.
+https://www.hk01.com/article/1102218.
+HKDevB, 2025. Adoption of Metal Scaffolds in Public Works [Memorandum].
+Development Bureau, Government of Hong Kong, Hong Kong. Retrieved from. htt
+ps://www.devb.gov.hk/filemanager/en/content_191/Adoption%20of%20Metal%
+20Scaffolds%20in%20Public%20Works%20%28Web%29.pdf.
+HKLD, 2024. Code of Practice for Bamboo Scaffolding Safety, 5th ed. Labour
+Department, Government of Hong Kong, Hong Kong. Retrieved from. https://www.
+labour.gov.hk/eng/public/os/B/Bamboo.pdf.
+
+CRediT authorship contribution statement
+Xi Wei: Writing – original draft, Visualization, Methodology,
+Investigation, Conceptualization. Fan Xue: Writing – review & editing,
+Validation, Supervision, Project administration, Funding acquisition,
+Conceptualization. Jiajia Wang: Software, Methodology, Formal anal­
+ysis, Data curation. Dong Liang: Resources, Data curation.
+Declaration of competing interest
+The authors declare the following financial interests/personal re­
+lationships which may be considered as potential competing interests:
+Fan, XUE reports financial support was provided by University
+Grants Committee Research Grants Council. If there are other authors,
+they declare that they have no known competing financial interests or
+personal relationships that could have appeared to influence the work
+reported in this paper.
+Acknowledgement
+The work presented in this paper was supported by the Hong Kong
+Research Grants Council (C7080-22GF).
+Data availability
+The data used in this work will be available upon reasonable request.
+References
+Acuña-Pizano, H., González-Trevizo, M.E., Luna-León, A., Martínez-Torres, K.E.,
+Fernández-Melchor, F., 2022. Plastic composites as sustainable building materials: a
+thermal and mechanical exploration. Constr. Build. Mater. 344, 128083. https://doi.
+org/10.1016/j.conbuildmat.2022.128083.
+Adier, M.F., Sevilla, M.E., Valerio, D.N., Ongpeng, J.M., 2023. Bamboo as sustainable
+building materials: a systematic review of properties, treatment methods, and
+standards. Buildings 13 (10), 2449. https://doi.org/10.3390/buildings13102449.
+
+9
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+HKOSHC, 2016. Study On Safe Usage of Bamboo and Mixed Scaffoldings. Occupational
+Safety and Health Council, Hong Kong. Retrieved from. https://www.oshc.org.hk/
+oshc_data/files/OSHInformation/Research/Safe_Usage_of_Bamboo_and_Mixed_Scaff
+oldings_English.pdf.
+Hossain, M.U., Leu, S.Y., Poon, C.S., 2016. Sustainability analysis of pelletized bio-fuel
+derived from recycled wood product wastes in Hong Kong. J. Clean. Prod. 113,
+400–410. https://doi.org/10.1016/j.jclepro.2015.11.069.
+Ibrahim, M., Harkouss, F., Biwole, P., Fardoun, F., Ouldboukhitine, S., 2024. Building
+retrofitting towards net zero energy: a review. Energy Build. 322, 114707. https://
+doi.org/10.1016/j.enbuild.2024.114707.
+ICAP, 2024. China National ETS. International Carbon Action Partnership, Berlin,
+Germany. Retrieved from. https://icapcarbonaction.com/en/ets/china-national-ets.
+Jin, H., Nahangi, M., Goodrum, P.M., Yuan, Y., 2020. Multiobjective optimization for
+scaffolding space planning in industrial piping construction using model-based
+simulation programming. J. Comput. Civ. Eng. 34 (1), 06019001. https://doi.org/
+10.1061/(ASCE)CP.1943-5487.0000861.
+Johansson, O., Jernek, M., 2022. Automated Generation of Scaffolding (Master's Thesis).
+Chalmers University of Technology, Gothenburg, Sweden. Retrieved from. https:
+//odr.chalmers.se/server/api/core/bitstreams/54826f8b-6c60-4cd6-aedd-7ce675e
+52306/content.
+Kim, K., Teizer, J., 2014. Automatic design and planning of scaffolding systems using
+building information modeling. Adv. Eng. Inform. 28 (1), 66–80. https://doi.org/
+10.1016/j.aei.2013.12.002.
+Kong, L., Zhao, R., Anumba, C.J., Lu, W., Xue, F., 2025. Open BIM exchange on
+blockchain 3.0 virtual disk: a traceable semantic differential transaction approach.
+Front. Eng. Manag. 12, 510–528. https://doi.org/10.1007/s42524-024-4006-x.
+Laleicke, P.F., Cimino-Hurt, A., Gardner, D., Sinha, A., 2015. Comparative carbon
+footprint analysis of bamboo and steel scaffolding. J. Green Build. 10 (1), 114–126.
+https://doi.org/10.3992/jgb.10.1.114.
+Li, Z.H., Kobayashi, M., 2004. Plantation future of bamboo in China. J. For. Res. 15,
+233–242. https://doi.org/10.1007/BF02911032.
+Liang, X.K., 2022. Conversion of landfilled waste-to-electricity (WTE) for energy
+efficiency improvement in Shenzhen (China): a strategy to contribute to resource
+recovery of unused methane for generating renewable energy on-site. J. Clean. Prod.
+369, 133078. https://doi.org/10.1016/j.jclepro.2022.133078.
+Liu, K.W., Xu, Q.F., Wang, G., Chen, F.M., Leng, Y.B., Yang, J., Harries, K.A., 2022.
+Contemporary Bamboo Architecture in China. Springer, Singapore. https://doi.org/
+10.1007/978-981-16-8309-1.
+Lu, W., Lou, J., Ababio, B.K., Zhong, R.Y., Bao, Z., Li, X., Xue, F., 2024. Digital
+technologies for construction sustainability: status quo, challenges, and future
+prospects. NPJ Mater. Sustain. 2 (1), 10. https://doi.org/10.1038/s44296-02400010-2.
+Lv, J., Li, Q., Cao, T., Shi, M., Peng, C., Deng, L., Song, X., 2025. A compartmentation
+approach to deconstruct ecosystem carbon fluxes of a Moso bamboo forest in
+subtropical China. For. Ecosyst. 12, 100286. https://doi.org/10.1016/j.
+fecs.2024.100286.
+Makki, M.S. (2025, 5 31). Wallacei - an evolutionary multi-objective optimization and
+analytic engine for Grasshopper 3D Retrieved from https://www.wallacei.com/.
+McNeel, R. (2025). Grasshopper: algorithmic modeling for Rhino. Retrieved from http
+s://www.grasshopper3d.com/.
+Meng, S., Wu, L., Li, M., Yeh, A.G.O., Xue, F., 2026. Automated window detection for
+digital twin buildings: A generalized ‘sandwich’ model and practical guidelines.
+Energy Build 360, 117384. https://doi.org/10.1016/j.enbuild.2026.117384.
+MOHURD, 2002. Technical Standard for Cold-Formed Thin-Walled Steel Structures (in
+Chinese). Ministry of Housing and Urban-Rural Development, China, Beijing, China.
+Retrieved from. https://aimg8.dlssyht.cn/u/1714756/ueditor/file/858/1714756
+/1575525714682148.pdf.
+MOHURD, 2012. Technical Code for Safety of Bamboo Scaffold in Construction (in
+Chinese). Ministry of Housing and Urban-Rural Development, China, Beijing, China.
+Retrieved from. https://img.antpedia.com/standard/files/pdfs_ora/CN-JG/427/JGJ
+%20254-2011_2500.pdf.
+MOHURD, 2019. Standard For Building Carbon Emission Calculation (in Chinese).
+Ministry of Housing and Urban-Rural Development, China, Beijing, China. Retrieved
+from. https://pro5323b5d3-pic11.ysjianzhan.cn/upload/5GB-T51366-2019JZTP
+FJSBZ.pdf.
+MOHURD, 2021. First Catalogue of Construction Processes, Equipment, and Materials
+Endangering Production Safety in Building and Municipal Infrastructure Projects (in
+Chinese). Ministry of Housing and Urban-Rural Development, China, Beijing, China.
+Retrieved from. https://www.mohurd.gov.cn/gongkai/zhengce/zhengcefilelib/202
+112/20211230_763713.html.
+Nath, A.J., Lal, R., Das, A.K., 2015. Managing woody bamboos for carbon farming and
+carbon trading. Glob. Ecol. Conserv. 3, 654–663. https://doi.org/10.1016/j.
+gecco.2015.03.002.
+Nurdiah, E.A., 2016. The potential of bamboo as building material in organic shaped
+buildings. Procedia-Soc. Behav. Sci. 216, 30–38. https://doi.org/10.1016/j.
+sbspro.2015.12.004.
+Paudel, S.K., 2008. Engineered bamboo as a building material. In: Modern Bamboo
+Structures: Proceedings of the First International Conference. CRC Press, Changsha,
+China, pp. 45–52.
+Phuangchik, T., Shanmugam, P., Kandasamy, S., Bunnag, S., Boonyuen, S., 2023.
+Investigating six types of bamboo charcoal for eco-friendly renewable energy
+generation. Biomass Convers. Biorefinery 1–11. https://doi.org/10.1007/s13399023-05200-x.
+Ramanathan, M., 2008. Hong Kong–bastion of bamboo scaffolding. In: Proceedings of
+the Institution of Civil Engineers-Civil Engineering. Thomas Telford Ltd,
+pp. 177–183. https://doi.org/10.1680/cien.2008.161.4.177.
+
+Rayegan, S., Wang, L.L., Zmeureanu, R., Katal, A., Mortezazadeh, M., Moore, T., Shi, Y.,
+2024. Achieving carbon neutrality at single and multi-building complex levels–A
+review. Energy Build., 114263 https://doi.org/10.1016/j.enbuild.2024.114263.
+Sanni-Anibire, M.O., Salami, B.A., Muili, N., 2022. A framework for the safe use of
+bamboo scaffolding in the Nigerian construction industry. Saf. Sci. 151, 105725.
+https://doi.org/10.1016/j.ssci.2022.105725.
+SCMP, 2025. Bamboo Scaffolding in Hong Kong, 5 30. South China Morning Post, Hong
+Kong. Retrieved from. https://multimedia.scmp.com/infographics/culture/article/
+3183200/bamboo-scaffolding/index.html.
+Shi, J.Y., Ma, L.S., Zhou, D.Q., Zhou, Z.H., Pu, Z.Y., Yao, J., 2013. The history and current
+situation of resources and development trend of the cultivated bamboos in China. In:
+VI International Symposium on the Taxonomy of Cultivated Plants, pp. 71–78.
+https://doi.org/10.17660/ActaHortic.2014.1035.8.
+Sizirici, B., Fseha, Y., Cho, C.S., Yildiz, I., Byon, Y.J., 2021. A review of carbon footprint
+reduction in construction industry, from design to operation. Material 14 (20), 6094.
+https://doi.org/10.3390/ma14206094.
+Skoczinski, P., Carus, M., Tweddle, G., Ruiz, P., Hark, N., Zhang, A., Raschka, A., 2024.
+Bio-based building blocks and polymers global capacities, production and trends
+2023–2028. Ind. Biotechnol. 20 (2), 52–59. https://doi.org/10.1089/
+ind.2024.29333.psk.
+Sujarwo, W., 2016. Stand biomass and carbon storage of bamboo forest in Penglipuran
+traditional village, Bali (Indonesia). J. For. Res. 27 (4), 913–917. https://doi.org/
+10.1007/s11676-016-0227-0.
+Takva, Y., Ilerisoy, Z.Y., Gültop, T., Tuna, M.E., 2023. Optimum cost design of facade
+scaffoldings. Sādhanā 48 (2), 91. https://doi.org/10.1007/s12046-023-02146-8.
+Tejas, C. (2025, 5 31). Global scaffolding Market overview. Retrieved from https://www.
+marketresearchfuture.com/reports/scaffolding-market-4900.
+Thalmaier, G., Cobîrzan, N., Fechete-Tutunaru, L.V., Balan, M.C., 2025. Recycled
+aluminum paraffin composite for passive cooling application in buildings. Material
+18 (4), 728. https://doi.org/10.3390/ma18040728.
+UN, 2015. Transforming Our World: the 2030 Agenda for Sustainable Development.
+United Nations. Retrieved from. https://sustainabledevelopment.un.org/post2015/t
+ransformingourworld.
+UNEP, 2023. Building Materials and the Climate: Constructing A New Future. United
+Nation Environment Programme. Retrieved from. https://wedocs.unep.org
+/20.500.11822/43293.
+Verma, S., Pant, M., Snasel, V., 2021. A comprehensive review on NSGA-II for multiobjective combinatorial optimization problems. IEEe Access. 9, 57757–57791.
+https://doi.org/10.1109/ACCESS.2021.3070634.
+Wang, G., Zhang, L., Fu, J., Wang, F., Chu, M., Ren, J., Sun, J., 2024a. High-quality
+recycling and utilization of China's steel scrap resources in the context of carbon
+peaking and carbon neutrality. Strateg. Study Chin. Acad. Eng. 26 (3), 63–73.
+https://doi.org/10.15302/J-SSCAE-2024.03.004.
+Wang, N., Guo, Z., Shang, D., Li, K., 2024b. Carbon trading price forecasting in
+digitalization social change era using an explainable machine learning approach: the
+case of China as emerging country evidence. Technol. Forecast. Soc. Change 200,
+123178. https://doi.org/10.1016/j.techfore.2023.123178.
+Ximenes, F.A., Kathuria, A., Barlaz, M.A., Cowie, A.L., 2018. Carbon dynamics of paper,
+engineered wood products and bamboo in landfills: evidence from reactor studies.
+Carbon. Balance Manage 13, 1–13. https://doi.org/10.1186/s13021-018-0115-3.
+Yang, J., Lee, D., Baek, C., Park, C., Lan, B.Q., Lee, D., 2022. Leveraging blockchain for
+scaffolding work management in construction. IEEe Access. 10, 39220–39238.
+https://doi.org/10.1109/ACCESS.2022.3165614.
+Yi, Y., Liu, J., Lavagnolo, M.C., Manzardo, A., 2024. Evaluating the carbon emission
+reduction in construction and demolition waste management in China. Energy Build.
+324, 114932. https://doi.org/10.1016/j.enbuild.2024.114932.
+Yin, Z., Caldas, C., 2022. Scaffolding in industrial construction projects: current
+practices, issues, and potential solutions. Int. J. Constr. Manag. 22 (13), 2554–2563.
+https://doi.org/10.1080/15623599.2020.1808562.
+Yu, B., Wang, J., Li, J., Lu, W., Li, C.Z., Xu, X., 2020. Quantifying the potential of
+recycling demolition waste generated from urban renewal: a case study in Shenzhen,
+China. J. Clean. Prod. 247, 119127. https://doi.org/10.1016/j.jclepro.2019.119127.
+Yusoff, Y., Ngadiman, M.S., Zain, A.M., 2011. Overview of NSGA-II for optimizing
+machining process parameters. Procedia Eng. 15, 3978–3983. https://doi.org/
+10.1016/j.proeng.2011.08.745.
+Zhang, H., Chandrangsu, T., Rasmussen, K.J., 2010. Probabilistic study of the strength of
+steel scaffold systems. Struct. Saf. 32 (6), 393–401. https://doi.org/10.1016/j.
+strusafe.2010.02.005.
+Zhang, L., Li, H., Hu, T., Du, X., Zhou, Y., Sun, G., Liu, J., 2024. The reduction of the
+carbon footprint of municipal solid waste management via source classification and
+supporting strategies: an analysis for the megacity of Shenzhen. Waste Manag. 187,
+145–155. https://doi.org/10.1016/j.wasman.2024.07.012.
+Zhang, X., Xu, J., Zhang, X., Li, Y., 2021. Life cycle carbon emission reduction potential
+of a new steel-bamboo composite frame structure for residential houses. J. Build.
+Eng. 39, 102295. https://doi.org/10.1016/j.jobe.2021.102295.
+Zhang, Z., Li, Y., Meng, X., Liu, K., Gao, Y., Wang, J., 2023. Analysis on life cycle
+assessment for carbon emission of round bamboo structure landscape architecture.
+Build. Struct. 53 (17), 24–29. https://doi.org/10.19701/j.jzjg.DT2301.
+Zhou, Q., Xue, F., 2023. Pushing the boundaries of modular-integrated construction: a
+symmetric skeleton grammar-based multi-objective optimization of passive design
+
+10
+
+X. Wei et al.
+
+Resources, Conservation & Recycling Advances 30 (2026) 200334
+
+for energy savings and daylight autonomy. Energy Build. 296, 113417. https://doi.
+org/10.1016/j.enbuild.2023.113417.
+Zhou, Q., Xue, F., 2025. Automatic information gain-guided convergence for refining
+building design parameters: enhancing effectiveness and interpretability in
+
+simulation-based optimization. Build. Env. 275, 112788. https://doi.org/10.1016/j.
+buildenv.2025.112788.
+Zitzler, E., Laumanns, M., Thiele, L., 2001. SPEA2: improving the strength pareto
+evolutionary algorithm 103. https://doi.org/10.3929/ethz-a-004284029.
+
+11
+
+

@@ -1,0 +1,395 @@
+From geometric landscape to fitness landscape
+As-built BIM reconstruction through optimization
+
+从几何到适应度景观
+
+应用优化算法自动重建 BIM 模型
+Sch. of Civil Eng. & Mech., HUST 华中科技大学 土木工程与力学学院
+27 May 2019
+
+Frank Xue 薛帆
+www.frankxue.com
+Research Assistant Professor 助理教授 (研究)
+Dept. of REC, HKU 香港大学 房地产及建设系
+iLab, HKURBANlab, HKU 香港大学 iLab 实验室
+
+Outline
+1
+
+Background & Opportunities
+
+2
+
+The Method
+
+3
+
+Discussion
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+2
+
+Section 1
+
+BACKGROUND & OPPORTUNITIES
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+3
+
+1.1 As-built modeling
+ As-built modeling (Volk et al. 2014)
+ Increasingly important for AEC/FM
+o Construction management
+Example of photogrammetry: Kowloon Wall City
+(Source: patrick-@sketchfab.com)
+
+o Facility management
+o Built env. conservation
+o Smart city
+o Self-driving car, etc.
+
+ Popular models and technologies
+ Point clouds (Photogrammetry, laser scanning)
+
+Example of point cloud: Pompei City
+(Source: MAP-Gamsau lab, CNRS, France)
+
+ Triangle mesh models (3D Maps)
+
+建成BIM
+
+ Volumetric as-built BIMs
+o Also: As-designed, as-planned, as-demolished
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+: Architecture, Engineering and
+Construction/ Facilities Management
+
+Example of GIS-based: 3D Berlin
+(Open Data, source: berlin.de)
+
+4
+
+1.1 As-built BIM reconstruction
+ Manual reconstruction?
+ Accurate, high-quality, & responsible
+ Expensive, tedious, or impractical for frequent update/cities
+
+ Two paradigms of automatic reconstruction
+ (1) Semantic segmentation 语义分割
+
+Example of Step 1 of Paradigm (1)
+(Qi et al. 2017)
+
+o Step 1: To cut and label data to small patches (objects)
+
+(e.g., slicing bridge piers/deck)
+o Step 2: To fit object parameters (e.g., width, height of a
+wall)
+本节
+
+ (2) Semantic registration 语义对齐
+
+(b) I d
+
+A
+
+i
+
+f
+
+i
+
+(384 512
+
+o Step 1: To annotate standard BIM components
+
+E.g., online open BIM resources
+o Step 2: To register into the whole data
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+Example of Step 2 of Paradigm (2)
+(Xue et al. 2018)
+
+5
+
+1.2 Geometric landscape in semantic registration
+ Landscape
+景观
+
+ Land – scape: Appearance of land
+ Nature: Continuous surface
+ Peaks and valleys
+
+ Geometric landscape in 3D data of building scenes
+几何景观
+
+ Also appearance
+
+Landscape
+(Source: Wikipedia)
+
+ Nature: Point/surface polygon
+o Discrete, noisy, cluttered
+
+ Peaks and valleys
+o On building elements
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+Geometric landscapes (non-repetitive and repetitive) in building scenes
+(Xue et al. 2019b; 2019c)
+
+6
+
+1.2 Problem: Fitness landscape in optimization
+ Optimization problem
+
+y
+
+ Find the best solution (e.g., min f(x) = | x |)
+
+x
+
+ Fitness landscape
+
+适应度景观
+
+ Appearance of f
+ Peaks/valleys contain the solutions
+
+min f(x) = RMSE
+
+min f(x) = RMSE …
+
+o Where gradient ∇f = 0
+
+ Fitness landscape for registering BIM
+ Reflecting the geometric landscape
+ Many methods are not working
+o Up to 9 degree-of-freedoms (DoFs)
+o Continuous, jugged
+o Too expensive to calculate derivatives (∇)
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+Fitness landscapes of registering BIM to 1 point (left) and real 3D point cloud (right)
+
+7
+
+1.3 Opportunity: Derivative-free optimization
+ Derivative-free optimization (DFO)
+algorithms solve without explicit ∇
+ Surrogate methods
+
+o CMA-ES and its variants are
+
+competitive
+ Trust-region methods
+o DIRECT, NEWUOA, etc.
+
+ Metaheuristics (GA, PSO, VNS, etc.)
+ Hyper-heuristics, data mining
+ … and Monte Carlo
+
+ DFO can bridge the two landscapes
+ Accuracy? Efficiency?
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+Comparison of algorithms for BBOB-2009 (Black-Box Optimization
+Benchmarking, higher is better) (Auger et al., 2010) Image courtesy: Inria
+8
+
+Section 2
+
+THE METHOD
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+9
+
+2.1 Overview
+ Semantic registration through optimization
+ Two inputs, BIM (pose/relationship) output
+ Function : Minimize error (or maximize similarity)
+ Variables : 3D transformation
+ Subject to: Topological constraints
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+10
+
+2.2 Prototype demo (Xue et al., 2018; 2019b)
+ PCD/2D photos + BIM objects  as-built BIM
+ Automatic
+ Segmentation-free
+ Semantic
+ Accurate
+ Efficient
+
+ COBIMG
+ DFO: CMA-ES
+
+ A quick demo
+
+(Language: C++, CLR; Data formats: Autodesk Revit, Stanford polygon)
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+11
+
+2.3.1 Case 1: An indoor office scene (Xue et al., 2019b)
+min
+s.t.
+
+f X = RMSE BIM X , Pin
+C(X) ≤ 0.
+𝑓𝑓 (X) = RMSE(BIM(X), Pin )
+≈ RMSE(PX , Pin )
+≈ RMSE(P′X , P′in )
+
+= �Σ𝑝𝑝∈P′in nndist2 (𝑝𝑝, P′X )⁄m′
+≈ RMSE(P′in , P′X )
+
+= �Σ𝑝𝑝∈P′X nndist2 (𝑝𝑝, P′in )�‖P′X ‖
+
+(Language: C++, CLR; Data formats: Autodesk Revit, Stanford polygon)
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+12
+
+2.3.1 Case 1
+ Indoor modeling
+ Accurate: 3.87 cm, 100% recall
+ Fast: 6.44 s
+ Rich semantics: Product, assembly, etc.
+
+Modeler
+No.
+1
+2
+3
+
+Experience Correctness
+(out of 8)
+8
+Expert (3
+years)
+Average (1 8
+year)
+Beginner
+8
+
+RMSE
+(cm)
+3.79
+
+Time
+cost (s)
+363.9
+
+3.90
+
+335.4
+
+4.22
+
+691.1
+
+8
+
+3.87
+
+6.44
+
+8
+
+3.87
+
+~ 246.0
+
+COBIMG
+-Revit
+COBIMG-Revit +
+annotation
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+(Language: C++, CLR; Data formats: Autodesk Revit, Stanford polygon)
+
+13
+
+Case 2: A lecture hall (Xue et al. 2019c)
+ RMSE= 8.97cm, time = 1,155s
+ 99% precision, 98% recall
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+14
+
+Case 3: Architectural symmetry (Xue et al. 2019a)
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+15
+
+Section 3
+
+DISCUSSION
+
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+16
+
+3.1 Discussion
+ Semantic registration for as-built BIM
+ Converts geometric landscape to fitness landscape
+ Reuses online open BIM resources
+ Finds optima (objects in as-built BIM) using DFO
+o Automatic
+o Segmentation-free
+o Accurate
+o Efficient
+o Good for complex-shaped objects
+
+ Drawbacks
+ Require annotations beforehand
+
+Auto-BIM
+modeling by
+one click
+
+ Killer (downstream) applications
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+17
+
+References
+ Auger, A., Finck, S., Hansen, N., and Ros, R. (2010). BBOB 2009: Comparison tables of all algorithms on all noisy
+
+functions, INRIA.
+ National Institute of Building Sciences. (2015). National Building Information Modeling Standard. Version 3, Retrieved
+from https://www.nationalbimstandard.org/
+ Qi, C. R., Su, H., Mo, K., & Guibas, L. J. (2017). Pointnet: Deep learning on point sets for 3d classification and
+segmentation. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (pp. 652-660).
+ Volk, R., Stengel, J., and Schultmann, F. (2014). Building Information Modeling (BIM) for existing buildings—Literature
+review and future needs. Automation in Construction, 38: 109-127.
+ Xue, F., Lu, W., Chen, K. (2018). Automatic generation of semantically rich as-built building information models using
+2D images: A derivative-free optimization approach. Computer-Aided Civil and Infrastructure Engineering, 33(11), 926942.
+ Xue, F., Lu, W., Webster, C. J., & Chen, K. (2019a). A derivative-free optimization-based approach for detecting
+architectural symmetries from 3D point clouds. ISPRS Journal of Photogrammetry and Remote Sensing, 148, 32-40.
+ Xue, F., Lu, W., Chen, K., & Zetkulic, A. (2019b). From Semantic Segmentation to Semantic Registration: DerivativeFree Optimization–Based Approach for Automatic Generation of Semantically Rich As-Built Building Information
+Models from 3D Point Clouds. Journal of Computing in Civil Engineering, 33(4), 04019024.
+ Xue, F., Lu, W., Chen, K., & Webster, C. J. (2019c). BIM reconstruction from 3D point clouds: A semantic registration
+approach based on multimodal optimization and architectural design knowledge, Advanced Engineering Informatics,
+(under revision)
+F Xue: Geometric & fitness landscapes, 27 May 2019, HUST
+
+18
+
+Thank You !
+谢 谢！
+
+

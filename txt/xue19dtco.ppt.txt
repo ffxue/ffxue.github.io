@@ -1,0 +1,1494 @@
+Digital Twinning Construction Objects:
+Filtering, Supervised, Reinforcement, and
+Unsupervised Methods
+6 December 2019
+HKU, Hong Kong
+Frank Xue
+Assistant Professor
+Dept. of REC / iLab
+FoA, HKU, HK SAR
+
+0.1 Aims and scope
+ Goals
+ Introducing some exciting ideas
+ Streamlining my work
+ Discussion for possible opportunities
+
+ Concepts
+ Digital twin
+ Construction objects
+ Machine learning
+
+ My work in the past 3 years
+
+F. Xue: Digital Twinning Construction
+
+2
+
+0.2 About me
+ A mixed background
+
+ Engineering
+
+ BEng in Automation, CAUC
+
+2004
+
+ MSc in Computer Science, CAUC
+
+2007
+
+ Computer Science
+
+ PhD in System Engineering, HKPU
+
+2012
+
+ AI, DFO, ML
+
+ PDF/RAP/AP in Construction IT
+
+2016
+
+ Research interests
+
+ ISE, CEM, EIE
+
+ Economics
+ SCM
+
+ Urban sensing and computing
+ Automation in construction
+ Applied operations research
+ Machine learning and data visualization
+
+F. Xue: Digital Twinning Construction
+
+3
+
+0.3 My research projects
+ On-going
+ PI: HK RGC (17201717, 17200218), HKU-Tsinghua SPF (20300083),
+
+HKU (201811159177)
+ Co-PI: Key R&D Guangdong (2019B010151001), HKU PTF (102009741)
+ Co-I: NSFC (71671156), NSSFC (17ZDA062), HK SPPR (S2018.A8.010.18S),
+
+HK PPR (2018.A8.078.18D)
+
+ Completed
+ PI: HKU (201702159013, 201711159016)
+ Co-I: NSFC (60472123)
+
+ Job vacancy – Research Assistant (2~3 openings)
+ $17,000/month, transferable to PhD depends on vision, performance
+ New updates on my web page (QR code)
+F. Xue: Digital Twinning Construction
+
+4
+
+Outline
+1
+
+Introduction to DTCO
+
+2
+
+Methods for DTCO
+
+3
+
+Discussion
+
+F. Xue: Digital Twinning Construction
+
+5
+
+Section 1
+
+INTRODUCTION TO DTCO
+
+F. Xue: Digital Twinning Construction
+
+6
+
+1.1 Background – world
+ Global urbanization
+ By 2050, 65% world’s population will live in cities (WHO,
+2015)
+
+ Irreversible; Even faster in China
+
+ Leads to urban vulnerability (a.k.a. ‘city diseases’)
+ ‘Dead’ space/landscape, low familiarity with surroundings,
+ Poor waste treatment, environment (air, water) pollution,
+
+China’s and global urbanization rates
+source: gov.cn
+
+ Heritage destruction, aging town blocks, inefficient traffic,
+ Disasters (earthquake, climate change), resource crisis, …
+
+ Demands smarter and more resilient development
+ (a) Smarter analysis and decisions in multiple disciplines
+ (b) On basis of accurate, timely urban semantics
+F. Xue: Digital Twinning Construction
+
+Global urban vulnerability level (Birkmann
+et al, 2016) source: nature.com
+7
+
+1.1 Background – the industry
+ Construction is known as a “backward industry”
+ Low productivity, labor-intensive (v.s. aging workers)
+ Fatality, occupational hazards, management (e.g., cost overrun)
+
+ A consensus of global research institutes (e.g., Harty et al., 2007)
+ Effective (productive, automatic, age friendly) and efficient
+
+(safer, profitable, on-time, sustainable) industry
+
+ Meets new information technology (IT / ICT)
+ Computing power
+o BIM, RFID, LiDAR, GPS, UAV, CV, VR/AR, smart phones…
+
+F. Xue: Digital Twinning Construction
+
+USA’s gross value-added by sectors
+source: economist.com
+
+Recent advances in ICT
+
+8
+
+1.1 Background – the industry in Hong Kong
+ Construction 2.0 (DevB 2018)
+ Innovation
+o Productivity (MiC, BIM, etc.)
+
+ Professionalization
+
+o Skilled workers
+
+ Revitalization
+
+o Young employees (see the charming post)
+
+F. Xue: Digital Twinning Construction
+
+9
+
+1.1 Background – new opportunities in IT
+
+F. Xue: Digital Twinning Construction
+
+10
+
+1.2 Construction IT
+ Construction IT
+ A sub-field in Construction Technology + Construction Management
+o Since 1960/70s (e.g., CAD)
+o In construction (process)
+o By construction (objects)
+
+o For construction (targets)
+
+ Typical research methods / -ology
+o Applying M (in IT) to P (construction)
+
+ Aiming for
+
+o Automation
+o Safety
+
+o Productivity
+
+o Human/equipment/robot augment, etc.
+
+F. Xue: Digital Twinning Construction
+
+Construction IT (conceptual)
+photo source: Wiki, CC BY–SA 2.5
+
+11
+
+1.2 Construction IT
+ Example journals (ranking by sub-discipline, Clarivate Analytics’ JCR 2018)
+ Computer-aided Civil and Infrastructure Engineering (1/64 in Const. Bld. Tech., 1/132 in Civil Eng.)
+ Automation in Construction (8/64 in Const. Bld. Tech., 7/132 in Civil Eng.)
+ Journal of Computing in Civil Engineering (40/132 in Civil Eng.)
+ ISPRS Journal of Photogrammetry and Remote Sensing (1/50 in Geography, 3/30 Remote Sensing)
+
+ Focused international conferences / workshops
+ CIB W78: Construction IT
+ ISARC: International Symposium on Automation and Robotics in Construction
+ CONVR: International Conference on Construction Applications of Virtual Reality
+ ICCCBE: International Conference on Computing in Civil and Building Engineering
+
+F. Xue: Digital Twinning Construction
+
+12
+
+1.3 Digital Twin (DT)
+ Digital twin
+ A virtual representation of a physical
+
+object or system across its lifecycle, using
+real-time data to enable understanding,
+learning and reasoning. (NIC, 2017)
+ The first half of Cyber-Physical System
+
+(CPS)
+o Highlighted by U.S. NSF (2019)
+o See my top-voted answer on
+o
+
+“What are the connections and essential
+differences between CPS and DT?”
+
+Figure 1. Example of a digital twin (Tao et al. 2018)
+
+ Related
+
+o As-is BIM, VR, IPD, 4D city, HD GIS, …
+
+F. Xue: Digital Twinning Construction
+
+13
+
+1.3 DT: History and examples
+ From the CAx (CAD, CAE, CAM) waves
+ 1960s~80s: Computer-aided design (CAD), including 2D/3D
+ 1970s~80s: Computer-aided engineering (CAE), including Finite
+
+Element Analysis (FEA), Computational Fluid Dynamics (CFD),
+Multidisciplinary Design Optimization (MDO), Virtual
+prototyping
+ 1970s~80s: Computer-aided manufacturing (CAM), including
+
+Product data management (PDM), computational numerical
+control (CNC)
+ 2010s: DT for real-time CAx models
+
+ Examples
+ Jet fighter, aircraft, wind turbine, smart train, …
+ Smart building, smart construction, smart design, …
+
+F. Xue: Digital Twinning Construction
+
+14
+
+1.2 Why DT?
+ Analytical models guarantee optimal analysis
+ E.g., Linear equations
+ & Gradient of a function
+o Stationary points, where the first derivative is zero
+
+ However, DT/CAx is needed
+
+ For (near-)optimal analysis / control / management, when
+ Too complex to create analytical models
+o E.g., aerodynamics, aircraft device risks, concrete, …
+
+First derivative and stationary points
+
+ Too expensive to do so
+
+o E.g., construction project, massive 3D point clouds, “big data”
+F. Xue: Digital Twinning Construction
+
+Aerodynamics simulation
+Picture source: mentor.com
+
+15
+
+1.3 Objects in construction
+ Construction
+ Lifecycle
+o Narrow use: Build
+
+ Involving three types of objects, e.g.,
+
+Building
+
+Human
+
+Equipment
+
+Plan
+
+Design
+
+Designer
+
+Ruler /BIM
+
+Build
+
+Window
+
+Workers
+
+Crane
+
+Use
+
+Place
+
+Occupant
+
+HVAC
+
+Maintain Service items Engineer
+
+Voltmeter
+
+Repair
+
+Facade
+
+Workers
+
+Scaffold
+
+Learn
+
+Function
+
+Planner
+
+Spreadsheet
+
+F. Xue: Digital Twinning Construction
+
+16
+
+1.3 Objects in construction
+ Objects in construction (narrow)
+ Equipment
+o Truck, tower crane
+
+o Location, movement 3+ degrees of freedom (DoF)
+
+ Building (elements, furniture, materials, …)
+o Frame, windows, chairs
+
+o Location, orientation, 3+ DoF
+
+ Human
+
+o E.g., workers, site engineers
+o Complex, 10+ DoF
+
+ Objects’ properties
+
+ Physical (3D xyz + 3D rotation + motion + …)
+
+Lego blocks / construction
+Source: Wikipedia
+
+Semantic (action, intention, utility, relations, materials, …)
+
+
+F. Xue: Digital Twinning
+Construction
+
+17
+
+1.3 DTing construction objects (DTCO)
+ The general question
+
+Scope of the study
+
+ How to DTing construction objects?
+
+Real-time pose
+
+o To reflect accurate geometry
+
+o To understand the semantics
+
+ As the diagram
+
+o For future construction CPS
+
+ A “mapping from X to Y” in essence
+
+ Challenges
+
+ Various objects
+ Various data (with/without training samples)
+
+Auto feedback
+
+Physical world
+(construction)
+
+Cyber world
+(digital twin)
+
+ Various scenarios
+o Methods: “Does one size fit all?”
+
+F. Xue: Digital Twinning Construction
+
+18
+
+Section 2
+
+METHODS FOR DTCO
+
+F. Xue: Digital Twinning Construction
+
+19
+
+2.1 The objects in this section
+ A lot of cases to show
+
+Building
+
+Human
+
+Equipment
+
+Building
+
+Worker’s pose
+
+Crane
+
+ Grouped by the methods into
+
+Roofs
+
+Indoor position
+
+ Machine learning (ML)
+
+Precast
+
+ In blue are not in the narrow definition
+
+o Algorithms & statistical models
+
+without explicit instructions, relying
+on patterns and inference instead
+
+Furniture
+Regularity
+Street
+
+Pedestrians
+
+BIM
+
+Sidewalk
+
+F. Xue: Digital Twinning Construction
+
+20
+
+2.1 Grouping via ML paradigms
+Data & processing methods
+ Filtering
+
+Machine learning paradigm
+ No learning
+
+ IoT, Wearing
+
+ Detector, regression,
+ SVM, deep learning
+
+ Model tracking,
+ RANSAC, semantic registration
+
+ Manifold embedding
+ PCA, LDA
+
+F. Xue: Digital Twinning Construction
+
+ Supervised learning
+ Training examples (cost)
+
+ Reinforcement learning
+ Finding after iterations of fitting f
+
+ Unsupervised learning
+ Feature clustering
+
+(Sundaresan &
+Chellappa 2019)
+
+21
+
+2.2 Filtering methods
+ Filtering
+ Removing some unwanted components or
+
+features (noise, bias) from a signal
+ No learning involved
+
+Known
+rules,
+equations
+
+ See also: a priori, rule-based
+
+ Pros
+ Fast, direct, easy to interpret
+
+ Example cases
+ Tower crane motion
+ Logistics and supply chain
+
+Physical world
+(construction)
+
+Cyber world
+(DT)
+
+ Indoor position
+ Blockchaining BIM
+
+F. Xue: Digital Twinning Construction
+
+22
+
+2.2.1 Case 1: Crane pose
+ Productivity
+ Efficiency, seamless operation required
+
+ Occupational health and safety (OHS)
+ To protect the safety and health of all members through
+
+prevention of work-related injury, illness and disease
+ In the US, construction accounted for ~5% workforce but 20%
+
+Reasons of fatality in HK’s
+construction (Data: Labour Dept 2019)
+
+occupational deaths, 2003—2013 (NSC 2015)
+ In Hong Kong, construction had 36 fatal accidents in 2017 & 18
+
+ Tower crane
+ A key equipment
+ The “bottleneck” to productivity, and
+ Related to safety issues
+F. Xue: Digital Twinning Construction
+
+(Niu et al. 2019)
+
+23
+
+2.2.1 Case 1: Crane pose (Niu et al. 2019)
+ (a) collection, (b) processing, (c) visualization
+
+(b)
+
+(a)
+F. Xue: Digital Twinning Construction
+
+(c) Demo (Crane hoist)
+24
+
+2.2.1 Case 1: Crane pose
+ Event analysis
+ 2 near-miss safety issues
+o 1 load above workers
+o 1 unbalanced lifting
+
+ 200 seconds unproductive hosting
+o Reason: Working floor preparation
+
+of locking steels for RC beam
+
+ CPS demo (on Lego)
+
+(Niu et al. 2019)
+
+ Real-time warnings to operator
+ Simplest validation
+o Worked
+
+o Delay < 1.0s
+
+F. Xue: Digital Twinning Construction
+
+25
+
+2.2.2 Case 2: Precast logistics (Liu et al. 2018)
+ Similar to
+ Crane pose
+
+ Demo
+
+F. Xue: Digital Twinning Construction
+
+26
+
+2.2.3 Case 3: No-RF Indoor positioning (Xu et al. 2020)
+
+F. Xue: Digital Twinning Construction
+
+27
+
+2.2.4 Case 4: BIM versions / blockchain (working)
+ Rome wasn’t built in a day; so was BIM. (a) by element, (b) by lifecycle/time
+
+F. Xue: Digital Twinning Construction
+
+28
+
+2.2.4 Case 4: BIM versions / blockchain
+ IFC (Industry Foundation Classes)
+ The best open BIM standard
+ STEP (Standard for the Exchange of Product Data) format
+ Clear, readable
+ But massive, involving many random global IDs
+
+ Our in-house program for the semantic difference
+
+F. Xue: Digital Twinning Construction
+
+Example IFC
+
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('ViewDefinition [CoordinationView, …);
+FILE_NAME('example.ifc','2008-08-01T21:53:56',('Architect…);
+FILE_SCHEMA(('IFC2X3'));
+ENDSEC;
+DATA;
+#1=IFCOWNERHISTORY(#84,#71,$,.ADDED.,$,$,$,1217620436);
+#2=IFCAXIS2PLACEMENT3D(#11,#4,#8);
+#3=IFCCARTESIANPOINT((0.0,0.0));
+#4=IFCDIRECTION((0.0,0.0,1.0));
+#5=IFCGEOMETRICREPRESENTATIONCONTEXT($,'Model',3,1.0E-5,#75,$);
+#6=IFCWALLSTANDARDCASE('3vB2YO$MX4xv5uCqZZG05x',#1,'Wall …);
+#7=IFCWINDOW('0LV8Pid0X3IA3jJLVDPidY',#1,'Window xyz’,’…);
+#8=IFCDIRECTION((1.0,0.0,0.0));
+#9=IFCOPENINGELEMENT('2LcE70iQb51PEZynawyvuT',#1,'Opening …);
+#10=IFCCARTESIANPOINT((0.75,0.0));
+# 11 =IFCCARTESIANPOINT((0.0,0.0,0.0));
+#12=IFCCARTESIANPOINT((0.0,0.3));
+#13=IFCORGANIZATION($,'TNO','TNO Building Innovation',$,$);
+#14=IFCPROPERTYSINGLEVALUE('AcousticRating','AcousticRating’,…);
+#15=IFCPROPERTYSINGLEVALUE('Reference','Reference',IFCTEXT(''),$);
+#16=IFCPROPERTYSINGLEVALUE('FireRating','FireRating',IFCTEXT(''),$);
+#17=IFCPROPERTYSINGLEVALUE('IsExternal','IsExternal',IFCBOOLEAN(.T.),$);
+#18=IFCPROPERTYSINGLEVALUE('ThermalTransmittance’,…);
+#19=IFCQUANTITYLENGTH('Height','Height',$,1.4);
+#20=IFCQUANTITYLENGTH('Width','Width',$,0.75);
+#21=IFCLOCALPLACEMENT($,#2);
+#22=IFCBUILDING('0yf_M5JZv9QQXly4dq_zvI',#1,'Sample Building’,…);
+#23=IFCBUILDINGSTOREY('0C87kaqBXF$xpGmTZ7zxN$',#1,…);
+#24=IFCLOCALPLACEMENT(#21,#2);
+…
+END-ISO-10303-21;
+
+29
+
+2.2.4 Case 4: BIM versions / blockchain
+
+F. Xue: Digital Twinning Construction
+
+30
+
+2.2.4 Case 4: BIM versions / blockchain
+ Result of changing a window (a)  (b); (c) the result of SDT
+
+F. Xue: Digital Twinning Construction
+
+31
+
+2.2.4 Case 4: BIM versions / blockchain
+ A Case: Sequential / simultaneous roof window changes by two BIM users
+
+Architect
+
+Client
+F. Xue: Digital Twinning Construction
+
+32
+
+2.2.4 Case 4: BIM versions / blockchain
+
+Architect
+BIM
+change
+consensus
+
+0.47KB (move
+a window)
+
+0.47KB (revert
+the move)
+
+3.45KB (a
+new window
+& comments)
+
+Client
+F. Xue: Digital Twinning Construction
+
+33
+
+2.2.4 Case 4: BIM versions / blockchain
+
+Architect
+BIM
+change
+consensus
+
+0.47KB (move
+a window)
+
+Falsification
+detected at t2
+
+Client
+F. Xue: Digital Twinning Construction
+
+34
+
+2.3 Supervised learning
+ Filtering
+ “patterns” learnt from training data
+ See also: classification, regression,
+
+deep learning, prediction
+
+ Pros
+
+Patterns
+or learnt
+models
+
+ Generalized, many non-linear models
+
+ Example cases
+ Pedestrian path walkability
+ Human pose and gesture
+ Street
+ Rooftop element classification
+F. Xue: Digital Twinning Construction
+
+Physical world
+(construction)
+
+Cyber world
+(DT)
+35
+
+2.3.1 Case 1: Personalized walkability assessment
+ Smart city development
+ Settled by the government of many modern cities
+ Over 200 cities in China
+
+ Smart living/ transportation
+
+The rising of smart cities around the world
+Source: siemens.com
+
+ Aims at making life more efficient, more controllable,
+
+economical, productive, integrated and sustainable
+ A pillar of smart city
+
+ Personalized walkability
+ Meeting individual walking requirements of residents
+
+Walkable?
+
+ Essential for smart living in smart cities
+ Demanding automatic (real-time, cheap) assessment
+o To handle the possible changes in paths
+
+F. Xue: Digital Twinning Construction
+
+Personalized walkability for smart living
+Source: pixarba.com
+
+36
+
+2.3.1 Case 1: Personalized walkability assessment
+
+ A three-step automatic “pipeline”
+ 1. Actual path  As-is 3D point cloud
+ 2. As-is 3D point cloud  As-built BIM
+ 3. As-built BIM  PWA; recommendation
+F. Xue: Digital Twinning Construction
+
+37
+
+2.3.1 Case 1: Personalized walkability assessment
+ A narrow path
+ 1(a)
+ Guardrail
+ Obstacles
+
+ 1: Phone
+scanning
+ 1(b) point cloud
+
+ 2: As-built BIM
+ 2(a) segment
+ 2(b) modeling
+ 2(b) BIM
+(Xue et al. 2018)
+F. Xue: Digital Twinning Construction
+
+38
+
+2.3.1 Case 1: Personalized walkability assessment
+ 3: Assessment
+ 3(a) geo-referencing
+ 3(b) slope grade
+ 3(c) tilt grade
+ 3(d) footway width
+
+(Xue et al. 2018)
+F. Xue: Digital Twinning Construction
+
+39
+
+2.3.1 Case 1: Personalized walkability assessment
+ Examples of five types of pedestrians
+Walking
+characteristic
+
+Calculated
+value
+
+No. of steps
+0
+*
+1:50.0~58.8
+Slope grade
+1:47.6~66.7
+Tilt grade†
+‡
+45~199 cm
+Footway width
+Clearance
+Good
+Overall walkability (the worst)
+
+Wheelchair ♿
+
+OK
+OK
+OK
+Failed
+OK
+Failed
+
+Stroller
+
+OK
+OK
+OK
+Limited
+OK
+Limited
+
+Type of pedestrians
+Luggage 🛄🛄
+Senior 👴👴
+
+OK
+OK
+OK
+Limited
+OK
+Limited
+
+OK
+OK
+OK
+OK
+OK
+OK
+
+Exercise 🏃🏃
+
+OK
+OK
+OK
+OK
+OK
+OK
+
+*: Reference maximum slope grade: 1:8~12 (wheelchairs);
+†: Reference maximum tilt grade of pavement: 1:15 (wheelchairs);
+‡: Reference minimum width: 70~90 cm (wheelchairs), 40~70 cm (strollers), and 30~60 cm (baggage).
+
+ Recommendation on possible obstacle removal
+Major obstacles
+Light pole
+F. Xue: Digital Twinning Construction
+
+Minor obstacles
+(None)
+
+Inoffensive obstacles
+Meter pole, drainage pipe #1, #2, and concrete trace on the wall
+40
+
+2.3.2 Case 2: Human pose and gesture (working)
+ Edge AI device
+ Google Coral
+ TPU
+
+ Unboxing test
+ PoseNet
+ Human pose
+o Multiple
+o 13 fps
+
+F. Xue: Digital Twinning Construction
+
+41
+
+2.3.2 Case 2: Human pose and gesture
+ Unboxing test
+…
+ Looking around
+o good
+
+o 13 fps
+
+F. Xue: Digital Twinning Construction
+
+42
+
+2.3.3 Case 3: Rooftop modeling (Chen et al. 2018)
+ LiDAR  RANSAC  rectification  LoD2 model
+
+F. Xue: Digital Twinning Construction
+
+43
+
+2.3.3 Case 3: Rooftop modeling (Xue et al. 2019f)
+
+F. Xue: Digital Twinning Construction
+
+44
+
+2.3.3 Case 3: Rooftop modeling (Xue et al. 2019e)
+ Geometry + albedo  material prediction, e.g., green roofs (Tan et al. 2019)
+
+F. Xue: Digital Twinning Construction
+
+45
+
+2.4 Reinforcement Methods
+ Reinforcement learning
+ “Trial-and-error” to fit for an unknown
+
+problem
+
+Error evaluation
+
+ See also: AlphaGo, online learning,
+
+ Pros
+
+Iterative
+trial-anderror
+
+ Adaptive, “white-box” style, easy to
+
+interpret
+
+ Example cases
+ As-built BIM reconstruction
+ Furniture 3D reconstruction
+ Architectural regularity
+F. Xue: Digital Twinning Construction
+
+Physical world
+(construction)
+
+Cyber world
+(DT)
+46
+
+2.4.0 Error / fitness function
+ Common in optimization problems
+
+y
+
+ Find the best solution (e.g., min f(x) = | x |)
+
+x
+
+ Fitness landscape of error
+ Appearance of f
+ Peaks/valleys contain the solutions
+
+min f(x) = RMSE
+
+min f(x) = RMSE …
+
+o Where gradient ∇f = 0
+
+ Fitness landscape for registering a BIM
+ Reflecting the geometric landscape
+ Many methods are not working
+o Up to 9 degree-of-freedoms (DoFs)
+o Continuous, jugged
+
+o Too expensive to calculate derivatives (∇)
+
+F. Xue: Digital Twinning Construction
+
+Fitness landscapes of registering BIM to 1 point (left) and real 3D point cloud (right)
+47
+
+3.4.1 Case 1: Building 3D reconstruction (Xue et al. 2018)
+ Nonlinear optimization problem formulation
+ SSIM (input 2D photos, 3D-to-2D projection of BIM)
+ Constrained by topological relationships
+SSIM = structure ⋅ luminance ⋅ contrast
+=
+
+Example
+Notes
+value
+scaling_max
+[1.5, 1.5, 1.5] xyz
+coordinates
+[0.8, 0.8, 0.8] Ibid.
+CI scaling_min
+z_rotation_max π/2
+z_rotation_min 0
+on_top_of
+‘Ground’
+Adjacency,
+connectivity
+C
+
+(a) A photo of a demolished building
+
+Door portico
+
+Tree × 2
+
+Wall × 2
+Windows × 2
+(b) Semantic components from web
+F. Xue: Digital Twinning Construction
+
+( 2 µ ˆ µ A +c1 )( 2σ ˆ +c1 )
+A
+AA
+,
+2
+2
+2
+( µ ˆ + µ A +c1 )(σ ˆ+σ 2A +c2 )
+A
+A
+
+CR
+
+Example
+
+contains_on
+
+‘Wall’
+
+min_separation ‘0.5 m’
+
+Containment
+or
+intersection
+Separation
+
+48
+
+3.4.1 Case 1: Building 3D reconstruction
+ Problem solving
+ Fully-automatic, DFO-based, model-driven
+ Rich semantics: Geometry, topology, functions, materials
+ Occasional errors in recognition
+
+F. Xue: Digital Twinning Construction
+
+(Language: C++, Ruby; Data formats: SketchUp, Bmp, Google earth)
+
+49
+
+3.4.2 Case 2: Furniture modeling (Xue et al. 2019b)
+ BIM from
+point cloud or
+2D image
+ Automatic
+ Model-driven
+ Semantic
+ Accurate
+ Efficient
+
+F. Xue: Digital Twinning Construction
+
+50
+
+3.4.2 Case 2: Furniture modeling
+ t = 6.44 s
+
+𝑓𝑓(X) = RMSE(BIM(X), Pin )
+≈ RMSE(PX , Pin )
+≈ RMSE(P′X , P′in )
+
+= �Σ𝑝𝑝∈P′in nndist2 (𝑝𝑝, P′X )⁄m′
+≈ RMSE(P′in , P′X )
+
+= �Σ𝑝𝑝∈P′X nndist2 (𝑝𝑝, P′in )�‖P′X ‖
+
+ RMSE = 3.87 cm
+f X = RMSE BIM X , Pin
+subject to C(X) ≤ 0.
+minimize
+
+(Xue et al. 2019)
+F. Xue: Digital Twinning Construction
+
+51
+
+3.4.2 Case 2: Furniture modeling
+ T=6.44s
+ Manual = 330s
+
+ Iter = 9,000
+ Precision = 1.0
+ Recall = 1.0
+
+F. Xue: Digital Twinning Construction
+
+52
+
+3.4.3 Case 3: Furniture modeling (more chairs) (Xue et
+al. 2019c)
+
+ RMSE= 8.97cm, time = 1,155s
+ 99% precision, 98% recall
+
+F. Xue: Digital Twinning Construction
+
+53
+
+3.4.4 Case 4: Architectural Regularity (Xue et al. 2019a; 2019d)
+
+F. Xue: Digital Twinning Construction
+
+54
+
+2.5 Unsupervised learning
+ Unsupervised learning
+ Self-organized, previously unknown
+
+patterns
+ See also: K-means, anomaly detection,
+
+latent variable models
+
+ Pros
+
+Clusters
+&
+grouping
+
+ Inexpensive, human readable
+
+ Examples
+ Object detection in points
+ Street clusters
+ Pedestrian clusters
+F. Xue: Digital Twinning Construction
+
+Physical world
+(construction)
+
+Cyber world
+(DT)
+55
+
+2.5.1 Case 1: Object detection in points (Xue et al. 2019)
+
+(a) 368 small patches (by color) and the
+connectivity (lines) detected in 1.3s
+
+F. Xue: Digital Twinning Construction
+
+(b) 12 patches (obj1 to obj12) was clustered via the
+connectivity of patches in (a)
+
+56
+
+2.5.2 Case 2: Street clusters (working)
+
+F. Xue: Digital Twinning Construction
+
+57
+
+2.5.2 Case 2: Street clusters
+ “Closeness”
+between the 50
+longest roads in
+Hong Kong
+ 21 dimensions
+o Environment
+o Economy
+o Society
+
+ 6 clusters
+
+ Text color: Green
+
+view
+
+F. Xue: Digital Twinning Construction
+
+58
+
+2.5.3 Case 3: Pedestrian clusters (working)
+ 61,788 pedestrians
+ Seen in Hong Kong
+
+Island
+
+ Four clusters
+ In a crowd
+ On crosswalk
+ In vehicles, buildings
+ On sidewalk
+
+F. Xue: Digital Twinning Construction
+
+59
+
+Section 3
+
+DISCUSSION
+
+F. Xue: Digital Twinning Construction
+
+60
+
+3.1 A wrap-up
+ Construction IT
+ My work in recent 3 years
+
+ DTCO = Real-time virtual replica
+ Aka. nD geometry modeling + semantics modeling in CAx/BIM
+ For all types of construction objects
+o Building
+
+o Equipment
+o Human
+
+ Involving various methods, as in 4 groups in ML’s perspective
+o Filtering
+
+o Supervised
+
+o Reinforcement
+
+o Unsupervised
+F. Xue: Digital Twinning Construction
+
+61
+
+3.2 Possible research collaborations
+ Possibility within REC’s clusters
+ CLIPE
+o Conservation 
+
+Digital conservation
+
+o Law
+
+o Innovation bld. tech.  
+
+CAx / BIM / DT
+IoT, AI
+
+o Project management  
+
+25-year estate price “disco”
+
+Site safety
+Operations management
+
+o Economics 
+
+Valuation, prediction
+
+F. Xue: Digital Twinning Construction
+
+40,000 private buildings
+
+62
+
+3.3 Teaching Construction IT at REC
+ My teaching
+ UG
+o RECO 3032: 1 talks
+
+ TPg
+
+o RECO 6004: 1.5 talks
+
+ Incoming
+ TPg
+
+o RECO xxxx: 2-3 talks: On new advances (DT/AIR)
+
+ Something in my mind
+ UG
+
+o A “Construction IT” course: On basic CAx, or playful techy
+
+E.g., “Introduction” (Yr2), or Elective (Yr3/4)
+
+F. Xue: Digital Twinning Construction
+
+Minecraft
+
+63
+
+Acknowledgements
+ Thanks to
+ RGC, HKU URC, NSFC-Guangdong, etc. for financial help
+ REC and HKUrbanLab colleagues’ help
+o Prof Wilson Lu
+
+o Prof Chris Webster
+o Prof KW Chau
+
+o Alain, Guibo, Matthew,
+
+ Some materials were from
+ Colleagues
+ My course materials
+
+F. Xue: Digital Twinning Construction
+
+64
+
+References
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Niu, Y., Lu, W., Xue, F., Liu D., Chen, K., Fang, D., & Anumba, C. (2019). Towards the “Third Wave”: An SCO-enabled occupational health and safety management system for construction.
+Safety science, 111, 213-223.
+Sundaresan, A., & Chellappa, R. (2008). Model driven segmentation of articulating humans in Laplacian Eigenspace. IEEE Transactions on Pattern Analysis and Machine Intelligence, 30(10),
+1771-1785.
+Bolton, R. N., McColl-Kennedy, J. R., Cheung, L., Gallan, A., Orsingher, C., Witell, L. & Zaki, M. (2018). Customer experience challenges: bringing together digital, physical and social realms.
+Journal of Service Management, 29(5), 776-808. doi:10.1108/JOSM-04-2018-0113
+Gartner. (2018). 5 Trends Emerge in the Gartner Hype Cycle for Emerging Technologies, 2018. Gartner. Retrieved from https://www.gartner.com/smarterwithgartner/5-trends-emerge-in-gartnerhype-cycle-for-emerging-technologies-2018/
+Glaessgen, E. & Stargel, D. (2012). The digital twin paradigm for future NASA and US Air Force vehicles. 53rd AIAA/ASME/ASCE/AHS/ASC Structures, Structural Dynamics and Materials
+Conference, Structures, Structural Dynamics, and Materials and Co-located Conferences (p. 1818). AIAA. doi:10.2514/6.2012-1818
+NIC. (2017). Data for the Public Good. London: National Infrastructure Commision, UK. Retrieved from https://www.nic.org.uk/publications/data-public-good/
+Tao, F., Sui, F., Liu, A., Qi, Q., Zhang, M., Song, B., Guo, Z., Lu, S. & Nee, A. Y. (2018). Digital twin-driven product design framework. International Journal of Production Research, 1-19.
+doi:10.1080/00207543.2018.1443229
+Tuegel, E. J., Ingraffea, A. R., Eason, T. G. & Spottswood, S. M. (2011). Reengineering aircraft structural life prediction using a digital twin. International Journal of Aerospace Engineering,
+2011, 154798. doi:10.1155/2011/154798
+Xue, F., Lu, W., Webster, C. J., & Chen, K. (2019). A derivative-free optimization-based approach for detecting architectural symmetries from 3D point clouds. ISPRS journal of photogrammetry
+and remote sensing, 148, 32-40. (Mock RAE 4*)
+Xue, F., Lu, W., Chen, K., and Zetkulic, A. (2019). From ‘semantic segmentation’ to ‘semantic registration’: A derivative-free optimization-based approach for automatic generation of
+semantically rich as-built building information models (BIMs) from 3D point clouds. Journal of Computing in Civil Engineering, in press. (Mock RAE 4*)
+Xue, F., Lu, W., Chen, K., & Webster, C. J. (2019). BIM reconstruction from 3D point clouds: A semantic registration approach based on multimodal optimization and architectural design
+knowledge. Advanced Engineering Informatics, 42, 100965. (Mock RAE 4*)
+Xue, F., Lu, W., & Chen, K. (2018). Automatic Generation of Semantically Rich As‐Built Building Information Models Using 2D Images: A Derivative‐Free Optimization Approach.
+Computer‐Aided Civil and Infrastructure Engineering, 33(11), 926-942. doi:10.1111/mice.12378 (Mock RAE 3*)
+Chen, K., Lu, W., Xue, F. Tang, P., and Li, L-H. (2018). Automatic building information model reconstruction in high-density urban areas: Augmenting multi-source data with architectural
+knowledge. Automation in Construction, 93, 22–34. doi:10.1016/j.autcon.2018.05.009 (Mock RAE 3*)
+Guo, S., Hu, Y., Li, Y., Xue, F., Chen, B., and Chen, Z.-M. (2020). Embodied Energy in Service Industry in Global Cities: A Study of Six Asian Cities. Land Use Policy, in press.
+Tan, T., Chen, K., Xue, F., & Lu, W. (2019). Barriers to Building Information Modeling (BIM) implementation in China's prefabricated construction: An interpretive structural modeling (ISM)
+approach. Journal of Cleaner Production, 219, 949-959.
+Xu, J., Lu, W., Xue, F., & Chen, K. (2019). ‘Cognitive facility management’: Definition, system architecture, and example scenario. Automation in Construction, 107, 102922.
+Li, X., Shen, G. Q., Wu, P., Xue, F., Chi, H. L., & Li, C. Z. (2019). Developing a conceptual framework of smart work packaging for constraints management in prefabrication housing production.
+Advanced Engineering Informatics, 42, 100938.
+
+F. Xue: Digital Twinning Construction
+
+65
+
+References
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Xu, J., Chen, K., Zetkulic, A. E., Xue, F., Lu, W., & Niu, Y. (2019). Pervasive sensing technologies for facility management: a critical review. Facilities, in press.
+Xue, F., Chen, K., Lu, W., Niu, Y., and Huang, GQ. (2018). Linking radio-frequency identification to Building Information Modeling: Status quo, development trajectory and guidelines for
+practitioners. Automation in Construction, 93, 241–251. doi:10.1016/j.autcon.2018.05.023
+Xu, J., Lu, W., Xue, F. Chen, K., Ye, M., Wang, J., and Chen, X. (2018). Cross-boundary collaboration in waste management research: A network analysis. Environmental Impact Assessment
+Review, 73, 128–141. doi:10.1016/j.eiar.2018.08.005
+Lu, W., Chen, K., Xue, F., and Pan W. (2018). Searching for an optimal level of prefabrication in construction: An analytical framework. Journal of Cleaner Production, 201, 236–245.
+doi:10.3992/1943-4618.13.4.61
+Chen, K., Xu, G., Xue, F., Zhong, R. Y., Liu, D., and Lu, W. (2017). A Physical Internet-enabled Building Information Modelling System for prefabricated construction. International Journal of
+Computer Integrated Manufacturing, 1-13. To appear. doi: 10.1080/0951192X.2017.1379095
+Li, C.Z., Zhong, R.Y., Xue, F., Xu, G., Chen, K., Huang, G.Q. and Shen, G.Q. (2017) Integrating RFID and BIM technologies for mitigating risks and improving schedule performance of
+prefabricated house construction, Journal of Cleaner Production. 2017, 165: 1048-1062. doi: 10.1016/j.jclepro.2017.07.156
+Xue, F., Lu, W., Tan, T., and Chen, K. (2019). Semantic enrichment of city information models with LiDAR-based rooftop albedo. In Proceedings of the 2nd International Conference on
+Sustainable Buildings and Structures (ICSBS 2019). London: CRC Press. doi:10.1201/9781003000716-27 (The Best Paper Award)
+Xue, F., Chen, K. & Lu W. (2019). Understanding unstructured 3D point clouds for creating digital twin city: An unsupervised hierarchical clustering approach. CIB World Building Congress
+2019, 17-21 June, 2019, Hong Kong SAR.
+Xue, F., Lu, W., Tan, T., and Chen, K. (2019). Semantic enrichment for rooftop modeling using aerial LiDAR reflectance. In Proceedings of the 2019 IEEE International Conference on Signal
+Processing, Communications and Computing (ICSPCC 2019), in press. IEEE.
+Xue, F., Chen, K., and Lu, W. (2019). Architectural Symmetry Detection from 3D Urban Point Clouds: A Derivative-Free Optimization (DFO) Approach. In Advances in Informatics and
+Computing in Civil and Construction Engineering (pp. 513-519). Springer, Cham, in press. doi: 10.1007/978-3-030-00220-6_61
+Xue, F., Chiaradia, A. J. F., Webster, C. J., Liu, D., Xu, J., and Lu, W. (2018). Personalized walkability assessment for pedestrian paths: An as-built BIM approach using ubiquitous augmented
+reality (AR) smartphone and deep transfer learning. In The 23rd International Symposium on the Advancement of Construction Management and Real Estate. Springer, in press.
+Xu, J., Chen, K., Xue, F., and Lu, W. (2018). 3D point cloud data enabled facility management: A critical review. In The 23rd International Symposium on the Advancement of Construction
+Management and Real Estate. Springer, in press.
+Wang, J., Lu, W., Liu, D., and Xue, F. (2018). The Heterogeneity of BIM Objects in Different Construction Contexts. In Construction Research Congress 2018 (pp. 210-220). doi:
+10.1061/9780784481264.021
+Xue, F., and Shen, G. Q. (2017). Design of an efficient hyper-heuristic algorithm CMA-VNS for combinatorial black-box optimization problems. In Proceedings of the Genetic and Evolutionary
+Computing Conference Companion (pp. 1157-1162). Berlin, ACM. doi: 10.1145/3067695.3082054
+Lu, W., Peng, Y., Xue, F., Chen, K., Niu, Y. and Chen, X. (2017). The Fusion of GIS and Building Information Modeling for Big Data Analytics in Managing Development Sites, in Reference
+Module in Earth Systems and Environmental Sciences. Elsevier, 2017. doi: 10.1016/B978-0-12-409548-9.09677-9
+Chen, K., Xue, F., and Lu, W. (2017). Development of 3D Building Models Using Multi-Source Data: A Study of High-Density Urban Area in Hong Kong. In Lean and Computing in
+Construction Congress-Volume 1: Proceedings of the Joint Conference on Computing in Construction. Heriot-Watt University. doi: 10.24928/JC3-2017/0252
+
+F. Xue: Digital Twinning Construction
+
+66
+
+Thank you!
+Q&A plz
+
+67
+
+

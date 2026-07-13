@@ -1,0 +1,8896 @@
+Coordinate Multi-agent with
+Organization in Distributed
+Scheduling System
+
+A Dissertation Submitted to
+Civil Aviation University of China
+For the Academic Degree of Master of Science
+
+BY
+XUE Fan
+Supervised by
+Prof. FAN Wei
+
+College of Computer Science and Technology
+Civil Aviation University of China
+25th February 2007
+
+TP18
+UDC
+
+004.89
+
+048030307
+
+Agent
+
+2007
+
+2007
+
+2
+
+25
+
+3
+
+17
+
+AGSS
+
+N PPSPACE-
+
+run-and-schedule
+DSAFO Dynamic Scheduling Agents with Federation Organization
+Agent
+
+DSAFO
+
+Agent
+Agent
+DSAFO
+
+run-and-schedule
+Agent
+Agent
+
+DSAFO
+DSAFO
+DSAFO
+
+MMAS
+
+DSAFO
+
+Agent
+
+N P-
+
+i
+
+π-
+
+Abstract
+
+Numerous scheduling and planning problems in various industrial environments are
+known to be extremely challenging, especially large scale scheduling and planning optimization problems. Airport Ground Service Scheduling (AGSS) problem is such a problem.
+After a brief review of researches on AGSS related areas, formulations of AGSS
+problem are presented from constraint satisfaction view. Furthermore, AGSS problem is
+classified as a N P-complete (PSPACE-complete in some cases) scheduling problem.
+A dynamic distributed scheduling model is structured for AGSS problem then, and
+a dynamic distributed scheduling environment run-and-schedule is put forward to collect
+and uniform AGSS related data. DSAFO (Dynamic Scheduling Agents with Federation
+Organization) is a novel multi-agent algorithm for AGSS problem. To fulfill constraint
+satisfactions and optimizations in AGSS, DSAFO employs two strategies: local heuristics
+and global coordination, based on roles of agents in a federation organization.
+In a typical AGSS solving process, DSAFO accepts real-time flights data from runand-schedule environment; decomposes flight service goals into operations, according to
+gathered data; divides the solution space dynamically into rational partitions with multiagents; conquers each partition with local heuristics within an agent; optimizes the solution simultaneously via coordination among partitions from global view; and dispatches
+the solution to real world aircraft service resources simultaneously.
+The complexity of DSAFO is bounded between quadratic and cubic polynomial time.
+Though experiments show that DSAFO is unstable and influenced by several parameters,
+this algorithm is good at satisfying all constraints, jumping out of local minimum, and
+finding near optimal solutions for consumption of resources and man-days. After careful
+experiments and theoretical analysis on parameters in DSAFO, a comparison is presented
+with three opponent algorithms, including a MMAS approach and two traditional heuristics.
+
+ii
+
+Finally a brief conclusion of DSAFO and the future research directions in AGSS are
+given at the end of this thesis.
+
+Keywords Airport ground service, Distributed constraint satisfaction problem, Distributed scheduling system, Multi-agent algorithm, N P-complete, Polyadic π-calculus
+
+iii
+
+.................................................................................
+
+i
+
+.................................................................................
+
+ii
+
+............................................................................................. viii
+.............................................................................................
+
+x
+
+....................................................................................... xiv
+.......................................................................................
+
+1
+
+§1.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+1
+
+§1.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+4
+
+§1.2.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+5
+
+§1.2.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+5
+
+§1.2.3
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+6
+
+§1.3
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+6
+
+§1.4
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+7
+
+..................................................................
+
+8
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+8
+
+§2.2 Job-Shop
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+9
+
+§2.3
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 10
+
+§2.1
+
+iv
+
+§2.4
+
+Agent
+§2.4.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 12
+
+Agent
+
+§2.4.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 12
+
+Agent
+
+§2.4.3 Agent
+§2.5
+
+π-
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 13
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 17
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 20
+................................................ 23
+
+§3.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 23
+
+§3.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 24
+§3.2.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 24
+
+§3.2.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 25
+
+§3.2.3
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 28
+
+§3.2.4
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... 29
+
+§3.2.5
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... 30
+
+§3.3
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 30
+
+§3.4
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 30
+.................................................................. 32
+
+§4.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 32
+
+§4.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 33
+
+§4.3 Run-and-scheduling
+DSAFO
+§5.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 33
+...................................................... 36
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 36
+
+§5.2 DSAFO
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 38
+
+§5.2.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 38
+v
+
+§5.2.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 38
+
+§5.3 DSAFO
+
+Agent
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 39
+
+§5.3.1 Blackboard ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 40
+§5.3.2 ResourceAdmin
+§5.3.3 Member
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 42
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 42
+
+§5.3.4 Coordinator ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 45
+§5.4
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 46
+§5.4.1 Blackboard ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 47
+§5.4.2 ResourceAdmin
+§5.4.3 Member
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 48
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 48
+
+§5.4.4 Coordinator ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 50
+§5.5
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 50
+§5.5.1 UC
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 50
+
+§5.5.1.1
+
+Agent
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... 51
+
+§5.5.1.2
+
+Agent
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... 52
+
+§5.5.1.3 UC
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 53
+
+§5.5.2 DSAFO
+§5.6
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 53
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 53
+........................................................................ 57
+
+§6.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 57
+
+§6.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 57
+§6.2.1 Member Agent
+
+Reqcycle
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... 58
+
+§6.2.2 Blockfactor ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 62
+vi
+
+§6.2.3 Delayfactor ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 65
+§6.2.4 Syncycle
+§6.3
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 65
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 70
+................................................................................. 71
+
+§7.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 71
+§7.1.1 MMAS
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 71
+
+§7.1.2 EDD*
+
+ERT*
+
+§7.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 73
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 73
+.................................................................. 75
+
+§8.1
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 75
+
+§8.2
+
+... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 75
+
+................................................................................................... 76
+A DSAFO
+
+Agent
+
+............................................. 77
+
+............................................................................................. 78
+............................................................... 93
+................................................................................................... 94
+
+vii
+
+1–1
+
+. . . . . . . . . . . . . . . . . . . . .
+
+2–1
+
+Agent
+
+7–1
+
+BT
+
+7–2
+A–1 DSAFO
+
+4
+
+. . . . . . . . . . . . . . . . . . . . . . . . . 19
+TSP
+
+. . . . . . . . . . . . . . . . . . . . . . . 72
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 74
+FIPA ACL
+
+viii
+
+. . . . . . . . . . . . . . . . 77
+
+1–1
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1–2
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3
+
+1–3
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3
+
+2–1 Agent
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+4–1
+
+. . . . . . . . . . . . . . . . . . . . . 34
+
+5–1 DSAFO
+5–2 Agent
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+
+5–3 Blackboard
+
+. . . . . . . . . . . . . . . . . . . . . . . . . 41
+
+5–4 ResourceAdmin
+
+. . . . . . . . . . . . . . . . . . . . . . 42
+
+5–5 Member
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . 45
+
+5–6 Coordinator
+
+. . . . . . . . . . . . . . . . . . . . . . . . 46
+
+5–7
+
+Blackboard
+
+. . . . . . . . . . . . . . 54
+
+5–8
+
+BT Member Agent
+
+. . . . . . . . . . . . . 55
+
+5–9 JADE RMA GUI
+
+DSAFO . . . . . . . . . . . . . . . . . . . . . . . . 55
+
+5–10 JADE sniffer
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . 56
+
+5–11 JADE introspector
+
+Agent
+
+. . . . . . . . . . . . . . . . . 56
+
+6–1 Member Agent
+
+BT
+
+. . . . . . . . . . . . . . . . . . . 59
+
+6–2 Member Agent
+
+BT
+
+. . . . . . . . . . . . . . . . 60
+
+6–3 Member Agent
+
+BT
+
+. . . . . . . . . . . . . . . 61
+
+ix
+
+6–4 Blockfactor
+
+BT
+
+. . . . . . . . . . . . . . . . . . . . . . . . 63
+
+6–5 Blockfactor
+
+BT
+
+. . . . . . . . . . . . . . . . . . . . 64
+
+6–6 Delayfactor
+
+BT
+
+. . . . . . . . . . . . . . . . . . . . . . . 66
+
+6–7 Delayfactor
+
+BT
+
+. . . . . . . . . . . . . . . . . . . . 67
+
+6–8 Syncycle
+
+BT
+
+. . . . . . . . . . . . . . . . . . . . . . . . . 68
+
+6–9 Syncycle
+
+BT
+
+. . . . . . . . . . . . . . . . . . . . . 69
+
+7–1 EDD
+
+ERT
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . 74
+
+x
+
+A-SMGCS
+
+Advanced-Surface Movement Guidance and
+
+9
+
+Control Systems
+ACL
+
+Agent Communication Language
+
+14, 53, 62
+
+ACO
+
+Ant Colony Optimization
+
+10
+
+ACO
+
+Ant Colony
+
+16, 70
+
+ADOPT
+
+Asynchronous Distributed OPTimization
+
+12
+
+AGSS
+
+Airport Ground Service Scheduling
+
+1
+
+AI
+
+Artificial Intelligence
+
+6
+
+ANN
+
+artificial neural networks
+
+10
+
+AODB
+
+Airport Operation Data Base
+
+33
+
+ARCHON
+
+ARchitecture for Cooperative Heterogeneous 15
+ONline system
+
+ARM
+
+Airline Resource Management system
+
+8, 15
+
+AS
+
+Ant System
+
+71
+
+BCIA
+
+Beijing Capital International Airport
+
+9
+
+BDI
+
+Belief-Desire-Intention
+
+16
+
+BOID
+
+Beliefs-Obligations-Intentions-Desires
+
+16
+
+BT
+
+Baggage Tractor
+
+1, 50
+
+CMDP
+
+single-agent Constrained MDP
+
+17
+
+CNET
+
+Contract NET
+
+14
+
+COM-MTDP
+
+COMmunicative Multiagent Team Decision 17
+Problem
+
+Coo-BDI
+
+Cooperative BDI
+
+16
+
+CSP
+
+Constraint Satisfaction Problem
+
+10
+
+xi
+
+DAI
+
+Distributed AI
+
+10, 13
+
+DEC-MDP
+
+DECentralized MDP
+
+17
+
+DEC-POMDP
+
+DECentralized POMDP
+
+17
+
+Dis-CSP
+
+Distributed Constraint Satisfaction Problem
+
+11, 28
+
+Dis-DSS
+
+Distributed Dynamic Scheduling System
+
+8, 15
+
+Dis-HTN
+
+Distributed HTN
+
+15
+
+DJSSP
+
+Dynamic Job-Shop Scheduling Problem
+
+29
+
+dMARS
+
+distributed Multi-Agent Reasoning System
+
+16
+
+DSAFO
+
+Dynamic Scheduling Agents with Federation 36, 57, 73
+Organization
+
+DSIPE
+
+Distributed System for Interactive Planning 15
+and Execution
+
+EDD
+
+Earliest Due Date
+
+EMTDP
+
+Extended Multiagent Team Decision Problem 17
+
+ERT
+
+Earliest Ready Time
+
+9, 73
+
+FA/C
+
+Functionally Accurate, Cooperative system
+
+15
+
+FCFS
+
+First-Come-First-Serve
+
+9
+
+FIDS
+
+Flight Information Display System
+
+33
+
+FIFO
+
+First-In-First-Out
+
+9
+
+FIPA
+
+Foundation for Intelligent Physical Agents
+
+15, 53
+
+FOC
+
+Flight Operations Control system
+
+33
+
+FSTS
+
+Fuzzy Subjective Task Structure
+
+16
+
+GA
+
+Genetic Algorithm
+
+10
+
+GBB
+
+Generic Blackboard
+
+8
+
+GPGP
+
+Generalized Partial Global Planning
+
+15
+
+HPS
+
+Hospital Patient Scheduling
+
+16
+
+HTN
+
+Hierarchical Task Network
+
+15
+
+JADE
+
+Java Agent DEvelopment framework
+
+53, 57, 62
+
+xii
+
+9, 38, 73
+
+JSSP
+
+Job-Shop Scheduling Problem
+
+9, 29, 72
+
+KQML
+
+Knowledge Query Manipulation Language
+
+14
+
+LB
+
+Load Baggage
+
+1, 57
+
+LC
+
+Load Cargo and mail
+
+1, 57
+
+LGPL
+
+Lesser General Public License Version
+
+53
+
+MAS
+
+Multi-Agent System
+
+10, 12
+
+MBO
+
+Model-Based Optimization
+
+9
+
+MDP
+
+Markov Decision Process
+
+16
+
+MMAS
+
+MAX -MIN Ant System
+
+72
+
+MMDP
+
+Multiagent MDP
+
+17
+
+MSF
+
+minimum slack
+
+9
+
+NEXP-complete
+
+Non-EXPonential complete
+
+17
+
+N P-complete
+
+Non-Polynomial complete
+
+9, 26
+
+PGP
+
+Partial Global Planning
+
+15
+
+POMDP
+
+Partially Observable Markov Decision Process 12, 17
+
+poset
+
+partial ordered set
+
+24
+
+PSO
+
+Particle Swarm Optimization
+
+10, 70
+
+PSPACE-complete Polynomial SPACE complete
+
+29
+
+QBF
+
+Quantified Boolean Formula
+
+29
+
+RCS
+
+Rolegraph Coordination Strategy
+
+16
+
+SA
+
+simulated annealing
+
+10
+
+SIPE
+
+System for Interactive Planning and Execu- 15
+tion
+
+SPT
+
+shortest processing time
+
+9
+
+TAAM
+
+Total Airport & Airspace Modeller system
+
+8
+
+xiii
+
+TÆMS
+
+a framework for Task Analysis, Environment 15
+Modeling, and Simulation
+
+TM
+
+Turing Machine
+
+16, 29
+
+TSP
+
+Travel Salesman Problem
+
+71
+
+UB
+
+Unload Baggage
+
+1, 57
+
+UC
+
+Unload Cargo and mail
+
+1, 50, 57
+
+xiv
+
+[1, 2, 3]
+
+N PAGSS Airport Ground Service Scheduling
+
+1.1
+
+H. Hartmann (2001)
+[4]
+
+[5]
+
+1–1
+
+1–2
+1–1
+
+1–1
+
+1–2
+
+1–3
+
+1–1
+
+1
+
+1–3
+
+1–1:
+
+2
+
+chock
+wheels
+
+commissary
+trucks/ mobile
+belt conveyor
+
+transfer bridge/
+passenger stair
+
+refuel
+
+unload
+cargo
+& mail
+
+cleaning
+
+catering
+
+load
+cargo
+& mail
+
+boarding
+
+power supply/ deicing/ air condition
+
+maintenance check
+
+portable water & lavatory service
+
+unload
+baggage
+
+disembark
+
+custom
+
+load
+baggage
+
+remove
+bridge/
+stair
+push
+back
+
+transfer bridge/
+passenger stair
+chock
+wheels
+
+catering
+
+load
+cargo
+& mail
+
+commissary
+trucks/ mobile
+belt conveyor
+
+remove
+bridge/
+stair
+
+boarding
+
+load
+baggage
+
+push
+back
+
+refuel
+portable water
+maintenance check
+power supply/ deicing/ air condition
+1–2:
+
+transfer bridge/
+passenger stair
+chock
+wheels
+
+disembark
+
+cleaning
+
+unload
+baggage
+
+commissary
+trucks/ mobile
+belt conveyor
+
+lavatory service
+maintenance check
+1–3:
+
+3
+
+remove
+bridge/
+stair
+unload
+cargo
+& mail
+
+push
+back
+
+1–1:
+
+UB, unload baggage
+
+BT, baggage tractor +
+
+UC, unload cargo and mail
+
+BT +
+
+LC, load cargo and mail
+
+BT +
+
+LB, load baggage
+
+BT +
+(+
+
+)
+
++
++
+
+AGSS
+[5]
+
+P. Baptiste, C. Le Pape
+
+W. Nuijten (1995)
+
+[6]
+
+3
+
+1.2
+
+4
+
+1.2.1
+2006
+81.07%
+75.86% 78.65%
+
+75.87% [7]
+
+L. Shi (2005)
+2–3%
+[8]
+
+S.-H. Tsaur, T.-Y. Chang
+
+C.-H. Yen (2002)
+
+12.8%[9]
+
+1.2.2
+
+[10]
+
+5
+
+1.2.3
+
+1.
+
+2.
+
+3.
+
+1.3
+
+1.
+
+2.
+run-and-schedule
+3.
+
+Agent
+
+4.
+
+DSAFO
+
+5.
+
+DSAFO
+
+DSAFO
+
+DSAFO
+Conquer
+
+AI
+Agent
+
+Divide-and-
+
+DSAFO
+
+6.
+
+MMAS
+MAX − MIN Ant System
+
+7.1.1
+
+6
+
+1.4
+
+2
+Job-Shop
+lem
+
+2.2
+
+JSSP Job-Shop Scheduling ProbDis-CSP Distributed Constraint Satisfaction
+
+Problem
+
+2.3
+
+Agent
+2.4
+
+Coordinative multi-agent system
+π-
+
+polyadic π-calculus
+
+2.5
+
+3
+
+4
+
+4.1
+4.2
+run-and-scheduling
+
+5
+
+Agent
+
+DSAFO DSAFO
+5.3
+Agent
+
+5.2
+5.4
+
+5.5
+
+JADE
+
+FIPA ACL
+
+Agent
+
+DSAFO
+
+5.6
+
+6
+
+6.2
+
+DSAFO
+
+6.3
+
+7
+
+DSAFO
+
+ERT*
+
+MMAS EDD*
+MMAS
+
+8
+
+DSAFO
+
+DSAFO
+
+7
+
+7.1.1
+
+JSSP
+
+Dis-CSP
+
+AI
+Agent
+
+π-
+
+2.1
+Airline Resource Management, ARM
+
+D. E.
+
+Neiman, D. W. Hildum, V. R. Lesser
+Agent
+
+Dis-DSS
+
+Distributed Dynamic Scheduling System
+
+[11, 12]
+
+DSS Distributed Scheduling System
+Generic Blackboard, GBB
+
+Dis-DSS
+
+most-tightly-constrained-first
+D. E. Neiman
+[13]
+
+V. R. Lesser
+
+M. Chia, D. E. Neiman, V. R. Lesser
+
+distraction
+
+poaching
+
+Dis-DSS[14]
+
+A. Cheung, W. H. Ip, D. Liu and C. L. Lai
+
+Genetic
+[15]
+
+Algorithm, GA
+
+Preston1
+
+TAAM
+
+Total Airport & Airspace Modeller
+Lufthansa
+
+PERSEUS
+
+2
+
+ASCENT
+1
+2
+3
+
+http://www.preston.net
+http://www.groundstar.de
+http://www.ascent.com
+
+8
+
+3
+
+ARIS/AR
+
+4
+
+5
+
+Northrop Grumman
+
+Park Air Systems6
+
+A-SMGCS
+
+Advanced-Surface Movement Guidance and Control Systems
+Beijing Capital International Airport, BCIA
+
+GIS Geographical Information System
+[16]
+
+2.2
+
+Job-Shop
+1 (JSSP) A. S. Manne
+
+Scheduling Problem, JSSP
+
+[17]
+
+1960
+
+Job-Shop
+
+Job-Shop
+
+:
+
+n
+
+——
+
+•
+•
+xj
+
+j
+
+x = 0, 1, . . . , T
+
+make-span
+A. S. Jain
+
+[18]
+
+S. Meeran
+JSSP
+dynamic programming
+
+decomposition strategies
+
+enumerative techniques
+MBO
+
+[19]
+
+Model-Based Optimization,
+
+JSSP
+
+N P-
+
+,
+
+dispatching rules
+
+sequencing rule
+4
+5
+6
+
+[1]
+
+scheduling rule
+
+http://www.caacsri.com
+http://www.northropgrumman.com
+http://www.parkairsystems.com
+
+7
+
+9
+
+7
+
+heuristics
+
+8
+
+Lagrangian
+
+Lagrangian relaxation
+
+shortest processing time, SPT
+ERT
+
+earliest due date, EDD
+
+minimum slack first, MSF
+
+earliest ready time,
+
+first-in-first-out, FIFO
+
+first-come-first-serve,
+
+[20]
+
+FCFS
+
+JSSP
+AI
+
+intelligent algorithm
+
+intelligent optimization algorithm
+
+80
+[2, 21]
+
+JSSP
+Distributed AI, DAI,
+[26]
+[30, 31]
+[34]
+
+expert/knowledge-based systems
+[22, 23, 24, 25]
+
+Agent
+
+[27, 28, 29]
+
+artificial neural networks, ANN
+[32, 33]
+
+simulated annealing, SA
+
+tabu search
+
+genetic algorithms, GA
+[35]
+
+Ant Colony Optimization, ACO
+
+) MAS
+
+Particle Swarm Optimization,
+
+PSO
+Fuzzy logic
+[36, 37]
+
+fuzzy set
+
+2.3
+2 (CSP)
+CSP
+
+n
+
+Constraint Satisfaction Problem,
+x1 , x 2 , . . . , x n
+
+D1 , D 2 , . . . , D n
+pk (xk1 , . . . , xkj )
+
+Cartesian
+
+Dk1 × . . . × Dkj
+
+[38]
+
+search algorithms
+Consistency algorithms
+Backtracking algorithms
+
+Iterative improvement
+
+algorithms
+
+min-conflict heuristic
+8
+
+[39]
+
+weak-commitment
+
+Lagrangian
+
+10
+
+search algorithm
+
+[40]
+
+flawed
+hill-climbing search
+[41]
+
+3 (Dis-CSP)
+
+Distributed Constraint Satisfaction
+
+Problem, Dis-CSP
+A = {α1 , . . . , αp }
+
+< A, X, D, C >
+-
+
+p
+
+-
+
+p
+
+X = {Xα1 , . . . , Xαp }
+α ∈ A, Xα = {x1α , . . . , xqαα }
+
+Agent
+
+-
+
+D = {Dα1 , . . . , Dαp }
+
+α
+
+-
+
+Agent
+
+α ∈ A and χ ∈ Xα , χ ∈ Dα (χ) -
+
+χ
+
+qα
+
+Agent α
+C = {c1 , . . . , cr } = Cα1 ∪ . . . ∪ Cαp
+
+-
+
+i ∈ {1, . . . , r},
+qα
+
+q
+
+ci : Dα1 (x1α1 ) × . . . × Dα1 (xαα11 ) × . . . × Dαp (xαpp ) 7→ {true, false}
+Agent α ∈ A, Cα = {ci |ci ∈ C ∧ ∃ ci is relative to x},
+x∈Xα
+
+- Agent α
+Agent α
+Dis-CSP
+qα
+
+q
+
+a ∈ Dα1 (x1α1 ) × . . . × Dα1 (xαα11 ) × . . . × Dαp (xαpp )
+
+∀ ci (a) ≡ true.
+
+1≤i≤r
+
+M. Yokoo, E. H. Durfee, T. Ishida
+[42]
+
+K. Kuwabara
+
+Dis-CSP
+asynchronous backtracking
+[42, 43]
+
+M. Yokoo
+
+asynchronous weak-commitment
+[42, 44, 45]
+
+search
+Agent
+Agent
+11
+
+ok?
+
+Agent
+
+improve
+
+2-
+
+[46]
+
+ADOPT P. J. Modi, W.-M. Shen, M. Tambe
+
+M. Yokoo (2005)
+
+ADOPT Asynchronous Distributed OPTimization, ADOPT
+[47]
+
+Agent POMDP
+
+Agent
+
+Markov
+[48]
+
+Markov Decision Processes, POMDP
+
+2.4
+2.4.1
+
+Partially Observable
+
+Agent
+Agent
+Agent
+
+Multi-agent system, MAS
+Agent
+
+Agent
+
+Agent
+[49]
+
+M. Wooldridge
+
+N. Jennings (1995)
+
+•
+
+autonomy
+
+•
+
+social ability
+
+Agent
+
+[50]
+
+Agent
+
+Agent
+
+Agent
+
+Agent
+
+agent-communication language
+•
+
+reactivity
+
+Agent
+
+Agent
+
+•
+
+pro-activeness
+
+Internet
+
+Agent
+
+[51]
+
+Agent
+real-time
+
+intending
+
+resource limited
+12
+
+Agent
+continuous
+
+Agent
+Agent
+
+Object
+
+M. Wooldridge
+
+[51]
+
+(2001)
+
+active Objects
+
+• Agent
+• Agent
+Agent
+
+•
+
+2.4.2
+
+Agent
+Agent
+
+Agent
+
+[52, 53]
+
+coordinables
+
+coordination media
+
+[54]
+
+coordination laws . H. S. Nwana (1996)
+
+Agent
+
+M. N. Huhns and M. P. Singh
+
+(1994)
+
+Distributed AI, DAI
+
+[55]
+
+Agent
+
+Agent
+Agent
+³X
+´
+³X
+´
+V
+agenti > max
+V(agenti )
+
+V
+Agent
+equality
+interference
+
+•
+
+[56, 57]
+
+coordination
+
+enablement
+
+inhibit
+
+[58]
+
+2–1
+
+Agent
+
+[52]
+
+•
+
+cooperation9
+
+•
+
+negotiation
+
+Agent
+Agent
+
+interaction
+
+[58]
+
+nonantagonistic Agent
+
+task
+
+[58]
+
+autonomy
+benevolence
+
+9
+
+13
+
+Coordination
+Cooperation
+
+Competition
+
+Planning
+
+Negotiation
+
+Distributed
+planning
+
+Centralized
+planning
+
+2–1: Agent
+•
+
+Agent
+
+•
+
+Agents
+
+•
+
+Agent
+
+•
+
+Agent
+
+Agent
+Agent
+
+Agent
+Agent
+
+Agent
+
+Agent
+[11, 13, 14, 59, 60, 61, 62, 63, 64, 65, 66, 67]
+
+Agent
+coordination protocol
+
+coordination application system
+
+strong mathematical coordination model
+
+coordination
+
+extension
+1.
+
+D. Gelernter
+
+N. Carriero (1992) [52]
+Agent
+
+NET
+
+[68, 69]
+[70, 71]
+
+CNET Contract
+
+KQML Knowledge Query Manipulation Language
+FIPA ACL Agent Communication Language Agent
+
+(a) CNET
+
+Agent
+
+14
+
+(b) KQML KQML
+
+Agent
+
+Agent
+Agent
+
+(c) FIPA ACL
+
+FIPA Foundation for Intelligent Physical Agents,
+ACL [72, 73]
+
+Agent
+
+Agent
+
+ACL
+2.
+
+:
+
+Agent
+
+(a) FA/C
+
+/
+
+Functionally accurate, cooperative system,
+
+FA/C
+[74, 75]
+
+(b) HTN
+
+Hierarchical Task Network, HTN
+SIPE System for Interactive Planning and Execution
+[76]
+
+(c) PGP
+
+Partial Global Planning, PGP
+distributed sensor
+[77]
+
+network
+(d) ARCHON
+
+ARchitecture for Cooperative Heterogeneous ONline sys-
+
+tem
+[78, 79]
+
+(e) Dis-DSS
+
+Distributed Dynamic Scheduling System
+Agent
+Airline Resource Management, ARM
+
+[11, 13]
+
+(f) GPGP
+
+Generalized Partial Global Planning
+
+PGP
+
+TÆMS Task Analysis, Environment Modeling, and Simulation
+PGP GPGP
+Agent
+[80]
+
+(g) Dis-HTN
+
+HTN
+
+HTN
+
+DSIPE Distributed
+
+System for Interactive Planning and Execution
+
+15
+
+SIPE
+
+DSIPE
+
+Agent
+[81]
+
+(h)
+
+GPGP K. Decker
+
+J. J. Li
+
+TÆMS
+
+[82, 83]
+
+GPGP
+
+GPGP
+
+Hospital
+
+Patient Scheduling, HPS
+(i)
+
+[84]
+
+wasp-like
+
+Agent
+[64, 85]
+
+ACO
+3.
+Turing Machine, TM
+
+M. d’Inverno (1997)
+[86]
+
+(a)
+
+Joint Intention
+commitment
+
+joint
+
+joint responsibility
+
+joint
+
+[87, 88]
+
+action
+(b) BOID:
+
+Agent
+
+J. Broersen, M. Dastani, J. Hulstijn, Z. Huang
+
+(2001)
+
+L. van der Torre
+
+BOID Beliefs-Obligations-Intentions-Desires
+[89]
+
+-
+
+BDI Belief-Desire-Intention
+
+-
+
+-
+
+-
+
+-
+
+[51, 90]
+
+(c) Coo-BDI Coo-BDI Cooperative BDI
+
+BDI
+
+dMARS Distributed
+
+Multi-Agent Reasoning System
+
+Agent
+
+[86]
+
+BDI
+[91, 92]
+
+Agent
+(d) RCS: RCS Rolegraph Coordination Strategy
+Agent
+
+Agent
+
+[93]
+
+(e) FSTS FSTS Fuzzy Subjective Task Structure
+[94]
+
+Fuzzy logic
+
+[95]
+
+(f) MDP: MDP Markov Decision Process Markov
+possible world-states
+
+16
+
+MDP
+
+i. MMDP
+
+Agent MDP Multiagent MDP
+
+ii. DEC-MDP
+
+DEC-POMDP
+
+[96]
+
+MDP Decentralized MDP
+
+MDP Decentralized partially observable Markov decision
+process, Decentralized POMDP
+iii. COM-MTDP
+
+Agent
+
+Team Decision Problem
+iv. CMDP
+
+[97, 98]
+
+EMTDP
+
+COMmunicative Multiagent
+
+[99]
+
+Agent
+
+MDP constrained MDP
+
+Extended Multiagent Team Decision Problem [100]
+
+Agent
+4.
+
+Agent-Agent
+(a) P. Scerri, L. Johnson, D. V. Pynadath, P. Rosenbloom, N. Schurr, M. Si
+Tambe (2003)
+
+-Agent
+
+[101]
+
+-Agent-
+
+(b) A. Omicini, A. Ricci, M. Viroli, C. Castelfranchi
+
+M.
+
+L. Tummolini (2004)
+
+Coordination Artifact
+[102]
+
+Agent
+Agent
+
+5
+
+DSAFO
+
+GPGP
+NEXP[82, 98]
+
+-
+
+K. Sycara, S. Roth, N. Sadeh
+[24]
+
+Agent
+A. Garland
+
+R. Alterman (2004)
+Agent
+
+2.4.3
+
+Agent
+
+[103]
+
+Agent
+
+[49]
+
+•
+•
+
+Non-EXPonential-complete
+
+Agent
+17
+
+M. Fox (1991)
+Agent
+
+•
+•
+
+goal directed
+
+•
+•
+
+Agent
+
+•
+
+Agent
+M. S. Fox (1979, 1981)
+
+[106, 107, 108, 109, 110]
+[111]
+
+2–1
+
+B. Horling (2004)
+
+Hierarchy
+
+Congregation
+
+[104, 105]
+
+Agent
+
+Holarchy
+Society
+
+Agent
+Coalition
+
+Federation
+
+Marketplace
+Matrix
+
+Team
+
+Compound organization
+1.
+
+[104, 105, 112, 113]
+
+Agent
+
+divide-and-conquer
+
+2.
+
+[114, 115]
+
+3.
+
+[112, 116]
+
+Koestler
+
+holon10
+
+Agent
+
+4.
+
+Agent
+
+[117, 118]
+
+Agent
+malevolent
+
+5.
+
+[119, 120]
+
+Agent
+long-lived
+
+10
+
+Koestler, 1967
+
+holon
+
+Koestler
+
+The Ghost In The Machine,
+
+Koestler
+
+18
+
+2–1:
+
+Agent
+
+19
+
+Agent
+
+[121, 122]
+
+6.
+
+Agent
+Agent
+[123, 124]
+
+7.
+
+Agent
+
+Agent
+Agent
+
+[80]
+
+8.
+
+Agent
+
+Agent
+
+Agent
+
+Agent
+
+Agent
+
+Agent
+Agent
+[105, 124, 125, 126]
+
+9.
+
+Agent
+task-centric
+
+[77]
+
+10.
+
+2.5
+
+πR. Milner (1991)
+
+π-
+
+polyadic π-calculus
+π-
+
+[51]
+
+π-
+
+T. Rorie (1998) [130]
+π-
+
+[127]
+
+[128, 129]
+
+Agent
+(1999) [131, 132]
+
+W. Jiao
+
+π4 (π-
+
+[127]
+
+) π-
+
+name
+
+x, y, . . . ∈ X
+
+π-
+
+20
+
+Agent
+
+process
+
+P, Q, . . . ∈ P
+P ::= Σ πi .Pi | P |Q | !P | (νx)P
+i∈I
+
+I
+
+I=Ø
+
+π.P
+
+π
+
+x(y),
+
+0
+
+atomic action
+
+π.P
+
+y
+
+x
+
+xy,
+
+y
+
+x
+
+x
+
+subject
+
+positive
+
+y
+y
+
+y
+
+object
+
+negative
+
+x
+
+x
+
+x
+
+co-name
+P |Q
+
+P
+
+Q
+
+P
+
+!P
+
+P
+
+x
+
+Q
+
+P |P | . . .
+
+x
+
+(νx)P
+
+P
+
+.0
+
+x(y)
+
+x(y).0
+
+P
+
+xy.0
+
+xy
+
+x(y1 · · · yn )
+
+x(w).w(y1 ). · · · .w(yn )
+
+xy1 · · · yn
+
+(νw)xw.wy1 . · · · .wyn
+π-
+
+5 (
+
+π-
+
+abstraction F, G, . . .
+α, β, . . .
+→
+→
+|−
+x |, |−
+y |, . . .
+
+[127]
+
+)
+concretion C, D, . . .
+−
+→
+→
+x ,−
+y ,...
+
+Normal process
+
+:
+
+N ::= α.A | 0 | M + N
+
+Process
+
+:
+
+P ::= N | P |Q | !P | (νx)P
+
+Abstraction
+
+:
+
+F ::= P | (λx)F | (νx)F
+
+Concretion
+
+:
+
+C ::= P | [x]C | (νx)C
+
+Agent
+
+:
+
+A ::= F | C
+
+21
+
+A, B, . . .
+
+M +N
+
+M
+
+N
+
+(λx)P
+def
+
+x(y1 · · · yn ).P = x.(λy1 · · · yn )P
+[x]C
+
+[]
+def
+
+xy1 · · · yn .P = x.[y1 · · · yn ]P
+xy1 · · · yn
+xhy1 · · · yn i
+
+22
+
+3.1
+
+•
+•
+•
+•
+•
+•
+•
+3
+
+•
+•
+
+2
+
+44-
+
+• Agent
+
+23
+
+3.2
+F
+R
+
+3.2.1
+1
+
+O,
+¹
+
+< O, ¹>
+
+.
+
+partial ordered set, poset < S, R >
+{a, b}
+supremum
+
+infimum
+
+inf{a, b}
+
+sup{a, b}[133]
+
+< O, ¹>
+•
+
+closure
+
+< o1 , o2 >∈¹
+
+•
+
+reflexivity
+
+o∈O
+
+•
+
+transitivity
+o1 ¹ o3
+
+o1 , o2 ∈ O
+
+o¹o
+
+o1 , o2 , o3 ∈ O
+o1
+
+o2
+
+o2
+
+< O, ¹>
+•
+
+o1 ¹ o2
+o3
+
+o1
+:
+
+o∈O
+
+landing ¹ o
+
+landing
+
+24
+
+o2 ¹ o3
+o3
+
+•
+
+o∈O
+
+o ¹ takeof f
+
+takeof f
+< O, ¹>
+
+6 (
+
+)
+
+airport ground service
+
+hF, O, R, T , ¹, D, F, rt, st, ut, et, tt, Ω, γ, si
+F
+
+= {ϕ1 , ϕ2 , . . . , ϕn }
+
+-n
+
+O
+
+= {o1 , o2 , . . . , op }
+
+-p
+
+R = {r1 , r2 , . . . , rq }
+
+-q
+
+T
+
+-
+
+= {0, 1, 2, . . . , ∆}
+
++, −, =, <, ≤
+¹
+
+:
+
+O 7→ O
+
+-
+
+O
+1
+
+D
+
+:
+
+F 7→ T
+
+-
+
+F
+
+:
+
+O 7→ F
+
+-
+
+rt
+
+:
+
+O 7→ T
+
+-
+
+st
+
+:
+
+O 7→ T − {0}
+
+-
+
+ut
+
+:
+
+O 7→ T
+
+-
+
+et
+
+:
+
+O 7→ T
+
+-
+
+tt
+
+:
+
+R × O 7→ T
+
+-
+
+Ω
+
+:
+
+R × T 7→ O ∪ {Ø}
+
+Ø
+
+3.2.2
+7 (
+
+)
+
+hF, O, R, T , ¹, D, F, rt, st, ut, et, tt, Ω, γ, si
+γ
+
+:
+
+O 7→ R -
+
+s
+
+:
+
+O 7→ T
+
+-
+
+25
+
+s.t. ∀ [rt(o) ≤ s(o)
+o∈O
+
+∧ s(o) + st(o) ≤ D(F (o))
+∧ ∀ 0 s(o) + st(o) ≤ rt(o0 )
+o≺o
+
+∧
+o ≺ o0
+
+∀
+
+s(o)−ut(o)−tt(γ(o),o)≤τ <s(o)+st(o)+et(o)
+
+Ω(γ(o), τ ) = o]
+
+o ¹ o0 ∧ o 6= o0
+
+2 p ∼ O(n)
+
+p
+
+O(n)
+
+.
+
+∀ϕ ∈ F
+OPϕ = {o|o ∈ O ∧ F (o) = ϕ}
+ϕ
+∀ϕ ∈ F, |OPϕ | = O(1)
+p = |O| =
+
+X
+
+|OPϕ | ∼ O(n).
+
+ϕ∈F
+
+3 q ∼ O(n)
+
+q
+
+O(n)
+
+.
+def
+
+rutmin = min[tt(γ(o), o) + ut(o) + st(o) + et(o)]
+o∈O
+
+p
+∆+1 T
+p×rutmin
+∆+1
+
+O(n) ∼
+
+p × rutmin
+≤ q ≤ p ∼ O(n)
+∆+1
+
+q ∼ O(n)
+1
+
+N P-
+
+26
+
+N P-complete
+
+p
+
+.
+NP
+Partition
+[1]
+
+N PA
+s(a) ∈ Z+
+
+a ∈ A
+
+A0 ⊆ A
+X
+X
+s(a).
+s(a) =
+a∈A−A0
+
+a∈A0
+
+Multi-processor scheduling
+l(a) ∈ Z+
+
+A
+l(a) ∈ Z+
+A
+
+D ∈ Z+
+
+m
+A = A 1 ∪ A 2 ∪ . . . ∪ Am
+(
+)
+X
+max
+l(a) : 1 ≤ i ≤ m ≤ D.
+a∈Ai
+
+restriction
+
+P
+1
+
+D= 2
+
+m = 2
+
+a∈A l(a)
+
+m=2
+
+D = 12
+
+P
+
+a∈A l(a)
+
+≤p
+N P-
+
+M. R. Garey, E. G. Coffman Jr.,
+[134, 1]
+
+D. S. Johnson (1978, 1979)
+
+o∈O
+ut(o) = et(o) = tt(o) = 0
+
+rt(landing) = 0
+
+q = m p = |A| DF = D
+
+f ∈F
+
+D(f ) = DF
+
+o∈O
+
+≤p
+
+a∈A
+.
+
+≤p
+
+.
+N P27
+
+1
+
+Distributed
+
+Constraint Satisfaction Problem, Dis-CSP
+.
+
+3
+
+Agent
+
+3.2.3
+8 (
+
+)
+γ0 , s0
+s.t.|ran(γ0 )| = min|ran(γ)|,
+γ∈Γ
+
+Γ
+
+|ran(γ)|
+
+2
+.
+
+γ
+
+N P7
+
+8
+
+1
+
+N PN P-
+
+N P-
+
+B
+brute-force search
+
+N P-
+
+O(2|B| ) = O(2b )
+N PN P28
+
+2
+.
+
+8
+1
+3
+
+Job-Shop
+
+Job-Shop
+
+Scheduling Problem, JSSP
+.
+
+1
+
+8
+
+Job-Shop
+
+3.2.4
+9 (
+
+)
+o∈O
+
+4
+
+tr(o)
+
+Job-Shop
+
+Dynamic Job-Shop Scheduling Problem, DJSSP
+.
+
+3
+
+Job-shop
+
+Job-shop
+
+DJSSP
+
+[135]
+
+PSPACE-
+
+PSPACE-complete
+[1]
+
+chine, TM
+
+3
+.
+Job-Shop
+
+PSPACE-
+
+Turing maN P-
+
+PSPACE4
+Job-Shop
+Quantified Boolean Formula, QBF
+29
+
+[135]
+
+QBF
+
+[1]
+
+PSPACEPSPACE-
+
+3.2.5
+10 (
+
+)
+γ0 , s0
+s.t.|ran(γ0 )| = min|ran(γ)|,
+γ∈Γ
+
+Γ
+
+3.3
+R×T
+
+P
+
+sch : O 7→ P
+RT
+
+LFT
+
+ST
+
+UT
+
+ET
+def
+
+operation = < fno, type, parkNo, RT, LFT, ST, UT, ET >
+TT
+CSST
+def
+
+plan = < op, res, TT, CSST >
+TT (
+
+tt(γ, o))
+
+Agent
+Agent
+5km/h
+
+3.4
+1
+
+2
+
+30
+
+3
+
+Job-Shop
+Job-Shop
+makespan
+unload baggage
+
+•
+•
+•
+•
+
+31
+
+run-and-schedule
+
+4.1
+
+N P-
+
+M. E. Aydin
+
+E. Öztemel (2000)
+/
+
+Dis-CSP
+
+market-oriented programming
+C. J. Tomlin (2002)
+İnalhan
+Pareto
+
+[136]
+
+Agent
+
+[137]
+
+[42]
+
+G. İnalhan, D. M. Stipanović
+
+[138]
+
+G.
+
+(2002)
+[138]
+
+32
+
+8
+
+4.2
+4–1
+
+[139]
+
+Run-and-schedule
+
+Run-andschedule
+
+5
+
+DSAFO
+
+4.3
+
+Run-and-scheduling
+[139]
+
+Run-and-schedule
+
+Flight Operations
+Control system, FOC
+
+Airport Operation Data Base, AODB
+
+Flight Information Display System, FIDS
+VIP
+run-and-schedule
+
+33
+
+Billing system
+
+4–1:
+
+34
+
+Others
+
+FIDS
+
+AODB
+
+FOC
+
+Clock
+
+Real−time
+data
+collection
+
+Coordinator
+agent 1
+Member
+agent 1
+
+Blackboard
+agent
+
+resource groups
+
+Input aviation Run−and−schedule
+environment
+systems
+
+Member
+agent 2
+
+Member
+agent n
+
+Real world resources
+
+Coordinator
+agent m
+
+Resource
+administrator
+agent
+
+DSAFO
+
+Heartbeat
+
+S. J. Russell
+
+[140]
+
+P. Norvig (1995)
+
+run-and-schedule
+Agent
+
+•
+
+accessible
+
+•
+
+deterministic
+
+•
+
+dynamic
+
+•
+
+discrete
+
+Agent
+
+run-and-schedule
+
+Agent
+
+run-and-schedule
+
+35
+
+Agent
+
+DSAFO
+
+Agent
+
+DSAFO Dynamic Scheduling Agents with
+
+Federation Organization
+
+Agent
+
+5.1
+DSAFO
+
+Dynamic Scheduling Agents with Federation Organization
+Agent
+DSAFO
+
+4–1
+1.
+
+[139]
+
+2.2
+
+5–1
+
+DSAFO
+
+run-and-schedule
+
+2.
+3.
+
+Agent
+
+4.
+5.
+6.
+4–1
+
+Agent Blackboard
+
+Agent ResourceAdmin
+
+Member Agent
+Coordinator Agent
+
+DSAFO
+1.
+
+run-and-schedule
+
+K. Sycara, S. Roth, N. Sadeh
+
+M. Fox. (1991) [24]
+
+36
+
+Member
+
+Scheduling
+algorithms
+
+Accurate
+algorithms
+
+Branch−and−
+bound
+Dynamic
+planning
+
+Approximate
+algorithms
+
+Dispatching
+rules
+Heuristic
+search
+Lagrange
+relaxation
+
+Intelligent
+algorithms
+
+Evolution
+algorithms
+
+Gene
+algorithm
+
+Tabu search
+
+Evolution
+planning
+
+Neural
+networks
+Simulated
+annealing
+
+Evolution
+strategy
+
+Ant Colony
+system
+Partical swarm
+optimization
+Multi−agent
+system
+5–1: DSAFO
+
+37
+
+DSAFO
+
+2.
+
+Dis-DSS [11, 12]
+
+3.
+
+M. E. Aydin
+
+E. Öztemel (2000) [136]
+
+simulated environ-
+
+ment
+4.
+
+asynchronous weak-commitment search
+
+5.2
+
+[42, 44, 45]
+
+DSAFO
+DSAFO
+
+Agent
+
+5.2.1
+DSAFO
+
+EDD Earliest Due Date first
+Latest Finish Time, LFT
+Committed Service Start
+
+Time
+EDD
+N P-
+
+PSPACE-
+
+EDD
+
+DSAFO
+
+EDD
+
+Agent
+
+EDD
+
+Blackboard
+
+Member
+
+5.3.1
+
+5.2.2
+Agent
+Agent
+Agent
+
+Agent
+Agent
+
+Agent
+Agent
+
+38
+
+5.3.3
+
+DSAFO
+
+Member Agent
+
+Agent
+
+Member Agent
+competitor
+
+5.3
+
+Coordinator
+
+DSAFO
+
+Member Agent
+
+Agent
+
+DSAFO
+
+Agent
+
+Member
+
+buddy
+
+Blackboard ResourceAdmin
+
+Blackboard
+
+Coordinator
+
+Member
+Coordinator
+
+Member
+
+Blackboard
+Coordinator
+
+Member
+
+Agent
+
+5–2
+
+Blackbaord
+
+qu
+
+ire
+all
+rel ot
+ea
+se
+
+ResAdmin
+
+ResourceAdmin
+
+ac
+
+ry
+que form est y
+in requ repl ancevl alid
+c in
+
+Member 1r1
+
+borrow
+lend
+refuse
+
+Member 2r1
+
+...
+
+Member 1rn
+
+dy
+ud
+kb ddy
+u
+ac
+nb
+sy nd
+a
+em and
+kd
+ac dem
+n
+sy
+
+...
+
+Coordinatorr1
+5–2: Agent
+Federation
+Agent
+39
+
+[111]
+
+Coordinatorrn
+
+Agent
+
+5.3.1
+
+[107, 111]
+
+Blackboard
+Blackboard
+Member
+
+•
+
+Blackboard
+Heartbeat
+
+run-and-schedule
+
+•
+
+•
+•
+Blackboard
+Member
+
+Blackboard
+[44, 45]
+
+5–2
+
+Agent
+
+Agent
+Member
+
+Member
+Blackboard
+
+Blackboard
+
+5–3
+
+procedure Blackboard thread
+operations←Ø;
+flightdata ←Ø;
+while(true)
+flightdata ←get data ();
+operations←operations∪decomposite(flightdata);
+dequeue message(sender, channel, content);
+switch (channel)
+case QUERY :
+sendto(sender, INFORM, weighted EDD(content.opType));
+case REQUEST :
+if ( isfree (content.op))
+sendto(sender, REPLY, content);
+
+40
+
+:
+
+commit(content.op, sender, content.plan);
+adjust succ(content.op, content.plan);
+else
+sendto(sender, INVALID, content);
+end if
+case CANCEL :
+recursive free (content.op, false );
+case NIL :
+block(Heartbeat×Blockfactor);
+end switch
+if (end of time)
+terminate algorithm();
+output result ();
+end if
+end while
+end procedure
+function weighted EDD
+input taskType;
+p←+∞;
+op←NIL;
+for t in unsolved op in 30min(taskType)
+if (t . priv == VIP)
+return t;
+else if (t .LFT − now < p)
+op←t;
+p←t.LFT − now;
+end if
+end for
+return op;
+end function
+procedure recursive free
+input op
+input notify
+if (op.plan!=NIL and op.fixed==false)
+unassign(op);
+if ( notify )
+sendto(op.plan.resp, INVALID, op.plan);
+end if
+end if
+for t in Succeed operation(op)
+recursive free (t , true);
+end for
+end procedure
+
+5–3: Blackboard
+
+41
+
+5.3.2
+
+ResourceAdmin
+ResourceAdmin
+
+•
+
+•
+
+4
+man-day
+
+4-
+
+Agent
+
+5–4
+
+procedure ResourceAdmin thread
+lastAcq←−∞;
+lastOne←NIL;
+while(true)
+dequeue message(sender, channel, content);
+switch (channel)
+case ACQUIRE :
+r← available res (content.resType);
+if (r!=NIL and (lastAcq<now−1 or lastOne!=sender))
+r .busy←true;
+sendto(sender, ALLOT, r);
+lastOne←sender;
+lastAcq←now;
+end if
+case RELEASE :
+content.resource .busy←false;
+content.resource .used++;
+case NIL :
+block(Heartbeat×Blockfactor);
+end switch
+end while
+end procedure
+
+5–4: ResourceAdmin
+
+5.3.3
+
+Member
+Member
+
+•
+
+•
+
+Blackboard
+
+Member
+
+ResourceAdmin
+
+42
+
+4
+
+•
+
+Coordinator
+
+•
+
+Blackboard
+Member
+
+•
+–
+
+Blackboard
+Agent
+
+Blackboard
+
+–
+
+Agent
+•
+
+Agent
+
+Member
+Member
+
+•
+Blackboard
+
+–
+–
+ResourceAdmin
+•
+
+ResourceAdmin
+
+•
+
+Coordinator
+Coordinator
+
+•
+Member Agent
+Blackboard
+
+Member
+
+invalid
+
+5.3.3
+
+43
+
+procedure Member thread
+buddies←Ø;
+lastSyn←−∞;
+while(true)
+for r in localResources
+if ( is expired (r))
+release (r );
+sendto(ResourceAdmin, RELEASE, r);
+end if
+end for
+dequeue message(sender, channel, content);
+switch (channel)
+case INFORM :
+p← earliest finish plan (content.op);
+if (p!=NIL)
+content.plan←p;
+sendto(sender, REQUEST, content);
+else if (buddies. size >0)
+content.buddylist←buddies;
+sendto(buddies. first , BORROW, content);
+else
+sendto(ResourceAdmin, ACQUIRE, content);
+end if
+case REPLY :
+r← try assign (content.plan. res , content.plan);
+if (r==false)
+sendto(Blackboard, CANCEL, content);
+end if
+if (content.plan.resOwner==self)
+if (r==true)
+lastReq←lastReq+Heartbeat×Delayfactor;
+opType←next type();
+else if (content.plan.resp!= self )
+sendto(content.plan.resp, INVALID, content);
+end if
+else
+sendto(content.plan.resOwner, REPLY, content);
+end if
+case INVALID :
+free assignment(content.plan. res , content.plan);
+if (sender==Blackboard and content.plan.resOwner6=self)
+sendto(content.plan.resOwner, INVALID, content);
+end if
+case BORROW :
+p←gen plan locally (content.op);
+if (p!=NIL)
+content.resource←p. res ;
+content.plan←p;
+sendto(sender, LEND, content);
+else
+content.buddylist.remove(self );
+sendto(sender, REFUSE, content);
+
+44
+
+end if
+case LEND :
+sendto(Blackboard, REQUEST, content);
+case REFUSE :
+if (content.buddylist. size >0)
+sendto(content.buddylist. first , BORROW, content);
+else
+sendto(ResourceAdmin, ACQUIRE, content);
+end if
+case ALLOT :
+addres(content.res );
+case REQDEMAND :
+sendto(sender, SYNDEMAND, res job free());
+case SYNBUDDY :
+buddies←content;
+case NIL :
+if (now−lastReq>Heartbeat×Reqcycle)
+sendto(Blackboard, QUERY, opType);
+end if
+if (now−lastSyn>Heartbeat×Syncycle}
+sendto(CoordinatorresType , REQBUDDY, self);
+lastSyn←now;
+end if
+end switch
+block(Heartbeat×Blockfactor);
+end while
+end procedure
+
+5–5: Member
+
+5.3.4
+
+Coordinator
+Coordinator
+
+Member
+
+Member
+
+•
+
+•
+
+Member
+
+•
+Coordinator
+
+5–6
+
+45
+
+procedure Coordinator thread
+nextSyn←−∞;
+while(true)
+dequeue message(sender, channel, content);
+switch (channel)
+case SYNDEMAND :
+memberDmd[sender]←content.value;
+case REQBUDDY :
+sendto(sender, SYNBUDDY, buddies in order(sender));
+case NIL :
+if (memberHash.size>0 and now>nextSyn)
+nextSyn←nextSyn+Heartbeat×Syncycle;
+for m in memberDmd.candidates
+sendto(m, REQDEMAND, NIL);
+end for
+end if
+end switch
+block(Heartbeat×Blockfactor);
+end while
+end procedure
+function buddies in order
+input mem;
+bd←Ø;
+for m in members
+if (m.opType!=mem.opType)
+bd += n;
+end if
+end for
+bd.sortBy(DESCENDING);
+return bd;
+end function
+
+5–6: Coordinator
+
+5.4
+2.5
+
+π-
+
+def
+
+op = < fno, type, parkNo, RT, LFT, ST, UT, ET >
+−
+→
+op
+−
+→
+op
+
+.
+Latest Finish Time, LFT
+
+π-
+
+[139]
+
+DSAFO
+t ∈ SchOts Agentt
+46
+
+op . LF T
+SchOts
+t
+
+Agent
+
+Resource
+
+r ∈ Resource Otinresr
+
+r
+
+Heartbeat
+1
+
+Clockzero
+
+def
+
+DSAFO = (SchOts, Agentst , Resources, Otinresr , Heartbeat, Clockzero)
+(ν queryta , inf ormat , requestat , replyta , cancelta , invalidat , reqbuddyta , synbuddyta
+, borrowta , lendat , ref useat , reqdemandat , syndemandat , acquireat , allotat , releaseat )
+(BLACKBOARD|RESADMIN|MEMBERat |COORDINATORr )
+(t ∈ SchOts, a ∈ Agentst , r ∈ Resources)
+5.4.1
+
+Blackboard
+
+BLACKBOARD
+Member
+F lights
+t ∈ SchOts
+
+f ∈ F lights
+Opstf
+
+operation
+def
+
+BLACKBOARD = (F lights, Opstf )
+(BbF unc|RespQueryta |RespReqta |RespCancelta )
+(t ∈ SchOts, a ∈ Agentst , f ∈ F lights)
+BbF unc
+
+BLACKBOARD
+clock
+
+clock
+tch
+
+(time − Clockzero)/Heartbeat
+
+time
+
+tch
+
+time
+
+clock(tch, systime)
+tch
+
+BbF unc ≡ !clock(tch, time).tchh(time − Clockzero)/Heartbeati
+|!readyopt (rchret).(ν chn)(clockhchn, systimei|chn(t)
+→
+−
+→
+.(ν c)(mostpref eredop hc, t + 5, t + 30i|c(−
+opr).rchreth
+opri))
+t
+
+|···
+π5.3
+DSAFO
+47
+
+→
+→
+→
+RespQueryta ≡ !queryta .(ν c)(weighted eddt hci|c(−
+op).[−
+op 6= nil]inf ormat h−
+opi)
+−−→
+RespReqta ≡ !requestat (plan).(ν ch)(getplanhch, plan . f no, plan . oti
+−−−−−→ −−−−−→
+−−→
+−−→
+|ch(myplan).([myplan = nil](assignhplani.replyta hsyn, plani
+−−−−−→
+−−→
+.enable succhplan . f no, plan . oti) + [myplan 6= nil]invalidat hplani))
+−−→
+−−−−−→
+RespCancelta ≡ !cancelta (plan).(ν ch)(getplanhch, plan . f no, plan . oti|ch(myplan)
+−−−−−→ −−→
+.[myplan = plan]recursive f reehplan . f no, plan . oti, f alse)
+
+5.4.2
+
+ResourceAdmin
+
+RESADMIN
+
+RESADMIN
+4
+12
+
+Reslistr
+
+r
+
+Historylistt
+3
+
+12
+
+/4
+
+def
+
+RESADMIN = (Reslistr , Historylistr )(RaF unc|Respreqta |Respreleaseat )
+(r ∈ Resources, t ∈ SchOts, a ∈ Agentst )
+→
+Respreqta ≡ !resreqta (begintm).(ν ch)(available rest hch, begintmi|ch(−
+res)
+→ 6= nil])allota hres . name, begintmi.set busyh−
+→ truei
+.[−
+res
+res,
+t
+
+→ t, ai))
+.log alloth−
+res,
+Respreleaseat ≡ !releaseat (resname).(ν ch)(getresf romhashhch, resnamei
+→ −
+→ 6= nil]log releaseh−
+→
+→ falsei)
+resi.set
+busyh−
+res,
+|ch(−
+res).[
+res
+
+5.4.3
+
+Member
+Member Agent MEMBERat
+MEMBERat
+
+a
+
+t
+
+BLACKBOARD
+Member
+t ∈ SchOts
+
+Agent a ∈ Agentst MEMBERat
+Resourceat
+
+Syncycle
+Remoteresat
+
+48
+
+def
+
+MEMBERat = (Syncycle, Resourceat , Remoteresat )
+(M bF unc|ActQryta |M kP lanat |AckReplyta |AckInvldat |T ryLendat
+|AckLendat |CallBdat |Ackresat |AckRDmdat |DumSynat |AckSyBdat )
+(t ∈ SchOts, a ∈ Agentst )
+−−−−→
+ActQryta ≡ (queryta .blockta hHeartbeati.(ν ch)(getexpiredresat hchi|ch(reslist)
+−−−−→
+−−−−→
+.[reslist 6= nil]releaseallta hreslisti).)+∞
+→
+→
+→
+opi|ch(−
+n ))
+M kP lana ≡ !inf orma (−
+op).(ν ch)(makenullplan hch, −
+t
+
+t
+
+t
+
+−−→
+−−→
+→
+.(ν p)(locallyplanhp, −
+n i|p(plan, res).([res 6= null]requestat hplani
+−→
++ [res = null]((νc)(getbuddyhci|c(bud)
+−−→
+−→
+.([bud 6= nil]try borrowhbud . top, plani
+−→
++ [bud = nil]acquireat hplan . EST − 1i)))))
+−→
+−→
+AckReplyta ≡ (!replyta (syn, pln).(νch)(try assignat hch, pln . res, plni|ch(ret)
+−→
+.([ret 6= true]cancelta hplni|([pln . resOwner 6= self ]replytpln.resOwner
++ [pln . resOwner = self ]([ret = true](setlreqhnowi.enum restype)
+−→
++ [ret 6= true][pln . resp 6= self ]invalidpln.resp
+hplni))))
+t
+−→
+AckInvldat ≡ !invalidat (pln).f reeresat hplan . resi.[pln . sender = BLACKBOARD]
+−→
+[pln . resOwner 6= self ]invalidpln.resOwner
+hplni
+t
+−−−→
+−−−→ −
+→
+T ryLendat ≡ !borrowta (uplan, lst, succ, f ail).(ν ch)(locallyplanhch, uplani
+−−→
+−−→
+−−→
+|ch(plan).([plan . res 6= null]assignat hplani.succhplani
+−−−→ −
+→
++ [plan . res = null]f ailhuplan, lsti))
+−−→
+−−→
+AckLendat ≡ !lendat (plan).requestat hplani
+−−−→ −
+→
+−
+→
+CallBdat ≡ !ref useat (uplan, lst).(ν c)(topof hc, lsti
+−−−→ −−→
+−−→
+|c(next, nlist).([next 6= null]nexthuplan, nlist, lendat , ref useat i
++ [next = null]acquireat huplan . EST − 1i))
+Ackresat ≡ !allotat (name, begintm).(ν ch)(genrest hch, name, begintm, 239i
+→ −
+→ 6= nil]addres2locallisth−
+→
+|ch(−
+res).[
+res
+resi)
+AckRDmdat ≡ !reqdemandat .(ν ch)(res f reedomat hchi|ch(ret).syndemandat hreti)
+DumSynat ≡ (reqbuddyta .blockta hSyncycle × Heartbeati.)+∞
+−
+→
+−
+→
+AckSyBdat ≡ !synbuddyta (lst).setbuddyhlsti
+
+49
+
+5.4.4
+
+Coordinator
+
+COORDINATORr
+
+r
+
+Member
+
+Syncycle
+
+r ∈
+
+Resources M etainf or
+
+Member
+
+def
+
+CORDINATORr = (M etainf or , Syncycle)(CooF unc|Synchr |Storeat |RespBdat )
+(r ∈ Resources, t ∈ Otinresr , a ∈ Agentst )
+Synchr ≡ (synallr .blockr hSyncycle × Heartbeati.)+∞
+Storeat ≡ !syndemandat (dm).(ν ch)(setvalhch, dmi|ch(demandsat )
+.removelisthdemandsat i.insertsorthdemandsat , DESCi)
+−→
+−→
+RespBdat ≡ !reqbuddyta .(ν ch)(genbuddylistt hchi|ch(blst).synbuddyta hblsti))
+
+5.5
+
+unload cargo and mail, UC
+tDSAF O ∼ Const × tU C .
+5.5.1
+
+UC
+
+UC
+
+baggage tractors, BTs
+
+3
+
+BT ∗ ∼ O(n)
+BT
+O(n)
+tDSAF OUB .
+
+50
+
+BT Member Agent
+
+BT
+
+5.5.1.1
+
+Agent
+UC
+
+min
+
+Blackboard
+
+Coordinator
+
+O(n)
+
+ResourceAd-
+
+BT Member Agent Blackboard
+
+O(n)
+
+QUERY REQUEST
+
+CANCEL
+
+tbb = tgetInf o + tQU ERY + tREQU EST + tCAN CEL
+. O(n2 ) + O(n) × [O(n) + O(n) + O(n)]
+∼ O(n2 )
+ResourceAdmin
+
+O(n)
+
+ACQUIRE
+
+RELEASE
+
+tresAdmin = tACQU IRE + tRELEASE . O(n) × [O(n) + O(1)] ∼ O(n2 )
+Member
+Coordinator
+
+IM-
+
+FORM REPLY INVALID BORROW LEND REFUSE ALLOT REQDEMAND
+SYNBUDDY
+
+Member Agent
+
+Member
+X
+
+tmemi =
+
+X
+
+O(n)
+
+(treleaseRes + tIM F ORM + tREP LY + tIN V ALID + tBORROW + tLEN D
+
++tREF U SE + tALLOT + tREQDEM AN D + tSY N BU DDY + tactiveSyn + tactiveReq )
+. O(n) + O(n) × [O(n2 ) + O(n) + O(1) + O(n2 ) + O(1) + O(n2 )
++O(n) + O(n2 ) + O(n) + O(1) + O(1)]
+∼ O(n3 )
+BT
+DEMAND
+
+Coordinator
+
+SYN-
+
+REQBUDDY
+tcoord = tSY N DEM AN D + tREQBU DDY + tactiveSyn
+. O(n) + O(n2 × log n) + O(n)
+∼ O(n2 × log n)
+Agent
+51
+
+UC
+tUC behavUB = tbbUB + tresAdminUB +
+
+X
+
+tmemiUB + tcoordUB
+
+. O(n2 ) + O(n2 ) + O(n3 ) + O(n2 × log n)
+∼ O(n3 )
+
+5.5.1.2
+
+Agent
+
+Agent
+
+DSAFO
+
+Member–
+
+Blackboard Member–Member Member– Coordinator
+
+Member–Blackboard
+REPLY
+
+O(n)
+
+UC
+
+REQUEST
+O(n)
+
+O(n)
+
+Member Agent
+
+Member–Member
+
+INFORM REQUEST
+
+1
+
+O(n)
+
+O(n)
+
+Member–ResourceAdmin
+
+UC
+
+Member Agent
+
+O(n)
+
+O(n)
+Member–Coordinator
+
+Member–Coordinator
+
+O(1)
+
+O(n)
+
+Member Agent
+
+O(n)
+
+Member–ResourceAdmin
+
+O(n)
+
+O(n)
+
+BT
+
+UC
+
+ACQUIRE ALLOT
+
+RELEASE
+
+O(n)
+UC
+tUC transUB = tresAllotUB + tsynDemandUB + tsynBuddyUB + U C op × topReqUB + tborrowUB
+∼ {O(n) + O(n) + O(n) + O(n) × [O(1) + O(n)]} × ttrans
+∼ O(n2 ) × ttrans
+ttrans
+
+ttrans
+
+1
+
+Blockfator
+
+52
+
+5.5.1.3
+
+UC
+Agent
+
+Blackboard
+
+UC
+tU CUB = tUC behavUB + tUC transUB ∼ O(n3 ) + O(n2 ) × ttrans
+5.5.2
+
+DSAFO
+DSAFO
+tDSAF OUB ∼ Const × tU CUB ∼ O(n3 ) + O(n2 ) × ttrans
+O(1)
+
+Member Agent
+
+UC
+
+DSAFO
+
+tDSAF OLB ∼ O(n2 ) + O(n) × ttrans
+
+5.6
+JADE2 Java Agent DEvelopment Framework, Java Agent
+3
+
+FIPA
+
+Agent
+
+Agent
+
+[141]
+
+Agent
+
+JADE
+
+Agent
+
+Agent
+
+Agent
+Agent
+Telecom Italia4
+
+JADE
+
+LGPL Lesser General Public License Version 2
+DSAFO
+
+FIPA ACL [72, 73]
+
+JADE
+
+A
+BT35
+
+5–7
+
+5–8
+
+CA109
+R
+
+2
+3
+4
+
+http://jade.tilab.com/
+http://www.fipa.org/
+http://www.telecomitalia.com/
+
+53
+
+1
+5–7
+
+CT-Agt0(CT+Agt1)
+
+BT35
+
+CT-Agt0
+
+CT+Agt1
+
+5–8
+
+CA109
+
+5–7:
+DSAFO
+
+Blackboard
+JADE
+
+Java
+
+OS-independent
+
+Java
+DSAFO
+
+Windows UNIX Linux MAC OS
+Agent, Graphical User Interface
+5–9
+
+JADE RMA GUI Remote Monitoring
+Agent
+
+Agent JADE sniffer
+
+Agent
+
+5–10
+DSAFO
+
+DSAFO
+JADE introspector
+5–11
+
+Agent
+
+54
+
+DSAFO
+
+5–8:
+
+BT Member Agent
+
+5–9: JADE RMA GUI
+
+55
+
+DSAFO
+
+5–10: JADE sniffer
+
+5–11: JADE introspector
+
+56
+
+Agent
+
+BT
+
+DSAFO
+
+Member agent number, Blockfactor, Delayfactor
+
+Syncycle
+
+6.1
+252
+5–7
+UB
+
+Unload baggage,
+Unload cargo and mail, UC
+
+Load cargo and mail, LC
+
+Load baggage, LB
+2,268
+
+BT baggage tractor,
+BT
+
+1–1
+
+BT
+UB–UC–LB–UC
+
+6.2
+Agent
+
+Member Agent
+
+57
+
+BT
+
+JADE
+
+Java
+
+DSAFO
+
+250
+
+5.3
+
+DSAFO
+
+factor, Syncycle
+
+Reqcycle
+
+BT
+
+6.2.1
+
+Blockfactor, DelayAgent
+
+Member Agent
+
+Member Agent
+
+Member Agent
+
+DSAFO
+
+Reqcycle
+
+Member Agent
+
+Reqcycle
+
+Reqcycle
+
+Member Agent
+
+Blockfactor=1/12, Delayfactor=1/6, Syncycle=5,
+6–2
+
+BT Member Agent
+
+6–3
+
+BT
+
+1/6
+
+2
+
+6–1
+
+3D
+
+BT
+6–1
+
+•
+
+Reqcycle
+
+6–2
+
+6–3
+
+BT Member Agent
+
+1
+
+4-
+
+4
+
+BT
+
+3D
+41
+
+•
+
+BT Member Agent
+BT
+
+4
+
+4-
+
+12
+3D
+4-
+
+DSAFO
+
+Member Agent
+Member Agent
+
+Agent
+
+Member
+Divide-and-Conquer
+DSAFO
+
+1
+
+3D
+2D
+
+58
+
+56
+
+12
+
+0
+1.500
+3.000
+
+10
+
+4.500
+
+55
+
+6.000
+
+Resources consumed
+
+7.500
+
+250
+Times in
+
+runs
+
+8
+6
+4
+
+bs
+
+ge
+
+136
+
+137
+
+d
+
+51
+138
+
+s
+u
+o
+
+c
+s
+e
+rc
+
+135
+
+an
+
+u
+
+134
+
+a rr
+
+51
+
+129
+
+o
+
+r jo
+
+52
+
+130
+
+131
+
+132
+
+133
+
+134
+
+135
+
+136
+
+137
+
+138
+
+s
+
+ou
+
+133
+
+e
+
+132
+
+n
+
+53
+
+131
+
+4 -h
+
+m
+
+54
+
+52
+
+R
+
+0
+129 130
+
+56
+
+12.00
+
+53
+
+d
+
+55
+
+10.50
+
+e
+
+2
+
+9.000
+
+54
+
+4-hour jobs arranged
+
+1 BT Member Agent
+56
+
+20
+
+0
+2.500
+
+18
+
+5.000
+
+55
+
+7.500
+
+16
+
+12.50
+
+Resources consumed
+
+runs
+
+14
+12
+10
+8
+
+bs
+
+129
+a rr
+
+an
+
+130
+
+ge
+
+d
+
+131
+
+48
+
+49
+
+50
+
+s
+
+128
+r jo
+
+c
+o
+
+n
+
+s
+u
+
+49
+
+48
+126
+
+u
+
+ou
+
+50
+
+s
+o
+
+127
+4 -h
+
+51
+
+127
+
+e
+
+126
+
+20.00
+
+128
+
+129
+
+130
+
+131
+
+4-hour jobs arranged
+
+R
+
+0
+
+56
+55
+54
+53
+52
+51
+
+m
+
+2
+
+17.50
+
+52
+
+e
+
+4
+
+15.00
+
+53
+
+d
+
+6
+
+rc
+e
+
+250
+Times in
+
+10.00
+
+54
+
+2 BT Member Agents
+51
+
+22
+
+0
+2.625
+
+20
+
+5.250
+7.875
+
+18
+
+50
+
+10.50
+
+Resources consumed
+
+13.13
+
+14
+12
+10
+8
+6
+4
+
+51
+
+2
+
+r jo
+
+bs
+
+an
+
+128
+ge
+
+d
+
+e
+m
+u
+s
+
+n
+o
+c
+s
+e
+
+127
+a rr
+
+47
+
+129
+
+rc
+
+ou
+
+48
+47
+130
+
+123
+
+u
+
+4 -h
+
+126
+
+o
+
+125
+
+48
+
+124
+
+125
+
+126
+
+127
+
+128
+
+s
+
+124
+
+21.00
+
+d
+
+50
+49
+
+18.38
+
+e
+
+0
+123
+
+15.75
+
+49
+
+4-hour jobs arranged
+
+R
+
+250
+Times in
+
+runs
+
+16
+
+4 BT Member Agents
+
+6–1: Member Agent
+
+BT
+
+59
+
+129
+
+130
+
+55
+
+18
+
+0
+2.125
+
+16
+
+4.250
+
+54
+
+6.375
+
+14
+
+8.500
+
+53
+
+10.63
+
+Resources consumed
+
+10
+8
+
+50
+
+49
+
+u
+
+48
+
+n
+
+s
+
+125
+
+17.00
+
+51
+
+a rr
+
+an
+
+ge
+
+129
+
+d
+
+47
+
+c
+
+s
+
+49
+
+47
+
+rc
+
+48
+
+128
+
+125
+
+u
+
+bs
+
+o
+
+127
+
+r jo
+
+126
+
+127
+
+128
+
+129
+
+s
+
+ou
+
+e
+
+4 -h
+
+o
+
+126
+
+4-hour jobs arranged
+
+R
+
+0
+
+55
+54
+53
+52
+51
+50
+
+m
+
+2
+
+14.88
+
+e
+
+4
+
+12.75
+
+52
+
+d
+
+6
+
+e
+
+250
+Times in
+
+runs
+
+12
+
+6 BT Member Agents
+53
+
+12
+
+0
+1.500
+3.000
+
+10
+
+4.500
+
+52
+
+6.000
+7.500
+
+Resources consumed
+
+250
+Times in
+
+6
+4
+2
+52
+
+bs
+
+an
+
+ge
+
+48
+
+130
+
+131
+
+d
+
+m
+u
+s
+n
+
+c
+o
+s
+e
+
+129
+a rr
+
+rc
+
+r jo
+
+48
+
+126
+
+u
+
+ou
+
+49
+s
+o
+
+4 -h
+
+128
+
+49
+
+e
+
+51
+50
+
+127
+
+12.00
+
+50
+
+127
+
+e
+
+126
+
+10.50
+
+128
+
+129
+
+130
+
+131
+
+4-hour jobs arranged
+
+R
+
+0
+
+53
+
+9.000
+
+51
+
+d
+
+runs
+
+8
+
+8 BT Member Agents
+55
+
+10
+
+0
+1.250
+2.500
+3.750
+
+54
+
+8
+
+5.000
+
+Resources consumed
+
+6
+
+4
+
+54
+
+r jo
+
+bs
+
+an
+
+135
+ge
+
+d
+
+136
+
+m
+u
+s
+n
+o
+
+c
+e
+
+134
+a rr
+
+50
+
+s
+
+51
+
+rc
+
+ou
+
+133
+
+50
+
+131
+
+u
+
+4 -h
+
+52
+
+e
+
+53
+132
+
+51
+
+s
+o
+
+131
+
+10.00
+
+52
+
+132
+
+e
+
+0
+
+55
+
+8.750
+
+d
+
+2
+
+7.500
+
+133
+
+134
+
+4-hour jobs arranged
+
+R
+
+250
+Times in
+
+runs
+
+6.250
+
+53
+
+12 BT Member Agents
+
+6–2: Member Agent
+
+BT
+
+60
+
+135
+
+136
+
+80
+
+1 agent
+2 agents
+
+70
+
+4 agents
+6 agents
+
+Times in 250 runs
+
+60
+
+8 agents
+12 agents
+
+50
+40
+30
+20
+10
+0
+46
+
+48
+
+50
+
+52
+
+54
+
+56
+
+58
+
+60
+
+62
+
+Resources consumed
+
+80
+
+1 agent
+2 agents
+
+70
+
+4 agents
+6 agents
+
+Times in 250 runs
+
+60
+
+8 agents
+12 agents
+
+50
+40
+30
+20
+10
+0
+122
+
+124
+
+126
+
+128
+
+130
+
+132
+
+134
+
+136
+
+138
+
+140
+
+4-hour jobs arranged
+
+6–3: Member Agent
+
+BT
+
+61
+
+142
+
+144
+
+146
+
+148
+
+150
+
+Agent
+
+DSAFO
+
+Member Agent
+BT Member Agent
+BT Member Agent
+
+DSAFO
+
+Member Agent
+
+6.2.2
+
+Agent
+
+Blockfactor
+
+Blockfactor
+
+Agentnum=1,
+
+Delayfactor=1/6, Syncycle=5
+
+Reqcycle = 1/6
+
+3D
+
+6–4
+
+6–4
+•
+
+Blockfactor
+6–5
+
+6–5
+
+Blockfactor
+
+3D
+4-
+
+•
+
+3D
+
+Blockfactor
+
+5.3
+
+DSAFO
+
+Agent
+
+block Blockfactor × Heartbeat
+Blockfactor
+
+Agent
+
+Agent
+
+BT Member Agent
+Coordinator, Blackboard
+Blockfactor
+
+ResourceAdmin
+
+DSAFO
+
+Blockfactor
+
+Blockfactor
+
+1/36
+
+JADE ACL
+Agent
+
+Member Agent
+Member
+
+Blackboard Agent
+62
+
+56
+
+12
+
+0
+1.500
+3.000
+
+10
+
+4.500
+
+55
+
+6.000
+
+Resources consumed
+
+7.500
+
+250
+Times in
+
+runs
+
+8
+6
+4
+2
+
+56
+
+bs
+
+ge
+
+136
+
+137
+
+d
+
+51
+138
+
+e
+
+s
+u
+n
+o
+
+c
+s
+e
+rc
+
+135
+
+an
+
+u
+
+134
+
+a rr
+
+51
+
+129
+
+o
+
+r jo
+
+52
+
+130
+
+131
+
+132
+
+133
+
+134
+
+135
+
+136
+
+137
+
+138
+
+s
+
+ou
+
+133
+
+e
+
+4 -h
+
+132
+
+52
+
+m
+
+54
+53
+
+131
+
+12.00
+
+53
+
+R
+
+0
+129 130
+
+10.50
+
+d
+
+55
+
+9.000
+
+54
+
+4-hour jobs arranged
+
+1 BT Member Agent with Blockfactor=1/12
+56
+
+22
+
+0
+2.625
+
+20
+
+5.250
+
+55
+7.875
+
+18
+
+10.50
+
+16
+
+Resources consumed
+
+54
+
+250
+Times in
+
+runs
+
+14
+12
+10
+8
+
+bs
+
+a rr
+
+ge
+
+132
+
+d
+
+e
+
+n
+c
+o
+s
+
+49
+
+rc
+
+50
+
+131
+
+an
+
+e
+
+51
+
+130
+
+r jo
+
+50
+
+128
+
+u
+
+ou
+
+53
+
+o
+
+4 -h
+
+52
+
+51
+
+49
+
+129
+
+130
+
+131
+
+132
+
+s
+
+129
+
+52
+
+e
+
+128
+
+21.00
+
+4-hour jobs arranged
+
+R
+
+0
+
+56
+55
+54
+
+m
+
+2
+
+18.38
+
+s
+u
+
+4
+
+15.75
+
+53
+
+d
+
+6
+
+13.13
+
+1 BT Member Agent with Blockfactor=1/24
+56
+
+26
+
+0
+3.125
+
+24
+
+6.250
+
+55
+
+22
+
+9.375
+
+20
+
+12.50
+
+54
+
+Resources consumed
+
+16
+14
+12
+10
+
+bs
+
+a rr
+
+131
+an
+
+ge
+
+d
+
+49
+
+e
+
+m
+
+u
+s
+n
+c
+o
+
+s
+
+50
+132
+
+49
+
+e
+
+51
+
+130
+r jo
+
+50
+
+rc
+
+ou
+
+53
+
+51
+
+128
+
+u
+
+4 -h
+
+52
+
+52
+
+o
+
+129
+
+25.00
+
+129
+
+130
+
+131
+
+s
+
+128
+
+56
+55
+54
+
+21.88
+
+e
+
+6
+4
+2
+0
+
+18.75
+
+53
+
+d
+
+8
+
+15.63
+
+4-hour jobs arranged
+
+R
+
+250
+Times in
+
+runs
+
+18
+
+1 BT Member Agent with Blockfactor=1/36
+
+6–4: Blockfactor
+
+63
+
+BT
+
+132
+
+100
+90
+
+Blockfactor=1/12
+Blockfactor=1/24
+
+80
+
+Blockfactor=1/36
+0 (Embedded Agent)
+
+Times in 250 runs
+
+70
+60
+50
+40
+30
+20
+10
+0
+
+50
+
+52
+
+54
+
+56
+
+58
+
+60
+
+62
+
+Resource consumed
+
+60
+
+Blockfactor=1/12
+Blockfactor=1/24
+Blockfactor=1/36
+
+Times in 250 runs
+
+50
+
+0 (Embedded Agent)
+
+40
+30
+20
+10
+0
+128
+
+130
+
+132
+
+134
+
+136
+
+138
+
+140
+
+142
+
+4-hour jobs arranged
+
+6–5: Blockfactor
+
+BT
+
+64
+
+144
+
+146
+
+148
+
+150
+
+6–5
+
+6.2.3
+
+7.1.2
+
+EDD*
+
+Delayfactor
+
+Delayfactor
+
+Member Agent
+Agentnum=4, Blockfactor=1/12,
+
+Syncycle=5
+
+Reqcycle = 1/2
+
+Delayfactor
+
+6–6
+
+3D
+6–7
+
+4-
+
+3D
+6–7
+Delayfactor
+Member Agent
+Member Agent
+Agent
+
+6.2.4
+
+Delayfactor
+
+Syncycle
+
+Syncycle
+
+Member
+
+Coordinator
+Agentnum=4, Blockfac-
+
+tor=1/12, Delayfactor=1/6
+
+Reqcycle = 1/2
+
+Syncycle
+
+6–8
+
+6–9
+
+4-
+
+Syncycle
+
+Member Agent
+Abdallah, N. Darwish
+
+3D
+
+O. Hegazy (2002)
+
+Syncycle
+
+Coordinator Agent
+Member
+
+Syncycle
+Agent
+
+65
+
+S.
+Coordinator Agent
+
+53
+
+22
+
+0
+2.625
+
+20
+
+5.250
+
+52
+
+18
+
+10.50
+
+16
+
+Resources consumed
+
+13.13
+
+runs
+
+14
+12
+
+250
+Times in
+
+7.875
+
+10
+8
+6
+
+a rr
+
+an
+
+ge
+
+130
+
+d
+
+131
+
+u
+s
+n
+o
+c
+s
+
+47
+
+e
+
+48
+
+rc
+
+129
+
+124
+
+u
+
+bs
+
+49
+
+128
+
+48
+
+o
+
+127
+r jo
+
+49
+
+47
+
+125
+
+126
+
+127
+
+128
+
+129
+
+130
+
+131
+
+s
+
+ou
+
+21.00
+
+e
+
+126
+4 -h
+
+18.38
+
+50
+
+4-hour jobs arranged
+
+R
+
+125
+
+52
+
+e
+
+51
+50
+
+15.75
+
+m
+
+2
+0
+124
+
+53
+d
+
+4
+
+51
+
+4 BT Member agents with Delayfactor=1/3
+51
+
+22
+
+0
+2.625
+
+20
+
+5.250
+7.875
+
+18
+
+50
+
+16
+
+Resources consumed
+
+13.13
+
+runs
+
+14
+
+250
+Times in
+
+10.50
+
+12
+10
+8
+6
+4
+
+51
+
+2
+
+bs
+
+ge
+
+e
+m
+s
+
+n
+o
+c
+s
+e
+
+128
+
+an
+
+129
+
+d
+
+rc
+
+127
+a rr
+
+47
+
+123
+
+u
+
+r jo
+
+47
+
+o
+
+ou
+
+48
+
+124
+
+125
+
+126
+
+127
+
+128
+
+129
+
+130
+
+s
+
+4 -h
+
+126
+
+u
+
+49
+125
+
+48
+
+130
+
+e
+
+124
+
+21.00
+
+d
+
+50
+
+18.38
+
+4-hour jobs arranged
+
+R
+
+0
+123
+
+15.75
+
+49
+
+4 BT Member agents with Delayfactor=1/6
+54
+
+24
+
+0
+3.000
+
+22
+
+6.000
+
+53
+
+20
+
+9.000
+12.00
+
+Resources consumed
+
+52
+
+16
+14
+12
+10
+8
+
+bs
+
+a rr
+
+an
+
+ge
+
+d
+
+129
+
+48
+130
+
+47
+
+e
+
+m
+
+n
+o
+c
+s
+
+49
+128
+
+47
+
+e
+
+127
+
+rc
+
+126
+r jo
+
+48
+
+123
+
+u
+
+ou
+
+51
+
+o
+
+125
+4 -h
+
+50
+
+49
+
+124
+
+125
+
+126
+
+127
+
+128
+
+s
+
+124
+
+50
+
+e
+
+0
+123
+
+54
+53
+52
+
+24.00
+
+u
+
+2
+
+21.00
+
+s
+
+4
+
+18.00
+
+51
+
+d
+
+6
+
+15.00
+
+4-hour jobs arranged
+
+R
+
+250
+Times in
+
+runs
+
+18
+
+4 BT Member agents with Delayfactor=1/24
+
+6–6: Delayfactor
+
+66
+
+BT
+
+129
+
+130
+
+70
+Delayfactor=1/3
+Delayfactor=1/6
+
+60
+
+Delayfactor=1/24
+
+Times in 250 runs
+
+50
+40
+30
+20
+10
+0
+
+46
+
+48
+
+50
+
+52
+
+54
+
+56
+
+Resources consumed
+
+Delayfactor=1/3
+
+70
+
+Delayfactor=1/6
+Delayfactor=1/24
+
+Times in 250 runs
+
+60
+50
+40
+30
+20
+10
+0
+
+122
+
+124
+
+126
+
+128
+
+4-hour jobs arranged
+
+6–7: Delayfactor
+
+BT
+
+67
+
+130
+
+55
+
+22
+
+0
+2.625
+
+20
+
+5.250
+
+54
+
+7.875
+
+18
+16
+
+Resources consumed
+
+13.13
+
+runs
+
+14
+12
+
+250
+Times in
+
+10.50
+
+53
+
+10
+8
+
+a rr
+
+an
+
+129
+
+ge
+
+130
+
+d
+
+48
+131
+
+49
+
+47
+
+s
+
+128
+
+47
+
+e
+
+127
+bs
+
+rc
+
+r jo
+
+123
+
+u
+
+ou
+
+c
+
+o
+
+n
+
+s
+
+u
+
+48
+
+o
+
+4 -h
+
+126
+
+124
+
+125
+
+126
+
+127
+
+128
+
+129
+
+130
+
+131
+
+s
+
+125
+
+49
+
+e
+
+124
+
+50
+
+4-hour jobs arranged
+
+R
+
+0
+123
+
+55
+54
+53
+52
+51
+50
+
+m
+
+2
+
+21.00
+
+e
+
+4
+
+18.38
+
+51
+
+d
+
+6
+
+15.75
+
+52
+
+4 BT Member agents with Syncycle=3
+51
+
+22
+
+0
+2.625
+
+20
+
+5.250
+7.875
+
+18
+
+50
+
+16
+
+Resources consumed
+
+13.13
+
+runs
+
+14
+
+250
+Times in
+
+10.50
+
+12
+10
+8
+6
+4
+
+51
+
+2
+
+bs
+
+128
+
+an
+
+ge
+
+e
+m
+u
+s
+
+n
+o
+c
+s
+e
+
+127
+a rr
+
+129
+
+d
+
+rc
+
+r jo
+
+47
+
+47
+
+123
+
+u
+
+ou
+
+48
+o
+
+4 -h
+
+126
+
+124
+
+125
+
+126
+
+127
+
+128
+
+129
+
+130
+
+s
+
+125
+
+48
+
+130
+
+e
+
+124
+
+21.00
+
+d
+
+50
+49
+
+18.38
+
+4-hour jobs arranged
+
+R
+
+0
+123
+
+15.75
+
+49
+
+4 BT Member agents with Syncycle=5
+54
+
+22
+
+0
+2.750
+
+20
+
+5.500
+
+53
+8.250
+
+18
+
+11.00
+
+Resources consumed
+
+52
+
+14
+12
+10
+8
+
+22.00
+
+50
+
+49
+
+bs
+
+a rr
+
+an
+
+ge
+
+d
+
+129
+
+48
+130
+
+47
+
+n
+o
+c
+s
+
+49
+128
+
+e
+
+127
+
+rc
+
+126
+r jo
+
+47
+123
+
+u
+
+ou
+
+s
+
+u
+
+48
+
+o
+
+125
+4 -h
+
+50
+
+124
+
+125
+
+126
+
+127
+
+128
+
+s
+
+124
+
+19.25
+
+e
+
+0
+123
+
+54
+53
+52
+51
+
+m
+
+2
+
+e
+
+4
+
+16.50
+
+d
+
+6
+
+13.75
+
+51
+
+4-hour jobs arranged
+
+R
+
+250
+Times in
+
+runs
+
+16
+
+4 BT Member agents with Syncycle=15
+
+6–8: Syncycle
+
+BT
+
+68
+
+129
+
+130
+
+70
+Syncycle=3
+Syncycle=5
+
+60
+
+Syncycle=15
+
+Times in 250 runs
+
+50
+40
+30
+20
+10
+0
+
+46
+
+48
+
+50
+
+52
+
+54
+
+56
+
+Resources consumed
+
+80
+
+Syncycle=3
+
+70
+
+Syncycle=5
+Syncycle=15
+
+Times in 250 runs
+
+60
+50
+40
+30
+20
+10
+0
+
+122
+
+124
+
+126
+
+128
+
+4-hour jobs arranged
+
+6–9: Syncycle
+
+BT
+
+69
+
+130
+
+132
+
+6.3
+DSAFO
+
+Agent
+
+Agent
+Agent
+DSAFO
+Agent
+
+ACO
+
+PSO
+
+70
+
+DSAFO
+
+Agent
+
+DSAFO
+MMAS EDD*
+
+ERT*
+
+7.1
+MMAS EDD*
+ERT* MMAS
+EDD*
+
+ERT*
+
+run-and-schedule
+
+7.1.1
+
+MMAS
+AS Ant System
+
+M. Dorigo, V. Maniezzo
+
+A. Colorni (1991)
+
+[142, 143]
+
+TSP Travel Salesman Problem
+Nant
+<V, E>
+<V, E>
+
+V
+
+m
+
+E
+
+T
+
+E
+Hamilton
+
+Hamilton
+
+τij (t)
+
+<i,j>
+τij (t + 1) = ρ · τij (t) + ∆τij
+1
+
+1
+
+Hamilton
+
+71
+
+ρ
+
+(1 − ρ)
+∆τij (t, t + 1) =
+
+Nant
+X
+
+∆τijk
+
+k=1
+
+∆τijk
+
+∆τijk =
+
+<i,j>
+
+k
+
+t
+
+t+1
+
+
+
+Q/Lk
+
+if k-th ant uses edge < i, j > in its tour (between time t and t + 1);
+
+
+0
+
+otherwise.
+
+ηij
+
+1/dij
+
+dij
+
+i
+
+j
+
+k
+
+i
+
+j
+
+α
+β
+τ (t) · η
+
+ P [ ij ] [ ijα]
+β
+p6∈tabuk [τip (t)] ·[ηip ]
+pkij =
+
+0
+α
+
+if j 6∈ tabuk ;
+otherwise.
+
+β
+[143, 144]
+
+MMAS
+
+-
+
+MAX -
+
+MIN ant system
+[145, 146]
+
+MMAS
+
+JSSP
+
+MMAS
+1,008 BT
+
+BT
+
+252
+
+1,008
+ri
+rj
+
+
+
+(Duerj − Dueri )/10, Duerj > Dueri ,
+
+
+
+def
+dri rj = 0.01,
+Duerj = Dueri ,
+
+
+
+
+(Duer − Duer )/30, Duer < Duer .
+i
+i
+j
+j
+
+MMAS
+
+TSP
+
+BT
+
+UB–UC–LC–LB
+
+1,008
+
+7.1.1
+7–1:
+
+BT
+
+TSP
+
+UB1
+
+UC1
+
+LC1
+
+LB1
+
+...
+
+UBk
+
+UCk
+
+LCk
+
+LBk
+
+...
+
+1
+
+2
+
+3
+
+4
+
+...
+
+4k + 1
+
+4k + 2
+
+4k + 3
+
+4k + 4
+
+...
+
+(k ∈ {0, . . . , 251})
+
+i ∈V
+
+readyi
+
+ready4k+1 , k ∈ {0, . . . , 251}
+
+true
+72
+
+UB
+
+< i, j >
+validate(i, j) =
+
+
+
+j,
+
+if readyj = true;
+
+
+validate(i, j − 1), otherwise.
+
+validate(i, j)
+
+UB–UC–LC–LB
+j
+
+j
+
+true
+
+LB
+
+MMAS
+
+α = 1.5, β = 2, ρ = 0.05, τinit = 1, τmax = 100,
+
+τmin = 0.01, Nant = 200, NCmax = 150
+Hamilton
+∆τrii rj =
+
+7.1.2
+
+readyj+1
+
+EDD*
+
+
+
+
+
+i
+
+10
+,
+(resR +jobR /3)2
+
+
+0,
+
+R
+
+< ri , rj >∈ circle of R;
+otherwise.
+
+ERT*
+
+EDD*
+Date first
+
+EDD Earliest Due
+run-and-schedule
+
+ERT*
+
+ERT Earliest Ready Time
+
+run-and-schedule
+
+EDD
+
+ERT
+
+7–1
+
+7.2
+DSAFO
+1/6, Syncycle=5
+
+agentNumberBT =4, Blockfactor=1/12, Delayfactor=
+
+EDD* ERT*
+
+MMAS
+
+6
+
+252
+
+BT
+BT
+
+7–2
+4-
+
+BT
+
+CPU
+
+7–2
+DSAFO
+
+BT
+
+DSAFO
+
+MMAS
+
+MMAS
+
+DSAFO
+
+CPU
+
+DSAFO
+
+MMAS
+
+CPU
+73
+
+100%
+
+Ready time
+
+Due date
+
+job time
+A
+
+B
+
+0
+
+2
+
+4
+
+6
+
+8
+
+Original problem
+
+A
+
+B
+
+0
+
+2
+
+4
+
+6
+
+8
+
+6
+
+8
+
+EDD
+
+A
+
+B
+
+0
+
+2
+
+4
+
+ERT (FIFO/FCFS)
+
+7–1: EDD
+
+ERT
+
+7–2:
+CPU
+DSAFO
+MMAS
+
+≈144
+≈ 12
+
+4MIN
+
+MAX
+
+AVG
+
+MIN
+
+MAX
+
+AVG
+
+<1%
+
+47
+
+56
+
+49.9
+
+123
+
+130
+
+126.3
+
+≈100%
+
+47
+
+—
+
+—
+
+141
+
+—
+
+—
+
+EDD*
+
+≈43
+
+<1%
+
+53
+
+53
+
+53
+
+129
+
+129
+
+129
+
+ERT*
+
+≈43
+
+<1%
+
+52
+
+52
+
+52
+
+130
+
+130
+
+130
+
+74
+
+8.1
+N P-
+
+DSAFO
+scheduling
+
+run-and-
+
+Agent
+
+DSAFO
+
+Agent
+
+8.2
+DSAFO
+AGSAP
+Fan, G. C. Zhang
+
+F. Xue
+
+[147]
+
+DSAFO
+
+[148]
+
+75
+
+W.
+
+AMECO
+
+NSFC
+1
+
+– 2005
+
+2005
+
+12
+
+12
+
+60472123 2005
+QD13X04 2004
+
+76
+
+1
+
+–
+
+A DSAFO
+
+Agent
+
+DSAFO
+
+FIPA ACL
+,
+def
+
+M essage = ChannelM ark, Content
+M essage
+
+ChannelM ark
+ChannelM ark
+
+A–1: DSAFO
+ChannelM ark
+
+FIPA ACL
+
+FIPA ACLs
+
+FIPA ACL
+
+Content
+
+QUERY
+
+INFORM
+
+OpType
+
+INFORM
+
+INFORM
+
+FlightNo, TaskType, ERT, LED, jobTime, Apron
+
+REQUEST
+
+INFORM
+
+FlightNo, TaskType, MetaPlan(arg1 ; arg2 ; . . . )
+
+REPLY
+
+INFORM
+
+FlightNo, TaskType, MetaPlan(arg1 ; arg2 ; . . . ), ERT
+
+CANCEL
+
+INFORM
+
+MetaPlan(arg1 ; arg2 ; . . . )
+
+INVALID
+
+INFORM
+
+MetaPlan(arg1 ; arg2 ; . . . ), isFromBB
+
+BORROW
+
+INFORM
+
+ResType, MetaPlan(arg1 ; arg2 ; . . . ), BuddyList(Name1 ; . . . )
+
+LEND
+
+INFORM
+
+ResType, MetaPlan(arg1 ; arg2 ; . . . )
+
+REFUSE
+
+INFORM
+
+ResType, MetaPlan(arg1 ; arg2 ; . . . ), BuddyList(Name1 ; . . . )
+
+ACQUIRE
+
+INFORM
+
+ResType, StartTime
+
+ALLOT
+
+INFORM
+
+ResName, StartTime
+
+RELEASE
+
+INFORM
+
+ResType, ResName, ReleaseTime
+
+SYNBUDDY
+
+PROXY
+
+< null >
+
+ACKBUDDY
+
+PROXY
+
+BuddyList(Name1 ; Name2 ; . . . )
+
+SYNDEMAND
+
+REQUEST
+
+< null >
+
+ACKDEMAND
+
+REQUEST
+
+myResFreedom
+
+77
+
+[1] M. R. Garey, D. S. Johnson. (1979). Computers and intractability - a guide to the theory
+of NP-completeness[M]. W.H. Freeman and Company, New York.
+[2] M. S. Fox. (1983). Constraint-Directed Search: A case study of job-shop scheduling[D].
+Doctoral dissertation, tech. report CMU-RI-TR-83-22, Robotics Institute, Carnegie Mellon University, Pittsburgh, PA, December, 1983.
+[3] D. Applegate, and W. Cook. (1991). A computational study of the job-shop scheduling
+problem[J]. ORSA Journal On Computing, 3:149 156, 1991.
+[4] H. Hartmann. (2001). CARE action innovation: final report of preliminary study total
+airport management[R]. Technical Report, German Aerospace Center, IB 112-2001/21,
+DLR, Institut für Flugführung, Germany November 2001.
+[5] J. Xing, S. Liu, W. Fan, L. Ji. (2006). Design of airport ground service system based on
+multi-agent[J]. Journal of Civil Aviation University of China. 24 (3) (2006) pp. 24–27 (
+,
+
+,
+
+,
+
+.
+
+Agent
+
+[J].
+
+,
+
+24(3): 24–27.)
+[6] P. Baptiste, C. Le Pape, and W. Nuijten. (1995). Incorporating efficient operations research algorithms in constraint-based scheduling[C]. In First International Joint Workshop
+on Artificial Intelligence and Operations Research, 1995.
+[7] General
+flight
+
+Administration
+normal
+
+rate
+
+in
+
+of
+
+Civil
+
+China
+
+Aviation
+civil
+
+of
+
+China.
+
+aviation[R/OL].
+
+(2006).
+
+First
+
+season
+
+http://www.caac.gov.cn,
+
+/E PubWebApp/Doc/04/20060427154753.doc. 27th, Apr. 2006. (
+[R/OL]. http://www.caac.gov.cn. 2006 4
+
+27
+
+.
+.)
+
+[8] L. Shi. (2005). Cost control in fleet planning. Chinese Civil Aviation Management, 2005
+No 2, pp. 24–25. (
+
+.
+
+[J].
+
+, 2005(2): 24–25.)
+
+[9] S.-H. Tsaur, T.-Y. Chang and C.-H. Yen. (2002) The evaluation of airline service quality
+by fuzzy MCDM[J]. Tourism Management, Vol. 23, No.2, pp. 107–155, 2002.
+
+78
+
+[10] Y. Hu. (2002). Academician Guojie Li: a talk on computer development strategy in
+China[N]. Guangming Daily, 4th, Jan. 2002. (
+[N].
+
+, 2002
+
+1
+
+4
+
+.
+
+.)
+
+[11] D. E. Neiman, D. W. Hildum, V. R. Lesser, T. W. Sandholm. (1994). Exploiting metalevel information in a distributed scheduling system[C]. In Proceedings of the Twelfth
+National Conference on Artificial intelligence (AAAI-94) Vol.1 Seattle, Washington, US.
+American Association for Artificial Intelligence, Menlo Park, CA (1994) 394–400.
+[12] D. W. Hildum. (1994). Flexibility in a knowledge-based system for solving dynamic
+resource-constrained scheduling problems[D]. PhD dissertation, Computer Science Dept.,
+University of Massachusetts, Amherst, MA 01003, May 1994. UMI Order No. GAX9510483.
+[13] D. E. Neiman, V. R. Lesser. (1996). A cooperative repair method for a distributed scheduling system[C]. In Proceedings of the Third International Conference on Artificial Intelligence Planning System (AIPS-96), Edinburgh, Scotland. (1996) 174–181.
+[14] M. Chia, D. E. Neiman, V. R. Lesser. (1998). Coordinating asynchronous agent activities in a distributed scheduling system[C]. In Proceedings of the Second International
+Conference on Autonomous Agents (Agents98), January, 1998.
+[15] A. Chenung, W. H. Ip, D. Lu, C. L. Lai. (2005). An aircraft service scheduling model using
+genetic algorithms[J]. Journal of manufacturing technology management. 16(1): 109–119
+[16] M. Xu and Z. X. Wang. (2003). A noval intelligent vehicle displaying and scheduling
+system[J]. Chinese Automation Information, 2003(1), No.31, pp. 29–31. (
+[J].
+
+, 2003(1),
+
+31
+
+,
+
+.
+
+: 29–31.)
+
+[17] A. S. Manne. (1960). On the job shop scheduling problem[J]. Operations Research, Vol.
+8(2) March, 1960. pp. 219–223.
+[18] A. S. Jain and S. Meeran. (1999). Deterministic job-shop scheduling: past, present and
+future[J]. European Journal of Operational Research, Vol. 113(2), pp. 390–434.
+[19] A. Jones and L. C. Rabelo. (1998). Survey of job shop scheduling techniques[R]. Technical
+Reports. NISTIR, National Institute of Standards and Technology, Gaithersburg, MD,
+1998.
+[20] D. Wu. (1987). An Expert Systems Approach for the Control and Scheduling of Flexible
+Manufacturing Systems[D]. Ph.D. Dissertation, Pennsylvania State University, PA, US.
+
+79
+
+[21] S. F. Smith. (1994). OPIS: A methodology and architecture for reactive scheduling[M].
+In M. Zweben and M. Fox (Eds.), Intelligent scheduling, San Francisco, CA: Morgan
+Kaufmann.
+[22] H. V. D. Parunak, B. W. Irish, J. Kindrick, and P. W. Lozo. (1985). Fractal actors for
+distributed manufacturing control[C], in The Second Conference on Artificial Intelligence
+Applications, Miami, December 1985, pp. 653–660.
+[23] P. S. Ow, S. F. Smith, R. Howie. (1988). A cooperative scheduling system[M], in: M.D.
+Oliff (ed.), Expert System and Intelligent Manufacturing, pp. 43–56.
+[24] K. Sycara, S. Roth, N. Sadeh, and M. Fox. (1991). Distributed constrained heuristic search[J]. IEEE Transactions on Systems, Man, and Cybernetics, 21(6):1446–1461,
+November/December 1991.
+[25] J. Butler, H. Ohtsubo. (1992). ADDYMS: architecture for distributed dynamic manufacturing scheduling[M], in: A. Famili, D. S. Nau, S. H. Kim, eds., Artificial Intelligence
+Applications in Manufacturing, AAAI Press/MIT Press, pp. 199–213.
+[26] L. C. Rabelo. (1990). A hybrid artificial neural networks and knowledge-based expert
+systems approach to flexible manufacturing system scheduling[D]. Doctoral Thesis. University of Missouri-Rolla.
+[27] F. Glover. (1989). Tabu search: part I[J]. ORSA Journal on Computing, Vol. 1(3), pp.
+190–206.
+[28] F. Glover. (1990). Tabu search: part II[J]. ORSA Journal on Computing Vol. 2(1), pp.
+4–32.
+[29] F. Glover. (1996). Tabu search and adaptive memory programming: advances, applications and challenges[M], in Interfaces in Computer Science and Operations Research, Barr,
+Helgason and Kennington (eds.) Kluwer Academic Publishers, pp. 1–75. 1996.
+[30] A. Vakharia and Y. Chang. (1990). A simulated annealing approach to scheduling a manufacturing cell.[J] Naval Research Logistics. Vol. 37, pp. 559–577.
+[31] P. J. van Laarhoven, E. H. Aarts, J. K. Lenstra. (1992). Job shop scheduling by simulated
+annealing[J]. Operations Research. 40(1) (Jan. 1992), pp. 113–125.
+[32] L. Davis. (1985). Job shop scheduling with genetic algorithms[C]. In Proceedings of the
+1st international Conference on Genetic Algorithms. J. J. Grefenstette, Ed. Lawrence
+Erlbaum Associates, Mahwah, NJ, pp. 136–140.
+
+80
+
+[33] T. Starkweather, D. Whitley and B. Cookson. (1993). A Genetic Algorithm for scheduling
+with resource consumption[C]. in the Joint German/US Conference on Operations Research in Production Planning and Control, G. Fandel, T. Gulledge and A. Jones (Eds.)
+Operation Research in Production Planning and Control, Springer-Verlag, Berlin, 1993,
+pp. 567–583.
+[34] A. Colorni, M. Dorigo, V. Maniezzo, M. Trubian. (1994). Ant system for job-shop scheduling[J]. Belgian Journal of Operations Research, Statistics and Computer Science, 34(1),
+pp. 39–53.
+[35] W. J. Xia, Z. M. Wu, W. Zhang, G. Yang. (2004). Applying particle swarm optimization
+to job-shop scheduling problem[J]. Chinese Journal of Mechanical Engineering, 17(3),
+pp.437–441.
+[36] Y. Tsujimura, S. H. Park, I. S. Chang, and M. Gen. (1993). An effective method for
+solving flow shop scheduling problems with fuzzy processing times[C]. In Proceedings
+of the 15th Annual Conference on Computers and industrial Engineering, Blacksburg,
+Virginia, United States. C. P. Koelling, Ed. Pergamon Press, Elmsford, NY, pp. 239–242.
+[37] W. Slany. (1996). Scheduling as a fuzzy multiple criteria optimization problem[J]. Fuzzy
+Sets and Systems. Vol 78(2), March 1996, pp. 197–222. Issue 2. Special Issue on Fuzzy
+Multiple Criteria Decision Making.
+[38] M. Yokoo and K. Hirayama. (2000). Algorithms for distributed constraint satisfaction: a
+review[J]. Autonomous Agents and Multi-Agent Systems, Vol 3(2), pp. 185–207, 2000.
+[39] S. Minton , M. D. Johnston , A. B. Philips , P. Laird. (1992). Minimizing conflicts: a
+heuristic repair method for constraint satisfaction and scheduling problems[J], Artificial
+Intelligence, Vol.58(1-3), pp.161–205, Dec. 1992.
+[40] M. Yokoo. (1994). Weak-commitment search for solving constraint satisfaction problems[C]. In Proceedings of the 12th National Conference on Artificial Intelligence (AAAI
+’94), AAAI press, Vol. 1, pages 313–318, Seattle, WA, USA, July 31 - August 4 1994.
+[41] A. K. Mackworth. (1992). Constraint satisfaction[M]. In: S. C. Shapiro (ed.): Encyclopedia of Artificial Intelligence. New York: Wiley-Interscience Publication, pp. 285–293.
+[42] M. Yokoo, E. H. Durfee, T. Ishida, K. Kuwabara. (1998). The distributed constraint
+satisfaction problem: formalization and algorithms[J]. IEEE Transactions on Knowledge
+and Data Engineering 10(5) (Sep. 1998), pp. 673–685.
+
+81
+
+[43] M. Yokoo, E. Durfee, T. Ishida, and K. Kuwabara. (1992). Distributed constraint satisfaction for formalizing distributed problem solving[C], in Proceedings of the Twelfth
+IEEE International Conference on Distributed Computing Systems (ICDCS-92), Yokohama, Japan, June 1992. pp. 614–621.
+[44] M. Yokoo. (1995). Asynchronous weak-commitment search for solving constraint satisfaction problems[C]. In First International Conference on Principles and Practice of Constraint Programming (CP-95) Cassis, France. U. Montanari, F. Rossi. Eds, Lecture Notes
+in Computer Science Vol.976 Springer, (1995) pp. 407–422.
+[45] M. Yokoo. (2001). Distributed constraint satisfaction: foundation of cooperation of multiagent system[M]. Springer Verlag, Berlin.
+[46] P. Prosser, C. Conway, and C. Muller. (1992). A constraint maintenance system for the
+distributed allocation problem[J]. Intelligent Systems Engineering Vol.1(1), pp. 76–83.
+[47] P. J. Modi, W.-M. Shen, M. Tambe, and M. Yokoo. (2005). An asynchronous complete method for distributed constraint optimization[J]. Artificial Intelligence Journal,
+vol.161(1-2), pp.149–180, 2005.
+[48] Yokoo, M. (2004). Protocol/mechanism design for cooperation/competition[C]. In Proceedings of the Third international Joint Conference on Autonomous Agents and Multiagent Systems - Vol. 1 (New York, New York, July 19 - 23, 2004). International Conference
+on Autonomous Agents. IEEE Computer Society, Washington, DC, pp. 3–7.
+[49] G. Weiss, (ed.). (1999). Multiagent systems: a modern approach to distributed artificial
+intelligence[M]. The MIT Press, Cambridge, Massachusetts, 1999
+[50] M. Wooldridge, and N. Jennings. (1995). Intelligent agents: theory and practice[J]. Knowledge Engineering Review, Vol.10, No. 2, 1995. Cambridge University Press, pp. 115–152
+[51] M. J. Wooldridge. (2001). Introduction to multiagent systems[M]. John Wiley & Sons,
+Inc. (See also:
+
+Agent
+
+[M].
+
+,
+
+.
+
+:
+
+, 2003.10.)
+
+[52] D. Gelernter and N. Carriero. (1992). Coordination languages and their significance[J].
+Communication of the ACM, Vol.35(2) (Feb. 1992), pp. 97–107.
+[53] P. Ciancarini, A. Omicini, and F. Zambonelli. (2000). Multiagent system engineering: the
+coordination viewpoint[C]. In 6th international Workshop on intelligent Agents Vi, Agent
+theories, Architectures, and Languages (Atal), (July 15 - 17, 1999). N. R. Jennings and Y.
+Lesp rance, Eds. Lecture Notes In Computer Science, vol. 1757. Springer-Verlag, London,
+250–259.
+
+82
+
+[54] H. S. Nwana. (1996). Software agents: an overview[J]. The Knowledge Engineering Review, 11(3): 205–244, October/November 1996.
+[55] M. N. Huhns, and M. P. Singh. (1994). Distributed Artificial Intelligence for Information
+Systems[R]. CKBS-94 Tutorial, June 15, University of Keele, UK.
+[56] K. S. Decker and V. R. Lesser. (1993). Analyzing a quantitative coordination relationship[J]. Group Decision and Negotiation, Vol. 2(3):195–217, 1993.
+[57] K. Decker, and J. Li. (1998). Coordinated Hospital Patient Scheduling[C]. In Proceedings
+of the 3rd international Conference on Multi Agent Systems (July 03 - 07, 1998). ICMAS98. IEEE Computer Society, Washington, DC, 104.
+[58] M. N. Huhns, and L. M. Stephens. (1999). Multiagent systems and societies of agents[M].
+In Multiagent Systems: A Modern Approach To Distributed Artificial intelligence, G.
+Weiss, Ed. MIT Press, Cambridge, MA, 79–120.
+[59] J. S. Liu. (1996). Coordination of multiple agents in distributed manufacturing scheduling[D]. Doctoral Thesis , The Robotics Institute, Carnegie Mellon University, Pittsburgh,
+PA, April 1996.
+[60] N. R. Jennings. (1991). Cooperation in industrial systems[C]. In Proceedings of ESPRIT
+Conference, pp. 253–263, Brussels, Belgium.
+[61] N. R. Jennings. (1994). The ARCHON system and its applications[C]. In Proceedings of
+2nd Int. Conf. on Cooperating Knowledge Based Systems (CKBS-94), pages pp. 13–29,
+Keele, UK.
+[62] R. Nair, and M. Tambe. (2005). Hybrid BDI-POMDP framework for multiagent teaming[J]. Journal of AI Research (JAIR), 23:367–413, 2005.
+[63] N. Schurr, P. Scerri, and M. Tambe. (2004). Coordination advice: a preliminary investigation of human advice to multiagent teams[C]. in AAAI Spring Symposium on Interaction
+between Humans and Autonomous Systems over Extended Operation, Invited Paper, 2004.
+[64] V. A. Cicirello and S. F. Smith. (2001). Wasp-like agents for distributed factory coordination[R]. Technical Report CMU-RI-TR-01-39, Robotics Institute, Carnegie Mellon
+University, Pittsburgh, PA, December 2001.
+[65] L. Panait, and S. Luke. (2005). Cooperative multi-agent learning: the state of the art[J].
+Autonomous Agents and Multi-Agent Systems, Vol. 11, No. 3. (November 2005), pp.
+387–434.
+
+83
+
+[66] P. E. Utgoff, D. Jensen, and V. Lesser. (2000). Inferring Task Structure from Data[R].
+Technical Report. UMI Order Number: UM-CS-2000-054., University of Massachusetts.
+[67] Reis, L. P., Lau, N., and Oliveira, E. (2001). Situation based strategic positioning for
+coordinating a team of homogeneous agents[J]. In Balancing Reactivity and Social Deliberation in Multi-Agent Systems, From Robocup To Real-World Applications (Selected
+Papers From the ECAI 2000 Workshop and Additional Contributions) M. Hannebauer,
+J. Wendler, and E. Pagello, Eds. Lecture Notes In Computer Science, vol. 2103. SpringerVerlag, London, pp. 175–197.
+[68] R. G. Smith. (1977). The CONTRACT NET: a formalism for the control of distributed
+problem solving[C]. In Proceedings of the 5th International Joint Conference on Artificial
+Intelligence (IJCAI-77), Cambridge, MA, Febrary 1977. pp. 338–343.
+[69] R. G. Smith. (1980). The contract net protocol: high-level communication and control
+in a distributed problem solver[J]. IEEE Transactions on Computers, vol. C-29(12), pp.
+1104–1113, Dec. 1980.
+[70] H. Chalupsky, T. Finin, R. Fritzson, D. McKay, S. Shapiro, and G. Wiederhold. (1992). An
+overview of KQML: a knowledge query and manipulation language[R]. Technical report,
+KQML Advisory Group, April 1992.
+[71] T. Finin, R. Fritzson, D. McKay, and R. McEntire. (1994). KQML as an agent communication language[C]. In Proceedings of the Third international Conference on information
+and Knowledge Management (Gaithersburg, Maryland, United States, November 29 - December 02, 1994). N. R. Adam, B. K. Bhargava, and Y. Yesha, Eds. CIKM ’94. ACM
+Press, New York, NY, pp. 456–463.
+[72] FIPA. (1997). FIPA 1997 specification part 2: agent communication language[S/OL].
+Document No. 00003. Geneva:FIPA Foundation for Intelligent Physical Agents, October
+1997. http://www.fipa.org/specs/fipa00003/OC00003A.pdf
+[73] FIPA. (2002). FIPA ACL message structure specification[S/OL]. Document No. 00061.
+Geneva: FIPA Foundation for Intelligent Physical Agents.
+http://www.fipa.org/specs/fipa00061/SC00061G.pdf
+[74] V. R. Lesser, and D. D. Corkill. (1981). Functionally accurate, cooperative distributed
+problem-solving systems[J]. IEEE Transactions on Systems, Man and Cybernetics, SMC11(1): 81–96, January 1981.
+
+84
+
+[75] V. R. Lesser. (1991). A retrospective view of FA/C distributed problem solving[J]. IEEE
+Transactions on Systems, Man, and Cybernetics, Special Issue on Distributed Artificial
+Intelligence, 21(6):1347–1362, December 1991.
+[76] D. E. Wilkins. (1988). Practical planning:
+
+extending the classical AI planning
+
+paradigm[M]. Morgan Kaufmann Publishers Inc., San Mateo, CA, 1988.
+[77] Durfee, E. H. and Lesser, V. R. September. (1991). Partial global planning: a coordination
+framework for distributed hypothesis formation[J]. IEEE Transactions on Systems, Man,
+and Cybernetics, Special Issue on Distributed Sensor Networks, SMC-21(5):1167–1183.
+[78] T. Wittig, Ed. (1992). Archon: an architecture for multi-agent systems[M]. Ellis Horwood
+Series in Artificial Intelligence. Ellis Horwood.
+[79] N. R. Jennings, J. Corera, I. Laresgoiti, E. H. Mamdani, F. Perriolat, P. Skarek, and L.
+Z. Varga. (1996). Using ARCHON to develop real-world DAI applications for electricity
+transportation management and particle acceleration control[J]. IEEE Expert, Vol. 11(6)
+pp. 60–88, December 1996. Special Issue on Real World Applications of DAI systems.
+[80] K. Decker, and V. R. Lesser. (1995). Designing a family of coordination algorithms[C]. In
+Proceedings of the First International Conference on Multi-Agent Systems (ICMAS-95),
+pages 73–80, San Francisco, CA, June 1995.
+[81] M. desJardins, M. Wolverton. (1999). Coordinating a Distributed Planning System, Artificial Intelligence Magazine, 20(4), pp.45–53, Winter, 1999.
+[82] K. Decker, and V. R. Lesser. (1993). Quantitative modeling of complex environments[C].
+In International Journal of Intelligent Systems in Accounting, Finance and Management.
+Special Issue on Mathematical and Computational Models and Characteristics of Agent
+Behavior., Vol. 2, pp. 215–234, 1993.
+[83] T. Wagner, A. Garvey, and V. Lesser. (1997). Complex goal criteria and its application
+in design-to-criteria scheduling[R]. Technical Report. UMI Order Number: UM-CS-1997010., University of Massachusetts.
+[84] K. Decker, and J. Li. (2000). Coordinating mutually exclusive resources using GPGP[J].
+Autonomous Agents and Multi-Agent Systems, Vol. 3(2) (Jun. 2000), 133–157.
+[85] V. A. Cicirello, and S. F. Smith. (2004). Wasp-like agents for distributed factory coordination[J]. Autonomous Agents and Multi-Agent Systems 8(3): 237–266.
+[86] M. d’Inverno, D. Kinny, M. Luck, and M. Wooldridge. (1997). A formal specification of
+dMARS[C]. In Proceedings of the 4th international Workshop on intelligent Agents Iv,
+
+85
+
+Agent theories, Architectures, and Languages (July 24 - 26, 1997). M. P. Singh, A. S. Rao,
+and M. Wooldridge, Eds. Lecture Notes In Computer Science, vol. 1365. Springer-Verlag,
+London, 155–176.
+[87] P. R. Cohen, and H. J. Levesque. (1991). Teamwork[J]. Nous, 25(4): 487–512. Special
+Issue on Cognitive Science and Artificial Intelligence.
+[88] N. R. Jennings. (1993). Controlling cooperative problem solving using joint intentions[J].
+AI Communications, Vol. 6(3-4): 247–428.
+[89] J. Broersen, M. Dastani, J. Hulstijn Z. Huang and L. van der Torre. (2001). The BOID
+architecture: conflicts between beliefs, obligations, intentions and desires[C]. In Proceedings of the Fifth international Conference on Autonomous Agents (Montreal, Quebec,
+Canada). AGENTS ’01. ACM Press, New York, NY, 9–16.
+[90] M. E. Bratman. (1987). Intention plans and practical reason[M]. Harvard University Press,
+Cambridge, MA, 1987.
+[91] D. Ancona, and V. Mascardi. (2003). Coo-BDI: Extending the BDI Model with Cooperativity, in Leite, J. Omicini, A.. L. Sterling, and P. Torroni editors, Declarative agent
+languages and techniques[C], First International Workshop, DALT 2003, Revised Selected
+and Invited Papers, Lecture Notes in Computer Science 2990, pages 109–134, SpringerVerlag, 2004.
+[92] D. Ancona, V. Mascardi, J. F. Hubner, and R. H. Bordini. (2004). Coo-AgentSpeak: cooperation in agentspeak through plan exchange[C]. In Proceedings of the Third international
+Joint Conference on Autonomous Agents and Multiagent Systems - Volume 2 (New York,
+New York, July 19 - 23, 2004). International Conference on Autonomous Agents. IEEE
+Computer Society, Washington, DC, pp. 696–705.
+[93] S. Soon, A. Pearce, and M. Noble. (2004). Adaptive teamwork coordination using graph
+matching over hierarchical intentional structures[C]. In Proceedings of the Third international Joint Conference on Autonomous Agents and Multiagent Systems (AAMAS04) Volume 1 (New York, New York, July 19 - 23, 2004). International Conference on Autonomous Agents. IEEE Computer Society, Washington, DC, pp. 294–301.
+[94] G. Chen, Z. Yang, H. He, K. M. Goh. (2005). Coordinating multiple agents via reinforcement learning[J]. In Autonomous Agents and Multi-Agent Systems, 10(2): 273–328, May,
+2005.
+[95] L. A. Zadeh, R. R. Yage, and R. M. Ton (eds.). (1987). Fuzzy sets and applications:
+Selected Papers[M], John Wiley and Sons, New York, 1987.
+
+86
+
+[96] C. Boutilier. (1999). Sequential optimality and coordination in multiagent systems[C]. In
+Proceedings of the Sixteenth international Joint Conference on Artificial intelligence (July
+31 - August 06, 1999). T. Dean, (Ed.) Morgan Kaufmann Publishers, San Francisco, CA,
+pp. 478–485.
+[97] D. S. Bernstein, S. Zilberstein, and N. Immerman. (2000). The complexity of decentralized
+control of markov decision processes[C]. In Proceedings of the 16th Conference on Uncertainty in Artificial intelligence (June 30 - July 03, 2000). C. Boutilier and M. Goldszmidt,
+Eds. Morgan Kaufmann Publishers, San Francisco, CA, pp. 32–37.
+[98] R. Becker, S. Zilberstein, and V. Lesser. (2004). Decentralized Markov decision processes
+with event-driven interactions[C]. In Proceedings of the Third international Joint Conference on Autonomous Agents and Multiagent Systems - Volume 1 (New York, New York,
+July 19 - 23, 2004). International Conference on Autonomous Agents. IEEE Computer
+Society, Washington, DC, 302–309.
+[99] D. Pynadath and M. Tambe. (2002). The communicative multiagent team decision problem: analyzing teamwork theories and models[J]. Journal of Artificial Intelligence Research, Vol.16, pp. 389–4232.
+[100] P. Paruchuri, M. Tambe, F. Ordonez, S. and Kraus. (2004). Towards a formalization of
+teamwork with resource constraints[C]. In Proceedings of the Third international Joint
+Conference on Autonomous Agents and Multiagent Systems - Volume 2 (New York, New
+York, July 19 - 23, 2004). International Conference on Autonomous Agents. IEEE Computer Society, Washington, DC, pp. 596–603.
+[101] P. Scerri, L. Johnson, D. V. Pynadath, P. Rosenbloom, N. Schurr, M. Si, and M. Tambe.
+(2003). Getting robots, agents and people to cooperate: an initial report[C/OL]. American
+Association Artificial Intelligence (AAAI) Spring Symposium on Human Interaction with
+Autonomous Systems in Complex Environments, 2003.
+http://www.cs.cmu.edu/~pscerri/papers/RAP-SS.pdf
+[102] A. Omicini, A. Ricci, M. Viroli, C. Castelfranchi, and L. Tummolini. (2004). Coordination
+artifacts: environment-based coordination for intelligent agents[C]. In Proceedings of the
+Third international Joint Conference on Autonomous Agents and Multiagent Systems
+- Volume 1 (New York, New York, July 19 - 23, 2004). International Conference on
+Autonomous Agents. IEEE Computer Society, Washington, DC, 286–293.
+[103] A. Garland, and R. Alterman. (2004). Autonomous agents that learn to better coordinate[J]. Autonomous Agents and Multi-Agent Systems, Vol. 8(3) (May. 2004), 267–301.
+
+87
+
+[104] M. S. Fox. (1979). Organization structuring: Designing large complex software[R]. Technical Report. CMU-CS-79-155, Computer Science, Carnegie-Mellon University, December
+1979.
+[105] M. S. Fox. (1981). An organizational view of distributed systems[J]. In IEEE Transactions
+on systems, Man, and Cybernetics, 11(1): 70–80, January 1981.
+[106] W. Jiao, J. Debenham, B. Henderson-Sellers. (2005). Organizational models and interaction patterns for use in the analysis and design of multi-agent systems[J]. Web Intelligence
+and Agent Systems. Vol.3, No.2, 2005, pp. 67–83, IOS Press.
+[107] S. Abdallah, N. Darwish, O. Hegazy. (2002). Monitoring and synchronization for teamwork
+in GPGP[C]. In Proceedings of the 2002 ACM symposium on Applied computing(Madrid,
+Spain, March 11 - 14, 2002). SAC ’02. ACM Press, New York, NY, 288–293.
+[108] W. Fan, X. Zuo. (2004). Instance of abstract performance of multi-agent organizational
+coordination[J]. Journal of Civil Aviation University of China. June, 2004, 22(3). pp.60–
+64. (
+
+.
+
+.
+
+Agent
+
+[J].
+
+. 2004.
+
+22(3): 60–64.)
+[109] W. Fan, H. Chi, and L. Ji. (2005). Multi-agent cooperation based on organizational structure[J]. Chinese Computer Applications. Vol. 25(5), pp. 1045–1048. (
+[J].
+
+,
+
+,
+
+.
+
+. 25(5): 1045–1048.)
+
+[110] B. Horling. (2006). Quantitative organizational modeling and design for multi-agent systems[D]. PhD disseration, University of Massachusetts at Amherst, February 2006.
+[111] B. Horling, and V. Lesser. (2004). A survey of multi-agent organizational paradigms[J].
+The Knowledge Engineering Review, Vol. 19(4) (Dec. 2004), pp. 281–316.
+[112] M. Sims, C. Goldman, and V. Lesser. (2003). Self-organization through bottom-up
+coalition formation[C]. In Proceedings of Second International Joint Conference on Autonomous Agents and MultiAgent Systems (AAMAS 2003), pages 867–874, Melbourne,
+AUS, July 2003. ACM Press.
+[113] K. Decker. (1996). TAEMS: a framework for environment centered analysis and design of
+coordination mechanisms[M]. In Foundations of Distributed Artificial Intelligence, Chapter 16, pages 429–448. G. O’Hare and N. Jennings (eds.),Wiley Inter-Science, January
+1996.
+[114] K. Fischer. (1999). Agent-based design of holonic manufacturing systems[J]. Journal of
+Robotics and Autonomous Systems, 27(1-2): 3–13, 1999.
+
+88
+
+[115] X. Zhang and D. Norrie. (1999). Holonic control at the production and controller levels[C].
+In Valckenaers, P., Van Brussel, H. (Eds), Proceedings of the 2nd International Workshop
+on Intelligent Manufacturing Systems (IMS 99), pages 215–224, 1999.
+[116] T. Sandholm and V. Lesser. (1997). coalitions among computationally bounded agents[J].
+Artificial Intelligence, Special Issue on Economic Principles of Multi-Agent Systems,
+94(1):99–137, January 1997.
+[117] A. Chavez and P. Maes. (1996). Kasbah: an agent marketplace for buying and selling
+goods[C]. In First International Conference on the Practical Application of Intelligent
+Agents and Multi-Agent Technology (PAAM’96), pages 75–90, London, UK, 1996. Practical Application Company.
+[118] M. Wellman. (2004). Online marketplaces[M]. In M. P. Singh (ed.), Practical Handbook
+of Internet Computing. Chapman Hall & CRC Press, Baton Rouge, 2004.
+[119] C. Brooks, E. Durfee, and A. Armstrong. (2000). An introduction to congregating in multiagent systems[C]. In Proceedings of the Fourth International Conference on Multiagent
+Systems, pp. 79–86, 2000.
+[120] C. Brooks and E. Durfee. (2003). Congregation formation in multiagent systems. Journal
+of Autonomous Agents and Multiagent Systems, 7(1-2):145–170, 2003.
+[121] Y. Shoham and M. Tennenholtz. (1995). On social laws for artificial agent societies: offline design[J]. Artificial Intelligence, 73(1-2): 231–252, 1995.
+[122] M. Colombetti, N. Fornara, and M. Verdicchio. (2004). A social approach to communication in multiagent systems. In J. A. Leite, A. Omicini, L. Sterling, and P. Torroni, editors,
+Declarative Agent Languages and Technologies, volume 2990 of Lecture Notes in Artificial
+Intelligence, pages 191–220. Springer-Verlag, May 2004.
+[123] G. Wiederhold, P. Wegner, and S. Cefi. (1992). Toward megaprogramming[J]. Communications of the ACM, 33(11): 89–99, 1992.
+[124] K. Sycara, K. Decker, and M.Williamson. (1997). Middle-agents for the Internet[C]. In
+Proceedings of the 15th International Joint Conference on Artificial Intelligence, pages
+578–583, January 1997.
+[125] G. Beavers and H. Hexmoor. (2001). Teams of agents[C]. In Proceedings of the IEEE
+Systems, Man, and Cybernetics Conference, pages 574–582, 2001.
+[126] N. R. Jennings. (1995). Controlling cooperative problem solving in industrial multi-agent
+systems using joint intentions[J]. Artificial Intelligence. 75(2) (Jun. 1995), 195–240.
+
+89
+
+[127] R. Milner. (1991). The polyadic Pi-calculus: a tutorial[R]. Technical Report ECS-LFCS91-180, Computer Science Department, University of Edinburgh, UK, October 1991. (See
+also: F. L. Bauer, W. Brauer, and H. Schwichtenberg, (eds.) Logic and Algebra of Specification, pages 203–246. Springer-Verlag, 1993.)
+[128] R. Milner, J. Parrow, and D. Walker. (1989). A calculus of mobile processes: part I[R].
+Technical Report ECS-LFCS-89-85. Laboratory for Foundations of Computer Sciences,
+Department of Computer Science, University of Edinburgh, June 1989. (See also: Information and Computation, Vol. 100(1) pp. 1–40. September, 1992.)
+[129] R. Milner, J. Parrow, and D. Walker. (1989). A calculus of mobile processes: part II[R].
+Technical Report ECS-LFCS-89-86. Laboratory for Foundations of Computer Sciences,
+Computer Science Department, University of Edinburgh, June 1989. (See also: Information and Computation, Vol. 100(1) pp. 41–77. September, 1992.)
+[130] T. Rorie. (1998). Formal modeling of multi-agent systems using the π-calculus[D]. Master
+thesis, Department of Computer Science, North Carolina A&T State University, Greensboro, NC.
+[131] W. Jiao, and Z. Shi. (1999). Formalizing agent’s attitudes with the polyadic π-calculus[C].
+In Proceedings of the 4th Workshop on Practical Reasoning and Rationality, Stockholm,
+Sweden, 31st, July 1999. pp. 21–27.
+[132] W. Jiao, and Z. Shi. (2000). Modeling Dynamic Architectures for Multi-Agent Systems[J].
+Chinese journal of computers, (
+
+,
+
+.
+
+MAS
+
+[J].
+
+. 2000, 23(7): 732–737.)
+[133] B. Yin, Z. He, G. Xu, F. Tan, et al. (2004). Discrete mathematics[M]. 2nd Edition. Beijing,
+PR China: Higher Education Press, 2004. Chapter 19. (
+.
+
+[M].
+
+.
+
+:
+
+, 2004.
+
+,
+19
+
+,
+
+,
+
+,
+
+.)
+
+[134] E. G. Coffman Jr., M. R. Garey, D. S. Johnson. (1978). An Application of Bin-Packing to
+Multiprocessor Scheduling[J]. SIAM Journal on Computing, Vol. 7, No. 1, February 1978.
+pp. 1–17.
+[135] A. D. Mali, (2005) On quantified weighted MAX-SAT[J]. Decision Support Systems 40(2)
+(Aug. 2005), pp. 257–268.
+[136] M. E. Aydin, E. Öztemel. (2000). Dynamic job-shop scheduling using reinforcement learning agents[J]. Robotics and Autonomous Systems, 33(3), pp. 169–178. Chap. 2.
+
+90
+
+[137] M. P. Wellman, (1993). A market-oriented programming environment and its application to distributed multicommodity flow problems[J]. Journal of Artificial Intelligence
+Research. Vol. 1, pp. 1–23.
+[138] G. İnalhan, D. M. Stipanović, and C. J. Tomlin. (2002). Decentralized optimization with
+application to multiple aircraft coordination[C]. In Proc. IEEE Int. Conf. on Decision and
+Control, Las Vegas, Nevada, 2002.
+[139] W. Fan, F. Xue. (2006). Optimize cooperative agents with organization in distributed
+scheduling system[C]. in Second International Conference on Intelligent Computing (ICIC
+2006), Kunming, China, 2006. D.-S. Huang, K. Li, and G.W. Irwin (Eds.): Lecture Notes
+in Artificial Intelligence Vol.4114, pp. 502–509.
+[140] S. J. Russell, P. Norvig. (1995). Artificial intelligence: a modern approach[M]. PrenticeHall, Inc. Chap. 2. pp. 45–49.
+[141] F. Bellifemine, A. Poggi, G. Rimassa. (2001). JADE: a FIPA2000 compliant agent development environment[C]. In Proceedings of the Fifth international Conference on Autonomous
+Agents (AGENT01), 216–217, Montreal, Canada. ACM Press, New York, NY.
+[142] M. Dorigo, V. Maniezzo, and A. Colorni. (1991). Positive feedback as a search strategy[R].
+Technical Report 91–016, Dipartimento di Elettronica, Politecnico di Milano, Italy, 1991.
+[143] E. Bonabeau, M. Dorigo, and G. Theraulaz. (2000). Inspiration for optimization from
+social insect behavior[J], Nature, Vol. 406 No 6, pp.39–42.
+[144] M. Dorigo and T. Stützle. (2004). Ant Colony Optimization[M]. Bradford Books (MIT
+Press).
+[145] T. Stützle, and H. Hoos. (1997). The MAX –MIN ant system and local search for the
+traveling salesman problem[C]. In Proceedings of the Fourth International Conference on
+Evolutionary Computation (ICEC’97), pp. 308–313. IEEE Press.
+[146] T. Stützle, and H. Hoos. (1997). Improvements on the ant system: Introducing MAX –
+MIN ant system[C]. In Proceedings of the International Conference on Artificial Neural
+Networks and Genetic Algorithms, pages 245–249. Springer Verlag, Wien, 1997.
+[147] W. Fan, G. C. Zhang, and F. Xue. (2006). Design and implementation of airline ground
+services mas development platform[C]. In First Conference on Multi-agent Theory and
+Application, Yantai, China, 2006. C. Y. Shi, Z. Z. Shi, et al (Eds.): Journal of Computer
+Research and Development Vol 43(suppl.I), pp 414–419 (
+MAS
+.
+
+[C].
+,
+
+,
+
+,
+
+,
+
+Agent
+
+.
+
+. 42(suppl.I): 414–419.)
+
+91
+
+.
+. 2006
+
+8 ,
+
+[148] A. J. Davenport, and J. C. Beck. (2000). A survey of techniques for scheduling with uncertainty[Z/OL]. http://www.eil.utoronto.ca/profiles/chris/chris.papers.html.
+
+92
+
+2006
+
+8
+
+W. Fan, and F. Xue. Optimize Cooperative Agents with Organization in
+
+Distributed Scheduling System. in Second International Conference on Intelligent Computing (ICIC 2006), Kunming, China, 2006. D.-S. Huang, K. Li, and G. W. Irwin
+(Eds.): Lecture Notes in Artificial Intelligence Vol 4114, pp 502–509. (SCI(BEY13),
+Ei(064210172483))
+
+2006
+
+8
+
+S. X. Zhu ,and F. Xue. Reinforced Circle Architecture and Implementa-
+
+tion in Information System of Civil Aviation Fleet of China. Computer Engineering and
+Design. Vol 27(16) pp 3076–3077 (
+.
+
+2006
+
+,
+
+.
+
+: 27(16): 3076–3077.(
+
+8
+
+))
+
+W. Fan, G. C. Zhang, and F. Xue. Design and Implementation of Airline
+
+Ground Services MAS Development Platform. In First Conference on Multi-agent Theory
+and Application, Yantai, China, 2006. CY Shi, ZZ Shi, et al (Eds.):Journal of Computer
+Research and Development Vol 43(suppl.I), pp 414–419 (
+MAS
+
+2004
+
+.
+,
+
+,
+
+Agent
+
+.
+
+,
+
+.
+. 2006 8 ,
+
+.
+
+,
+
+. 42(suppl.I): 414–419) (
+
+)
+
+10
+
+F. Xue, Z. J. Gu, J. Wang, and J. Zhang. A Search Engine Applying to
+
+Campus Network: CAUCIIC. in First Postgraduate Seminar, Civil Aviation University
+of China, XH Xu (eds.):Journal of Civil Aviation University of China Vol 23(suppl.), pp
+134–136 (
+.
+
+,
+
+,
+
+.
+
+CAUCIIC.
+. 23(suppl.): 134–136.(
+
+))
+
+F. Xue, and W. Fan. DSAFO: A Multi-agent Algorithm for Airport Ground
+Service Scheduling. submitted to Journal of Information and Computational System. (Ei)
+
+93
+
+1982
+
+9
+
+2004
+
+7
+
+2000
+2004
+
+9
+
+Agent
+
+17
+
+4
+
+33
+4
+
+21
+86.0
+
+12
+90.0
+
+6
+
+2005–2006
+
+37
+
+Agent
+60472123
+
+2004–2006
+QD13X04
+2004–2005
+043107011R
+2003–2006
+
+94
+
+

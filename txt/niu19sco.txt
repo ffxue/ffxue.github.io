@@ -1,0 +1,988 @@
+Towards the “Third Wave”: An SCO-enabled Occupational Health and Safety
+Management System for Construction
+Yuhan Niu, Weisheng Lu, Fan Xue, Diandian Liu, Ke Chen, Dongping Fang, and Chimay
+Anumba
+This is the peer-reviewed post-print version of the paper:
+Niu, Y., Lu, W., Xue, F., Liu, D., Chen, K., Fang, D., & Anumba, C. (2019). Towards
+the “third wave”: An SCO-enabled occupational health and safety management system
+for construction. Safety science, 111, 213-223. Doi: 10.1016/j.ssci.2018.07.013
+The final version of this paper is available at: https://doi.org/10.1016/j.ssci.2018.07.013. The
+use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+
+Abstract
+Occupational health and safety (OHS) is of the utmost concern in the construction sector. For
+decades, researchers and practitioners have endeavoured to enhance construction OHS
+performance through various measures ranging from “hard” technologies (in this paper, the “first
+wave” of construction OHS management) such as provision of personal protective equipment, to
+the more recent “soft”, managerial approaches (the “second wave”) such as fostering a safety
+culture. Although considerable improvements have been made in construction OHS, the general
+sentiment is that construction remains one of the most dangerous sectors, warranting more
+innovative or even revolutionary approaches. This research seeks to develop a smart construction
+object (SCO)-enabled OHS management system. The central tenet of the system is that artificial
+intelligence (AI), as the art of creating machines that perform functions that require intelligence
+when performed by people, represents a direction of the “third wave” in construction OHS
+management. The system embraces emergent SCOs and harnesses the power of their smart
+properties of awareness, communicativeness, and autonomy. The system is demonstrated and
+validated in real-life construction practice and a controlled lab test with a tower crane, the cause
+of many construction-related injuries and fatalities, as the subject. It is found that the SCO-enabled
+OHS management system can identify dangerous situations and respond to them autonomously.
+This research suggests that smarter construction, through incorporation of AI in particular, is a
+direction of much promise in terms of improving construction OHS.
+1
+
+Keywords: Occupational health and safety (OHS); construction safety; smart construction
+object (SCO); tower crane; artificial intelligence (AI)
+1. Introduction
+According to the International Labour Office (2001), OHS management refers to a coordinated
+and systematic approach undertaken by an organization to protect the safety and health of all
+members through prevention of work-related injury, illness and disease. Despite strenuous efforts
+to manage OHS in the construction industry, its safety performance is still alarmingly poor. In the
+United States, for example, construction accounted for no more than 5 per cent of the workforce
+but 20 per cent of occupational deaths in the years 2003 to 2013 (National Safety Council 2015).
+This disproportionate pattern is similar or worse in developing economies (Raheem and Hinze
+2014). It is estimated that a total of 60,000 construction fatalities occur every year around the world;
+on average, one every nine minutes (Somavia 2005). The construction industry, while
+“instrumental in influencing human health, economic activities and social behaviour as well as
+cultural identity and civic pride” (Pearce 2003), is also one of the most dangerous.
+Efforts of researchers and practitioners to improve construction OHS management have been
+ongoing across several historical stages of development. The early days of OHS management can
+be characterised by a reliance on “hard” protection, using personal protective equipment (PPE) as
+a physical buffer between users and hazards. This was termed the “first wave” of OHS
+management in this paper. With the growing attentions on the root causes of accidents, a “second
+wave” of construction OHS management arises with the emphasis on safety training and safety
+education to reduce unsafe behaviours and dangerous situations. While considerable progress has
+been achieved during the first and second waves, often insufficient for making rational decisions
+and taking appropriate action when dangers suddenly emerge, making alerts ineffective. As a
+consequence of such limitations, construction around the world is witnessing stagnant OHS
+management. Inspired by smart technologies (e.g., artificial intelligence [AI], robotics) in other
+sectors, the construction industry is also vigorously exploring how these technologies as having
+the capacity can provide a revolutionary approach to improving OHS management in construction.
+This AI-based OHS management is to be argued as the “third wave” development in construction.
+2
+
+However, the understanding of this “third wave” is in its infant stage. For example, there are
+exhortations to develop full “AI”, or totally disruptive solutions to construction OHS management,
+while the take-up of these advocacies is rather low in reality.
+Building on previous studies of smart construction objects (SCOs), the primary aim of this research
+is to (a) develop a SCO-enabled construction OHS management system, and (b) argue that SCOs
+augment construction resources with a “narrow AI” should be the “third wave” development of
+construction OHS management. Central to the “third wave” of construction OHS management is
+not completely departing from existing OHS management methods. While acknowledging the
+adoption of PPE and importance of preventive strategies, an active AI-based solution is proposed
+with the deployment of smart construction objects (SCOs). While SCOs provide OHS-related
+decision-making information to human decision-makers, they can also talk to each other directly.
+Thus, actions that can eliminate a hazard at source can be taken by SCOs promptly and
+autonomously; that is, without necessarily involving human decision-makers in the loop.
+The remainder of this paper comprises seven sections. Subsequent to this introductory section is a
+review of the literature on the revolution of construction OHS management. By introducing the
+definition and properties of SCOs, the potentials and advantages of using SCOs for OHS
+management are presented in Section 3. In Section 4, the architecture and workflow of an SCOenabled OHS management system is presented. With a tower crane selected as the target, the
+system is prototyped and validated in the context of a real-life on-site project in Section 5. A lab
+experiment is also presented demonstrating the system and how the SCO-enabled OHS
+management framework could be used in management strategy development. Section 6 discusses
+the prospects and challenges of the SCO-enabled OHS management framework, and conclusions
+are drawn in Section 7.
+2. The three “waves” development of construction OHS management
+The early days of OHS management can be characterised by a reliance on “hard” technologies,
+which is termed as the “first wave” OHS management in this paper. The protection is mainly relied
+on physical buffers provided by personal protective equipment (PPE) such as safety helmets, boots,
+gloves, and goggles (Hinze et al. 2013). Fundamentally, PPE work in the way of imposing a barrier
+3
+
+between the user and the working environment, thus reducing the user’s exposure to hazards
+including physical, electrical, heat, chemicals, biohazards, and airborne particulate matter. The
+“first wave” OHS management is not uniquely used in construction. A cross-sectoral analogue is
+the automotive industry, where car manufacturers have adopted physical protection (e.g. safety
+belts, air bags, and anti-lock braking systems) to protect drivers and passengers.
+Despite the widespread applications of PPE in construction and continuing advances in
+technological approaches to its provision, a general limitation of PPE is that it does not eliminate
+hazards at their source (Holt 2008). Thus, significant efforts have been directed in recent years to
+investigating the root causes of accidents. Heinrich (1941), a pioneer in accident causation
+investigation, developed the domino theory, which states that injuries occur as a result of linear,
+sequential factors. Building on this theory, enriched causation models incorporate factors such as
+unsafe conditions, unsafe behaviour and worker response (Abdelhamid and Everett 2000).
+Managerial approaches to tackling these causes have also been explored, such as developing a
+behaviour-based safety system (Choudhry and Fang 2008), conducting safety training
+(Hadikusumo and Rowlinson 2002), and fostering a safety culture (Mohamed 2003) and climate
+(Hahn and Murphy 2008). These efforts echo developments attributing accidents largely to
+overload of human capabilities, both physical and psychological, such as the human-error
+causation model (Petersen 1984) and the DeJoy (1990) model. While unavoidably intertwined with
+traditional technological approaches, such efforts focus on “soft” aspects and can be collectively
+referred to as the “second wave” in OHS management. As in the case of “hard” technologies, an
+emphasis on “soft” aspects can also be found in the automotive industry, for example through safedriver education and the enforcement of strict traffic rules and regulations.
+While human error-related accidents can be reduced with safety training and safety culture
+development, they cannot be completely eliminated due to unexpected conditions such as fatigue
+or sudden site distractions (Fang et al. 2015). Studies have been made for safety management
+systems using emerging technologies, most of which focus on detecting hazardous conditions and
+issuing alerts. For example, sensing technologies such as Radio Frequency Identification (RFID)
+(Lu et al. 2011; Flanagan et al. 2014) and wireless networks such as ZigBee have been used to
+capture real-time construction site conditions (Wu et al. 2010), while cyber-physical systems have
+4
+
+been developed to model the complexities of construction safety (Yuan et al. 2016). Alerts can be
+issued when people enter pre-defined danger zones (Yang et al. 2012) or are too close to moving
+objects (Teizer et al. 2010).
+However, the safety protection provided by these technologies is imperfect. Although timely alerts
+can be provided, in-time mitigations and actions in response to dangerous situation still largely
+rely on humans. Researchers have theorized OHS management as decision making, recognizing
+that the rationality of human decision-makers (e.g. safety managers and construction workers) is
+generally bounded by a “triangle of limits” (Simon 1976): available information, cognitive ability,
+and finite amount of time. The latter is often insufficient for making rational decisions and taking
+appropriate action when dangers suddenly emerge, making alerts ineffective. Thus, a more
+intelligent, in-time solution is desired to manage OHS events proactively and promptly.
+The development of construction OHS management, toward the next wave, could draw inspiration
+from the automotive industry. Smart systems such as self-parking and collision prevention
+assistants are now embedded in cars to improve driving safety, for example by detecting hazardous
+conditions and alerting drivers. These smart systems are enhanced with artificial intelligence (AI)
+in auto-pilot systems (e.g. as in Tesla vehicles) (Kessler 2015) and autonomous vehicles (e.g.
+Apple self-driving cars) (Harris 2015). Since movement on the road is no less complex than on a
+construction site, there are no barriers to the exploration of AI in construction OHS management.
+It is thus proposed the “third wave” of construction OHS management, in this study, subscribes to
+AI-based solutions. It acknowledges that human beings are not infallible, but rather, show
+deficiencies (such as being slower and more error-prone) when compared with AI in processing
+information and making prompt actions (Sterman 1989; Reason 2000).
+3. SCOs for OHS management
+Proposed by Niu et al. (2015), smart construction objects (SCOs) represent a new way of capturing,
+processing, and communicating information to support decision making in construction. SCOs are
+“construction resources (e.g., machinery, tools, devices, materials, components, and even
+temporary or permanent structures) that are made smart by augmenting them with sensing,
+processing, and communication abilities so that they have autonomy and awareness, and can
+5
+
+interact with the vicinity to enable better decision making” (Niu et al. 2016). Instead of introducing
+a completely new system to construction sites, an SCO-enabled management system relies on
+construction objects (such as machines, materials and components) already involved in the
+construction process. Without compromising their original appearance and function, these objects
+are augmented with smart and interconnected properties. For example, a smart excavator may be
+able to locate and report its real-time position without demanding extra room while still performing
+the excavation job.
+The three core properties of SCOs, awareness, communicativeness, and autonomy, refer to SCOs’
+abilities in sensing, data exchange, and action-taking, respectively (Niu et al. 2015). Each core
+property is further categorized into sub-properties with different functions (elucidated by a triaxial diagram and summative table in Fig. 2), the utilization of which allows the potentials of SCOs
+for OHS management to be achieved. For example, by applying activity awareness, SCOs could
+help record the number of times and the frequency of machine operations. Comparatively, policy
+awareness enables SCOs to detect whether there is a break of limit in loading or other critical
+factors. The SCOs’ communicativeness ensures that these conditions are conveyed to people
+comprehensively and in a timely manner, either passively or proactively. In addition, depending
+on the type of autonomy, SCOs have the potential not only to issue alerts but also to take action in
+case of emergencies.
+
+Fig. 2. The core properties of SCOs
+6
+
+Together, the smart properties of SCOs offer a new avenue for advancement of construction OHS
+management that is not completely departing from existing OHS management methods while
+adding AI-based values. From the perspective of the “first wave” of OHS management, using
+SCOs is not an abandon of PPE. Since SCOs is primarily making existing construction recourses
+smarter, the functions of SCOs is still “lodged in” PPE and other construction objects. Looking at
+SCOs from the “soft” OHS strategies, it focuses on the dangerous situations as one of the leading
+causes for accidents and injuries. The application of SCOs aims to take active and preventive safeguarding actions when dangerous situations are detected. Nevertheless, rather than comprising a
+new, ambitious centralized system with artificial general intelligence, or “full AI”, capable of
+performing any human intellectual task (Kurzweil 2005), SCOs could augment construction
+resources with a “narrow AI” that equals or exceeds human intelligence with regards to specific
+tasks. The rationale and workflow of SCOs will be articulated in details as follows in the SCOenabled OHS management system.
+4. The SCO-enabled OHS management system
+In this paper, a multi-layered SCO-enabled OHS management system is proposed. The architecture
+of the system is shown in Fig. 3. At the shopfloor layer are the construction objects (e.g. precast
+facades or machinery) that are augmented into SCOs. A smart core integrating various sensors,
+communication modules, and actuators (e.g. GPS, IMU, Bluetooth, and LiDAR) is installed in or
+attached to the construction objects, endowing them with the three core SCO properties of
+awareness, communicativeness, and autonomy. Dangerous situations to be detected and the SCObased solutions are stored in the respective databases, which are centrally managed in the smart
+management platform (SMP). Pre-existing conditions of dangerous situations can be input into the
+event database, which could be continuously expanded and updated with newly emerging industryreported events. Based on updated conditions in the database, relevant SCO solutions can be
+revised to guide the applications in the top layer. The SMP also incorporates a BIM-oriented
+database so as to relate the conditions to ongoing projects and identify the possible impacts of
+these conditions on overall project performance. An online monitoring interface is established in
+the SMP for visualization purposes with Cesium (ver. 1.24). The smart applications enabled by
+the sensing, communicating, and action-taking abilities of SCOs are specified in the application
+7
+
+layer. These applications will be designated to sensors and actuators based on the application
+scenarios, which are directly executed by SCOs. Each application is also supported by the SMP,
+which can provide human decision-makers with visualized data and prompt alerts.
+
+Fig. 3. The architecture of the SCO-enabled OHS management system
+A generic SCO workflow in dealing with the dangerous situations is outlined Fig. 4. It is similar
+to the logic behind the software that makes the OHS management system operable. The workflow
+is “generic” in the sense that it is expected to be sufficiently inclusive to embrace all sorts of typical
+scenarios in construction OHS management. The conditions of dangerous situations (e.g. hoisting
+materials) that may induce accidents or injuries are constantly sensed using SCO awareness. For
+situation, there will be a series of pre-set conditions against which to gauge whether the condition
+hits a threshold or not. If not, the SCOs will continue sensing. When an condition sensed by the
+8
+
+SCO is diagnosed as dangerous, respective communicativeness and autonomy solutions will be
+triggered. In the SCO-based OHS management system, each SCO-based solution is assigned a set
+of communicativeness and autonomy sub-modules. The communicativeness sub-modules will
+communicate the diagnosed situation to the SMP, searching suitable autonomy sub-modules. Clear
+rule-based decisions such as halt or force quit can be autonomously made by SCOs without
+necessarily involving human decision-makers in the loop. Where no active autonomy is available,
+passive autonomy will be triggered to alert human decision-makers. Records of emerging
+conditions are constantly logged and pushed to the SMP, assisting further data analysis. Compared
+with the human decision-making process, SCO awareness and decision-making can occur
+instantaneously, making the subsequent SCO-enabled reaction concurrent or near concurrent. This
+SCO-enabled concurrence, vis-à-vis most prevailing “ex-ante” training or “ex-post” analyses,
+could more effectively prevent dangerous situations from developing into serious accidents.
+
+Fig. 4. A generic SCO-enabled OHS management workflow
+A few examples of how dangerous situations are managed according to the workflow are provided
+in Table 1. While by no means exhaustive, these are based on most-commonly occurring and mostoften addressed hazardous events that are prone to deteriorate into accidents identified from the
+literature (Cambraia et al. 2010; Green and Tominack 2012; Wu et al. 2010; Yang et al. 2012) and
+reports (OSHA 2011a, 2011b, 2011c, and 2011d). Against each listed event, the potential SCObased solutions that can be deployed and the associated workflow are demonstrated and explained
+as follows.
+Table 1. The examples of events to be managed by the SCO-based OHS management system
+9
+
+Events to manage
+
+Pre-set condition
+
+Dangerous
+
+for awareness
+
+situations
+
+Distance detection
+
+Distance ≤
+
+Policy
+
+maintain safe
+
+between worker
+
+buffer
+
+awareness
+
+distance between
+
+and restricted area
+
+distance
+
+(a) Failure to
+
+SCOs
+Smart PPE
+
+Awareness
+
+Communicativeness
+
+Autonomy
+
+Triaxial diagram of
+SCOs
+
+Information push
+
+Passive
+autonomy
+
+on-foot worker and
+restricted area
+(b) Failure to
+
+Smart PPE and
+
+Distance detection
+
+Distance ≤
+
+Policy
+
+maintain safe
+
+moving parts of
+
+between worker
+
+buffer
+
+awareness
+
+distance from parts
+
+machine/vehicle
+
+and moving parts
+
+distance
+
+(c) Incorrect
+
+Smart machine
+
+Critical factor
+
+Factor value
+
+Mixed
+
+operation/Improper
+
+and equipment
+
+sensing and
+
+≥ threshold
+
+awareness
+
+use of machine for
+
+operation process
+
+± buffer
+
+(policy
+
+critical procedures
+
+detection
+
+range;
+
+awareness
+
+incorrect
+
+and process
+
+operation
+
+awareness)
+
+Information push
+
+Active
+autonomy
+
+of machine/vehicle
+
+Information push
+
+Mixed
+autonomy
+
+procedures
+(d) Failure to
+
+Smart
+
+Checking the total
+
+Time /
+
+Activity
+
+Mixed
+
+Mixed
+
+check/maintain
+
+equipment
+
+time / frequency
+
+frequency ≥
+
+awareness
+
+communicativeness
+
+autonomy
+
+of usage
+
+threshold
+
+equipment on time
+
+10
+
+(e) Critical
+
+Smart PPE
+
+Sensing the
+
+Factor value
+
+Policy
+
+environmental
+
+critical
+
+≥ threshold
+
+awareness
+
+factors beyond
+
+environmental
+
+± buffer
+
+human-bearing
+
+factors
+
+range
+
+Information push
+
+Passive
+autonomy
+
+threshold
+
+11
+
+(a) Failure to maintain safe distance between on-foot worker and restricted area
+Most dangerous situations related to falls, electrocution, and “caught-in between” events are
+associated with workers getting too close to hazardous areas such as edges at high levels, trenches
+without shoring, and working radii of derricks or cranes. In these circumstances, the personal
+protection equipment (PPE) of workers, such as safety helmets, could be made into SCOs able to
+sense the real-time location of these workers at all times. Applying SCO policy awareness,
+geographical location is set as a threshold with a buffer range in the periphery. When a worker
+steps into the buffer range, the smart PPE item issues an alarm via passive autonomy, alerting the
+worker so that he/she proceeds no further.
+(b) Failure to maintain safe distance from moving parts of machines/vehicles
+Occupational Safety and Health Administration (OSHA) reports reveal that workers can easily be
+struck when passing a machine/vehicle operation without keeping a safe distance, whether due to
+carelessness of the worker or the operator. If a worker stands within the swing range of a moving
+part of a machine, he/she can be caught between the machine and a solid object, such a wall or
+another piece of equipment. To manage such scenarios, both workers’ PPE and the moving parts
+of machines/vehicles can be transformed into SCOs able to constantly calculate the distance
+between them. These machines/vehicles can be augmented with electrical brakes which activate
+when the SCOs detect border-crossing passers-by, thereby preventing accidents.
+(c) Incorrect operation/ Improper use of machines for critical procedures
+Turning construction equipment and machines into SCOs enables prevention of their incorrect
+operation and improper use. Mixed awareness, mixed autonomy and information push can be
+applied to cover a diverse range of dangerous situations. For example, loading capacity, rotation
+angle, and lifting height of a tower crane can be set as policy awareness thresholds to prevent
+overloading or hoisting in multiple directions simultaneously. For non-critical procedures, the
+operator can be alerted via passive autonomy; at the same time, standard procedure instructions
+can be pushed to the operator. In the case of critical procedures, equipment can be compulsorily
+locked or turned off until the necessary corrections are made.
+
+12
+
+(d) Failure to check/maintain equipment on time
+Failure to undertake regular examination and maintenance of equipment, especially of heavy
+machinery, has significant safety and cost implications for construction. When items of equipment
+are turned into SCOs, activity awareness can sense and assist in the precise recording of each
+activity related to their use or handling, such as picking up, turning on, and operating. A typical
+case of activity awareness is presented in Fitton et al. (2008), where a pay-per-use function was
+enabled by sensors in road patching machines. For regular examination and maintenance purposes,
+a mixed communicativeness is chosen. Here, the SCOs actively push information at regular
+intervals, while the machine use record can be pulled out manually when needed. Alerts are made
+via passive autonomy when maintenance is required based on handling time. If no subsequent
+maintenance is undertaken, the SCOs will use active autonomy to intervene by forcing users off
+the equipment or locking it into standby mode.
+(e) Critical environmental factors
+Proposals for environment-based construction OHS management solutions have been made since
+SCOs were first discussed in Niu et al. (2015). SCOs enable monitoring of critical environmental
+factors that are hazardous to workers or machine operations. Monitoring non-perceptible factors
+such as toxic vapours, for example, can reduce the occurrence of diseases such as pneumoconiosis
+or asbestos-related lung cancer. For critical environmental factors, maximum human-bearing
+thresholds can be input into smart tools and PPE. Augmented with policy awareness, these SCOs
+can sense environmental conditions and, if conditions are below the threshold, perform
+information push to the management platform for monitoring. If the threshold is crossed, the SCOs
+can use passive autonomy to alert workers.
+5. Demonstration and validation
+5.1 Background
+To demonstrate and validate the proposed SCO-enabled OHS management system, the operation
+of tower cranes was explored. Tower cranes hoist and transport a variety of loads near and above
+construction workers, often working in crowded conditions and occasionally with overlapping
+work zones. The use of tower cranes can increase safety risks on sites that are already inherently
+hazardous (Shapira and Lyachin 2009, Raviv and Shapira 2018), as well as threatening pedestrians
+13
+
+(Shepherd et al. 2000). Estimates suggest that cranes are involved in up to one-third of all
+construction and maintenance fatalities (Neitzel et al. 2001); therefore, the importance of tower
+crane management in improving overall construction safety performance cannot be overemphasized.
+Prevailing OHS management practice in tower crane operations is highly dependent on individual
+experience rather than scientific evidence. While experience is extremely important in construction,
+overconfidence in this experience means that evidence-based decision making is lacking. Ongoing
+tower crane operation conditions are reported and recorded by contractors sporadically, if at all.
+Although some studies have used data obtained from statistical reports as a reference for accident
+prevention (e.g. Chi and Han 2013, Tsang et al. 2017), such data may be unreliable due countless
+unreported incidents; in addition, such statistics are unable to provide information on root causes ,
+as well as being questionable predictors of accidents (Shapira and Lyachin 2009). Post-accident
+analysis also has limited power in preventing recurrence. The proposed SCO-enabled OHS
+management system offers a means of capturing and recording more reliable, real-time or near
+real-time, comprehensive data covering target conditions in tower crane operations. It also
+provides impetus for AI applications providing in-time mitigation of dangerous situations in
+construction OHS management.
+5.2 Field test
+Discussions with construction managers revealed five commonly occurring dangerous situations
+related to tower crane operation (see Table 2), all of which could lead to serious accidents if not
+handled properly. Hook over-height could cause equipment damage when hoisting heavy loads, or
+in extreme cases tip the crane. Crossing of the jib and trolley into restricted areas may result in
+collisions with surrounding machinery, buildings, or people working at heights. Unbalanced
+hoisting and lifting heavy weights over dynamic restricted areas (e.g., personnel work zones, areas
+containing assets and equipment) are both serious, dangerous situations which could easily cause
+objects to fall as loads become out of control. The conditions to be sensed and criteria for
+alert/action for each dangerous situation in our field test are listed in Table 2.
+
+14
+
+Table 2. Dangerous situations and related tower crane operation conditions managed in the field
+test
+Dangerous situations
+
+Real-time data of conditions
+
+Criteria for alert/action
+
+(1) Hook over-height
+
+Height of hook
+
+Hooking height ≥ height threshold
+
+(2) Jib/Trolley/Load
+
+Slewing angle of jib, distance of
+
+Jib slewing angle entering a
+
+crossing pre-set restricted
+
+trolley, swing motions of load
+
+constant range of angles
+
+(3) Jib/Trolley/Load
+
+Slewing angle of jib, distance of
+
+Jib slewing angle entering a
+
+crossing dynamic restricted
+
+trolley, swing motions of load and
+
+constant range of angles, and heavy
+
+areas
+
+its geo-position in relation to
+
+load moving over dynamic
+
+moving personnel and vehicles in
+
+restricted zones of personnel and
+
+the zone
+
+vehicles
+
+Motions of jib, trolley, and hook
+
+Simultaneous motions of jib,
+
+areas
+
+(4) Unbalanced hoisting
+
+trolley, and hook
+(5) Over-swing of load
+
+Swing motions of beam
+
+Swing angle ≥ swing threshold
+
+Several smart cores were developed for the field test, each consisting of a microcontroller, an
+inertial measurement unit (IMU), a GPS module, a barometer, an anemometer, and a global system
+for mobile communication (GSM) module. These smart cores were mounted to the key
+components of a tower crane and the hoisted object to make them smart. No prior knowledge
+existed regarding where to mount the smart cores, or what to collect to sufficiently capture tower
+crane operations and subsequently identify dangerous situations for alert and intervention purposes.
+Therefore, this process was discussed with site managers and conducted through trial and error.
+Figure 5 shows a feasible installation scheme using a smart core adopted, without suggesting it is
+the only and best scheme to do so. The figure shows the smart core installation positions, while
+the table shows what data is collected through which sensing modules for monitoring and
+diagnosing specific dangerous situation. At this point in the field test, the conventional tower crane
+and its materials had been turned into SCOs through the use of smart cores (c.f. Fig. 3) and it could
+now function with extra smartness through awareness, communicativeness, and autonomy.
+
+15
+
+Sensing Module
+
+Monitoring Index/Data
+
+Indicators for dangerous
+events
+
+GPS
+
+ a) Geographical location
+
+Distance of trolley
+
+Accelerometer (IMU)
+
+ b) Acceleration
+
+Slewing angle of jib
+
+Magnetometer
+
+ c) Magnetic angle
+
+Barometers
+
+ d) Barometric pressure
+
+Heading angle of beam
+
+Gyroscope (IMU)
+
+ e) Roll, pitch, and yaw angles
+
+Swing motions of beam
+
+ Height of hook
+
+Fig. 5. An illustration of the smart mounted to the tower crane
+The tower crane was in use on the site of a high-rise residential development project in the New
+Territories, Hong Kong. The smart cores collected and updated information on the real-time
+operation conditions of the tower crane and the materials hoisted (i.e. four precast beams) every 3
+seconds throughout the operation. This formed a big data set, 1,270 sets of well-structured records,
+an excerpt of which is shown in Fig. 6.
+
+16
+
+Fig. 6. Sample data captured by the smart cores
+A smart management platform (SMP) (c.f. Fig. 3) was developed to visualize the operations and
+the conditions of the smart tower crane in a real-time manner. As shown in Fig. 7, the SMP has a
+graphic user interface (GUI). The background is a cyber construction site reproduced from the real
+site using a WebGL engine Cesium and Microsoft Bing Map. The building information model was
+obtained and reproduced in the cyber system. A 3D tower crane model was created as the “cyber
+twin” of the target crane positioned properly on the site to illustrate the real-time operations of the
+crane. Based on the live data returned by the smart cores, the SMP could reproduce and visualize
+the motions of the target tower crane simultaneously, with additional aerial and front views for
+easier perception.
+
+17
+
+Fig. 7. The smart management platform (SMP) for tower crane safety management
+In parallel with the cyber tower crane operation is a visualisation of the big data transmitted back
+from the smart cores. Fig. 8 illustrates the visualized dataset for the field test. To remap the status
+of the crane and to identify the dangerous situation, a finite-state machine (FSM) model, with the
+six states idling, hoisting, slewing, hovering, installation, and resetting, was developed. The change
+from one status to another required one (or more) speed (or angular speed or velocity) surpassing
+the threshold(s) pre-defined. For example, the state changed from “idling” to “hosting” at second
+8 (S8) when hook velocity > 0.2 m/s. Some state changes are not directly reversible. For example,
+after changing to “hoisting,” the state remained during s16~s24 even though the hook had stopped
+elevating (see Figure 8). The detections of dangerous situations were also based on the velocities
+or angular speeds. For example, the criterion of identifying unbalanced hoisting was jib angular
+speed > 0.3°/s, trolley speed > 0.15 m/s, and hook speed > 0.2 m/s simultaneously. During the
+installation of beam B1-46 (14:00:07 to 14:07:11, 7 November 2016), the two dangerous situations
+of unbalanced hoisting and load crossing dynamic restricted zone were sensed and alerts were sent
+directly to the on-site operator and site manager via text SMS. When referring the identified status
+of crane and dangerous situations back to Fig. 8, users can observe the events with a highlighted
+focus. The parallel records of jib, trolley, and hook motions, and the heading direction and swing
+angle of the beam, can reveal to a safety manager the exact motions of both the crane and the beam.
+
+18
+
+Fig. 8. Visualized action patterns and alerts of dangerous situations
+5.3 Lab test
+While passive autonomy was successfully achieved in the field test, the exercise of active
+autonomy, such as execution of a halt action, was untested. After several rounds of negotiation
+with the cooperating construction company, the active autonomous control was still perceived as
+non-compliant with existing codes of practice (Irani and Kamal, 2014). Hence, a further test was
+conducted in a controlled lab environment to demonstrate and validate the feasibility of active
+autonomy. A model tower crane capable of emulating actual tower crane movement was
+assembled with LEGO®. A servo motor was used to control its movements both clockwise and
+anti-clockwise and at different speeds. The same smart core used in the field test was attached to
+the main jib of the model tower crane to control its motions so as to prevent dangerous situations
+developing into accidents.
+The lab test focused on one specific dangerous situation identified in the field test: the jib crossing
+
+a restricted area. The restricted area is for on-foot workers to safely work within or passers-by to
+walk through. In the lab test, if the jib of the smart tower crane moved into the buffer range of the
+19
+
+restricted area, the smart tower crane was to autonomously halt the operation. A cyber 3D tower
+crane was developed in an online monitoring interface and linked to the LEGO® tower crane to
+visualize the crane motion in real-time. The restricted area pre-determined in the LEGO® model
+was also converted to the online monitoring interface at the same scale. The LEGO tower crane
+was initially set out of the restricted area and moved steadily towards the restricted area (Fig. 9a).
+When the jib was out of the restricted area, it operated normally with no alert triggered. On
+touching the buffer range at one side of the restricted area, the policy awareness of the smart core
+diagnosed the condition as a dangerous situation, triggering the amber alert in the SMP (Fig. 9b).
+When the jib was entirely within the buffer range, the alert was continuously triggered as the
+dangerous situation was not resolved. When the jib touched the boundary of the restricted area
+when swinging across the buffer range, the smart core instantly reacted by pausing the motor,
+stopping the jib motion (Fig. 9c), and a red alert was triggered.
+
+a
+
+b
+
+c
+
+Fig. 9 The active autonomy lab test for the SCO-enabled OHS management system
+20
+
+In order to test the precision of the halt reaction, the rotation angles sensed by the smart core were
+compared with the actual rotation angles. These were obtained by a rotary sensor tied to the motor
+throughout the whole process. The degree of difference was measured using the root mean squared
+error (RMSE) as shown in Equation (1).
+1
+
+𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅 = � ∑𝑛𝑛𝑖𝑖=1(𝐴𝐴𝐴𝐴𝐴𝐴𝐴𝐴𝐴𝐴𝐴𝐴𝑖𝑖 − 𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑖𝑖 )2
+𝑛𝑛
+
+(1)
+
+Data from the gyroscope, accelerometer and the magnetometer were fused through the Kalman
+filter. Based on 87 sets of data, the value of RMSE was 1.76 degree, indicating that the reaction of
+the smart tower crane was ±1.76 degree ahead of or lagging the movement of the jib; acceptable
+in the controlled lab environment. The lab test supplements the field test by demonstrating the
+automatic control potential of SCOs. If improper operation is yet to be manually stopped, the smart
+core can autonomously control the dangerous condition, thus preventing it from developing into a
+serious accident.
+6. Discussion
+SCOs, with their core smart properties of awareness, communicativeness, and autonomy, present
+a new opportunity to improve OHS management in the construction industry. Compared with
+traditional OHS management systems that collect and analyse after-accident data, the SCOenabled OHS management system inherits several advantageous functions from existing proactive
+technologies (Fang et al 2016, Teizer et al. 2010, Yang et al. 2010) such as worksite monitoring,
+hazard detection, alerting, and data visualization. Unlike those of traditional OHS management
+systems, these functions offer round-the-clock monitoring and objective record taking. Another
+important distinguishing feature of the SCO-enabled OHS management system is its autonomy.
+The system has potential to prevent dangerous situations from developing into fatal accidents by
+taking active and prompt actions in conditions that would overload human thinking and reacting
+abilities. Existing studies on construction OHS management have investigated just one or two
+specific SCO properties, such as policy awareness empowered by a ranged-based sensors network,
+or passive autonomy for issuing alerts. This study, however, has shown that the panoramic and
+interconnected smart properties of SCOs can not only objectively identify the dangerous situations
+but also deal with them promptly.
+21
+
+Several innovations are offered by this study. Firstly, SCOs present a new way to integrate in a
+single management system with the monitoring, identification, and visualization of dangerous
+situations, as well as alerting and autonomous action-taking functions. Although its architecture is
+multi-layered and its operation processes may seem complicated, the SCO-enabled OHS
+management system can be encapsulated into one or more smart cores and executed instantly using
+their computational power. The smart core has customizable functions, and it can be mounted to
+and demounted from existing construction objects. Secondly, this approach aims not to alter
+existing functionalities of construction objects, but to make them smarter with the introduction of
+SCOs. This can be achieved with minimal interference with existing construction processes. There
+are plenty of cases where researchers or consultants have introduced new, grand smart systems,
+which have proven futile due to requirements placed upon construction personnel to cater these
+systems (Woudhuysen and Abley 2004). The system proposed in this paper aligns with the
+argument that a successful smart construction system is the one that causes the least interruption
+to accepted processes (Niu et al. 2016). The automotive industry provides a parallel example with
+its successful implementation of smart systems in vehicles.
+This study has begun the work of introducing data mining, pattern recognition, machine learning,
+and artificial intelligence (AI) to construction OHS management. By mining the large amounts of
+relevant data collected, AI can be developed. Too often in construction, data is scattered across
+systems (Cheng and Teizer 2013). Deviations among emerging technologies make data
+consolidation difficult, limiting their potential to provide substantive information, which can
+support smarter decision making. The SCO-enabled OHS management system integrates various
+data/information islands in the same platform and makes good use of big data. These data collected
+can be further analysed for worker behaviour patterns, which could in turn contribute to safety
+training, and endeavours fostering a safety culture and climate.
+It may be claimed that the smart system proposed here is too ambitious and impractical, especially
+given that the construction industry has long been regarded a notorious “laggard” in technology
+development and adoption (Liu et al. 2018). In developing an SCO-enabled smart system, the
+intention is not to persuade construction industry personnel to relinquish the existing protections
+22
+
+offered by PPE and the safety climate they have cultivated. Rather, the system is intended to
+provide an extra layer of protection where existing protections fail. Finding a balance between
+traditional fragmented management and “full AI” that supersedes human beings is a delicate matter.
+What this study proposes, however, is a “narrow AI” that equals or exceeds human intelligence
+for certain tasks.
+While this research provides an innovative, operable system to enhance OHS management by
+focusing on dealing with the dangerous situations, readers are reminded that it does not aim to
+introduce a technical solution per se. Rather, it aims to promote an ideological shift. An essential
+purpose of this paper is to urge researchers and practitioners to go beyond the improvements
+offered by the traditional first and second waves of construction OHS management to explore AI
+as the third wave. Although the AI provided by SCOs is rudimentary, this should not prevent us
+from devoting greater efforts to this promising area. Dating back to twenty years ago, the accidentavoiding car with the intelligent cruise control system is envisioned less realistically as a grand
+development direction of AI in Reddy’s (1996) work. Despite continuing scepticism regarding the
+development of AI, the introduction of autopilot cars to the market has proven that smart systems
+are by no means mere fantasy.
+The fact that the autonomy of the smart system could only be tested in a lab environment is not
+considered by the authors to be a limitation of this study. On the contrary, it vividly reveals the
+difficulties and resistance AI would encounter in the practical world of construction, and
+encourages us to devise robust AI solutions as a means of convincing practitioners. Solutions to
+technological hurdles such as scalability, endurance, and replacement of smart systems should be
+investigated and tested rigorously, particularly in the case of systems designed to manage the safety
+and health of workers. When in the future AI reaches technical maturity, bigger challenges may
+lie ahead in navigating codes of practice, cultural norms, and ethical concerns. Now, however, is
+the moment to explore AI to achieve smarter and safer construction.
+7. Conclusions
+This research offers an in-depth exploration of smart construction objects (SCOs) focusing on their
+smart abilities in construction occupation health and safety (OHS) management. Deviating from
+23
+
+traditional research on OHS management using safety technologies or developing a safety culture,
+this research argues for artificial intelligence (AI) in improving the stagnant OHS management in
+construction. By augmenting existing construction resources with core smart properties including
+awareness, autonomy, and communicativeness, SCOs represent an integrated means of monitoring,
+visualizing, alerting, and action taking in the management of dangerous situations. Targeting the
+operation of a tower crane, the SCO-enabled OHS management framework and system were
+validated in a lab experiment. The results of this experiment demonstrate the feasibility of applying
+the proposed system to on-site practice.
+The research makes several practical and theoretical contributions. Firstly, by referring to the
+example in this research, the SCO-enabled OHS management framework can be extended and
+applied to other smart technology-enabled OHS management systems to develop management
+strategies. The multilayer architecture of the system developed in this study provides clear
+direction and sufficient detail for other researchers interested in replicating this work. Theoretically,
+while acknowledging the merits of traditional PPE and human-based OHS management strategies,
+this research seeks a united front on smart technology-enabled OHS management systems by
+drawing attention to the deficiencies of traditional strategies, specifically in provision of proactive
+monitoring and real-time alerts. Beyond the monitoring and alerting functions supported by
+existing OHS management systems, this research argues for SCO autonomy as a new dimension
+which can prevent dangerous situations from becoming fatal accidents in a timely manner. When
+proposing the AI-based solution as the direction of the “third wave” of construction OHS
+management, this study aims to emphasize the differences and potential values that could be
+brought about by SCOs. This study not only provides a sound theoretical foundation for efforts to
+proactively manage dangerous situations, but also concludes that future research efforts should be
+devoted to the achievement of smarter construction, incorporating AI in particular, to reduce major
+accidents. By exploring the AI offered by SCOs, there are opportunities and challenges in steering
+the construction industry toward a smarter and safer future.
+References
+Abdelhamid, T. S., and Everett, J. G. (2000). Identifying root causes of construction
+accidents. Journal of Construction Engineering and Management, 126(1), 52-60.
+24
+
+Cambraia, F. B., Saurin, T. A., and Formoso, C. T. (2010). Identification, analysis and
+dissemination of information on near misses: A case study in the construction industry. Safety
+Science, 48(1), 91-99.
+Cheng, T., and Teizer, J. (2013). Real-time resource location data collection and visualization
+technology for construction safety and activity monitoring applications. Automation in
+Construction, 34, 3-15.
+Chi, S. and Han, S. (2013). Analyses of systems theory for construction accident prevention with
+specific
+
+reference
+
+to
+
+OSHA
+
+accident
+
+reports. International
+
+Journal
+
+of
+
+Project
+
+Management, 31(7), 1027-1041.
+Choudhry, R. M., and Fang, D. (2008). Why operatives engage in unsafe work behavior:
+Investigating factors on construction sites. Safety Science, 46(4), 566-584.
+DeJoy, D. M. (1990). Toward a comprehensive human factors model of workplace accident
+causation. Professional Safety, 35(5), 11.
+Fang, D., Jiang, Z., Zhang, M., and Wang, H. (2015). An experimental method to study the effect
+of fatigue on construction workers’ safety performance. Safety Science, 73, 80-91.
+Fang, Y., Cho, Y. K., and Chen, J. (2016). A framework for real-time pro-active safety assistance
+for mobile crane lifting operations. Automation in Construction, 72, 367-379.
+Fitton, D., Sundramoorthy, V., Kortuem, G., Brown, J., Efstratiou, C., Finney, J., and Davies, N.
+(2008). Exploring the design of pay-per-use objects in the construction domain. In European
+Conference on Smart Sensing and Context (pp. 192-205). Springer Berlin Heidelberg.
+Flanagan, R., Jewell, C., Lu, W., and Pekericli, K. (2014). Auto-ID — Bridging the Physical and
+the Digital on Construction Projects. Chartered Institute of Building.
+Green, L., and Tominack, G. (2012). Real-time proactive safety in construction. Power, 156(1),
+62-65.
+Hadikusumo, B. H. W., and Rowlinson, S. (2002). Integration of virtually real construction model
+and design-for-safety-process database. Automation in Construction, 11(5), 501-509.
+Hahn, S. E., and Murphy, L. R. (2008). A short scale for measuring safety climate. Safety
+Science, 46(7), 1047-1066.
+Harris, M. (2015). Documents confirm Apple is building self-driving car. The Guardian, 14.
+Heinrich, H. W. (1941). Industrial Accident Prevention. A Scientific Approach. (Second Edition).
+
+25
+
+Hinze, J., Hallowell, M., and Baud, K. (2013). Construction-safety best practices and relationships
+to safety performance. Journal of Construction Engineering and Management, 139(10),
+04013006.
+Holt, A. S. J. (2008). Principles of construction safety. John Wiley and Sons.
+International Labour Office (ILO), 2001. Guidelines on Occupational Safety and Health
+Management Systems. MEOSH/2001/2(Rev.). International Labour Office, Geneva.
+Irani, Z., and Kamal, M. M. (2014). Intelligent systems research in the construction
+industry. Expert Systems with Applications, 41(4), 934-950.
+Kessler, A. M. (2015). Elon Musk Says Self-Driving Tesla Cars Will Be in the US by Summer. The
+New York Times, B1.
+Kurzweil, R. (2005). The singularity is near: When humans transcend biology. Penguin.
+Lu, W., Huang, G. Q., and Li, H. (2011). Scenarios for applying RFID technology in construction
+project management. Automation in Construction, 20(2), 101-106.
+Mohamed, S. (2003). Scorecard approach to benchmarking organizational safety culture in
+construction. Journal of Construction Engineering and Management, 129(1), 80-88.
+National Safety Council. (2015). Injury Facts®, 2015 Edition.
+Neitzel, R. L., Seixas, N. S., and Ren, K. K. (2001). A review of crane safety in the construction
+industry. Applied Occupational and Environmental Hygiene, 16(12), 1106-1117.
+Niu, Y., Lu, W., Chen, K., Huang, G. G., and Anumba, C. (2015). Smart construction
+objects. Journal of Computing in Civil Engineering, 30(4), 04015070.
+Niu, Y., Lu, W., Liu, D., Chen, K., Anumba, C., and Huang, G. G. (2016). An SCO-Enabled
+Logistics and Supply Chain–Management System in Construction. Journal of Construction
+Engineering and Management, 04016103.
+OSHA Directorate of Training and Education. (2011a). Construction Focus Four: Caught-In or Between Hazards, OHSA Training Institute.
+OSHA Directorate of Training and Education. (2011b). Construction Focus Four: Electrocution
+Hazards, OHSA Training Institute.
+OSHA Directorate of Training and Education. (2011c). Construction Focus Four: Fall Hazards,
+OHSA Training Institute.
+OSHA Directorate of Training and Education. (2011d). Construction Focus Four: Struck-by
+Hazards, OHSA Training Institute.
+26
+
+Pearce, D.W. (2003), Environment and business: socially responsible but privately profitable? In
+J. Hirst (ed). The Challenge of Change: Fifty Years of Business Economics, 54-65, London:
+Profile Books.
+Petersen, D. (1984). Human-error reduction and safety management. STPM Press, New York.
+Raheem, A. A., and Hinze, J. W. (2014). “Disparity between construction safety standards: A
+global analysis.” Safety Science, 70, 276-287.
+Raviv, G., and Shapira, A. (2018). Systematic approach to crane-related near-miss analysis in the
+construction industry. International Journal of Construction Management, 18(4), 310-310.
+Reason, J. (2000). Human error: models and management. BMJ, 320(7237), 768-770.
+Reddy, R. (1996). The challenge of artificial intelligence. Computer, 29(10), 86-98.
+Shapira, A., and Lyachin, B. (2009). Identification and analysis of factors affecting safety on
+construction sites with tower cranes. Journal of Construction Engineering and
+Management, 135(1), 24-33.
+Shepherd, G.W., Kahlera, R.J., Cross, J., 2000. Crane fatalities – a taxonomic analysis. Safety
+Science 36 (2), 83–93.
+Simon, H. A. (1976). Administrative behavior, 3rd Edition. Free Press, New York.
+Somavia, J. (2005). Facts on safety at work. International Labor Office (ILO), Technical Report.
+Sterman, J. D. (1989). Modeling managerial behavior: Misperceptions of feedback in a dynamic
+decision making experiment. Management Science, 35(3), 321-339.
+Teizer, J., Allread, B. S., Fullerton, C. E., and Hinze, J. (2010). Autonomous pro-active real-time
+construction worker and equipment operator proximity safety alert system. Automation in
+Construction, 19(5), 630-640.
+Tsang, Y. T., Fung, I. W., Tam, V. W., Sing, C. P., and Lu, C. T. (2017). Development of an
+accident modelling in the Hong Kong construction industry. International Journal of
+Construction Management, 17(2), 124-131.
+Woudhuysen, J., and Abley, I. (2004). Why is construction so backward? Wiley Academy.
+Wu, W., Gibb, A. G., and Li, Q. (2010). Accident precursors and near misses on construction sites:
+An investigative tool to derive information from accident databases. Safety science, 48(7),
+845-858.
+
+27
+
+Yang, H., Chew, D. A., Wu, W., Zhou, Z., and Li, Q. (2012). Design and implementation of an
+identification system in construction site safety for proactive accident prevention. Accident
+Analysis and Prevention, 48, 193-203.
+Yuan, X., Anumba, C. J., and Parfitt, M. K. (2016). Cyber-physical systems for temporary
+structure monitoring. Automation in Construction, 66, 1-14.
+
+28
+
+

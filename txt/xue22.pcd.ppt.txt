@@ -1,0 +1,505 @@
+Symmetry and Similarity Detection for Urban
+Point Cloud Understanding
+Frank Xue
+Dept. of Real Estate and Construction, University of Hong Kong
+29 Apr 2022 , Guangzhou, China
+
+Outline
+1
+
+点云 Urban Point Clouds
+
+2
+
+检测 Symmetry and Similarity detection
+
+3
+
+小结 Summary
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+2
+
+0.1 HKU iLab: The urban big data hub
+ iLab 实验室
+ Director: Prof. Wilson Lu
+ Urban big data hub at Faculty of Architecture, HKU
+ multi-dimensional and multi-disciplinary urban big data
+
+collection, storage, analysis, and presentation to inform decisionmaking in urban development
+
+iLabHKU
+https://ilab.hku.hk/
+
+ Focusing on Information Technology (IT)
+o BIM, GIS, GNSS, Urban Remote Sensing, IoT
+o Blockchain (BC/DLT)
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+Lab workshop
+
+3
+
+Homepage
+(full-text PDFs)
+
+0.2 About me
+ A mixed background 背景
+
+ Engineering
+
+ BEng in Automation, CAUC
+ MSc in Computer Science, CAUC
+ PhD in System Engineering, HKPU
+ PDF/RAP/AP in Construction IT
+
+ ISE, CEM, EIE
+2004
+2007
+
+ Computer Science
+ AI, OR, ML
+
+2012
+
+ Research interests 方向
+
+ Economics
+ SCM
+
+ Urban sensing and computing
+ As-built BIM and digital twin
+ Automation/IT in construction
+ Applied operations research, ML
+ Distributed (blockchain) applications to construction
+
+ Professional
+ MACM, SMCGS,
+
+MIEEE, MHKGISA
+ V.C. ACM-HK,
+
+Com. CGS-BIM
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+4
+
+0.2 Recent research projects
+ On-going 在研
+ PI: HK RGC GRF/ECS (17200221, 27200520)
+
+ Keywords
+ BIM/CIM
+ 3D point cloud
+ Derivative-free
+
+optimization
+ PC/Co-PI: RGC TRS (T22-504/21-R), SZ-HK-MC TRP T(C), ITF T-1
+
+ Urban semantics
+
+ Completed 完成
+ PI: HK RGC GRF (17201717, 17200218), etc.
+ Co-I: NSFC *2, NSSFC, SPPR, ECF, etc.
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+Sponsors of projects as PI/PC/Co-PI
+5
+
+Section 1
+
+URBAN POINT CLOUDS
+城市点云
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+6
+
+1 Introduction
+ Point 点
+ A location in space, 0D (no width, length, or thichness)
+ Structured format: {x, y, z}, [R, G, B, Nx, Ny, Nz, Cls, Int., …]
+
+ Cloud 云
+
+0D
+
+1D
+
+2D
+
+3D
+
+ An unstructured collection [of water droplets or ice crystals]
+ Dense when looking at a distance, sparse closely
+
+ Urban point cloud 城市点云
+
+A point cloud of HKU Campus (Source: Author, 2019)
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+A close look of cloud at
+Mount Hua (Source: Author)
+
+7
+
+1.1 Major sources of urban point clouds
+ SAR 合成孔径雷达
+
+ LiDAR 光达
+
+Bellagio Hotel, Las Vega
+(Zhu & Bamler 2014)
+
+HKU Campus (Xue et al, 2019f)
+
+ Photogrammetry 摄影测量
+
+Xue: Sym & Sim. SCUT, Guangdong,
+Building China.
+rooftop2022.
+(Xue et al, 2019d)
+
+(Xu et al, 2018)
+
+8
+
+1.1 Advantages and applications
+ SAR 合成孔径雷达
+
+ Use cases 用例
+
+ mm-accuracy
+ Coverage
+
+ LiDAR 光达
+ mm/cm/dm
+
+Ground settlement, building deformation (Wu et al. 2020a; 2020b)
+
+ No distortion
+ Intensity
+
+ Photogrammetry 摄影测量
+
+Roof albedo (Xue et al. 2019f), indoor CFD simulation (Source: Author, 2022)
+
+ cm-accuracy
+ Colorful
+ Cheaper
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+Kowloon Wall City 3D model
+(Source: patrick-@sketchfab.com)
+
+HKU @MineCraft (Source: Author, 2021)
+9
+
+1.1 Point clouds compared to CAD/BIM drawings
+
+✓Rich in details and 3D appearance (texture)
+✓Consistent with the real 3D layouts (z)
+✗A lot of defects, e.g., sparse, noisy, and misaligned
+✗Unstructured, low semantic info, massive disk size
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+✓Precise, compact, and parametric geometry (x, y)
+✗A lack of appearance
+✗Possibly inconsistent with the real 3D layouts
+(Wu et al, 2021)
+
+10
+
+1.2 PC Understanding
+ Urban point cloud understanding include
+ 3D classification
+ 3D object detection
+ 3D semantic segmentation
+ 3D parts and combinations
+ 3D scene recognition
+ 3D relations/topology recognition
+ 4D motions (construction site, auto-driving)
+
+ Related, but different from
+ Image understanding (2D)
+ Point cloud processing (registration, editing, etc.)
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+SensatUrban (Hu et al, 2021)
+
+11
+
+1.2 Some existing methods for the tasks
+ 3D classification 分类
+ Spatial/shape features (Corner, SIFT, etc.)
+ CNN deep features (e.g., PointNet++)
+o GraphNN features
+
+ 3D object detection 目标检测
+ RANSAC (Random Sampling Consensus)
+
+Keypoint detection
+(Li & Lee 2019)
+
+Example of semantic segmentation (Qi et al. 2017)
+
+ Perfect normals + geometric shapes (e.g., walls, ceiling)
+
+ 3D semantic segmentation 语义分割
+ Sliding windows / region proposal / anchorless + 3D classification
+
+ 3D scene / relationship 场景、关系
+ 3D Object/parts/topology/semantics-based
+
+ Most are general, any Building/Urban characteristic? 特色
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+12
+
+1.3 Symmetry and similarity as domain-specific
+ Symmetry 对称
+ Reflectx(C) ≈ C
+
+镜面对称
+
+ Similarity 相似
+ AffineTransx (C1) ≈ C2 仿形变换
+
+ Guided by design/engineering laws
+
+(Xue et al, 2019d)
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+13
+
+Section 2
+
+SYMMETRY AND
+SIMILARITY DETECTION
+对称、相似性检测
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+14
+
+2.1 “White-box” formulations for optimization
+ “White-box” objective function 白盒目标
+ fx = RMSE(Reflect(C, x), C )
+ fx = RMSE(AffineTrans(C1, x), C2)
+ Pre-requisite:
+o Closer densities
+
+ RMSE can be any error metric
+
+ Nonlinear optimization formulation 统一形式：非线性优化
+
+Nelder-Mead Source: Wikipedia.org
+
+ arg min fx
+ s.t. x in Range
+ Constraints (x) ≤ 0
+
+ 50+ off-the-peg solvers for complex optimization可用算法
+ In C++/Python/… (see right)
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+CMA-ES Source: otoro.net
+
+15
+
+2.1.1 Symmetry detections (early, vs updated)
+ PCR = 93.7%, Time = 98.6s (Xue et al. 2019d)
+
+ Updated in (Xue et al. 2019a)
+
+Asymmetries
+局部非对称
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+16
+
+2.1.2 Similarity detection for as-built BIM (Xue et al. 2019b)
+ Time = 6.44s (Manual = 300s), RMSE = 3.87 cm
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+17
+
+2.2 A “Black-box” formulation for deep learning
+ Floor corners are symmetric, as an ML task 墙角
+ Input: A top view of voxels
+ Output: Corners and walls
+
+ First Scan-to-BIM challenge
+ 12% IoU for 2D track
+
+(White dots)
+
+ The Second Runner-up
+ Plenty of room to improve
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+(Wu & Xue 2021)
+
+18
+
+2.3 Case 1: Symmetry-guided as-built BIM 案例1
+ Wu et al. (2021)
+ Merit Award, Hong Kong OpenBIM / OpenGIS Award
+
+2022
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+19
+
+2.3 Case 2: Sim-guided many chairs 案例2
+
+(Xue et al. 2019c)
+
+ Multi-modal algorithm
+ For noisy data
+
+ F1 > 0.9
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+20
+
+2.3 Case 3: Sym+Sim for city objects 案例3 (1/2)
+ Symmetry-based cross-sections 对称截面 (Xue et al. 2020)
+ 1. Ground removal
+ 2. Connectedness
+ 3. Major symmetry
+o 3.1 Section #1
+
+ 4. Perpendicular
+
+o 4.1 Section #2
+
+ 5. Voxelization
+
+ For unknown objects
+无需语义分割
+ Symmetric
+ Above ground
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+21
+
+2.3 Case 3: Sym+Sim for city objects 案例3 (2/2)
+ Similarity for clustering unknown 相似聚类  Similarity to sections of known
+3D objects 匹配已知语义模型
+ 1. Cross-section-based registration
+ 2. Clustering using least RMSE
+
+ 1. Filters (Width, Height, Depth)
+
+Input PCD
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+Output 3D object
+
+22
+
+Section 3
+
+SUMMARY
+小结
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+23
+
+3.1 A recap
+ Urban point cloud 城市点云
+ Has advantages for buildings/urban applications
+ Understanding is a must-to-do for machines
+
+ Symmetry and similarity 对称、相似
+ Can be formulated as
+o “white-box” formulations
+o “black-box” formulation
+
+ Very powerful for understanding a point cloud if detected
+o Sometimes better than the factual (e.g., cars, chairs)
+
+ Yet, 有待研究
+
+ There is plenty of room to improve
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+24
+
+3.2 Some personal view points 个人看法
+ Artificial Neural Networks overheating? 过热
+ Anyway, the “Evolutionary Algorithms” for our
+
+“white-box” modeling are still viable
+
+ AI winters or capital winters? AI寒冬
+ 1973: Exiting Bretton Woods system (布雷顿森林
+
+体系)
+
+ 1987: “Black Monday” stock market crash
+
+Keywords statistics of 16,625 AI papers (Schuchmann 2019)
+
+ Beyond symmetry and similarity? 未来工作
+ Shape grammars (on-going)
+ Between interior and exterior (on-going)
+ Semi-supervised learning of relations
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+25
+
+References
+ Hu, Q., Yang, B., Khalid, S., Xiao, W., Trigoni, N., & Markham, A. (2021). Towards semantic segmentation of urban-scale 3D point clouds: A dataset, benchmarks and challenges. In
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 4977-4987).
+ Li, J., & Lee, G. H. (2019). Usip: Unsupervised stable interest point detection from 3d point clouds. In Proceedings of the IEEE/CVF International Conference on Computer Vision (pp.
+361-370).
+ Qi, X., Liao, R., Jia, J., Fidler, S., & Urtasun, R. (2017). 3d graph neural networks for rgbd semantic segmentation. In Proceedings of the IEEE International Conference on Computer Vision
+(pp. 5199-5208).
+ Schuchmann, S. (2019). Analyzing the prospect of an approaching AI winter
+ Tan, T., Chen, K., Lu, W., & Xue, F. (2019, September). Semantic enrichment for rooftop modeling using aerial LiDAR reflectance. In 2019 IEEE International Conference on Signal
+Processing, Communications and Computing (ICSPCC) (pp. 1-4). IEEE.
+ Wu, Y., Shang, J., & Xue, F. (2021). RegARD: Symmetry-Based Coarse Registration of Smartphone’s Colorful Point Clouds with CAD Drawings for Low-Cost Digital Twin Buildings.
+Remote Sensing, 13(10), 1882.
+ Wu, S., Yang, Z., Ding, X., Zhang, B., Zhang, L., & Lu, Z. (2020a). Two decades of settlement of hong kong international airport measured with multi-temporal InSAR. Remote Sensing of
+Environment, 248, 111976.
+ Wu, S., Le, Y., Zhang, L., & Ding, X. (2020b). Multi-temporal InSAR for Urban Deformation Monitoring: Progress and Challenges. 雷达学报, 9(2), 277-294.
+ Xu, J., Chen, K., Xue, F., & Lu, W. (2018). 3D point cloud data enabled facility management: A critical review. In The 23rd International Symposium on Advancement of Construction
+Management and Real Estate, CRIOCM2018. https://doi.org/10.1007/978-981-15-3977-0_49
+ Xue, F., Lu, W., Chen, Z., & Webster, C. J. (2020a). From LiDAR point cloud towards digital twin city: Clustering city objects based on Gestalt principles. ISPRS Journal of
+Photogrammetry and Remote Sensing, 167, 418-431. (2020 Featured Article)
+ Xue, F., Wu, L., & Lu, W. (2021). Semantic enrichment of building and city information models: A ten-year review. Advanced Engineering Informatics, 47, 101245.
+ Xue, F., Lu, W., Chen, K. (2018). Automatic generation of semantically rich as-built building information models using 2D images: A derivative-free optimization approach. ComputerAided Civil and Infrastructure Engineering, 33(11), 926-942.
+ Xue, F., Lu, W., Webster, C. J., & Chen, K. (2019a). A derivative-free optimization-based approach for detecting architectural symmetries from 3D point clouds. ISPRS Journal of
+Photogrammetry and Remote Sensing, 148, 32-40.
+ Xue, F., Lu, W., Chen, K., & Zetkulic, A. (2019b). From Semantic Segmentation to Semantic Registration: Derivative-Free Optimization–Based Approach for Automatic Generation of
+Semantically Rich As-Built Building Information Models from 3D Point Clouds. Journal of Computing in Civil Engineering, 33(4), 04019024.
+ Xue, F., Lu, W., Chen, K., & Webster, C. J. (2019c). BIM reconstruction from 3D point clouds: A semantic registration approach based on multimodal optimization and architectural
+design knowledge, Advanced Engineering Informatics, 42, 100965.
+ Xue, F., Chen, K., & Lu, W. (2019d). Architectural symmetry detection from 3D urban point clouds: A derivative-free optimization (DFO) approach. In Advances in Informatics and
+Computing in Civil and Construction Engineering (pp. 513-519). Springer, Cham.
+ Xue, F., Chen, K., & Lu, W. (2019e). Understanding unstructured 3D point clouds for creating digital twin city: An unsupervised hierarchical clustering approach. CIB World Building
+Congress 2019.
+ Xue, F., Lu, W., Tan, T., & Chen, K. (2019f). Semantic enrichment of city information models with LiDAR-based rooftop albedo. In Sustainable Buildings and Structures: Building a
+Sustainable Tomorrow (pp. 207-212). CRC Press.
+ Zhu, X. X., & Bamler, R. (2014). Superresolving SAR tomography for multidimensional imaging of urban areas: Compressive sensing-based TomoSAR inversion. IEEE Signal Processing
+Magazine, 31(4), 51-58.
+
+Xue: Sym & Sim. SCUT, Guangdong, China. 2022.
+
+26
+
+Keep awesome!
+感谢！欢迎提问
+
+

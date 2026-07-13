@@ -1,0 +1,443 @@
+Personalized Walkability Assessment for Pedestrian Paths:
+An As-built BIM Approach Using Ubiquitous Augmented
+Reality (AR) Smartphone and Deep Transfer Learning
+Xue, F. 1*, Chiaradia, A.J.F. 2, Webster, C.J. 3, Liu, D. 4, Xu, J. 5 and Lu, W.S. 6
+Abstract: The walkability of pedestrian paths serves as an urban semantic infrastructure for the
+global smart city development. However, traditional methods cannot fulfill the task of
+personalized walkability assessment on (i) automation of assessment, (ii) the level of details, and
+(iii) meeting the personalized demands of pedestrians (e.g., with a wheelchair). This paper
+presents a novel as-built building information model (BIM) approach based on ubiquitous
+augmented reality (AR) smartphone and deep transfer learning. First, an ‘as-is’ 3D point cloud is
+scanned by AR smartphone. Then, an as-built BIM containing semantic objects such as paved
+footway, guardrail, and obstacles can be created with pre-trained 3D point classification models.
+Finally, calculation of walking characteristics of the semantic as-built BIM leads to personalized
+walkability assessment. A pilot study involving five walking characteristics was conducted on a
+real case near the University of Hong Kong for the personalized requirements of five types of
+pedestrians: (1) people in wheelchair, (2) leisure traveler with a baby stroller, (3) business traveler
+with a rolling luggage, (4) senior people, and (5) exerciser (joggers). The results of the pilot study
+showed that the personalized walkability was correctly assessed using the proposed as-built BIM
+approach. With advanced ubiquitous computing devices, the proposed approach is expected to
+apply to everyday AR smartphones to enable crowd-sourcing and real-time assessment of the
+personalized walkability for pedestrian paths. The semantic as-built BIM, as an intermediate
+solution in this approach, can also open new avenues for many innovative smart city applications
+to foster a smart, sustainable, and resilient future.
+Keywords: Personalized walkability; As-built BIM (building information model); Augmented
+reality (AR) smartphone; 3D point cloud; Deep transfer learning; Urban semantics; Ubiquitous
+computing; Data-driven modeling; Smart city.
+
+1* Xue, F.
+Corresponding author, Department of Real Estate and Construction, The University of Hong Kong, Pok Fu Lam,
+Hong Kong SAR
+E-mail: xuef@hku.hk
+ORCiD: http://orcid.org/0000-0003-2217-3693
+Tel: (852) 2219 4174
+2 Chiaradia, A.J.F.
+Department of Urban Planning and Design, The University of Hong Kong, Pok Fu Lam, Hong Kong SAR
+3 Webster, C.J.
+Faculty of Architecture, The University of Hong Kong, Pok Fu Lam, Hong Kong SAR
+4 Liu, D.
+Department of Real Estate and Construction, The University of Hong Kong, Pok Fu Lam, Hong Kong SAR
+5 Xu, J.
+Department of Real Estate and Construction, The University of Hong Kong, Pok Fu Lam, Hong Kong SAR
+6 Lu, W.S.
+Department of Real Estate and Construction, The University of Hong Kong, Pok Fu Lam, Hong Kong SAR
+
+1 Introduction
+This paper focus on personalized walkability assessment (PWA) for pedestrian paths (or
+sidewalks). Walkability is conceptualized as the extent to which the characteristics of the built
+environment may or may not be conducive to residents in the area walking for leisure (e.g., with a
+baby stroller), traveling (e.g., in a wheelchair), or exercise (e.g., jogging)[1]. Beyond walking,
+walkability impacts many aspects of urban living[2] such as health[3], residential housing value, and
+neighborhood crime[4]. In view of the fact that 65% world’s population will be urban residents by
+2050[5], walkability is not only an essential concept for semantically-rich information retrieval but
+also an important analytical concept in infrastructure for human-centered smart, sustainable, and
+resilient city development [6].
+Researchers have developed many indices and approaches for assessing walkability at the
+macroscale (city)[7], neighborhood scale[4], and microscale[2,8-9]. However, it is costly and
+time-consuming to apply the traditional methods (e.g., audit tools) to the citywide pedestrian paths
+due to the vast amount, heterogeneous conditions, and frequent changes. The task becomes even
+more challenging for personalized assessment, e.g., walkability for people in a power wheelchair
+means something different to that for a jogging person. Hardware that enables PWA is readily
+available in the market, e.g., ubiquitous smartphones are evolving to augmented reality (AR)
+devices that can scan the as-is conditions with a centimeter accuracy. Computer vision software
+libraries such as deep learning models have also been developed to understand the results of AR
+scanning. So far, these advanced technologies have not been integrated into an automatic and
+inexpensive approach to PWA, as far as we are aware.
+This paper presents a novel as-built building information model (BIM) approach to PWA for
+pedestrian paths using the up-to-date ubiquitous AR smartphone, deep transfer learning, and
+as-built BIM creation and analytics. The remainder of this paper is organized into the following
+sections: related work, a framework of the approach, a pilot case study, discussion, and
+conclusion.
+
+2 Related Work
+Many conventional walkability assessment methods rely on observational audit tools. For example,
+Sun et al. employed 67 characteristics to measure the walking environments of access routes to
+urban metro stations in China in an urban planning viewpoint[2]; Griew et al. employed Google
+street view for facilitating their audit tool[9]. Although audit conducted by surveyors can, with care
+and attention to validation, be reliable and accurate, it is too laborious and costly to apply to PWA
+for the complex network of dynamic pedestrian paths. Using geographic information systems (GIS)
+technologies, such as GPS records[10] and imagery analysis of aerial photos[11] to collect real-world
+walking data, is also investigated in the literature, to supplement audits. Yet, the methods based on
+GIS suffer from inaccuracy (i.e., the unsatisfactory error level of GPS signal or path details in
+aerial photos for the built environment) and incomplete data (e.g., the paths are mostly a centerline
+in most GIS platforms)[12]. In summary, for PWA, especially in the contemporary settings for
+smart city applications, traditional assessment methods fail in at least one of three aspects: (i)
+automation of assessment, (ii) the level of details, and (iii) meeting the personalized demands of
+pedestrians (e.g., different physical impairments)[13].
+A building information model (BIM) involves physical as well as functional characteristics of
+a facility and serves as an information hub to facilitate construction management along the whole
+life-cycle[14]. An as-built BIM focuses more on the as-is conditions[15] such as actual building
+geometries, current functions, and real topology to enable various smart city applications such as
+construction automation, energy consumption, and facility management [15]. Approaches to as-built
+BIM creation can be broadly categorized as data-driven (i.e., based on the input data’s features,
+shapes, materials, and statistics)[15-16] and model-driven (i.e., based on the BIM components and
+knowledge fitted into the input)[17-18]. Due to the variety of objects on uncontrolled real-world
+pedestrian paths, data-driven methods such as those exploiting architectural regularity and random
+sample consensus (RANSAC)[16] are more competitive in creating as-built BIMs for PWA[18]. It
+should be noted that the generated as-built BIMs can also be exported to GIS platforms to enable
+advanced spatial-temporal analyses as well as many existing GIS-based walkability assessment
+
+methods, once the as-built BIMs are geo-referenced[19].
+These challenges motivate the as-built BIM approach to PWA presented in this paper. The
+as-built BIM is the information hub about various walking characteristics that facilitate the PWA
+for different pedestrians. In contrast to conventional assessment methods, the proposed approach
+is automatic and ubiquitous, rich in details and urban semantics, and compatible with multiple
+types of pedestrians.
+
+3 An As-built BIM Approach to Personalized Walkability Assessment
+The approach presented in this paper, as shown in Figure 1, is a straightforward technological
+pipeline that integrates the state-of-the-art data standards and processing methods in AR scanning
+from remote sensing and robotics, deep transfer learning from artificial intelligent and computer
+vision, and as-built BIM creation from civil engineering and construction management. In the
+proposed approach, the as-built BIM is the semantic information hub about walkability. The input
+to the approach, as shown in Figure 1, is the actual 3D geometry of the built environment, i.e.,
+pedestrian paths. In the pipeline, there are three main steps of automatic data processing: (1) 3D
+scanning, (2) as-built BIM creation, and (3) assessment. The intermediates in the approach include
+the as-is 3D point cloud of the geometry of a path scene and an as-built BIM. The outputs of the
+proposed approach include PWA and recommendations from simulations. The proposed approach
+is thus classified as a data-driven as-built BIM approach.
+
+Figure 1. The technological pipeline of the proposed as-built BIM approach
+
+Given a target pedestrian path, the first step is 3D AR scanning of the actual geometry to
+form an as-is 3D point cloud. Accuracy and density of the point cloud are crucial for the whole
+approach. Thus, advanced AR mobile devices which incorporate depth sensing 3D cameras,
+motion tracking, and area learning, such as Google Project Tango, are preferred over other AR
+devices such as Google ARCore and Apple ARKit. Because of the limited computational capacity
+for running deep learning models on current AR smartphones, the sensed as-is 3D point cloud can
+be uploaded to a GPU (graphics processing unit) powered workstation for post- processing.
+The second step is as-built BIM creation from the as-is 3D point cloud, by taking advantage
+of deep transfer learning, shape extraction and object recognition. In computer science, transfer
+learning aims at reducing the recollection of training data by transferring knowledge from related
+domains (models), and can thus save a significant amount of labeling effort[20]. As a subset, deep
+transfer learning focuses on reusing pre-trained deep learning models such as convolutional
+neural networks (CNNs), usually accelerated by modern GPUs. For example, Semantic-8[21] is an
+open dataset about street scenes, scanned in Germany, and annotated with 8 semantic labels (e.g.,
+“man-made terrain,” “natural terrain,” and “buildings”). Deep transfer learning can reuse a
+PointNet[22] (or other CNN) model pre-trained on Semantic-8 to segment any 3D point cloud of
+street scene captured from anywhere. Based on the segmented labels (e.g., “man-made terrain”
+and “buildings”), shape extraction methods and object recognition methods such as a priori rules
+can recognize and rectify[16] the semantic components to create a data-driven as-built BIM. This
+step can be automatic or semi-automatic, depending on the as-built BIM creation methods.
+The final step of the proposed approach is PWA by calculation and simulations. Quantitative
+walking characteristics (e.g., slope grade and the number of steps) of the as-built BIM can be
+calculated and compared to the pre-defined requirements of a specific type of pedestrians (e.g.,
+people in a hand-powered wheelchair or joggers). The walkability of the input pedestrian path can
+thereafter be assessed as “OK,” “Limited,” or “Failed” though a floor function (i.e., the worst) on
+all the characteristics individually for each type of pedestrians. For example, an “OK” in slope
+grade and a “Failed” in the number of steps result in a “Failed” in PWA. In addition, obstacles and
+walkability recommendations can also be inferred from a series of ‘what-if’ simulations on the
+as-built BIM. For example, a major obstacle implies that its removal improves the walkability
+
+from “Failed” to “OK,” while a minor obstacle means removal refines the walkability from
+“Failed” to “Limited” (or from “Limited” to “OK”).
+
+4 A Pilot Study
+4.1 As-is 3D scanning using AR smartphone
+To validate the proposed approach, we selected a scene of a pedestrian path on Bonham Road next
+to the University of Hong Kong, as shown in Figure 2 (a). The scanned area was 56.2 m². We
+collected a dense cloud of 569,344 colorful points (over 10,000 points per m²) using an in-house
+developed Android app on a Google Tango AR smartphone (model: Lenovo PB2-690Y). The as-is
+3D point cloud, though somehow noisy, was adequately registered, stitched, and uniformly
+sampled in the Stanford polygon (.ply) format. It was observed in Figure 2 (b) that there existed
+two obstacles (i.e., a light pole in the red oval and a meter pole in the blue oval) on the pavement,
+two drainage pipes (in the yellow oval) on the wall, and a guardrail (in the flat oval) between the
+pavement and the roadway. The time spent on the 3D scanning was about four minutes. At the end
+of scanning, the app uploaded the as-is point cloud, as shown in Figure 2 (b), to a GPU powered
+BIM workstation in a few seconds via a local 4G mobile network.
+
+(a) A scene of Bonham Road, Hong Kong
+
+(b) As-is cloud of 569,344 points through AR scanning
+
+Figure 2. A pilot case of a pedestrian path near the University of Hong Kong
+
+4.2 As-built BIM creation using deep transfer learning
+An as-built BIM was then created on the BIM workstation. The workstation has two Intel XEON
+E5-2690 v4 CPUs (2.6GHz, 28 cores), 64 GB memory, an Nvidia Quadro P5000 GPU, and
+Windows 10 Enterprise 64-bit operating system. Before the as-built BIM creation, a PointNet[22]
+model was already trained on the Semantic-8 dataset[21] on Google TensorFlow (version 1.4, with
+GPU support) in Python (version 3.6) to enable the deep transfer learning. First, the uploaded
+point cloud was converted from the Stanford polygon (.ply) format to a Numpy (version 1.12) data
+file. The pre-trained PointNet model spent 4 seconds on the segmentation of the scanned 569,344
+points. Figure 3 (a) shows the result of segmenting the 3D points in Hong Kong with training data
+from Germany, which was surprisingly satisfactory. For instance, it can be observed in Figure 3 (a)
+that the points labeled as “man-made terrain” were very close to the actual geometry of the
+pavement. Next, the excessive 3D points above the height of 1.5 m were removed, as shown in
+Figure 3 (b), for focusing on the major space for pedestrians.
+
+(a) 3D point classification (e.g., the points labeled as (b) As-built BIM consisting of semantic objects (walls
+“manmade terrain” were detached as the pavement)
+omitted in this view)
+Figure 3. The results of 3D point classification and the as-built 3D model of the pilot case
+
+Planes and cylinders were detected from the segmented and filtered point cloud using an
+up-to-date as-built BIM creation algorithm[16] in less than 1 second. The detected geometric
+primitives were further screened by the proximity of their normal direction to the z-axis for
+focusing on the vertical and horizontal objects. Furthermore, the boundaries of planar objects were
+refined by the 2D concave hull algorithm provided by the point cloud library (PCL, version 1.8.1).
+The resulting objects were associated with semantic labels to form semantic BIM components
+through a priori rules. Examples of rules are “vertical planes along the pavement are guardrails or
+walls,” and “vertical cylinders connected to the pavement are possible obstacles.” Finally, an
+as-built BIM was formed as shown in Figure 3 (b). The as-built BIM included the reconstructed
+guardrail (i.e., the transparent flat polygon) and the pipes and poles (i.e., the four narrow
+cylinders). It was interesting that an unexpected object, which was actually a concrete trace of a
+former construction work left on the wall, was also recognized as shown as the wide cylinder in
+Figure 3 (b). Although the as-built BIM in this pilot case was preliminary (i.e., not volumetric and
+in popular BIM formats), the semantic information (i.e., the geometry and labels) was capable of
+reasoning and calculating many detailed walking characteristics and problems.
+
+4.3 Personalized walkability assessment based on the as-built BIM
+To demonstrate the PWA of the proposed approach, this paper employs five walking
+characteristics: (1) the number of steps, (2) slop grade of the footway, (3) tile grade of the footway,
+(4) footway width, and (5) pavement surface clearance (i.e., non-existence of gaps and pebbles).
+The as-built BIM was geo-referenced first, as shown in Figure 4 (a), for visualization and
+compatibility with GIS platforms. The number of steps was identified as zero by analyzing the
+variation in altitude of the paved footway. The pave footway in the as-built BIM had two sections,
+as shown in Figure 4 (b). the left section had a slope grade of 1:50 (or 1.1°) while the right one
+had a grade of 1:58.8 (or 1.0°). The title grades of the two sections of the footway, as shown in
+Figure 4 (c), were 1:47.6 (or 1.2°) and 1:66.7 (or 0.9°), respectively. The width of the paved
+footway varied in different sections, as shown in Figure 3 (d). The maximum width was 199 cm in
+the beginning and minimum width (i.e., the bottleneck) was only 45 cm, where the average width
+was around 105 cm for the remaining parts of the paved footway. The green cylinders in Figures 3
+(b) and 4 (d) stand for the possible obstacles. The surface clearance of the paved footway was
+good, because no considerable gap was found, e.g., the gap shown in Figure 4 (c) was about 2 cm,
+neglectable as an error of planarization of a curved surface footway.
+
+(a) Geo-referenced first-person view
+
+(c) The tilt grades of the paved footway
+
+(b) The slope grades (i.e., tan θ) of the paved footway
+
+(d) The actual widths of the pavement with obstacles
+
+Figure 4. The results of point cloud classification and as-built 3D model of the pedestrian path
+
+Based on the calculated values of the five characteristics, the walkability can be accurately
+assessed for different pedestrians regarding their individual requirements. In this pilot study, we
+defined five types of pedestrians: (1) people in a wheelchair, (2) leisure travelers with a baby
+stroller, (3) business travelers with rolling luggage, (4) senior people, and (5) exerciser (joggers).
+Table 1 shows the walkability assessment matrix between the five walking characteristics and the
+five types of pedestrians. The bottom row indicates the results of PWA as the worst (floor function)
+evaluations in each column. The results in Table 1 indicated that the pilot scene was unwalkable
+for any people in wheelchair, and only walkable for travelers with a limited walkability for baby
+strollers and rolling luggage.
+Table 1. Assessing the walkability of the pilot case for five types of pedestrians
+Walking
+characteristic
+
+Calculated value
+
+Type of pedestrians
+Stroller
+Wheelchair ♿
+Luggage 🛄🛄
+Senior 👴👴 Exercise 🏃🏃
+No. of steps
+0
+OK
+OK
+OK
+OK
+OK
+Slope grade*
+1:50.0~58.8
+OK
+OK
+OK
+OK
+OK
+Tilt grade†
+1:47.6~66.7
+OK
+OK
+OK
+OK
+OK
+Footway width‡ 45~199 cm
+Limited
+Limited
+OK
+OK
+Failed
+Clearance
+Good
+OK
+OK
+OK
+OK
+OK
+Overall walkability (the worst)
+Limited
+Limited
+OK
+OK
+Failed
+*: Reference maximum slope grade: 1:8~12 (wheelchairs);
+†: Reference maximum tilt grade of pavement: 1:15 (wheelchairs);
+‡: Reference minimum width: 70~90 cm (wheelchairs), 40~70 cm (strollers), and 30~60 cm (baggage).
+
+In addition, obstacles to the walkability can be identified by a series of simulations. In each
+simulation, a ‘what-if’ analysis of PWA (i.e., repeating Table 1) was carried out by removing one
+possible obstacle. Table 2 lists the identified obstacles in three categories: major obstacles, minor
+obstacles, and inoffensive obstacles. It can be found that the light pole in the middle of the paved
+footway was identified as the only major obstacle. As a result, alternative recommendations can be
+made, for example, moving the light pole to the guardrail, which can be subject to subsequent
+cost-benefit analysis as well as public consultation, leading to a schedule of improvement works to
+upgrade a PWA.
+Table 2. A list of identified obstacles to walkability
+Major obstacles
+Light pole
+
+Minor obstacles
+(None)
+
+Inoffensive obstacles
+Meter pole, drainage pipe #1, #2, and concrete trace on the wall
+
+4.4 Discussion
+This pilot study preliminarily confirms the technological feasibility of the proposed approach.
+Nevertheless, some minor details such as volumetric BIM components and commercial BIM
+platforms (e.g., Autodesk Revit) were not tested in the study. In terms of the computational time
+cost, the 3D scanning accounted for the significant portion, while other automatic processes like
+network transmission, execution of deep transfer learning, object recognition, and as-built BIM
+creation only cost a few seconds on the workstation. The flexible settings of the walking
+requirements in the proposed as-built BIM approach lead to a personalized walkability assessment.
+The high efficiency (fast processing speed) indicates that it is now possible to crowdsource the
+PWA to ubiquitous AR smartphones. When ubiquitous AR smartphones become more and more
+potent in computational power (e.g., with powerful GPUs) in future, the proposed approach can
+also be fully embedded in everyday AR smartphones for real-time PWA and obstacle detection.
+In comparison to the conventional walkability assessment methods, the proposed approach
+has several advantages. First, the automation level of walkability assessment is elevated, so that
+the traditional reliance on human surveyors by audit tools and inaccurate data by GIS-based
+methods is now relieved. The proposed approach leverages state-of-the-art technologies in remote
+sensing, deep transfer learning, and as-built BIM creation and achieves an accurate, consistent and
+inexpensive assessment. Consistency is very important for the use of a walkability rating system.
+Furthermore, the details of pedestrian paths are modeled and assessed, thanks to the centimeter
+accurate, dense as-is 3D point cloud scanned by the AR smartphone. Last but not least, the
+proposed approach measures personalized walkability for each individual pedestrian like a person
+
+in a power wheelchair or a traveler with a large-model (e.g., 70 cm) baby stroller. To sum up, the
+proposed approach yielded a novel, automatic, semantically rich PWA, which is expected to be
+very competitive with manual surveying in smart city scenarios.
+Disadvantages, nevertheless, can also be identified. In the first step of 3D scanning, noise is
+problematic because the capacity of the embedded AR sensors and the related software libraries
+are not perfect. Another limitation is the requirement of an additional BIM workstation and
+network transmission apart from the AR smartphone, due to the reliance on powerful GPUs. The
+GPUs and memory in state-of-the-art smartphone models are not powerful enough to execute
+large-scale CNN models. Additionally, the as-built BIM, though successful in the pilot case, was
+neither volumetric nor in popular commercial BIM formats. Errors, though not significant, can be
+found in the results of PoinNet and as-built BIM creation as shown in Figures 3 (a) and (b).
+However, with the promised technological advancement in AR smartphone and continuous
+research, all these drawbacks are likely to be resolved in the near future.
+
+5 Conclusion
+This study presented an as-built BIM approach to PWA for pedestrian paths. The as-built BIM of a
+target pedestrian path represents the actual geometry, semantic components (e.g., potential
+obstacles), as well as the real topology, and serves as an information hub for assessing walkability.
+In our approach, the everyday AR smartphone becomes a potent walkability assessment tool, and
+pre-trained CNN models serve as a part of the automatic as-built BIM generator. The PWA created,
+is automatic, highly detailed, and capable of assessing walkability for various types of pedestrians.
+A pilot case of a real-world pedestrian path scene gave initial validation of the proposed approach.
+This study is expected to enrich research of PWA, as well as as-built BIM study, for
+pedestrian paths with a novel ubiquitous computing enabled framework for near-instant automated
+modelling of a walking environment. Although the findings are preliminary, the technological
+feasibility of crowdsourcing walkability assessment has been demonstrated by our prototyping
+pilot study. Further research will aim to reduce noise in the 3D scanning stage, embed the
+approach to AR smartphones without assistance from a BIM workstation, integrate with popular
+BIM/GIS software and standards, and refine the deep learning models.
+
+Acknowledgements
+This study was supported by a grant from the Hong Kong Research Grant Council (GRF
+HKU17201717) and two grants from University of Hong Kong (201702159013, 201711159016).
+
+References
+[1] Leslie, E., Coffee, N., Frank, L., Owen, N., Bauman, A., and Hugo, G. (2007). Walkability of
+local communities: Using geographic information systems to objectively assess relevant
+environmental attributes. Health & place, 13(1): 111-122.
+[2] Sun, G., Webster, C., and Chiaradia, A. (2017). Objective assessment of station approach
+routes: Development and reliability of an audit for walking environments around metro
+stations in China. Journal of Transport & Health, 4: 191-207.
+[3] Althoff, T., Hicks, J. L., King, A. C., Delp, S. L., and Leskovec, J. (2017). Large-scale physical
+activity data reveal worldwide activity inequality. Nature, 547(7663), 336.
+[4] Gilderbloom, J. I., Riggs, W. W., and Meares, W. L. (2015). Does walkability matter? An
+examination of walkability’s impact on housing values, foreclosures and crime. Cities, 42:
+13-24.
+[5] World Health Organization. (2015). Global Report on Urban Health—Executive Summary.
+http://www.who.int/kobe_centre/measuring/urban-global-report/en/ <accessed 29/04/2018>
+[6] Birkmann, J., Welle, T., Solecki, W., Lwasa, S., and Garschagen, M. (2016). Boost resilience
+of small and mid-sized cities. Nature, 537(7622): 605-608.
+[7] Frank, L. D., Sallis, J. F., Saelens, B. E., Leary, L., Cain, K., Conway, T. L., and Hess, P. M.
+
+(2010). The development of a walkability index: application to the Neighborhood Quality of
+Life Study. British journal of sports medicine, 44(13): 924-933.
+[8] Clifton, K. J., Smith, A. D. L., and Rodriguez, D. (2007). The development and testing of an
+audit for the pedestrian environment. Landscape and Urban Planning, 80(1-2): 95-110.
+[9] Griew, P., Hillsdon, M., Foster, C., Coombes, E., Jones, A., and Wilkinson, P. (2013).
+Developing and testing a street audit tool using Google Street View to measure
+environmental supportiveness for physical activity. International Journal of Behavioral
+Nutrition and Physical Activity, 10(1): 103.
+[10] Carlson, J. A., Saelens, B. E., Kerr, J., Schipperijn, J., Conway, T. L., Frank, L. D., Chapman,
+J. E., Glanz, K., Cain, K. L., and Sallis, J. F. (2015). Association between neighborhood
+walkability and GPS-measured walking, bicycling and vehicle time in adolescents. Health &
+Place, 32: 1-7.
+[11] Kasemsuppakorn, P., and Karimi, H. A. (2013). Pedestrian network extraction from fused
+aerial imagery (orthoimages) and laser imagery (lidar). Photogrammetric Engineering &
+Remote Sensing, 79(4): 369-379.
+[12] Brownson, R. C., Hoehner, C. M., Day, K., Forsyth, A., and Sallis, J. F. (2009). Measuring
+the built environment for physical activity: state of the science. American journal of
+preventive medicine, 36(4): S99-S123.
+[13] Aghaabbasi, M., Moeinaddini, M., Shah, M. Z., Shekari, Z. A., and Kermani, M. A. (2018).
+Evaluating the capability of walkability audit tools for assessing sidewalks. Sustainable
+Cities and Society, 37: 475-484.
+[14] National Institute of Building Sciences. (2015). National Building Information Modeling
+Standard. Version 3, Retrieved from https://www.nationalbimstandard.org/ <accessed
+29/04/2018>
+[15] Tang, P., Huber, D., Akinci, B., Lipman, R. and Lytle, A. (2010), Automatic reconstruction of
+as-built building information models from laser-scanned point clouds: A review of related
+techniques. Automation in Construction, 19(7): 829-843.
+[16] Chen, K., Lu, W., Xue, F., Tang, P., and Li, L. H. (2018). Automatic building information
+model reconstruction in high-density urban areas: Augmenting multi-source data with
+architectural knowledge. Automation in Construction, 93: 22-34.
+[17] Xue, F., Chen, K., Liu, D., Niu, Y., and Lu, W. S. (2018). An optimization-based semantic
+building model generation method with a pilot case of a demolished construction. In
+Proceedings of the 21st International Symposium on Advancement of Construction
+Management and Real Estate: 231-241.
+[18] Xue, F., Lu, W., and Chen, K. (2018). Automatic generation of semantically rich as-built
+building information models using 2D images: A derivative-free optimization approach.
+Computer-Aided Civil and Infrastructure Engineering, in press, doi:10.1111/mice.12378.
+[19] Lu, W., Peng, Y., Xue, F., Chen, K., Niu, Y., and Chen, X. (2018). The fusion of GIS and
+Building Information Modeling for big data analytics in managing development sites, in
+Comprehensive Geographic Information Systems: 345-359.
+[20] Pan, S. J., and Yang, Q. (2010). A survey on transfer learning. IEEE Transactions on
+knowledge and data engineering, 22(10): 1345-1359.
+[21] Qi, C. R., Su, H., Mo, K., and Guibas, L. J. (2017). Pointnet: Deep learning on point sets for
+3D classification and segmentation. Proceedings of the IEEE Conference on Computer
+Vision and Pattern Recognition: 652-660. doi:10.1109/CVPR.2017.16
+[22] Hackel, T., Savinov, N., Ladicky, L., Wegner, J. D., Schindler, K., and Pollefeys, M. (2017).
+Semantic3D.Net: A new large-scale point cloud classification benchmark. ISPRS Annals of
+the Photogrammetry, Remote Sensing and Spatial Information Sciences, 2017(IV-1-W1):
+91-98.
+
+

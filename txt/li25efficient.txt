@@ -1,0 +1,1076 @@
+Efficient and accurate assessment of window view distance using City Information Models and
+3D Computer Vision
+Maosu Li 1, Fan Xue 2, and Anthony G. O. Yeh 3*
+This is the peer-reviewed post-print version of the paper:
+Li, M., Xue, F., & Yeh, A.G.O. (2025). Efficient and accurate assessment of window view
+distance using City Information Models and 3D Computer Vision. Landscape and Urban
+Planning, 260, 105389. Doi: 10.1016/j.landurbplan.2025.105389
+The final version of this paper is available at: https://doi.org/10.1016/j.landurbplan.2025.105389.
+The use of this file must follow the Creative Commons Attribution NonCommercial No Derivatives License, as required by Elsevier’s policy.
+
+Abstract
+
+10
+
+20
+
+A distant view through a window is preferred by urban dwellers due to its benefits to human health
+and well-being. A high window view distance is also valued in real estate markets, especially in highrise, high-density urban areas. Thus, an urban-scale assessment of window view distance is significant
+in examining the disparity of sharing of view openness for applications and analytics in urban health,
+planning and design, and housing. However, current limited assessment methods are neither accurate
+nor efficient. The evolving photorealistic City Information Models (CIMs) and 3D Computer Vision
+(CV) enable a new solution due to the high-resolution and efficient semantic representation of urban
+landscapes. This study aims to present a window view distance index (WVDI) together with an
+accurate and efficient assessment method using up-to-date 3D CIMs and CV. First, we define the
+WVDI on a CIM-generated window view image considering the visual permeability of greenery.
+Then, an automatic assessment of WVDIs is designed on a type-depth window view using 3D
+semantic segmentation and OpenGL rendering. Experimental tests in Hong Kong Island and Kowloon
+Peninsula of Hong Kong confirmed that our method was i) accurate for both non-greenery views
+(RMSD ≤ 0.0002) and greenery views (RMSD ≤ 0.1781) and ii) improved the efficiency of the
+traditional visibility analysis-based method by 99.96%. The proposed approach can support multiple
+urban applications, e.g., prioritized improvement of visual urban density, overall optimization of
+window view distance for architectural and urban design, and precise housing valuation and
+transaction.
+
+1 Maosu LI, Post-doctoral Fellow.
+
+Department of Urban Planning and Design, The University of Hong Kong, Pokfulam, Hong Kong, China;
+Email: maosuli@hku.hk, : https://orcid.org/0000-0002-9970-4053
+2 Fan XUE, Associate Professor.
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong, China;
+National Center of Technology Innovation for Digital Construction Hong Kong Branch, The University of
+Hong Kong, Pokfulam, Hong Kong, China;
+Email: xuef@hku.hk, : http://orcid.org/0000-0003-2217-3693
+
+3 Anthony G. O. YEH, Chair Professor.
+
+Department of Urban Planning and Design, The University of Hong Kong, Pokfulam, Hong Kong, China;
+Email: hdxugoy@hku.hk, : http://orcid.org/0000-0002-0587-0588
+*: Corresponding author, Tel: +852 3917 2721 Email: hdxugoy@hku.hk
+
+Keywords
+Window view; View distance; View openness; Visual permeability; City information model;
+Computer vision
+
+1 Introduction
+A distant view through a window is preferred by urban dwellers (Kent & Schiavon 2020; Lin et al.
+2022), especially in high-rise, high-density cities, e.g., Hong Kong (Fisher-Gewirtzman 2018; Wang
+& Munakata 2024). The high window view distance and openness benefit urban dwellers’ health and
+30
+
+well-being through stress relief, living satisfaction, and productivity improvement (Chung et al. 2019;
+van Esch et al. 2019; Luo & Jiang 2022). Another benefit is providing urban dwellers with an
+increased sense of privacy in the crowded urban environment (Fisher-Gewirtzman 2018; Ko et al.
+2022). In this study, “window view distance” refers to the average distance between the window
+center and all the visible landscape objects outside (see Figure 1e). In the post-Covid-19 era, the
+benefits of distant views through windows become prominent due to long-term staying at home and
+workplaces (McPhail et al. 2024). By contrast, narrow rooms without windows or with close-range
+views of building facades can lead to the occupants’ mental disorders, stress, and depression (Ulrich
+1984; Chung et al. 2019). Thus, an urban-scale assessment of window view distance is significant in
+examining the disparity of sharing of view openness, particularly for healthy high-rise, high-density
+
+40
+
+urban development.
+Urban-scale assessment of window view distance enables multiple urban applications and analytics.
+First, window view distances represent visual urban density that urban dwellers experience long-term
+from their residences and offices (Fisher-Gewirtzman 2018; Li et al. 2024). The disparity of assessed
+window view distances can help urban planners identify the buildings and blocks with high local
+urban density for prioritized improvement (Masoudinejad & Hartig 2020). The assessed window view
+distance can support generative architectural and urban design to achieve maximized sharing of
+window view openness (Laovisutthichai et al. 2021; Kim et al. 2022; Wang et al. 2024; 2025).
+Additionally, the quantified window view distance can support both property agents’ precise housing
+valuation and the purchasers’ and renters’ housing selection. Last, the assessed window view distance
+
+50
+
+can be correlated with urban mental health issues, e.g., stress and depression (van Esch et al. 2019;
+Masoudinejad & Hartig 2020) for advancing environmental justice and urban sustainability.
+Researchers have assessed urban view distance through visibility analysis. For instance, the openness
+of natural and urban open spaces was examined for urban management (Tong et al. 2020; Zhu et al.
+2024), while the distances between window sites and visible landscape outside were assessed for
+urban and architectural design (Fisher-Gewirtzman 2018; Kim et al. 2022). However, current limited
+assessments of window view distance are neither accurate nor efficient. First, high-resolution 3D
+CIMs, e.g., photorealistic CIMs and point clouds, are scarcely utilized for an accurate assessment due
+
+to high time-cost processing (Inglis et al. 2022; Li et al. 2024). Thereafter, landscape elements are all
+modeled as solid surfaces, although certain elements, e.g., greenery, are porous and visually
+60
+
+permeable in nature (Bartie et al. 2011; Ruzickova et al. 2021). The inaccuracies and inefficiencies of
+current methods are magnified, especially in densely developed urban areas due to the complex 3D
+landscapes. Thus, the research question of the study is:
+“Regarding the visual permeability of landscape elements, how to efficiently and accurately
+assess window view distance using up-to-date photorealistic CIMs for urban applications?”
+This study introduces a window view distance index (WVDI) together with an accurate and efficient
+assessment method using photorealistic CIMs and 3D computer vision. A 3D visualization of WVDI
+based on Building Information Models (BIMs) is presented for applications in urban planning and
+design and real estate marketing.
+The main contribution of this study is twofold.
+
+70
+
+i.
+
+Theoretically, a novel WVDI is defined on a photorealistic CIM-generated window view
+image regarding the visual permeability modeling of greenery. The defined WVDI challenges
+and extends the traditional assessment results of window view distances on both
+oversimplified and solid surface models.
+
+ii. The proposed method conducted on the 3D CIM-generated type-depth window views is
+automatic and efficient in assessing window view distances at the urban scale. The
+assessment results are accurate for planners, designers, and government policymakers in
+urban planning and design, as well as housing purchasers, renters, and property agencies in
+the real estate market.
+We present the remainder of this study as follows. The literature is reviewed in Section 2. Section 3
+80
+
+presents the definition of WVDI, the automatic assessment of WVDI, and a 3D BIM-based
+visualization of WVDI. Experimental tests were conducted in Section 4. Sections 5 and 6 present the
+discussion and conclusion, respectively.
+
+2 Literature review
+2.1 Roles of distant views’ benefits and impacts for automatic assessment
+Researchers in psychology, built environment, and urban studies have examined the benefits of distant
+views on human health and well-being. Compared to close-range views, distant views through
+windows provide urban dwellers with high-level openness and spaciousness (Stamps III 2011; Yao et
+al. 2024). Recognized benefits of distant views include visual fatigue relief and post-surgical recovery
+for physical health (Ulrich 1984; Kent & Schiavon 2020; Lin et al. 2022) as well as stress and
+90
+
+depression relief for mental health (Masoudinejad & Hartig 2020; Luo & Jiang 2022). The benefits of
+
+distant window views for human health and well-being underscore the value of quantification of
+window view distance.
+The impacts of distant views through windows are found in real estate marketing and urban planning
+and design. For instance, by comparing flats online or in-person, housing purchasers and renters are
+willing to pay a premium for openness provided by sky and sea views (Huang 2019; Masoudinejad &
+Hartig 2020; Ling 2022). As a result, property agents often manually identify flats with high window
+view openness in the property market for extra profits (Yamagata et al. 2016). Additionally, a
+satisfactory window view distance has been recommended for architectural design in Europe (CEN
+2018) and the US (IWBI 2020). Window view openness is optimized by architects via improving the
+100
+
+building envelope and room layouts (Kim et al. 2022; Ko et al. 2022). Visual densities in city blocks
+regarding window view distances have been tried to be improved by urban planners and designers
+(Fisher-Gewirtzman 2018). The impacts of window view distances in housing, urban planning, and
+design practices enhance the need for automatic assessment.
+
+2.2 Current assessment of window view distance
+Current assessment of window view distance is limited, inaccurate, and inefficient. Researchers in
+psychology, built environment, and architectural design manually measured window view distances
+through onsite experiments or 2D maps (Stamps III 2011; Kent & Schiavon 2020). The high labor
+cost is unscalable to the urban scale. Additionally, the amount of sky view seen from the window is
+considered a proxy for view openness (Masoudinejad & Hartig 2020; Li et al. 2022). However, only
+110
+
+the composition of view types cannot identify the slight difference in view distance. Examples are
+window views with the same proportion of sky but varied landscape distances.
+In the fields of Geographic Information Science (GIS) and urban planning, traditional visibility
+analysis such as viewshed and isovist enabled the measurement of window view distance at the urban
+scale (Fisher-Gewirtzman 2018). However, the large-scale assessment methods for window view
+distances are limited and prone to errors regardless of the efficiency. First, current assessments often
+fail to represent the real urban landscape using oversimplified 2.5/3D models (Mistick et al. 2023; Li
+et al. 2023b). For instance, blended objects, e.g., constructions and greenery in the real urban
+landscape, are often modeled by discrete cubic buildings, identical fake trees, and 2.5D Digital
+Terrain Models (DTMs) (Inglis et al. 2022; Qi et al. 2022). On the contrary, high-resolution 3D CIMs
+
+120
+
+are less utilized due to high time-cost processing (Inglis et al. 2022; Li et al. 2024). Thereafter, all
+landscape elements are consistently modeled using solid surfaces, overlooking the visual permeability
+of certain landscape elements, e.g., porous foliage of greenery (Bartie et al. 2011; Ruzickova et al.
+2021). For instance, porous tree foliage, when modeled as a solid green wall, can completely obstruct
+the sightlines from nearby windows, resulting in negligible errors in view distance (FisherGewirtzman 2018).
+
+2.3 Visual permeability modeling of greenery and semantic representation of CIMs
+Visual permeability modeling of greenery has been developed for visibility analysis in GIS and
+landscape management. Researchers argue greenery modeled as solid 2.5D triangle meshes or 3D
+convex hulls is unrealistic and prone to errors (Llobera 2007; Zong et al. 2021; Mistick et al. 2023).
+130
+
+To estimate the visual permeability of greenery, the classic Beer-Lambert’s Attenuation Law
+(Swinehart 1962) in physics was introduced by Llobera (2007). Greenery, e.g., trees, was structured
+as a set of thin and porous slices. The potential extra view distance depends on the thickness and
+porosity of the slices. Llobera’s (2007) formula based on Beer-Lambert’s Attenuation Law (Swinehart
+1962) has been used in the permeability modeling in landscape management and ecological research
+(Bartie et al. 2011; Murgoitio et al. 2013; Ruzickova et al. 2021)
+Evolving 3D urban visual intelligence (Zhang et al. 2024), e.g., semantic representation techniques,
+enable accurate and efficient assessment of window view distance. First, 3D photorealistic CIMs can
+generate high-resolution window views similar to those captured in the real world (Li et al. 2021;
+2022). 3D semantic segmentation of photorealistic CIMs can automatically identify city objects, e.g.,
+
+140
+
+ground, building, and greenery (Li et al. 2023a), for urban studies, e.g., landscape view assessment
+(Qi et al. 2022; Li et al. 2023b), urban infrastructure digitalization (Meng et al. 2025), and
+construction safety (Liang et al. 2024). Last, OpenGL rendering in 3D computer graphics enables both
+efficient and semantic-enriched visualization of 3D photorealistic CIMs (Li et al. 2023b).
+In summary, an accurate and efficient assessment of window view distance is significant for urban
+applications, yet it is lacking in current studies. Two observed issues are the high processing cost of
+high-resolution 3D CIMs and consistent solid landscape surface modeling regardless of the visual
+permeability of greenery. Meanwhile, the up-to-date photorealistic CIMs, 3D semantic segmentation,
+and OpenGL rendering open up new opportunities for an automatic, accurate, and efficient assessment
+of window view distance.
+
+150
+
+This study aims to present a window view distance index (WVDI) together with an accurate and
+efficient assessment method. We model the visual permeability of greenery on a photorealistic CIM in
+defined WVDI. Leveraging 3D semantic segmentation and OpenGL rendering of CIM, the accuracy
+and efficiency of the automatic assessment are improved through a type-depth window view
+integration.
+
+3 Research methods
+Figure 1 shows the research framework of the proposed WVDI together with the automatic
+assessment method. The inputs comprise 3D photorealistic CIMs, BIMs, DTM, and density
+parameters of greenery (see Figure 1a). The proposed assessment method comprises two parts: i)
+definition of WVDI on a photorealistic CIM-generated window view image regarding visual
+160
+
+permeability of greenery (see Figure 1b), and ii) automatic computation of WVDI using 3D semantic
+
+segmentation and OpenGL rendering. Specifically, the automatic computation method comprises
+three steps: i) landscape type estimation of photorealistic CIMs using 3D semantic segmentation (see
+Figure 1c), ii) type-depth landscape scene rendering through OpenGL shading (see Figure 1d), and iii)
+batch generation and quantification of window views for WVDIs (see Figure 1e). Last, BIM-based
+visualization of WVDIs (see Figure 1f) is presented for urban applications such as local urban density
+improvement and informed housing valuation and transaction. The final output is a set of visualized
+WVDIs coded with geolocations of window sites.
+
+Figure 1. Research framework. (a) Input, (b) definition of WVDI, (c)-(e) a three-step automatic
+170
+
+assessment method, and (f) visualized WVDIs on BIMs.
+
+3.1 Definition of window view distance index (WVDI)
+WVDI in this study is defined on a simulated window view image generated on the photorealistic
+CIMs. The example window view image (see Figure 2a), generated from the window center, presents
+the landscape scene that a normal adult mainly sees when looking out horizontally. Regarding the
+visual permeability of greenery (see Figure 2b), WVDI is the average pixel-level depth of the CIMgenerated window view image using Equation (Eq.) 1.
+WVDI = Σi = 1, 2, … n Di ∕ n,
+dm
+i
+p
+s
+m
+m
+di +wi (di )×di +(1-wi (di ))× � x×wi (x) dx,
+Di = �
+0
+dsi ,
+
+(1)
+if c(i) = greenery, e.g., tree, shrub, grass,
+
+(2)
+
+if c(i) = other landscape elements and sky,
+
+where Di is the depth of the view elements on pixel i of the window view image. n is the total number
+of image pixels. c is the class of the window view elements, e.g., the tree, shrub, grass, other
+landscape elements, and sky. dis and dip are view depths corresponding to surface and penetration,
+180
+
+respectively, as shown in Figure 2c, whereas dim is the depth of the greenery alongside the sightline.
+wi (dim) and 1 − wi (dim) represent the probabilities of the sightline penetrating or being absorbed
+
+within the greenery, respectively. Since sightline may stop within greenery at a random value of
+dm
+
+transmission length x (0 ≤ x ≤ dim), we apply the integral function, ∫0 i x×wi (x)dx, to calculate the
+
+expectation value of view depth for the absorption. Note that the usage of penetration and absorption
+in Eq. 2 depends on the percentage of greenery window views in the assessment area. For example,
+there existed accuracy improvement in assessing greenery window views and particularly close-range
+(≤ 30 m) greenery views, which accounted for 83.57 % and 18.27 % of the total samples in the study
+area, respectively (see Section 4). For other landscape elements and sky, only dis is calculated.
+Particularly, dis for the sky can be a fixed depth parameter, i.e., α, set by researchers and practitioners.
+
+190
+Figure 2. Comparison of (a) CIM-generated and (b) real-world window views, and (c) three typical
+sightlines from the window to the greenery.
+According to the literature review in Section 2.3, Llobera’s (2007) formula based on Beer-Lambert’s
+Attenuation Law (Swinehart 1962) is applied in Eq. 3 to estimate the sightline’s penetration
+probability w(dm),
+wi (x) = �
+
+(1 - fc(i) )x , c(i) = greenery, e.g., tree, shrub, grass, 0 ≤ fc(i) ≤ 1,
+
+0, c(i) = non-greenery, e.g., other landscape elements and sky,
+
+(3)
+
+where fc is the average density of a certain type of greenery as one of the four inputs (see Figure 1).
+
+3.2 Automatic computation of WVDI using 3D colored City Information Models
+3.2.1 Landscape type estimation of photorealistic CIMs using 3D semantic segmentation
+Computation of WVDI requires both the type c and depth d of each pixel of the CIM-generated
+200
+
+window view image according to Eq. 1 to 3. Thus, we estimate the landscape type c of photorealistic
+CIMs through a three-step workflow. First, landscape type c of photorealistic CIMs was estimated
+from the sampled point clouds. Making full use of publicly available deep learning methods and
+training datasets of point clouds, we segment the sampled point clouds (see Figure 3a) into two
+categories: greenery and non-greenery (see Figure 3b). The most high-performance 3D semantic
+segmentation method validated in Section 4.3.1, namely, StratifiedTransformer (Lai et al. 2022) is
+applied for greenery detection. Example subtypes of greenery, i.e., grass, shrubs, and trees are then
+differentiated by their heights. The greenery height h is represented as the elevation difference
+between the greenery surface and the terrain or building roof where it is located. Eq. 4 shows the A-
+
+priori rules, where the thresholds β and γ are set as 0.9 m and 4 m according to the sensitivity
+210
+
+analytical result in Section 4.3.2. Example segmented point clouds are shown in Figure 3c.
+tree, γ ≤ h
+c = �shrub, β ≤ h < γ
+grass, 0 ≤ h < β.
+
+(4)
+
+Secondly, we remove the textures of the photorealistic CIM (see Figures 3d and e). The textureless
+CIM is for both segmentation result loading and the landscape scene rendering in Section 3.2.2. Last,
+the segmented point clouds are registered to the textureless CIM to estimate the landscape type of
+each triangular face. The output is CIM colored by estimated landscape types (see Figure 3f).
+
+Figure 3. Workflow of landscape type estimation. (a) Photorealistic CIM as input, (b) greenery
+detection of (c) sampled point clouds using 3D semantic segmentation, (d)-(e) texture removal of
+photorealistic CIMs, and (f) CIM geo-registered with estimated landscape types.
+220
+
+3.2.2 Type-depth scene rendering through OpenGL shading
+By collecting depth d, we integrate the estimated landscape type c and view depth d on a 3D scene
+using OpenGL shading. First, the 3D textureless CIMs (see Figure 4a) are loaded on the digital terrain
+of a 3D geo-visualization platform, e.g., Cesium. Figure 4b shows the estimated landscape type c of
+the CIM from Section 3.2.1 and the pixel-level depth d collected from the depth buffer test of the
+OpenGL rendering pipeline. Then, the OpenGL fragment shader is set for a colored scene that depicts
+landscape type c and view depth d simultaneously. Specifically, the R value of the scene represents
+estimated landscape type c (see Figure 4b). The R value ranges between 0 and 255, representing at
+most 256 types of landscape elements. To explicitly visualize the different types of landscape, we set
+R values to 0, 80, 160, 240, and 255 to represent trees, shrubs, grass, other landscapes, and sky,
+
+230
+
+respectively, as shown in Figure 4c. Meanwhile, we regard the G and B values of the scene as tens
+and ones place of the 256-base number to represent the view depth d. The 256-base number ranges
+between 0 and 65,535, which can represent varied view depth ranges with different accuracy. For
+example, setting the maximum view depth at 65,535 m corresponds to 1-m accuracy, whereas setting
+
+the maximum view depth at 6,554 m corresponds to an accuracy of 0.1 m. At the accuracy of 0.1 m,
+Figure 4c shows a type-depth scene by dynamically rendering values of R, G, and B for each pixel.
+Particularly, we represent ds on the 3D scene without extra settings (see Figure 4d), and represent ds +
+dm and ds + dp on the 3D scene by inversing the normal of triangular faces of greenery and setting
+their visibility off, respectively (see Figures 4e and f).
+
+240
+
+Figure 4. Pipeline of type-depth scene rendering through OpenGL shading. (a) Textureless CIM, (b)
+customized shading of CIM, and (c)-(f) rendered type-depth scenes representing depths ds, dm, and dp.
+
+3.2.3 Batch generation and quantification of window views for WVDIs
+Last, the type-depth window views are generated from the rendered type-depth scene for computing
+WVDIs. Specifically, we set the parameters of the virtual camera function of a 3D geo-visualization
+platform, e.g., Cesium, to capture the window view (see Figure 5b). The 3D coordinates, e.g., lon, lat,
+and elevation, of the window center from BIMs (see Figure 5a) are used to place the virtual camera,
+while rotation parameters, i.e., heading, pitch, and roll, of the virtual camera are adjusted to align with
+the window orientation. The field of view, e.g., 60 degrees, and the image aspect ratio of the virtual
+camera, e.g., 1:1, are set to capture the landscape elements that a normal adult mainly sees from the
+250
+
+window center. Note that researchers and practitioners can adjust the virtual camera’s parameters,
+e.g., 3D coordinates, rotation, field of view, and image aspect ratio, which change WVDI values, to
+capture their desired views of windows with varying sizes and height-width ratios. By repetitively
+placing the virtual camera at each window center in the rendered type-depth scene (see Figure 5d),
+type-depth window views are automatically generated (see Figure 5e). Last, landscape type c and
+view depth d are decoded from the R, G, and B values of the window view image to compute WVDI
+(see Figure 5f) using Eq. 5, 6, and 1.
+
+tree,
+⎧ shrub,
+⎪
+c(i) = grass,
+⎨others,
+⎪
+⎩ sky,
+
+if Ri = 0,
+if Ri = 80,
+if Ri = 160,
+if Ri = 240,
+if Ri = 255,
+
+di = (Gi × 256 + Bi) ∕ 10 if c(i) ∈ {tree, shrub, grass, other landscape elements} else α,
+
+(5)
+
+(6)
+
+where α is the depth parameter of the sky set by researchers and practitioners for computing WVDIs.
+
+Figure 5. Batch generation of type-depth window views for WVDIs. (a) BIMs as input, (b) parameter
+260
+
+setting of the virtual camera function, (c)-(d) texture and type-depth scenes, and (e)-(f) generated
+type-depth views and WVDIs.
+
+3.3 BIM-based 3D visualization of WVDI
+We visualize WVDIs on geo-registered BIMs (see Figure 6a) for urban applications, e.g., local urban
+density improvement and housing valuation and transaction. First, windows and other components of
+BIMs are separated (see Figures 6b and d). Then, we color the vertexes of window polygons using
+WVDIs (see Figure 6c). We use the maximum and minimum WVDIs of the buildings in the study
+area to determine the range of the color bar. By contrast, the color of other components is unified to
+serve as the background (see Figure 6e). Last, we re-integrate colored windows and other background
+components to construct a 3D map of WVDIs (see Figure 6f). The dark blue indicates a high WVDI,
+270
+
+whereas the light blue represents a low view distance of the window.
+
+Figure 6. Visualization of WVDIs based on BIMs. (a) BIMs as input, (b)-(c) extracted windows
+colored by WVDIs, (d)-(e) other components colored as background, and (f) visualized result.
+
+4 Experimental tests
+4.1 Experimental area and settings
+We chose high-rise, high-density urban areas in Hong Kong Island and Kowloon Peninsula of Hong
+Kong, as the study area (see Figure 7a). The average building height reaches 23.92 m, whereas the site
+coverage of the study area is 0.8 (HKPlanD 2018). With the compact urban settings, the greenery
+blends with high-rise buildings and other landscapes. View distances of windows vary by their floor
+280
+
+height and orientations. Figure 7c shows the photorealistic CIMs collected from the Hong Kong
+Planning Department (2019). Window locations were sampled from the building datasets shared by
+the Hong Kong Lands Department (2023) and the Urban Renewal Authority (2022). Annotated point
+clouds, the HRHD-HK (Li et al. 2023a) in Hong Kong were applied to train the StatifiedTransformer
+for landscape type estimation in Section 3.2.1. A 0.5-m DTM (HKLandsD 2020) represented the
+terrain in Sections 3.2.1 and 3.2.2. The average densities for trees, shrubs, and grass collected from
+the field test were finetuned to 0.7, 0.8, and 0.9 for a high assessment accuracy, according to the
+sensitivity analytical result in Section 4.3.3.
+
+Figure 7. (a) Study area, (b) 4,805 randomly sampled buildings, and (c) four inputs of the proposed
+290
+
+method.
+We sampled 73,512 window view images from 4,805 buildings (see Figure 7b) in the study area to
+assess the proportion of close-range greenery window views. Window view images were first
+classified by landscape view distance and the presence of greenery into 7 × 2 categories. Considering
+the impact of the visual permeability of greenery, especially for close-range window views, we
+classified view distances in meters into seven categories, i.e., (0, 5], (5, 10], (10, 15], (15, 20], (20,
+25], (25, 30], (30, 2,279). We used 5 m as an interval to classify close-range (≤ 30 m) window views,
+regarding the high-rise, high-density context of the study area. The dummy variables for the presence
+of greenery were set to 0 and 1. Figure 8b showed around 3% of the total number of samples existed
+at every 5-m interval for greenery window views. Then, we extended the dummy variables into five
+
+300
+
+categories, i.e., [0, 0.2), [0.2, 0.4), [0.4, 0.6), [0.6, 0.8), and [0.8, 1], to examine our method’s
+efficiency and accuracy. With one window view image randomly collected from each category, we
+computed WVDIs of 35 window view images using both our method and the typical 3D visibility
+analytical tool, Line of Sight (LoS) of ArcGIS Pro (ver. 2.9.0), for comparison. Specifically, we
+generated each window view in a RGB image with 900 × 900 pixels. The field of view was 60
+degrees to represent what urban dwellers mainly see from the center of the window. Meanwhile, an
+in-house LoS program using ArcPy (ver. 2.9.0) was developed to assess the distance between the
+window center and the landscape within a 60-degree viewing frustum, using 900 × 900 samples. To
+preliminarily test the feasibility of the proposed method, we set the distance to sky α as 2,000 m (Qi et
+al. 2022) for computing WVDIs. The maximum view depth for G and B channels is 6,336 m to retain
+
+310
+
+the accuracy at the 10th percentile.
+The experiments were implemented in the workstation with a 16-core Intel i9-11900K CPU, a 24G
+Nvidia GeForce RTX 3090 graphic card, 64GB memory, and a Windows 10 system (64-bit). We
+implemented the 3D semantic segmentation in a docker container with Pytorch (ver. 1.10.0), making
+full use of the CPU and GPU resources of the workstation. Editing of CIM, e.g., normal setting of
+
+triangular faces of greenery, was implemented using the PyMeshLab (ver. 1.0.2). The type-depth
+scene of the textureless CIMs was rendered on a 3D geo-visualization platform, Cesium (ver. 1.99).
+Last, the WVDIs were computed through a Python (ver. 3.7.11) program and visualized on BIMs
+loaded in ArcGIS Pro (ver. 2.9.0).
+
+4.2 Results
+320
+
+Figure 8 shows the distribution of the window views according to the greenery view proportion and
+average landscape view distance. Figure 8a shows most sampled window views contained greenery,
+while varied proportions of greenery existed in close-range (≤ 30 m) window views. Statistically, the
+greenery window views accounted for 83.57% of the whole samples (see Figure 8b), whereas the
+close-range (≤ 30 m) greenery window views took up 18.27%. The presence of greenery window
+views as a majority and the substantial existence of close-range greenery window views both reflected
+the significance of our method.
+
+Figure 8. Distribution of sampled window views by average landscape view distance and greenery
+view proportion.
+330
+
+Table 1 compares the efficiency of the LoS analysis-based window view assessment and the proposed
+method. The LoS analysis consumed 10,326 seconds to measure the distance between the window
+center and 810,000 samples of the landscape scene through sequential ray tracing. By contrast, our
+method’s rendering of the full type-depth landscape scene at one time consumed 0.5 seconds, which
+improved the efficiency of the LoS analysis by 99.99%. Furthermore, the LoS analysis failed to
+measure the depths of probabilistic penetration and absorption without the visual permeability
+modeling of the greenery (see Table 1). On the contrary, our method consumed 0.56 seconds and 2.68
+seconds for probabilistic penetration and absorption within greenery, respectively. Overall, our
+method consumed 3.76 seconds for the WVDI of each window view image, improving the efficiency
+of the LoS analysis by 99.96%.
+
+340
+
+Table 1. Comparison of computational time (t) of the LoS analysis and the proposed method (The
+average for 35 selected window view images)
+No.
+1
+
+Depth type
+Surface
+
+d in WVDI (Eq. 1&2)
+ds
+
+LoS
+t (s)
+Proposed method
+t (s) Improvement
+Sequential 10,326 OpenGL rendering
+0.50# 99.99%
+ray tracing
+Image array computing 0.02
+
+2
+
+Probabilistic
+penetration
+
+w(dm) × dp
+
+/
+
+/
+
+OpenGL rendering
+0.50# /
+Image array computing 0.06
+
+3
+
+Probabilistic
+absorption
+
+(1 − w(dm))
+
+/
+
+/
+
+OpenGL rendering
+0.50# /
+Image array computing 2.18
+
+Total
+
+10,326 Total
+
+dm
+×∫0 x×w(x)dx
+
+3.76
+
+99.96%
+
+# The average time depends on the setting of the time interval for the sequential generation of window
+view images.
+
+Figure 9 shows our method’s improvement in distance assessment because of the visual permeability
+modeling of greenery. For window views without greenery, the WVDI computed by our method was
+consistently close to the measured WVDI from the LoS analysis, as shown in the orange rectangle of
+Figure 9a. The absolute deviation (Dev.) and the Root Mean Squared Deviation (RMSD) were less
+than 0.01 m and 0.0002, respectively. The possible reason for the deviation was the retainment of the
+350
+
+accuracy to the 10th percentile of the rendered type-depth scene set in Section 4.1. For greenery
+window views, substantial positive deviations (Dev. ≥ 0.2893) existed between the results of the LoS
+and our method. Particularly, the deviations for 71.43% of greenery window views exceeded 1.03 m,
+as shown in the red rectangle of Figure 9a. There existed a small improvement in the assessed view
+distance for the last eight greenery window views. With similar proportions of greenery views,
+possible reasons are i) low visual permeability rate w(dm) (denoted as w in the following parts) and the
+dp or ii) mismatching of high values of w and dp at the pixel level. For example, compared to other
+window views with greenery proportions ranging from 0.2 to 0.4, the improvement for window view
+#1 at 0.29 was the smallest due to both low w and dp. With similar values of w and dp, the
+improvement for window view #2 was 2.21% of that of window view #3 due to the mismatching of
+
+360
+
+high values of w and dp at the pixel level.
+Figure 9b shows the defined WVDI matters, especially for greenery window views with low ds and
+high visual permeability rate w and dp. With low ds, Figure 9b shows the assessed distances of eight
+close-range greenery window views, indicated by red arrows, improved by more than 12.43%. The
+assessed WVDIs effectively represented the extra window view distance due to the visual
+permeability of the greenery, e.g., sparse tree foliage in front of the windows. Additionally, with
+relatively high ds, three window views, indicated by black arrows, also owned high adjustment ratios
+above 9.58% due to high visual permeability rate w and dp. The high adjustment ratios further
+reflected that the modeling of visual permeability isr significant in accurately assessing window view
+distances, even for distant window views.
+
+370
+Figure 9. (a) Assessment accuracy of the proposed method compared to the ArcGIS Pro LoS analysis
+and (b) comparison of adjustment ratios for greenery window views.
+Figure 10 illustrates ten example window views with different WVDIs, categorized into non-greenery
+(proportion = 0) and greenery (proportion > 0). The WVDI computed by ds for non-greenery views
+effectively represented the view distances. Window views #3, #4, and #5 with the sky elements were
+more distant than the window views #1 and #2. The view distances for windows #1 and #2 against
+pure building walls were differentiated, with the gap at 18.59 m. By contrast, the WVDIs for greenery
+views were larger than ds regarding the visual permeability of greenery. The differences were less
+than 1.78 m for window views #6, #7, and #9 due to the close-range building or terrains behind the
+380
+
+greenery. On the contrary, there existed a high adjustment ratio (≥ 10.00%) of assessed view distances
+for window views #8 and #10 due to potentially large amounts of the sky behind the greenery.
+
+Figure 10. Typical (a) non-greenery and (b) greenery window views with WVDIs.
+Figure 11 shows the visualized WVDIs on BIMs of 207 example buildings in To Kwa Wan, Kowloon
+City District. The visualized WVDIs can support multiple applications in urban planning and design
+
+and real estate marketing. For instance, aging buildings #1 with consistently low WVDIs can be first
+considered by urban planners and designers for redevelopment. For building #2, slight differences in
+WVDIs between floors #1, #2, #3, #4, and #5 can support precise housing valuation by property
+agents, whereas tagging rooms with WVDIs on the property website can better inform housing
+390
+
+purchasers and renters’ decision-making without entering every room in-person. For example,
+assuming similar housing prices, rooms on floors #2 may be first selected compared to ones on floors
+#3 due to high WVDIs. Rooms on floors #2 share similarly high WVDIs, and thus, other factors, e.g.,
+indoor decorations, shall be emphasized.
+
+Figure 11. Visualized WVDIs of 207 example buildings in To Kwa Wan, Kowloon City District.
+
+4.3 Sensitivity analysis
+4.3.1 Performance of different 3D semantic segmentation methods
+We examined five typical 3D semantic segmentation methods (see Table 2) with varied learning
+mechanisms for greenery detection. Overall, all five methods achieved satisfactory results, with
+400
+
+Overall Accuracy (OA) above 97.55%, mean Accuracy (mAcc) above 96.08%, and mean Intersection
+over Union (mIoU) above 92.66%, respectively. StratifiedTransformer achieved the highest
+performance in distinguishing greenery and non-greenery, with Overall Accuracy (OA) at 98.38%,
+mean Accuracy (mAcc) at 97.26%, and mean Intersection over Union (mIoU) at 95.00%. Both
+greenery and non-greenery were classified with satisfactory per-class IoUs at 91.99% and 98.02%.
+The optimal performance benefits from the attention mechanism of the transformer and multi-scale
+receptive fields. Thus, the StratifiedTransformer was applied to estimate landscape types on CIMs in
+Sections 3.2.1 and experimental tests.
+
+410
+
+Table 2. Performances of five typical 3D semantic segmentation methods for greenery detection.
+Group
+
+Deep learning method
+
+Reference
+
+Overall metric (%)
+OA
+mAcc mIoU
+
+Voxel
+2D projection
+Kernel
+Multilayer
+perceptron
+Transformer
+
+SparseConvUnet
+BEV-Seg3D-Net
+KPConv
+RandLANet
+
+(Graham et al. 2018)
+(Zou & Li 2021)
+(Thomas et al. 2019)
+(Hu et al. 2020)
+
+97.55
+97.64
+97.65
+98.03
+
+96.62
+96.08
+96.11
+96.98
+
+92.66
+92.82
+92.84
+93.98
+
+Per-class IoU (%)
+Greenery
+Nongreenery
+88.31
+97.00
+88.52
+97.12
+88.56
+97.12
+90.39
+97.58
+
+StratifiedTransformer
+
+(Lai et al. 2022)
+
+98.38
+
+97.26
+
+95.00
+
+91.99
+
+98.02
+
+Note: The highest and lowest values in each column are in bold and underlined, respectively.
+
+4.3.2 Parameter setting of A-priori rules in estimating greenery subtypes
+The thresholds β and γ were finetuned for the optimal performance of greenery subtype estimation.
+Referring to (HKEPD 2012), the height ranges of trees, shrubs, and grass are 2-15 m, less than 3-6 m,
+and 0.03-2 m, respectively. Thus, we set β between 0.1 m and 1.9 m, and γ between 2 m and 11 m to
+examine the detection performance. The evaluation metric is mIoU for detecting trees, shrubs, and
+grass on ten tiles of 250 m × 250 m annotated point clouds (see Figure 12b). Figure 12a shows the
+420
+
+highest mIoU at 55.02% with β = 0.9 m and γ = 4 m. Tree was relatively well segmented, with IoU at
+81.08%, whereas the detection of grass and shrub was poor, with IoUs at 53.49% and 30.49%,
+respectively. The primary reasons were the low-performance differentiation between the shrub and the
+other two greenery subtypes, as well as minor mismatches in the input data caused by resolution
+variations, as illustrated in the rectangles in Figure 12b. Thus, we set β = 0.9 m and γ = 4 m in Section
+4 to initially test the feasibility of our method.
+
+Figure 12. Finetuning height threshold values β and γ. (a) Heatmap of mIoUs and (b) an example
+segmented CIM.
+
+4.3.3 Parameter setting for visual permeability modeling of greenery
+430
+
+The WDVIs are adjustable to approach the ground truth of window view distances by controlling the
+greenery density f in Eq. 3. In this study, we finetuned the greenery density parameters for trees,
+shrubs, and grass using two quality-varying CIMs reconstructed from varied proportions of the same
+set of photogrammetric images (see Figure 13a). Compared to window view images generated from
+low-quality CIMs, the ones generated from high-quality CIMs offer a more accurate representation of
+window view distance. The reason is the detailed modeling of greenery and building envelopes. Thus,
+referring to WVDIs generated on high-quality CIMs as ground truth, we tested whether the finetuning
+of the greenery density parameter rendered the computed WVDIs on the low-quality CIMs more
+accurate. Specifically, we used the two CIMs to represent greenery while controlling other
+landscapes, e.g., buildings and roads, represented by the same high-quality CIM. By testing WVDIs
+
+440
+
+on 20 window view images, Figure 13 shows the density parameters of trees, shrubs, and grass at
+0.70, 0.80, and 0.90, respectively, achieving the most accurate WVDIs (RMSD = 0.17804). Compared
+to WVDIs computed on low-quality CIMs (RMSD = 1.86133), the finetuable greenery density
+parameters increased the accuracy of the computed WVDIs by 90.43%. The result further confirmed
+that the proposed WVDIs and the automatic assessment method are accurate by precisely setting the
+greenery density parameters. Thus, we set the density parameters of trees, shrubs, and grass to 0.70,
+0.80, and 0.90 for experimental tests in Section 4.
+
+Figure 13. Finetuning parameters of greenery density. (a) Two CIMs of varying qualities, (b)-(c) 3D
+and 2D heatmaps of RMSDs.
+
+450
+
+5 Discussion
+5.1 Significance and contribution
+Theoretically, the proposed study defines a novel WVDI on photorealistic CIMs regarding the visual
+permeability of greenery. The WVDI, relating depth, landscape type, and greenery density, represents
+the average view distance between the window site and the visible landscape outside, addressing
+inaccuracy issues of traditional assessment via oversimplified solid surface modeling. Integrating
+Beer-Lambert’s Attenuation Law (Swinehart 1962) in Physics, the presented WVDI extended the
+modeling of visual permeability of greenery in GIS (Llobera 2007; Bartie et al. 2011) into window
+view assessment. The WVDI enables new solutions for multiple urban applications, e.g., precise
+housing valuation and transaction, prioritization of local urban density improvement, and optimization
+
+460
+
+of window view openness for architectural and urban design.
+Methodologically, the proposed study presents an accurate and efficient assessment method for
+window view distance using up-to-date photorealistic CIMs, 3D semantic segmentation, and OpenGL
+rendering. By using type-depth window view nexus, the proposed method improves the efficiency of
+the traditional visibility analysis-based assessment method by 99.96%. For non-greenery window
+views, the computed WVDIs are close to the results of visibility analysis (RMSD ≤ 0.0002). For
+greenery window views, the WVDIs are more accurate (RMSD ≤ 0.1781), which effectively captures
+the potential view distance of greenery due to visual permeability. The high efficiency of the proposed
+method enables urban-scale quantification and updates of window view distances. The accurate
+assessment results support the decision-making of urban planners and designers in local urban density
+
+470
+
+improvement, as well as developers, housing purchasers, and renters in real estate marketing.
+
+5.2 Limitations and future work
+The study has a few limitations. First, the accuracy of input parameters for estimating the view
+distance of greenery requires improvement. There still exists room to improve the accuracy of 3D
+semantic segmentation for greenery subtypes, e.g., the tree, shrub, grass, and even more fine-grained
+species. Possible measurement errors exist in the view depth of the interior greenery due to
+photorealistic CIMs’ continuous surface modeling. Future directions include the development of 3D
+CIM segmentation methods for accurately detecting greenery subtypes and the reconstruction of 3D
+volumetric and instantiated CIMs (Wu et al. 2024) for precise interior depth measurement. Second,
+the holistic semantic segmentation and rendering of CIMs can be costly for assessing window views
+480
+
+at a small scale, e.g., for one building. Future directions include lightweight reconstruction of 3D
+CIMs for efficient 3D processing. Last, the presented WVDI is an objective metric without subjective
+calibration. Future directions include calibrating the WVDI via urban dwellers’ perceptions and
+landscape architects’ knowledge to estimate window view quality and its human health and wellbeing benefits.
+
+6 Conclusion
+The scarcity of a distant view through the window leads to its amplified impacts on both urban health
+and real estate, especially in high-rise, high-density urban areas. Known benefits of distant window
+views from the literature include stress relief, living satisfaction, productivity improvement, and
+increased sense of privacy. As a big selling point, the distant window views of flats are also identified
+490
+
+for profits in the real estate market. Thus, urban-scale assessment of window view distance is
+significant in examining the disparity of window view openness for prioritized built environment
+improvement and precise housing valuation and transaction. Current studies are limited, inaccurate,
+and inefficient in assessing window view distance at the urban scale. To address the research gap, we
+present an automatic assessment of window view distance for high-rise, high-density urban areas
+using CIMs and 3D computer vision and graphics.
+We first define a Window View Distance Index (WVDI) on a photorealistic CIM-generated window
+view image considering the visual permeability of greenery. Then, an automatic method was designed
+with three steps: i) landscape type estimation of photorealistic CIMs, ii) type-depth scene rendering,
+and iii) batch generation and quantification of window views for WVDIs. Last, we visualize the
+
+500
+
+WVDIs on BIMs to support urban applications, e.g., local urban density improvement and informed
+housing valuation and transaction. Experimental results in Hong Kong Island and Kowloon Peninsula
+of Hong Kong showed that the method was automatic, efficient (2,753 times faster), and accurate
+(RMSD ≤ 0.1781) compared to the traditional visibility analysis-based method.
+Our automatic assessment of window view distance enables new solutions for multiple applications
+and analytics in urban planning and design, real estate marketing, and urban health, thereby benefiting
+millions of urban dwellers. Examples include window view distance guided local urban density
+improvement via urban renewal, maximized achievement of window view distance for architectural
+and urban generative design, precise housing valuation and transaction, and a series of window view
+distance-based analytics for urban health and sustainability. Future work includes the development of
+
+510
+
+3D CIM segmentation methods for greenery subtype detection, reconstruction of 3D volumetric and
+instantiated CIMs for interior depth assessment, and lightweight reconstruction of 3D CIMs for
+efficient 3D semantic segmentation and rendering.
+
+Acknowledgement
+The work presented in this study was supported in part by the University of Hong Kong (HKU) (A/C
+No. 203720465), Chan To-Haan Endowed Professorship Fund of the University of Hong Kong, and
+the Department of Science and Technology of Guangdong Province (GDST) (2020B1212030009;
+2023A1515010757). The study was an extension of a PhD thesis supported by HKU.
+
+Authors’ contribution roles
+Maosu Li: Conceptualization, Data Collection and Processing, Methodology, Software, Validation,
+520
+
+Charting, Writing – Original Draft Preparation, Funding Acquisition.
+Fan Xue: Writing – Review and Editing, Funding Acquisition.
+Anthony G. O. Yeh: Supervision, Writing – Review and Editing, Funding Acquisition.
+
+References
+Bartie, P., Reitsma, F., Kingham, S. & Mills, S. (2011). Incorporating vegetation into visual exposure
+modelling in urban environments. International Journal of Geographical Information
+Science, 25(5), 851-868. doi:10.1080/13658816.2010.512273
+CEN. (2018). En 17037, Daylight in Buildings. Brussels: Comité Européen de Normalisation (CEN).
+Chung, W. K., Chau, C. K., Masullo, M. & Pascale, A. (2019). Modelling perceived oppressiveness
+530
+
+and noise annoyance responses to window views of densely packed residential high-rise
+environments. Building and Environment, 157, 127-138. doi:10.1016/j.buildenv.2019.04.042
+Fisher-Gewirtzman, D. (2018). Integrating ‘weighted views’ to quantitative 3D visibility analysis as a
+predictive tool for perception of space. Environment and Planning B: Urban Analytics and
+City Science, 45(2), 345-366. doi:10.1177/0265813516676486
+Graham, B., Engelcke, M. & Van Der Maaten, L. (2018). 3d semantic segmentation with submanifold
+sparse convolutional networks. Proceedings of the IEEE Conference on Computer Vision and
+Pattern Recognition (pp. 9224-9232). New Jersey: IEEE. doi:10.1109/CVPR.2018.00961
+HKEPD. (2012). Tree Survey Data. Hong Kong: Environmental Protection Department, Government
+of Hong Kong SAR. Retrieved from
+
+540
+
+https://www.epd.gov.hk/eia/register/report/eiareport/eia_2032012/HTML/EIA%20Report/An
+nexes/Annex%20G_text.pdf
+HKLandsD. (2020). Hong Kong Digital Terrain Model from 2020 LiDAR Survey. Hong Kong: Lands
+Department, Government of Hong Kong SAR.
+HKLandsD. (2023). iB1000 Digital Topographic Map. Hong Kong: Lands Department, Government
+of Hong Kong SAR.
+HKPlanD. (2018). Hong Kong Planning Standards and Guidelines. Hong Kong: Planning
+department, Hong Kong SAR.
+doi:https://www.pland.gov.hk/pland_en/tech_doc/hkpsg/full/pdf/ch2.pdf
+
+HKPlanD. (2019). 3D Photo-realistic Model. Hong Kong: Planning Department, Government of
+550
+
+Hong Kong SAR. Retrieved from
+https://www.pland.gov.hk/pland_en/info_serv/3D_models/download.htm
+HKURA. (2022). 3D Intelligent Map of An Area in To Kwa Wan. Hong Kong: Hong Kong Urban
+Renewal Authority.
+Hu, Q., Yang, B., Xie, L., Rosa, S., Guo, Y., Wang, Z., Trigoni, N. & Markham, A. (2020). RandLANet: Efficient semantic segmentation of large-scale point clouds. Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition (pp. 11108-11117). New
+Jersey: IEEE. doi:10.1109/CVPR42600.2020.01112
+Huang, J. (2019). A 3D GIS-based Valuation System for Assessing the Scenic View in Residential
+Property Valuations [PhD thesis]. Hong Kong: The Hong Kong Polytechnic University.
+
+560
+
+Retrieved from https://theses.lib.polyu.edu.hk/handle/200/9974
+Inglis, N. C., Vukomanovic, J., Costanza, J. & Singh, K. K. (2022). From viewsheds to viewscapes:
+Trends in landscape visibility and visual quality research. Landscape and Urban Planning,
+224, 104424. doi:10.1016/j.landurbplan.2022.104424
+IWBI. (2020). Well V2 - the Next Version of the Well Building Standard. New York: International
+Well Building Institute. Retrieved from https://v2.wellcertified.com/en/wellv2/overview
+Kent, M. & Schiavon, S. (2020). Evaluation of the effect of landscape distance seen in window views
+on visual satisfaction. Building and Environment, 183, 107160.
+doi:10.1016/j.buildenv.2020.107160
+Kim, J., Kent, M., Kral, K. & Dogan, T. (2022). Seemo: A new tool for early design window view
+
+570
+
+satisfaction evaluation in residential buildings. Building and Environment, 214, 108909.
+doi:10.1016/j.buildenv.2022.108909
+Ko, W. H., Kent, M. G., Schiavon, S., Levitt, B. & Betti, G. (2022). A window view quality
+assessment framework. Leukos, 18(3), 268-293. doi:10.1080/15502724.2021.1965889
+Lai, X., Liu, J., Jiang, L., Wang, L., Zhao, H., Liu, S., Qi, X. & Jia, J. (2022). Stratified transformer
+for 3d point cloud segmentation. Proceedings of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition (pp. 8500-8509). New Jersey: IEEE.
+doi:10.1109/CVPR52688.2022.00831
+Laovisutthichai, V., Li, M., Xue, F., Lu, W., Tam, K. & Yeh, A. G. (2021). CIM-enabled quantitative
+view assessment in architectural design and space planning. 38th International Symposium on
+
+580
+
+Automation and Robotics in Construction (ISARC 2021) (pp. 65-72). Oulu: IAARC.
+
+Li, M., Wu, Y., Yeh, A. G. & Xue, F. (2023a). HRHD-HK: A benchmark dataset of high-rise and
+high-density urban scenes for 3D semantic segmentation of photogrammetric point clouds.
+2023 IEEE International Conference on Image Processing Challenges and Workshops
+(ICIPCW) (pp. 3714-3718). New Jersey: IEEE. doi:10.1109/ICIPC59416.2023.10328383
+Li, M., Xue, F. & Yeh, A. G. (2023b). Efficient assessment of window views in high-rise, highdensity urban areas using 3D color city information models. Proceedings of the 18th
+International Conference on Computational Urban Planning and Urban Management (pp. 111). Charlottesville: OSF. doi:10.17605/OSF.IO/6YR5V
+Li, M., Xue, F., Wu, Y. & Yeh, A. G. (2022). A room with a view: Automated assessment of window
+590
+
+views for high-rise high-density areas using City Information Models and transfer deep
+learning. Landscape and Urban Planning, 226, 104505.
+doi:10.1016/j.landurbplan.2022.104505
+Li, M., Xue, F., Yeh, A. G. & Lu, W. (2021). Classification of photo-realistic 3D window views in a
+high-density city: The case of Hong Kong. In X. Lu, Z. Zhang, W. Lu & Y. Peng,
+Proceedings of the 25th International Symposium on Advancement of Construction
+Management and Real Estate (pp. 1339-1350). Singapore: Springer.
+Li, M., Yeh, A. G. & Xue, F. (2024). CIM-WV: A 2D semantic segmentation dataset of rich window
+view contents in high-rise, high-density areas based on photorealistic City Information
+Models. Urban Informatics, 3, 1-24.
+
+600
+
+Liang, D., Chen, S. H., Chen, Z., Wu, Y., Chu, L. Y. & Xue, F. (2024). 4D point cloud-based spatialtemporal semantic registration for monitoring mobile crane construction activities.
+Automation in Construction, 165, 105576. doi:10.1016/j.autcon.2024.105576
+Lin, T.-Y., Le, A.-V. & Chan, Y.-C. (2022). Evaluation of window view preference using quantitative
+and qualitative factors of window view content. Building and Environment, 213, 108886.
+doi:10.1016/j.buildenv.2022.108886
+Ling, Y. (2022). Estimating coastal premiums for apartment prices: Towards a new multilevel
+modelling approach. Environment and Planning B: Urban Analytics and City Science, 49(1),
+188-205. doi:10.1177/23998083211000343
+Llobera, M. (2007). Modeling visibility through vegetation. International Journal of Geographical
+
+610
+
+Information Science, 21(7), 799-810. doi:10.1080/13658810601169865
+Luo, L. & Jiang, B. (2022). From oppressiveness to stress: A development of Stress Reduction Theory
+in the context of contemporary high-density city. Journal of Environmental Psychology, 84,
+101883. doi:10.1016/j.jenvp.2022.101883
+
+Masoudinejad, S. & Hartig, T. (2020). Window view to the sky as a restorative resource for residents
+in densely populated cities. Environment and Behavior, 52(4), 401-436.
+doi:10.1177/0013916518807274
+McPhail, R., Chan, X. W., May, R. & Wilkinson, A. (2024). Post-COVID remote working and its
+impact on people, productivity, and the planet: an exploratory scoping review. The
+International Journal of Human Resource Management, 35(1), 154-182.
+620
+
+doi:10.1080/09585192.2023.2221385
+Meng, S., Su, X., Sun, G., Li, M. & Xue, F. (2025). From 3D pedestrian networks to wheelable
+networks: An automatic wheelability assessment method for high-density urban areas using
+contrastive deep learning of smartphone point clouds. Computers, Environment and Urban
+Systems, 117, 102255. doi:10.1016/j.compenvurbsys.2025.102255
+Mistick, K. A., Campbell, M. J., Thompson, M. P. & Dennison, P. E. (2023). Using airborne lidar and
+machine learning to predict visibility across diverse vegetation and terrain conditions.
+International Journal of Geographical Information Science, 37(8), 1728-1764.
+doi:10.1080/13658816.2023.2224421
+Murgoitio, J. J., Shrestha, R., Glenn, N. F. & Spaete, L. P. (2013). Improved visibility calculations
+
+630
+
+with tree trunk obstruction modeling from aerial LiDAR. International Journal of
+Geographical Information Science, 27(10), 1865-1883. doi:10.1080/13658816.2013.767460
+Qi, J., Lin, E. S., Tan, P. Y., Ho, R. C., Sia, A., Olszewska-Guizzo, A., Zhang, X. & Waykool, R.
+(2022). Development and application of 3D spatial metrics using point clouds for landscape
+visual quality assessment. Landscape and Urban Planning, 228, 104585.
+doi:10.1016/j.landurbplan.2022.104585
+Ruzickova, K., Ruzicka, J. & Bitta, J. (2021). A new GIS-compatible methodology for visibility
+analysis in digital surface models of earth sites. Geoscience Frontiers, 12(4), 101109.
+doi:10.1016/j.gsf.2020.11.006
+Stamps III, A. E. (2011). Effects of area, height, elongation, and color on perceived spaciousness.
+
+640
+
+Environment and Behavior, 43(2), 252-273. doi:10.1177/0013916509354696
+Swinehart, D. F. (1962). The beer-lambert law. Journal of Chemical Education, 39(7), 333-335.
+Thomas, H., R. Qi, C., Deschaud, J.-E., Marcotegui, B., Goulette, F. & Guibas, L. J. (2019). Kpconv:
+Flexible and deformable convolution for point clouds. Proceedings of the IEEE/CVF
+International Conference on Computer Vision (pp. 6411-6420). New Jersey: IEEE.
+doi:10.1109/ICCV.2019.00651
+
+Tong, Z., Yang, H., Liu, C., Xu, T. & Xu, S. (2020). Quantification of the openness of urban external
+space through urban section. Geo-spatial Information Science, 23(4), 316-326.
+doi:10.1080/10095020.2020.1846464
+Ulrich, R. S. (1984). View through a window may influence recovery from surgery. Science,
+650
+
+224(4647), 420-421. doi:10.1126/science.6143402
+van Esch, E., Minjock, R., Colarelli, S. M. & Hirsch, S. (2019). Office window views: View features
+trump nature in predicting employee well-being. Journal of Environmental Psychology, 64,
+56-64. doi:10.1016/j.jenvp.2019.05.006
+Wang, B., Li, M., Peng, Z. & Lu, W. (2024). Hierarchical attributed graph-based generative façade
+parsing for high-rise residential buildings. Automation in Construction, 164, 105471.
+doi:10.1016/j.autcon.2024.105471
+Wang, B., Lu, W. & Zhang, Y. (2025). A graph-enabled parametric modeling approach for façade
+layout generative design. Journal of Building Engineering, 105, 112481.
+doi:10.1016/j.jobe.2025.112481
+
+660
+
+Wang, F. & Munakata, J. (2024). Assessing the impact of facade characteristics and visual elements
+on perceived oppressiveness in high-rise window views through virtual reality. Building and
+Environment, 266, 112043. doi:10.1016/j.buildenv.2024.112043
+Wu, Y., Xue, F., Li, M. & Chen, S. H. (2024). A novel Building Section Skeleton for compact 3D
+reconstruction from point clouds: A study of high-density urban scenes. ISPRS Journal of
+Photogrammetry and Remote Sensing, 209, 85-100. doi:10.1016/j.isprsjprs.2024.01.020
+Yamagata, Y., Murakami, D., Yoshida, T., Seya, H. & Kuroda, S. (2016). Value of urban views in a
+bay city: Hedonic analysis with the spatial multilevel additive regression (SMAR) model.
+Landscape and Urban Planning, 151, 89-102. doi:10.1016/j.landurbplan.2016.02.008
+Yao, T., Lin, W., Bao, Z. & Zeng, C. (2024). Natural or balanced? The physiological and
+
+670
+
+psychological benefits of window views with different proportions of sky, green space, and
+buildings. Sustainable Cities and Society, 104, 105293. doi:10.1016/j.scs.2024.105293
+Zhang, F., Salazar-Miranda, A., Duarte, F., Vale, L., Hack, G., Chen, M., Liu, Y., Batty, M. & Ratti,
+C. (2024). Urban Visual Intelligence: Studying Cities with Artificial Intelligence and StreetLevel Imagery. Annals of the American Association of Geographers , 114(5), 876-897.
+doi:10.1080/24694452.2024.2313515
+
+Zhu, H., Yang, X., Zhou, X., Zhang, H., Yang, L. & Tang, G. (2024). A 3D visible space index for
+evaluating urban openness based on the digital urban model. International Journal of
+Geographical Information Science, 1-26. doi:10.1080/13658816.2024.2397434
+Zong, X., Wang, T., Skidmore, A. K. & Heurich, M. (2021). The impact of voxel size, forest type,
+680
+
+and understory cover on visibility estimation in forests using terrestrial laser scanning.
+GIScience & Remote Sensing, 58(3), 323-339. doi:10.1080/15481603.2021.1873588
+Zou, Z. & Li, Y. (2021). Efficient urban-scale point clouds segmentation with bev projection. (pp. 16). arXiv preprint. doi:arXiv:2109.09074
+
+

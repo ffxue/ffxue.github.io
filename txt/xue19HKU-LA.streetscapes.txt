@@ -1,0 +1,1157 @@
+Computational Streetscapes
+Big data, deep learning, and vector model
+15 April 2019
+Frank Xue
+xuef@hku.hk
+frankxue.com
+
+Dept of REC
+FoA, HKU
+
+Outline
+
+1
+
+Background & motivation
+
+2
+
+Computational streetscapes
+
+3
+
+Discussion
+
+F. Xue: Computational streetscapes
+
+2
+
+Section 1
+
+BACKGROUND & MOTIVATION
+
+F. Xue: Computational streetscapes
+
+3
+
+1.1 Background
+Streetscape
+ Is a narrow and linear urban space lined up by buildings,
+
+used for circulation and other activities (Rapoport, 1987)
+
+(a)
+
+Elements of streetscape
+ Road, sidewalk and amenities, landscaping, street
+
+furniture, connections, background buildings
+
+(b)
+
+ Pedestrians, vehicles, animals, vegetation
+
+Computational streetscape
+ A topic under urban informatics/computing
+ Less laborious, more objective than manual audits
+
+For smart applications in many disciplines
+ Landscape, planning, architecture, psychology
+ Construction, conservation, logistics, robotics
+ Business planning, valuation and taxation, etc.
+
+F. Xue: Computational streetscapes
+
+Typical Hong Kong street scenes,
+(a) Hill Road near HKU West Gate
+(b) Hillier Street at Sheung Wan
+(source: Diamfleoss; DDMLL
+@Wikipedia CC BY-SA)
+
+4
+
+1.2 Upstream urban data
+Accurate, (near) real time, big data of streets
+Through many devices
+ Underground: Optical fiber network
+ Ground: AR phone, Internet of things, mobile scanner
+ Low-altitude: Drone, helicopter, plane (camera, laser, radar)
+ High-altitude: Satellite (camera, radar)
+
+In multi-dimension data
+ 0D points: Crowd-sourced location, wind, traffic congestion
+ 1D linear features: Vibration, deformation
+
+Google street view car
+(photo: Wikipedia)
+0D
+
+1D
+
+2D
+
+3D
+
+ 2D images: Aerial photo, satellite photo, heat map
+ 3D point clouds: Geometry, deformation
+ nD over time
+
+Some data associated with meanings
+ Tagged / annotated dataset
+F. Xue: Computational streetscapes
+
+Tagged CityScapes dataset
+(Cordts et al. 2017)
+
+5
+
+1.2 Downstream applications
+For
+ Urban objects: forestry, shade, density, …
+ Users: walk, cycling, safety, comfort, election
+
+On top of, e.g.,
+  Green view index
+  Street car models
+  As-build 3D modeling
+
+ Green view indices for urban
+forestry & cycling (MIT 2017; Long &
+Liu 2017; Lu et al. 2019)
+
+  “Black-box” DL models
+
+ 2008 U.S. Election prediction
+(r = 0.73, p < 1–7) (Gebru et al. 2018)
+
+Xue: Computational
+F.Personalized
+walkabilitystreetscapes
+assessment (sidewalk) near HKU (Xue et al. 2018)
+
+ Prediction (1-10 points) of safety & comfort
+6
+street scenes in Shanghai (Liu et al. 2018)
+
+1.2 Vector model & applications
+Vector algebra
+ Vtot = Vboat + Vriver
+ Vriver = Vtot – Vboat
+ cos θ : Closeness between Vriver and Vtot
+
+Vector models (vector space models)
+ In math and physics
+ In natural language processing (Mikov et al. 2013)
+o “Einstein – scientist + painter” = Picasso
+
+Vector model about street elements …
+ Hill Road and Hillier Street sound very similar
+o But how much do they look alike?
+
+ Can we compute a street as a vector of elements?
+
+Vector model of velocity
+Vector model of words
+
+o Vector operators +, –, ×, cos θ, corr
+
+ What applications can be benefited?
+o How?
+
+F. Xue: Computational streetscapes
+
+Vector model of streetscape? 7
+
+1.3 Opportunity
+Gaps
+ Hard-coded processing / method
+ Ad-hoc applications
+ No reusing of valuable urban information
+
+Big
+data
+
+Applications
+Vector
+models
+
+Opportunity for a midstream study on
+ A vector model of streetscape
+ General math-like operations
+ Multi-purpose usages / use cases
+
+Urban Big Data Platform (UBDP), HKU
+ Multi-source big data
+o Including streetscapes
+
+ Multi-scale urban information
+o Point, line, and area
+
+ Supported by HKU Platform Technology Fund ($915,870)
+o 2018—2020. PC: Prof. Webster
+
+F. Xue: Computational streetscapes
+
+UBDP introduction page
+http://fac.arch.hku.hk/ubdp
+
+8
+
+Section 2
+
+COMPUTATIONAL
+STREETSCAPES
+
+F. Xue: Computational streetscapes
+
+9
+
+2 Method
+Theoretical stance
+ A midstream approach, distributed via Platform-as-a-Service (PaaS)
+
+3 steps to channel upstream data to downstream
+ Step 1: Data collection
+ Step 2: Information extraction: (a) Semantic segmentation + (b) object recognition
+ Step 3: Vector modeling
+
+This study
+Public street
+view photos
+
+1. Data
+collection
+
+Upstream
+F. Xue: Computational streetscapes
+
+2b. Object
+recognition
+
+3. Vector
+modeling
+
+Computational
+streetscapes
+
+Application 1
+Application 2
+
+Platformas-aservice
+(PaaS)
+
+…
+
+Related urban
+data sources
+
+2a. Semantic
+segmentation
+
+Application N
+Downstream
+
+10
+
+2.1 Step 1: Street data collection
+Partner: Tecent Street View
+ 2D images; Source: NavInfo
+ Datum: GCJ-02, not WGC-84
+
+The Hong Kong Island
+ 78.6 km2 Area
+o Both high and low density areas
+
+ 3,625 road segments (473.35 km) with street views
+o Extracted from OpenStreetMap database
+
+o No data of steps / corridors / foot bridge / private road …
+
+ 42,683 panorama coordinates
+
+o Resolution: 8.58m between two points
+o Some shared at segment connections
+
+ ~500,000 street photos (12 shots per point, every 30° heading)
+o 48 GB, Downloaded in ~10 days
+
+o Deep learning processing in 22 days
+
+o ~670,000 including connections, tunnels, …
+
+F. Xue: Computational streetscapes
+
+Data collection
+
+11
+
+2.2 Step 2a: Elements from semantic
+segmentation
+Semantic segmentation
+ DL model: DeepLab v3 CNN (trained on cityscape)
+
+Area by counting pixels
+ Construction: Building, infrastructure, wall
+o E.g., 45% + 0% + 2% = 47%
+
+ Sidewalk: Walking path, guardrail
+ Greenery: Vegetation
+
+ Other: Sky, street signs, etc.
+
+Lines by counting vertical image slices
+ Sidewalk, guardrail, unguarded sidewalk
+
+F. Xue: Computational streetscapes
+
+Example of semantic segmentation
+
+12
+
+2.2 Results of Step 2a
+1
+
+Construction Sidewalk Greenery
+
+Construction Sidewalk Greenery
+
+(a) Green view is high except for the high-density areas (b) Visual fields around HKU Main Campus
+
+Rail-guarded
+
+Unguarded
+
+(c) Level of sidewalk railing is satisfactory in general
+
+F. Xue: Computational streetscapes
+
+(d) Average percentages of elements in the four districts
+
+13
+
+2.2 Step 2b: Elements from object recognition
+Object recognition
+ DL model: Luminoth v0.2.4 RNN (trained on COCO)
+
+Counting objects
+ Vehicles: Cars, buses, trucks, motorcycles, bicycles
+ Personal: Persons, backpacks, handbags
+ Street furniture: Traffic signs, traffic lights, bench, fire hydrants, …
+ City animals: Cats, dogs, birds
+
+Actions of people
+ Walking / standing: On a sidewalk, behind a guardrail (using segmentation results)
+ Road crossing: On a roadway, in front of a vehicle
+
+F. Xue: Computational streetscapes
+
+Example of object recognition
+
+14
+
+2.2 Results of Step 2b
+1
+
+Vehicle Person S. Furniture Animal
+
+Car Bus Truck Motorcycle, bike, boat
+
+(a) More vehicles and persons in high-density areas;
+Street furniture and animals relatively even (except for
+Shek O)
+
+(b) More buses in residential areas; trucks on major
+roads
+
+Walking Road-crossing
+
+Bird
+
+Dog
+
+Cat
+
+(c) More people walking in high-density (less greenery) (d) Dogs/cats found in residential areas; more birds in
+low-density areas
+>>DEMO_LINK<<
+areas
+
+F. Xue: Computational streetscapes
+
+15
+
+2.3 6D vector modeling
+Vectorization of 6 major street elements
+ Construction, sidewalk, greenery, vehicles, persons, street furniture
+ Balanced and normalized for each explicit dimension
+
+Hong Kong Island Datasets
+ 0D “point” data table (panorama coordinates) Better for elements/
+behavior analyses
+o 42,683 vectors
+
+ 1D “street” data table (roads)
+o 784 vectors
+
+ 2D “District” data table (election district)
+o 4 vectors
+
+0D
+
+1D
+
+2D
+
+3D
+
+Better for calculus
+
+Vector calculus
+ Norm (| |), addition (+), subtraction (−)
+ Multiplication (×), division (/), dot product (·)
+ Cosine similarity (cos), correlation (ρ)
+ Gradient (∇), Laplacian (Δ)
+F. Xue: Computational streetscapes
+
+16
+
+2.4 Use case 1: Logarithmic usage of street
+Number of street users at a point obeys logarithmic distribution
+ Vehicles seen
+o Volume: Blue,
+
+~322,000
+
+o Max: ~55
+
+ Pedestrians seen
+o Volume: Green,
+
+~237,000
+
+o Max: ~80
+
+Average “density”
+ 237,000 / 473.35
+
+= 500.7 pedestrians/km
+
+Unique behavior ?
+ People always cluster?
+ Urban health issues?
+ Similar elsewhere ?
+F. Xue: Computational streetscapes
+
+17
+
+2.4 Use case 2: Streetscape algebra
+Vectors of Hill Rd (A) and
+Hillier St (B)
+
+Similarity between Hill Road and Hillier Street
+ Cosine similarity: cos θ = A·B / |A|×|B| = 0.7673
+ 76.73%
+
+“Queen’s Road West − Central Western District
++ South District = ___________?”
+
+Dimension Hill Rd (A) Hillier St (B)
+0.305023
+Construction
+0.186837
+Sidewalk
+0.011774
+-0.148464
+Greenery
+-0.09866
+-0.210708
+Vehicles
+-0.09689
+0.049695
+Persons
+0.034738
+0.157678
+S. Furniture
+0.052523
+0.116280
+
+Vectors of Queen’s Rd W (C),
+ C – D + E = [–0.02706, –0.01939, 0.014958, –0.05959, 0.043838, 0.010644]T Central Western (D), and South (E)
+ The closest street in South District is
+
+o Tin Wan New Street (distance = 0.1209)
+
+ “Queen’s Road W to Central & Western District is roughly
+
+equivalent to Tin Wan New Street to South District.”
+
+ As illustrated
+o PC1 & 2 explain
+
+65% variance
+
+Queen’s Central &
+South (E)
+Rd W (C) Western (D)
+-0.07714 -0.29926
+Construction 0.195057
+-0.03884 0.016865
+Sidewalk
+-0.07509
+0.070689 0.254503
+Greenery
+-0.16886
+-0.02056 -0.09173
+Vehicles
+0.011577
+-0.04118 -0.10124
+Persons
+0.103898
+-0.01499
+-0.0573
+S. Furniture 0.052947
+
+Dimension
+
+Closest street vectors to C – D + E
+
+Rank
+
+Street name (South District)
+
+1 Tin Wan New Street
+2 South Horizon Drive
+3 Lee Hing Street
+4 Yi Nam Road
+
+5 Aberdeen Main Road
+6 Kwun Hoi Path
+
+F. Xue: Computational streetscapes
+
+7 Wah Fu Road
+
+dist
+
+0.120894
+0.122902
+0.143904
+0.145450
+0.163997
+0.189905
+0.207953
+18
+
+2.4 Use case 3: Street element clustering
+Clusters based on Pearson’s correlation
+ “Nature” {longitude, greenery}, {sidewalk}, and “town” {others}
+ Walking in HK Island: Positive r to building, road-crossing, & ad.; Negative to green
+
+**
+
+.122
+0.000
+**
+.078
+0.000
+**
+.143
+0.000
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+.189
+0.000
+**
+.185
+0.000
+1
+
+**
+
+**
+
+**
+
+1 .343 .186 .237
+0.000 0.000 0.000
+
+**
+
+.446
+0.000
+**
+.161
+0.000
+**
+.284
+0.000
+
+bike
+
+motorcyc
+le
+
+truck
+
+bus
+
+car
+
+green
+
+traffic
+Light
+
+**
+
+traffic
+Sign
+
+**
+
+Person
+On Ad
+
+**
+
+Person
+Crossing
+
+**
+
+Person
+Walking
+
+**
+
+Lng
+
+sidewalk
+
+construct
+ion
+
+lat
+
+lng
+
+ Beware of p for big data: Most (>95%) bivariate correlations had p < 0.00001
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+**
+
+.104
+0.000
+**
+.118
+0.000
+**
+.137
+0.000
+
+**
+
+.177
+0.000
+**
+.085
+0.000
+**
+.173
+0.000
+
+**
+
+.059
+0.000
+**
+.030
+0.000
+**
+.067
+0.000
+
+**
+
+.028
+0.000
+**
+.039
+0.000
+0.007
+0.153
+
+**
+
+.124
+0.000
+**
+.058
+0.000
+**
+.105
+0.000
+
+r
+1 -.180 -.146 -0.003 .137 -.033 -.076 -.036 -.013 -0.009 -.055 -.057 -.027 -.071 -.039
+sig
+0.000 0.000 0.567 0.000 0.000 0.000 0.000 0.007 0.055 0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+Lat
+r -.180
+1 .397 .013 -.467 .244 .078 .118 .033 .063 .184 .126 .122 .078 .143
+sig 0.000
+0.000 0.006 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+constructi r -.146 .397
+1 -.036 -.797 .246 .127 .114 .087 .131 .402 .295 .266 .127 .164
+on
+sig 0.000 0.000
+0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+Sidewalk r -0.003 .013 -.036
+1 -.113 -.152 -.049 -.097 -.029 0.000 .036 -.063 -.022 .017 .027
+sig 0.567 0.006 0.000
+0.000 0.000 0.000 0.000 0.000 0.980 0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+Green
+r
+.137 -.467 -.797 -.113
+1 -.383 -.257 -.269 -.071 -.117 -.352 -.257 -.240 -.147 -.205
+sig 0.000 0.000 0.000 0.000
+0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+Car
+r -.033 .244 .246 -.152 -.383
+1 .186 .267 .069 .052 .132 .108 .104 .118 .137
+sig 0.000 0.000 0.000 0.000 0.000
+0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+Bus
+r -.076 .078 .127 -.049 -.257 .186
+1 .176 0.003 .072 .255 .145 .177 .085 .173
+sig 0.000 0.000 0.000 0.000 0.000 0.000
+0.000 0.532 0.000 0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+Truck
+r -.036 .118 .114 -.097 -.269 .267 .176
+1 .033 .039 .068 .062 .059 .030 .067
+sig 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+0.000 0.000 0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+motorcycl r -.013 .033 .087 -.029 -.071 .069 0.003 .033
+1 .020 .028 .075 .028 .039 0.007
+e
+sig 0.007 0.000 0.000 0.000 0.000 0.000 0.532 0.000
+0.000 0.000 0.000 0.000 0.000 0.153
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+Bike
+r -0.009 .063 .131 0.000 -.117 .052 .072 .039 .020
+1 .182 .149 .124 .058 .105
+sig 0.055 0.000 0.000 0.980 0.000 0.000 0.000 0.000 0.000
+0.000 0.000 0.000 0.000 0.000
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+Persons r -.055 .184 .402 .036 -.352 .132 .255 .068 .028 .182
+1 .445 .446 .161 .284
+Walking sig 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+0.000 0.000 0.000 0.000
+Persons r -.057 .126 .295 -.063 -.257 .108 .145 .062 .075 .149 .445
+Crossing sig 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Persons
+On Ad
+Traffic
+Sign
+Traffic
+Light
+
+r -.027
+sig 0.000
+**
+r -.071
+sig 0.000
+**
+r -.039
+sig 0.000
+
+**
+
+.266 -.022 -.240
+0.000 0.000 0.000
+**
+**
+**
+.127 .017 -.147
+0.000 0.000 0.000
+**
+**
+**
+.164 .027 -.205
+0.000 0.000 0.000
+
+F. Xue: Computational streetscapes Pearson’s correlations between some street elements (N = 42,566)
+
+**
+
+**
+
+.343
+0.000
+**
+.186
+0.000
+**
+.237
+0.000
+
+1 .105
+0.000
+**
+.105
+1
+0.000
+**
+**
+.189 .185
+0.000 0.000
+
+**
+
+19
+
+Section 3
+
+DISCUSSION
+
+F. Xue: Computational streetscapes
+
+20
+
+3.1 A wrap-up
+Work done
+ 3 steps for computational streetscapes
+o Big data collection, RNN and CNN processing, and vector modeling
+
+ 3 use cases of computational streetscapes
+
+Pros
+
+o Logarithmic use behavior, street algebra, Street element clustering
+
+ Big data, objective and low-cost
+ Automatic processing
+ Mathematical modeling and calculus
+ Multiple potential applications
+
+Cons
+ Limited by explicit, major street elements
+o Orthogonal decomposition
+
+ Some DL results are erroneous
+o Small elements, e.g., fire hydrants
+
+ GCJ-02 obstruction to WGS-84
+F. Xue: Computational streetscapes
+
+21
+
+3.2 In a life-cycle view
+Demand
+
+Streetscape
+ Small but influential
+ Has a typical product life cycle
+
+Many disciplines needed
+ 10+
+ Each focuses certain phases
+
+Analysis
+
+Math &
+computer
+science
+
+ Calling for cross-disciplinary
+
+Streetscape
+
+collaboration
+
+o E.g., explaining the log
+
+distribution, comparing the
+demand and supply of green
+on streets
+
+Linking related big data
+ 3D: Aerial LiDAR, …
+
+ Buildings: Ownership and price
+ Demography: Age distribution,
+
+education, income, …
+
+F. Xue: Computational streetscapes
+
+Psychology
+& behavior
+
+Geography
+& remote
+sensing
+
+Maintenance
+
+Design
+
+Landscape &
+architecture
+
+Engineering & construction
+Real
+estate &
+economics
+
+Operation
+
+Build
+22
+
+3.3 Future work
+Future work
+ Minor elements
+ Implicit vector space
+o Fully independent dimensions
+
+ Integrating multi-source urban big data
+ Kowloon and New Territories
+
+Collaboration opportunities
+ ITF Midstream Research, RGC Research Impact Fund, RGC Collaborative Research Fund
+ Based on the “Urban Big Data Platform: Integrate to inspire” project
+ Contact: Prof. Chris Webster
+
+Acknowledgements
+ The work was supported by HKU Platform Technology Fund (PTF)
+o In partial by RGC (17200218), SPPR (S2018.A8.010.18S), NSSFC (17ZDA062)
+
+ Street view data granted by partner Tencent (Guangzhou)
+
+F. Xue: Computational streetscapes
+
+23
+
+References
+o
+
+o
+
+o
+o
+o
+o
+o
+o
+o
+
+Cordts, M., Omran, M., Ramos, S., Rehfeld, T., Enzweiler, M., Benenson, R., ... & Schiele, B. (2016). The cityscapes
+dataset for semantic urban scene understanding. In Proceedings of the IEEE conference on computer vision and
+pattern recognition (pp. 3213-3223).
+
+Gebru, T., Krause, J., Wang, Y., Chen, D., Deng, J., Aiden, E. L., & Fei-Fei, L. (2017). Using deep learning and Google
+Street View to estimate the demographic makeup of neighborhoods across the United States. Proceedings of the
+National Academy of Sciences, 114(50), 13108-13113.
+Liu, L., Zhang, F., Zhou, B., Wang, Z., & Li, Y. (2018). STREETALK: a navigation system for pedestrians and
+cyclists. Landscape Architecture Frontiers, 6(2), 94-101.
+Long, Y., & Liu, L. (2017). How green are the streets? An analysis for central areas of Chinese cities using
+Tencent Street View. PloS one, 12(2), e0171110.
+
+Lu, Y., Yang, Y., Sun, G., & Gou, Z. (2019). Associations between overhead-view and eye-level urban greenness
+and cycling behaviors. Cities, 88, 10-18.
+
+Mikolov, T., Chen, K., Corrado, G., & Dean, J. (2013). Efficient estimation of word representations in vector space.
+arXiv preprint arXiv:1301.3781.
+MIT. (2017). Treepedia :: MIT Senseable City Lab. http://senseable.mit.edu/treepedia
+
+Rapoport, A. (1987). Pedestrian street use: Culture and perception. In Public streets for public use, New York:
+Columbia University Press. 80-94.
+
+Xue, F., Chiaradia, A., Webster, C., Liu, D., Xu, J., and Lu, W.S. (2018). Personalized walkability assessment for
+pedestrian paths: An as-built BIM approach using ubiquitous augmented reality (AR) smartphone and deep
+transfer learning. In The 23rd International Symposium on the Advancement of Construction Management and
+Real Estate. in press
+
+F. Xue: Computational streetscapes
+
+24
+
+THANK YOU !
+
+F. Xue: Computational streetscapes
+
+25
+
+

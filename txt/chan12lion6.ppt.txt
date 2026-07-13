@@ -1,0 +1,358 @@
+Pearl Hunter: An Inspired Hyperheuristic
+16th January 2012, Paris
+
+CY Chan, Fan Xue, WH Ip, CF Cheung
+
+Department of Industrial & Systems Engineering
+Hong Kong Polytechnic University
+Department of
+Industrial and Systems Engineering
+工業及系統工程學系
+
+Outline
+
+1
+
+Pearl Hunting
+
+2
+
+The Pearl Hunter
+
+3
+
+Training and Validation on HyFlex
+
+4
+
+Conclusions
+
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+2
+
+Pearl Diving
+Pearl diving is an out-of-date
+diving activity of retrieving pearls
+from oysters.
+Can still be found in:
+Some Asian tourist sites,
+Virtual games.
+
+In Australia (screenshot of “Introduction to pearls and Australian
+Pearl Divers”, © by Australian Opal Cutter youtube.com/watch?v=V6vuBvglndw)
+
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+Pearl diver in Japan (from Wikimedia
+Commons, public copyright)
+
+In Qatar (screenshot of “Pearling”, © Qatar
+Pavilion, World EXPO 2010)
+
+3
+
+Pearl Diving and Simulation
+In a search perspective, pearl hunting consists of
+repeated
+diversification (surface and change target area)
+intensification (dive and find pearl oysters).
+
+In the paradigm of Iterated Local Search (Lourenço et al,
+2003).
+Simulated operations
+move (diversification, 1 source or multiple sources)
+dive (intensification)
+snorkeling (quick, low level local search, stops after any
+
+improvements)
+deep dive (scuba; slow, high level local search, till no further
+
+improvements)
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+4
+
+Correlations Between Snorkeling and
+Deep Dive
+Table 1: Pearson correlations between improvements by snorkeling (10% maximum
+depth of search) and deep dive (maximum depth of search) in 3 domains of CHeSC
+
+Diversification by LLH
+
+Max-SAT
+
+Bin Packing
+
+Flow Shop
+
+Crossover
+
+Pearson Cor.
+Sig. (2-tailed)
+N
+
+0.82*
+0.00
+466
+
+0.47^
+0.00
+143
+
+0.88*
+0.00
+317
+
+Mutation
+
+Pearson Cor.
+Sig. (2-tailed)
+N
+
+0.61^
+0.00
+112
+
+0.11
+0.00
+1405
+
+0.83*
+0.00
+752
+
+Ruin-recreate
+(extra)
+
+Pearson Cor.
+Sig. (2-tailed)
+N
+
+0.08
+0.51
+70
+
+0.07
+0.11
+551
+
+0.58^
+0.00
+328
+
+Correlations:
+Strong (*) or moderate (^) positive coefficient with a significant
+level 0.01
+1≤ Nsnorkeling/Ndeepdive ≤ 10, choose best of snorkeling in practice
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+5
+
+Pearl Hunter: A Hyper-heuristic
+Imitation
+“Environment”:
+
+Obj
+Value
+
+Shallow water, where deep dive always returns
+the same as snorkeling
+Sea trench, where deep dives cost too much
+time at maximum depth-of-search
+Default, otherwise
+
+Trail
+
+Preparation of Low Level Heuristics(LLHs)
+Selective scheme (CHeSC2011)
+Choose {A, B} from {A, B, C}
+
+Constructive scheme
+
+Time
+Iterated move-snorkeling-dive
+Perceiving the environment
+and preparing LLHs
+
+Pre-trained
+Online trained
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+6
+
+Pearl Hunter
+Pearl Hunter can drop a Buoy at the depth of first deep
+dive, to escape from local optimum by mutations (SIs).
+Four running modes (portfolios) of selected LLHs:
+A: all moves averagely, with a Buoy mark
+B: crossover with a Buoy mark (triggering a few mutations)
+C: crossover only, no mutation, no Buoy
+D: Sea trench mode, all surface moves averagely, no Buoy.
+Moves are subject to online pruning.
+C
+
+B
+
+D
+
+Crossover
+
+Other tricks:
+
+A
+Mutation
+
+Anchors of the modes
+
+tabu lists (memory), “mission restarts” (go to new areas)
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+7
+
+HyFlex and CHeSC
+HyFlex (Hyper-heuristics Flexible framework) is a java
+cross-domain platform (Burke et al, 2011)
+6 domains, 4 public (training domain) and 2 hidden
+“Black-box” low-level heuristics in 4 categories:
+Crossover, Mutation, Ruin-recreate, and Local search
+
+Parameters to control low-level heuristics :
+“Intensity" of mutations, and “depth of local search”
+
+CHeSC 2011 is the first Cross-domain Heuristic Search
+Challenge on HyFlex. (http://www.asap.cs.nott.ac.uk/chesc2011/)
+Pearl Hunter was ranked in CHeSC:
+4th out of 20 entries overall,
+1st out of 20 entries in the hidden domains.
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+8
+
+HyFlex and CHeSC: BF-Tree Obtained
+by Offline Learning (by Weka v3.5)
+
+ Dmurr: Depth of the mission in the Mutation and Ruin-recreate test,
+ Mco: Number of missions completed in the Crossover test,
+ N: Number of sub-optimal solutions found in total,
+
+ Pdir: Percent of sub-optimal solutions found right after some moves (before any dive),
+
+ Pmu: Percent of sub-optimal solutions found in iterations started with Mutation moves,
+
+ Prr: Percent of sub-optimal solutions found in iterations started with Ruin-recreate moves,
+
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+9
+
+Tests on Personnel Scheduling:
+Beyond the 600s Time Limit of CHeSC
+On large-scale personnel scheduling problems,
+Running time was increased to 10 hours (normalized to P4 3GHz),
+Same decision tree and algorithm codes
+
+New best known solutions:
+Instance
+
+Men | days
+
+Time (h)
+
+Result
+
+Prev BK*
+
+% improved
+
+CHILD-2A
+
+41 | 42
+
+10
+
+1,095
+
+1,111
+
+1.4
+
+ERRVH-A
+
+51 | 42
+
+10
+
+2,142
+
+2,197
+
+2.5
+
+ERRVH-B
+
+51 | 42
+
+10
+
+3,121
+
+6,859
+
+54.5
+
+* Best known values were collected from http://www.cs.nott.ac.uk/~tec/NRP/misc/NRP_Results.xls
+
+A possible reason
+
+A new “vertical” swap concept first implemented in low-level
+heuristics on HyFlex
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+10
+
+Conclusion
+We present a hyper-heuristic
+Imitates pearl hunting
+Perceives “environment” of search
+Determines a perturbation mode by offline learning
+Generates different modes of ILS
+
+We find the results of tests encouraging
+Possible future works
+Hunters can generate new LLHs besides a selection
+(Custom designed for TSP) Generated an association-rules-based
+
+weighting hyper-heuristic to determine candidate set, and facilitated
+branch-and-bound and local search (2-Opt, 5-Opt) (Xue et al, 2010,
+2012).
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+11
+
+References
+ Burke E.K., Curtois T., Qu R., Vanden Berghe G. (2007) A Time Pre-defined Variable Depth Search for Nurse Rostering.
+Technical Report No. NOTTCS-TR-2007-6. University of Nottingham
+ Burke, E. K., Hyde, M., Kendall, G., Ochoa, G., Ozcan, E., and Qu, R. (2010) Hyperheuristics: A Survey of the State of the
+Art, University of Nottingham. Technical Report No. NOTTCS-TR-SUB-0906241418-2747.
+ Burke, E., Curtois, T., Hyde, M., Ochoa, G., Vazquez-Rodriguez J. A. (2011) HyFlex: A Benchmark Framework for Crossdomain Heuristic Search, ArXiv e-prints, arXiv:1107.5462v1
+ Lourenço, H., Martin, O., Stützle, T. (2003) Iterated Local Search. In Glover, F., Kochenberger, G. (eds.) Handbook of
+Metaheuristics. Springer New York. 320-353.
+ Xue F., Chan, C.Y., Ip, W.H., Cheung, C.F. (2010) Towards a learning-based heuristic searching reform scheme, XXIV
+European Conference on Operational Research (EURO), Lisbon, Portugal.
+ Xue F., Chan, C.Y., Ip, W.H., Cheung, C.F. (2012) A learning-based variable assignment weighting scheme for heuristic
+and exact searching in Euclidean traveling salesman problems, NETNOMICS, (to appear).
+
+Chan et al: Pearl Hunter: An Inspired Hyper-heuristic
+
+12
+
+Thank you for your attention!
+E-mail addr.: mffxue@inet.polyu.edu.hk
+dewolf_matri_x@msn.com
+
+Department of
+Industrial and Systems Engineering
+工業及系統工程學系
+
+

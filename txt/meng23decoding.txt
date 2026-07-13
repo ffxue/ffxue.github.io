@@ -1,0 +1,691 @@
+Decoding the Past: A Genetic Algorithm-based Method for Extracting Decorative
+Patterns in Heritage Digital Twins
+Siyuan Meng 1, Guangji Xu 2, Wenjin Zhang 3, Fan Xue 4*
+This is the authors’ version of the paper:
+Meng, S., Xu, G., Zhang, W., & Xue, F. (2024). Decoding the past: A
+Genetic Algorithm-based method for extracting decorative patterns in
+Heritage Digital Twins. Proceedings of the 28th International Symposium on
+Advancement of Construction Management and Real Estate, 2021–2032,
+Springer. doi: 10.1007/978-981-97-1949-5_141
+This file is shared for personal and academic use only, under the license CC
+BY-NC-ND 4.0 (Non-Commercial, No Derivatives, and with an Attributed
+citation when you use). The final published version of this paper can be found
+at: https://doi.org/10.1007/978-981-97-1949-5_141. Any uses other than personal
+and academic purposes must obtain appropriate permissions from Springer first.
+
+5
+
+10
+
+15
+
+Abstract: In the smart construction era, Heritage Digital Twin (HDT) is increasingly
+created as the digital replica of physical heritage buildings and relics. Extraction of the
+unique patterns and decorative elements on the HDTs is not only of academic interest
+to heritage conservation but also of business interest to fashion and design, such as the
+recent Hanfu fever. However, the patterns’ complex curvature surfaces and subtle
+protrusions make it challenging to extract and analyze them accurately and efficiently.
+This paper presents a Genetic Algorithm-based semi-automatic method for extracting
+decorative pattern texture from HDTs. This method has three steps: (i) extraction of
+cross-section contour as Non-uniform rational B-spline (NURBS) curves; (ii) Fitting of
+arcs and curvature projection based on Genetic Algorithm (GA); and (iii) clustering and
+extraction of patterns of interest. We tested the method on 3D data of a heritage building
+and a heritage bronze drum preliminarily. The high accuracy of the results, i.e., 𝐹𝐹1-value
+> 90% in all tasks, validated our automated extraction method for detailed patterns and
+decorations. The proposed GA-based method can enrich the literature of HDT in smart
+heritage and smart construction, whereas the extracted heritage’s patterns and
+decorations have the potential for cultural and business applications.
+Keywords: Heritage Digital Twin; Heritage decorative patterns; 3D point cloud;
+Genetic Algorithm; Smart Construction.
+
+20
+
+Siyuan Meng
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR, China
+2 Guangji Xu
+Anthropology Museum of Guangxi, Nanning, China
+3 Wenjin Zhang
+Guangzhou Okay Information Technology Ltd., Guangzhou, China
+4* Fan Xue
+Corresponding author, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+SAR, China
+E-mail: xuef@hku.hk
+1
+1
+
+1 Introduction
+1.1 Background
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+Smart construction implies the incorporation of automation and information
+technologies in the construction sector to tackle engineering challenges, such as cost,
+quality, safety, and sustainability[1, 2]. Benefiting from the rapid development of
+information technology, Digital Twin (DT), a network physical integration, has played
+a greater role in smart construction[3] since it enables interoperability, automation, and
+intelligent systems for whole-life-cycle buildings management. From the perspective
+of real-time geometric information (one of the DT objectives), 3D point clouds serve
+as a suitable data source because they can accurately depict the shape and texture of
+detected object surfaces. With expert handling, these point clouds can be transformed
+into digital documents such as Building Information Models (BIMs) and DT models[4].
+The Heritage Digital Twin (HDT) is a digital representation of the intricate
+knowledge structure pertaining to heritage assets[5], in which both generating a highfidelity virtual model of physical objects and efficiently processing the gathered data
+and diagnosing the digital twin to facilitate decision-making are challenging[6]. One of
+the objectives of HDT is to create 3D models with semantically rich coverage[7].
+More specifically, in heritage conservation, the preservation of texture, material,
+and decorative elements is essential for experts to evaluate the detailed status[8]. Besides,
+the decorative pattern found in cultural heritage possesses significant commercial value
+due to its extensive applicability in design and fashion industries, such as Hanfu. The
+feature of decorative pattern texture is slightly raised at the edges of the pattern. Current
+literature mainly focuses on presenting image level of texture information. For instance,
+[9]
+utilize a photogrammetry method to acquire masonry patterns as the texture for BIM
+objects, and [10] create a detailed restoration map for HBIM through photogrammetry.
+Furthermore, detail texture should not only be limited to image presentation but also
+provide the appearance with further information[11], such as performance assessment,
+texture detection, extraction, and classification. Hence, from the perspective of
+integrating texture semantic information, there is a need to extract pattern texture
+characterized by slight protrusions from point cloud data.
+1.2 Texture-related extraction method
+
+55
+
+60
+
+Ornamental pattern texture exhibits subtle elevations along the boundaries; thus, the
+extraction of pattern texture is often modeled as discontinuous characteristics extraction
+from input 3D point cloud. Such discontinuous characteristics extraction methods have
+been developed for two decades, e.g., in the field of rock surface[12]. Features that are
+often used for classification are angles, normal vectors, curvatures, planar parameters
+(e.g., Random sample consensus, RANSAC), and density (e.g., density-based spatial
+clustering of applications with noise, DBSCAN). Current rocks discontinuities analysis
+contains two major groups of methods, i.e., K-means and region growing, while there
+existed other algorithms as well.
+2
+
+[13, 14]
+
+65
+
+70
+
+75
+
+80
+
+obtained the mesh vertices features from the point cloud and used K-means
+to cluster gentle and discontinuous regions semi-automatically. This approach exhibits
+high computational requirements, and its efficacy depends on the acquired mesh quality
+(e.g., a point cloud with high morphological complexity will result in incorrect and
+distorted polygonal surfaces) and easy-to- neglect small features[12]. The region
+growing methods choose seed points randomly and expand the region by including
+neighboring points that satisfy predetermined criteria[15]. It has significant advantages
+in reducing computation time compared to the K-means method but still requires 90%
+of time to calculate millions of vertices features. Besides, supervised deep learning
+method such as Artificial Neural Networks (ANN) is considered in extracting rock
+discontinuities[16], which is less effective for heritage due to the uniqueness of each
+pattern’s features (such as color, shape complexity, and curvature) across different cases.
+It should be noted that rock discontinuity identification and texture extraction are
+different in at least two aspects. Firstly, the subtle features along the pattern edges can
+be easily overlooked when dealing with complex global features. Secondly, in contrast
+with patterns, rocks are typically characterized by planar surfaces and sharp edges,
+resulting in relatively straightforward feature extraction. Whereas patterns in heritage
+are sometimes attached to curved surfaces, making it difficult to extract features
+accurately using methods such as RANSAC and resulting in the wrong discontinuity
+analysis output. To conclude, current discontinuity extraction methods are insufficient
+for achieving the semantic interpretation of the given pattern texture in heritage point
+cloud data. Therefore, inspired by[17], we introduce the Genetic Algorithm (GA) to
+address the above issues through global arc fitting.
+1.3 Research objectives
+
+85
+
+90
+
+95
+
+100
+
+This paper aims to present an automated method to extract heritage texture and
+decorative elements from HDTs, such as 3D high-resolution point clouds or mesh
+models. Three objectives are arranged:
+1. To detect cross-sectional contour nonuniform rational B-splines (NURBS)
+curves;
+2. To apply GA to arc-fitting of NURBS curves; and
+3. To extract features using the adapted K-means clustering method and
+DBSCAN method.
+As a result, the input point cloud is segmented into two parts: the continuous and
+smooth base regions (including planes and curved surfaces) and the raised regions that
+are extracted and clustered into object instances.
+The main theoretical novelty in the proposed method lies in the sectional-arc
+fitting formulation. The formulation transforms the traditional discontinuous pattern
+analysis into a novel optimization problem solvable by modern computational
+algorithms such as GA. The method proposed in this paper enables the detailed
+semantic interpretation for the semantic enrichment of HDTs. Additionally, the patterns
+and decorations extracted from heritage assets through this method hold promise for
+3
+
+further industrial applications in culture and business.
+2 Research methods
+
+105
+
+110
+
+Figure 1 shows the three steps of the proposed method and the required parameters. The
+input to this method is the original point cloud. Firstly, generate sectional contour
+NURBS curves. In Step 2, transform NURBS curves into arcs through fitting. And in
+Step 3, partition the unfitted regions and cluster pattern objects. Finally, the output is
+clustered pattern objects at different locations.
+
+Fig. 1. General workflow of the proposed three-step method.
+
+2.1 Cross-section contour NURBS curve extraction
+
+115
+
+120
+
+The first step aims to obtain the cross-section contour curves of the input 3D data. First,
+a series of reference planes are determined in the point cloud regarding the
+combinations of the bounding box of the point cloud, resolution (grid size) (e.g., 1 mm),
+and slicing directions (e.g., x, y, or z). The input point cloud is then separated into a
+series of point cloud cross-sections according to a threshold distance value (e.g., 1 mm)
+between each point and the given plane. Next, the unstructured points are sequenced
+for generating NURBS curves through the sort along curve plugin in Grasshopper (ver.
+1.0.0007, Rhino). The Nurbs Curve plugin then fits NURBS curves from the sequenced
+point lists. The outputs of this step are cross-sectional NURBS curves.
+2.2 Arc fitting using Genetic Algorithm
+
+125
+
+The second step targets fitting arcs to the cross-sectional NURBS curves. The arc-fitting
+process is divided into two steps. Firstly, split the NURBS curve into curve segments
+according to the given value n, then generate arc segments based on the endpoints and
+midpoints of the curve segments. Secondly, use the Galápagos plugin in Grasshopper
+to complete arc-fitting optimization. The basic principle of Galápagos is GA, which is
+a method that utilizes natural selection to address both constrained and unconstrained
+4
+
+130
+
+optimization problems[18]. The constrained optimization objective is to minimize the
+sum of the mid-point distances between the arcs and the corresponding curve segments,
+as shown in Eq. 1. The output of this stage is the fitted arc lists of cross-sections.
+𝑛𝑛
+(1)
+min Σ𝑖𝑖=0
+𝐷𝐷𝑖𝑖𝑘𝑘
+D is the distance between i-th curve segment and i-th arc of cross-section k. After
+optimization, obtained the arc lists of cross-sections.
+2.3 Clustering and classification of extracted patterns
+
+135
+
+140
+
+145
+
+150
+
+155
+
+160
+
+The objective of the third step is to separate unfitted arcs and cluster unstructured points
+into pattern objects. Combined with the given filter criteria (usually the mean or median
+number of D), we separate the imperfect fitting regions (i.e., the slightly raised areas)
+from the cross-section groups, the remaining regions are smooth planes or curved
+surfaces.
+For clustering pattern objects, it is insufficient to obtain only the raised regions
+point clouds, as various patterns may exist in different locations within a region, and
+non-pattern sharp edges may become intertwined with the pattern point clouds, leading
+to mixed extraction results among different patterns and non-pattern results. Therefore,
+we utilize K-means, an unsupervised machine learning method, to semi-automatically
+perform secondary classification according to the specific K value = 3, with the
+clustering objective as the point surrounding points count. For the 3 clusters, we further
+segment the clusters based on density using DBSCAN to calculate the number of
+clusters that can be formed. The least number of DBSCAN clusters represents the noise
+point group, which is less dense than pattern clusters. To better partition the noise point
+groups, we maintain a consistent searching radius for K-means and eps for DBSCAN.
+Next, we apply a second DBSCAN clustering to the filtered point clouds, setting
+the 𝑒𝑒 𝑝𝑝𝑝𝑝 as the fourth neighboring point distanced mean value plus two standard
+deviations[19], and min points as 10. The final result of the third step is well-clustered
+pattern objects.
+2.4 Validation and evaluation
+We introduced quantitative validation to evaluate the performance of the algorithm. The
+validation compared the output with manually labeled ground truth at two levels, i.e.,
+the point level and the object level. We adopted three evaluation metrics, precision (the
+proportion of points correctly detected by the proposed method), recall (the proportion
+of points identified as edges in the ground truth), and F1-value (the harmonic mean of
+the precision and recall, to reflect the algorithm’s accuracy) [20], as shown in Eqs. 2, 3,
+and 4.
+𝑇𝑇𝑇𝑇
+(2)
+𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 =
+(𝑇𝑇𝑇𝑇 + 𝐹𝐹𝐹𝐹)
+𝑇𝑇𝑇𝑇
+(3)
+𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅 =
+(𝑇𝑇𝑇𝑇 + 𝐹𝐹𝐹𝐹)
+5
+
+(4)
+𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 × 𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅
+𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 + 𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅
+The value TP denotes the number of correctly detected points, while FP represents
+the number of wrongly detected points. FN indicates the false rejections, i.e., points
+belonging to the ground truth but not detected by the edge extraction technique.
+𝐹𝐹1 = 2 ×
+
+165
+
+3 Case study and results
+3.1 Case selection
+
+170
+
+175
+
+180
+
+185
+
+190
+
+This paper employed two cases, as shown in Fig 2, to preliminarily validate the efficacy
+of the method. The first case was the commemorative plaque texture of Guangtong
+Association Hall, of which the input was a high-resolution 3D point cloud. The other
+case was the No. 0158 bronze drum’s deformed feathered human pattern, which was a
+high-resolution mesh model from the Anthropology Museum of Guangxi, Nanning,
+China. These two cases are representative of their respective scales and exhibit different
+pattern characteristics (i.e., one is discretely distributed and the other arranged
+centripetally). Therefore, they are suitable for exploring the feasibility of the algorithm
+in scenarios with different pattern distributions.
+In Fig 2a, Guangtong Association Hall in Lechang, Guangdong, China consists of
+various building sections, including a porch, foyer, main hall, wing rooms, corridors, a
+theater building, and a courtyard. The hall’s doors, windows, beams, and pillars are
+decorated with intricate and detailed patterns that hold significant symbolic meanings.
+We selected the hall’s commemorative plaque as the experimental example since it
+contains the title of Guangtong Association Hall. The point cloud includes 142,953
+points, with bounding box size x: 3955mm, y: 202mm, z: 918mm.
+Bronze drums are significant archaeological artifacts found in southern China and
+Southeast Asia, with scattered discoveries from the Yangtze River of China to the
+Indonesian islands[21]. The decorative elements of bronze drums reflected the
+manufacturer’s purpose, era, affiliated ethnic groups, and artistic expression of the
+drums[8], which are thought to be linked to the totemic worship traditions of various
+ethnic groups, such as the Karen, Zhuang, Wa, and others, which developed over time.
+We chose bronze drum No. 0158 for testing and performed point sampling (999,900
+points, with bounding box size x: 619mm, y: 647mm, z: 25mm) of the face mesh. Fig
+2b illustrates the selected example.
+3.2 Experimental settings
+
+195
+
+200
+
+The proposed method was tested using an AMD Ryzen 9 5900HS computer with
+Radeon Graphics 3.30 GHz and 32 GB RAM. The slicing direction of the experimental
+object was determined based on its geometric shape. For instance, for the
+commemorative plaque, the slicing direction and grid sizes were set as XY, XZ planes,
+and 500 planes in each direction; while for the drum, they were set as XZ, YZ planes,
+and 500 planes in each direction. We selected parallel lines on the corresponding section
+planes as reference curves to sort the section point cloud. In addition, the generated
+6
+
+205
+
+210
+
+215
+
+cross-sectional NURBS curves were curves with sharp changes in curvature instead of
+smooth curves. This was because the given surface of the point cloud produced slight
+undulations on the smooth surface due to the unavoidable quality problem of the
+collected data, which would not influence the texture extraction results since we
+introduced the arc-fitting procedure.
+Following the establishment of the objective and automatic value range for
+Galápagos (0-100 curve segments number), 100 iterations were performed to obtain
+the final convergent solution arc-curve lists for all cross-sections. For the drum, the
+most appropriate segment number was 100, while for the commemorative plaque, it
+was 98. The progress of GA effectively separated the imperfect fitting surfaces, i.e., the
+slightly undulating point cloud regions. Thereafter, we filtered the noise points using
+K-means and DBSCAN; the search radius was set as 90mm for the commemorative
+plaque and 7mm for the drum.
+
+Fig. 2. The original point cloud and mesh model of two test cases. (a) The commemorative plaque of
+Guangtong Association Hall; (b) No. 0158 bronze drum’s deformed feathered human pattern.
+
+7
+
+Fig. 3. The pattern extraction results of two experiment objects. (a) The commemorative plaque texture of
+Guangtong Association Hall; (b) No. 0158 bronze drum’s face texture.
+220
+
+225
+
+230
+
+235
+
+3.3 Results of extracted patterns
+Fig 3 shows the pattern extraction results from the two cases. The upper sub-charts
+display the cross-sectional NURBS curves, with one example curve highlighted in each
+sub-chart. The bottom sub-charts demonstrate the clustered pattern objects of two
+example cases. One can distinguish the object-level clusters with colors in the bottom
+charts from the points and curves at lower levels during the processing.
+Fig 3a presents the commemorative plaque texture of Guangtong Association Hall;
+the word pattern clustering was well obtained. Whereas drum circular patterns in Fig
+3b were fragmented, except for the sunburst at the center. The clustering result of the
+drum was slightly inferior compared to the commemorative plaque. This is related to
+the production age, excavation from underground, and lack of maintenance, resulting
+in excessive noise (e.g., drum face broken and rusted) and the circular and centripetal
+distribution of the drum pattern.
+Overall, the extraction of point-level patterns was satisfactory, and the clustering
+results of object- level patterns were good in the case of discrete patterns. However,
+noise and variations in pattern distribution probably impacted the accuracy of pattern
+cluster results.
+3.4 Evaluation using error metrics
+Table 3.4. The validation results at Point-level and Object-level
+Point-level accuracy
+
+Object-level accuracy
+
+Precision
+
+Recall
+
+F1
+
+Precision
+
+Recall
+
+F1
+
+Guangtong
+
+93.05%
+
+97.91%
+
+95.42%
+
+91.70%
+
+98.90%
+
+95.16%
+
+0158 Drum
+
+83.00%
+
+99.79%
+
+90.62%
+
+82.26%
+
+100.00%
+
+90.27%
+
+8
+
+240
+
+245
+
+Table 3.4 lists the evaluation results of two cases in Fig 3. The mean precision at the
+point level for the experimental participants was 87.88%, while the recall was 98.85%,
+and F1 was 92.99%. The instance level precision was 86.85%, with a recall = 99.45%,
+F1 = 92.68%. According to the values of unbiased metric F1, the proposed GA-based
+method was highly effective. In addition, the method was shown feasible and stable in
+extracting taller objects like words as well as insignificant patterns on the drum. Yet,
+the precision values of extracting insignificant patterns were considerably lower (for
+about 10%), according to Table 3.4.
+4 Discussion and Conclusion
+
+250
+
+255
+
+260
+
+265
+
+270
+
+275
+
+Heritage Digital Twins (HDT) as a method of documenting and preserving heritage
+under new technological developments, complements the digital information of smart
+construction. The detection of decorative patterns is a necessary complement to HDT,
+as these patterns serve as a link to confirm the conservation status of heritage objects
+and possess significant academic, artistic, and commercial value. Pattern texture
+extraction from point clouds can be regarded as discontinuity detection of point clouds.
+However, current point cloud discontinuity methods tend to ignore small undulating
+edges when encountering complex point cloud shapes and have difficulty extracting
+textures on curved building shapes. Therefore, the proposed method in this paper aims
+to extract cross-sectional contour lines of the point cloud at the given directions, uses
+GA to fit the NURBS curve into arcs, separates imperfectly fitted regions, and
+reclassifies them to find slightly undulating pattern edges in the point cloud. Two
+examples are given in this paper to quantitatively evaluate the feasibility of our method
+for finding pattern texture edges in point clouds based on accuracy and recall. Our
+contributions can be summarized in three aspects: (1) the proposed Genetic Algorithmbased contour edge extraction; (2) edge extraction applicable to small edges and corners,
+and (3) avoiding geometric feature calculation for point clouds. The results can provide
+object-level patterns semantic interpretation for fields such as HDT, BIM, HBIM,
+heritage protection, and Scan-to-BIM.
+There are limitations in the method presented in this paper. First, the current
+method can only be applied to the raised patterns on a single plane. The reference curve
+obtained from the bounding box of the point cloud cannot be utilized for determining
+the point order of cross-sections in cases of complex geometric shapes (i.e., exhibit
+varied orientations and edges), resulting in confusing NURBS curves and inaccurate
+fitting results. A possible solution is using the Alpha shape, often used to generalize
+bounding polygons containing sets of points according to a given alpha value. Thus, it
+can adjust the point order of complex geometric point cloud cross-sections. Besides,
+the current method mainly considers the geometric features of the point cloud; for point
+clouds with color (R, G, and B) attributes, the color difference can also be exploited to
+improve the accuracy of pattern extraction. Finally, the computational tests exhibited a
+slow computational performance due to the single-threaded computing and inefficient
+9
+
+280
+
+285
+
+290
+
+data structure in Grasshopper (Galápagos) for handling 3D point cloud data. The GA
+itself consumes an ignorable portion of the computer resources. Therefore, Grasshopper
+is unsuitable for processing large-scale points, though it is sufficient for proof-ofconcept of extracting patterns within a given local range in this paper.
+For future research directions, we suggest improving the extraction method of the
+contour curve first. It is also interesting to incorporate other features, such as colors and
+normals, into GA’s multiple objectives to formulate a multi-objective optimization,
+which might improve the performance of the algorithm. To enhance the computational
+efficiency of the proposed method, a program incorporating advanced point clouds data
+structures (e.g., k-d tree, voxel, and supervoxel), along with CPU concurrency and GPU
+computation, will be implemented in Python and C++ to replace the existing
+Grasshopper-based program.
+
+Acknowledgement
+
+295
+
+The work presented in this paper was supported by Hong Kong Research Grants
+Council (No. 27200520) and Hong Kong Innovation and Technology Commission (No.
+ITP/004/23LP).
+
+References
+[1] Yuhan Niu, Weisheng Lu, Ke Chen, George G Huang, and Chimay Anumba. Smart
+
+300
+
+305
+
+310
+
+315
+
+320
+
+construction objects. Journal of Computing in Civil Engineering, 30(4):04015070,
+2016. doi: https://doi.org/10.1061/(ASCE)CP.1943- 5487.0000550.
+[2] Fan Xue, Weisheng Lu, Zhe Chen, and Christopher J Webster. From lidar point
+cloud towards digital twin city: Clustering city objects based on gestalt principles.
+ISPRS Journal of Photogrammetry and Remote Sensing, 167:418–431, 2020. doi:
+https://doi.org/10.1016/j.isprsjprs.2020.07.020 .
+[3] Calin Boje, Annie Guerriero, Sylvain Kubicki, and Yacine
+Rezgui.
+Towards
+a semantic construction digital twin: Directions for future research. Automation in
+construction, 114:103179, 2020. doi: https://doi.org/10.1016/j.autcon.2020.103179 .
+[4] Qian Wang and Min-Koo Kim. Applications of 3d point cloud data in the
+construction industry: A fifteen-year review from 2004 to 2018. Advanced
+Engineering
+Informatics,
+39:306–319,
+2019.
+doi:
+https://doi.org/10.1016/j.aei.2019.02.007 .
+[5] Franco Niccolucci, Achille Felicetti, and Sorin Hermon. Populating the data space
+for cultural heritage with heritage digital twins. Data, 7(8):105, 2022. doi:
+https://doi.org/10.3390/data7080105 .
+[6] Xiangxiong Kong and Ronny Garrett Hucks. Preserving our heritage: A
+photogrammetry-based digital twin framework for monitoring deteriorations of
+historic structures. Automation in Construction, 152:104928, 2023. doi:
+https://doi.org/10.1016/j.autcon.2023.104928 .
+[7] Ramona Quattrini, Eva S Malinverni, Paolo Clini, Romina Nespeca, and Erika
+Orlietti. From tls to hbim. high quality semantically-aware 3d modeling of complex
+architecture. The International Archives of Photogrammetry, Remote Sensing and
+Spatial
+Information
+Sciences,
+40(5):367,
+2015.
+doi:
+https://doi.org/10.5194/isprsarchives- xl-5-w4-367-2015 .
+[8] Julina Ismail et al. Research on the decorative patterns of the bronze drums (dpbd)
+10
+
+325
+
+330
+
+335
+
+340
+
+345
+
+350
+
+355
+
+360
+
+365
+
+370
+
+in china: A systematic literature review. Malaysian Journal of Social Sciences and
+Humanities
+(MJSSH),
+7(10):e001858–e001858,
+2022.
+doi:
+https://doi.org/10.47405/mjssh.v7i10.1858 .
+[9] Raffaella Brumana, Paola Condoleo, Alberto Grimoldi, Fabrizio Banfi, Angelo
+Giuseppe Landi, and Mattia Previtali. Hr lod based hbim to detect influences on
+geometry and shape by stereotomic construction techniques of brick vaults. Applied
+Geomatics, 10:529–543, 2018. doi: https://doi.org/10.1007/s12518-018-0209-3 .
+[10] Carlo Biagini, Pietro Capone, Vincenzo Donato, and Nora Facchini. Towards the
+bim implementation for historical building restoration sites. Automation in
+Construction, 71:74–86, 2016. doi: https://doi.org/10.1016/j.autcon.2016.03.003 .
+[11] Silvana Bruno, Mariella De Fino, and Fabio Fatiguso. Historic building
+information modelling: performance assessment for diagnosis-aided information
+modelling and management. Automation in Construction, 86:256– 276, 2018. doi:
+https://doi.org/10.1016/j.autcon.2017.11.009 .
+[12] Rushikesh Battulwar, Masoud Zare-Naghadehi, Ebrahim Emami, and Javad
+Sattarvand. A state-of-the-art review of automated extraction of rock mass
+discontinuity characteristics using three-dimensional surface models. Journal of
+Rock Mechanics and Geotechnical Engineering, 13(4):920–936, August 2021. doi:
+10.1016/j.jrmge.2021.01.008.
+[13] Matthew J Lato and Malte Vöge. Automated mapping of rock discontinuities in 3d
+lidar and photogram- metry models. International journal of rock mechanics and
+mining
+sciences,
+54:150–158,
+2012.
+doi:
+https://doi.org/10.1016/j.ĳrmms.2012.06.003 .
+[14] Jianqin Chen, Hehua Zhu, and Xiaojun Li. Automatic extraction of discontinuity
+orientation from rock mass sur- face 3d point cloud. Computers & geosciences,
+95:18–31, 2016. doi: https://doi.org/10.1016/j.cageo.2016.06.015 .
+[15] Xin Wang, Lejun Zou, Xiaohua Shen, Yupeng Ren, and Yi Qin. A region-growing
+approach for automatic outcrop fracture extraction from a three-dimensional point
+cloud.
+Computers
+&
+geosciences,
+99:100–106,
+2017.
+doi:
+https://doi.org/10.1016/j.cageo.2016.11.002 .
+[16] Yunfeng Ge, Bei Cao, and Huiming Tang. Rock discontinuities identification from
+3d point clouds using artificial neural network. Rock Mechanics and Rock
+Engineering, 55(3):1705–1720, 2022. doi: https://doi.org/10.1007/s00603-02102748-w .
+[17] Mara Capone and Emanuela Lanzara. Shape analysis. genetic algorithms for
+generic curves interpretation and analytical curves restitution. DISEGNARECON,
+14(26):19–1, 2021. doi: https://doi.org/10.20365/disegnarecon.26.2021.19 .
+[18] Yĳie Wu, Jianga Shang, and Fan Xue. Regard: symmetry-based coarse registration
+of smartphone’s colorful point clouds with cad drawings for low-cost digital twin
+buildings.
+Remote
+Sensing,
+13(10):1882,
+2021.
+doi:
+https://doi.org/10.3390/rs13101882 .
+[19] Adrián J Riquelme, Antonio Abellán, Roberto Tomás, and Michel Jaboyedoff. A
+new approach for semi- automatic rock mass joints recognition from 3d point clouds.
+Computers
+&
+Geosciences,
+68:38–52,
+2014.
+doi:
+https://doi.org/10.1016/j.cageo.2014.03.014 .
+[20] Dena Bazazian, Josep R Casas, and Javier Ruiz-Hidalgo. Fast and robust edge
+extraction in unorganized point clouds. In 2015 international conference on digital
+image computing: techniques and applications (DICTA), pages 1–8. IEEE, 2015.
+doi: 10.1109/DICTA.2015.7371262.
+11
+
+[21] Qiuyan Lu, Guisen Zou, Yanxiang Li, Lin Zheng, and Wei Wang. Provenance
+375
+
+study on ‘big bronze drums’: a method to investigate the ancient bronze industry of
+guangxi, southwest china from han to tang dynasty (around 200 bc–900 ac). Journal
+of
+Cultural
+Heritage,
+44:15–26,
+2020.
+doi:
+https://doi.org/10.1016/j.culher.2020.02.002 .
+
+12
+
+

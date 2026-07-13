@@ -1,0 +1,747 @@
+CIM-enabled quantitative view assessment
+in architectural design and space planning
+Vikrom Laovisutthichaia,c, Maosu Lib,*, Fan Xuea, Weisheng Lua, and Anthony G.O. Yehb
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR, China
+Department of Urban Planning and Design, The University of Hong Kong, Hong Kong SAR, China
+c
+Department of Architecture, Chulalongkorn University, Thailand
+*Corresponding author
+E-mail: vikrom@connect.hku.hk, maosulee@connect.hku.hk, xuef@hku.hk, wilsonlu@hku.hk,
+hdxugoy@hku.hk
+
+a
+
+b
+
+This is the authors’ version of the paper:
+Laovisutthichai, V., Li, M., Xue, F., Lu, W., & Yeh, A.G.O. (2021). CIM-enabled
+quantitative view assessment in architectural design and space planning. In
+Proceedings of the 38th International Symposium on Automation and Robotics in
+Construction (ISARC2021), 1-5 Nov 2021, Dubai, UAE. (Plenary talk). DOI:
+10.22260/ISARC2021/0011
+The final version is available at: https://doi.org/10.22260/ISARC2021/0011
+
+5
+
+10
+
+15
+
+20
+
+Abstract
+A view is among the critical criteria in an architectural design process. Presently, it is
+assessed by conventional site observation, labour-intensive data collection, and manual data
+analysis before designing a building mass, planning, façade, openings, and interior space.
+City Information Model (CIM), with its capabilities to store, visualize, and analyze a wealth
+of site-related information, has a great potential to support an automated view assessment.
+However, its realization is nascent. CIM has not integrated with architectural space planning
+in either research or practice. This research, therefore, aims to develop a model through
+which CIM can be extended to assist view assessment in architectural space planning. By
+literature review, brainstorming, prototyping, and case study, this research corroborates that
+by harnessing the power of CIM, the conventional view evaluation can be transformed from
+qualitative to mix-used. It helps practitioners assess a view and design a space in a more
+precise and rapid manner. This research also provides the integrated model for view
+evaluation in architectural space planning with three implementation stages to support the
+real-world practice. Future studies are recommended to develop the proposed model further
+and integrate it with multiple criteria to advance the generative design.
+Keywords –
+Architectural design; Space planning; View assessment; City information model;
+Generative design
+1
+
+25
+
+Introduction
+
+The characteristics of the view outside a window considerably influence the occupants’
+well-being, stress recovery, building comfort, working productivity, as well as sleeping
+quality [1-4]. In healthcare architecture, the preferred view, including green and natural
+scenes, can improve patients’ satisfaction, shorten a hospitalization period, and ultimately
+enhance recovery after medical treatments [5]. Because of these significances, the building
+
+30
+
+35
+
+orientation, shape, form, envelope, space planning, openings, fixture, furniture, and
+decoration are usually designed to capture a great view and maximize its benefits to a project.
+In some building types, including hospitality and wellness architecture, a view is highly
+prioritized during design to achieve higher star ratings and improve clients’ satisfaction. The
+gorgeous view must be well reserved for important spaces, e.g., bedroom, living, dining, and
+working areas, while service spaces, e.g., storage and mechanical rooms, are located in a
+place with a less impressive view or without a view. In Hong Kong, for example, the
+triangular bay window is used for the hotel space planning and façade design to capture the
+breathtaking view of the Victoria harbour (see Figure 1).
+
+Figure 1. The architectural space planning and façade design to capture a preferred
+view [6]
+40
+
+45
+
+50
+
+In the current architectural design practice, the view is assessed manually before
+conceptual design, mass development, and space planning by visiting a site, exploring
+surroundings, and using a camera or drone to capture photos in every level and direction (see
+Figure 2) [7-9]. Then, all images are reviewed and analyzed manually by a design team using
+criteria, such as view types, content, distance, quality, and surroundings’ future development
+[10]. Apparently, this view evaluation method is time-consuming, labour-intensive, and
+costly. The process highly depends on the designers’ perception and perspective without
+automatic tools to help the determination process, while other design criteria, including
+climate and energy consumption, already have advanced computational tools to simulate and
+facilitate precise and rapid decision making. Furthermore, additional site visits or drone
+flights are sometimes required when vital information is not collected in the previous visit
+[7]. Therefore, this process urgently needs an effective tool for supporting view evaluation in
+architectural design practice.
+
+2
+
+Figure 2. View assessment in architectural design, space planning, and orientation
+55
+
+60
+
+With the advancement of 3D reconstruction and remote sensing technology, the emerging
+city information modelling process starts to develop the City Information Model (CIM) and
+serve for urban data processing, simulation and visualization, analysis, and design [11]. 3D
+city models as the baseline of CIM have been used widely in various smart applications due
+to their high accuracy of geometry and digital reflection of the real world. The location-based
+application covers a broad spectrum of fields such as navigations in transportation [12-13],
+disaster simulation in emergency response [14-15], utility and facility management in smart
+
+city construction [16-17], site design in urban planning and development [18-19], and big
+data analysis in urban computing [20], etc. Harnessing its power, studies in the field of
+architectural design have also presented numerous new findings, involving window design
+[21], solar estimation [22-23], as well as ventilation analysis [24].
+65
+
+70
+
+75
+
+80
+
+85
+
+90
+
+95
+
+Recently, Li and Samuelson [21] and Li et al. [25], have validated the utilization of CIM
+can realize a highly accurate and automated window view assessment within the context of
+individual window lattice design and urban-scale view evaluation. CIM is also expected to
+help the architectural space planning and interior arrangement. However, this potential
+approach is rarely discussed in the previous literature. Moreover, the implementation process
+in real-world practice remains unclear. What is urgently needed is not only the program
+development but also the integration of CIM into the current design practice.
+This research, therefore, aims to develop CIM to assist view assessment in architectural
+space planning. It is achieved by adopting a 5-step research method: empathizing the view
+evaluation in architectural design, defining the practice challenge, brainstorming the potential
+solution, developing a CIM-enabled quantitative view assessment model, and finally
+validating through the case study in Hong Kong. The remainder of this paper is structured as
+follows. Section 2 provides the literature review related to a view, traditional view
+assessment process, and simulation-based view assessment. Section 3 describes the research
+methods. It is followed by the proposed model in section 4 and case study implementation in
+section 5. Finally, it reaches the discussion and conclusion part.
+2
+
+Literature review
+
+2.1
+
+Architectural design
+
+Architectural design is generally a highly creative and dynamic process to manage
+available resources, resolve difficulties in the built environment, and finally establish the
+environmental conditions for activities [26]. This process can be regarded as a Multi-Criteria
+Decision Making (MCDM), since it copes with various factors in the complex social realms,
+such as users’ requirements, site conditions, laws and regulations, functionality, feasibility,
+technologies, and aesthetics [27-29]. Recently, it is demanded to mitigate more difficulties in
+the Architecture, Engineering, and Construction (AEC) industry, including manufacturing
+and assembly processes [30], sustainable building life cycle [31], and construction waste
+minimization [32]. According to the real-world case study, it is currently an arduous task, if
+not entirely impossible, for practitioners to understand, scrutinize, and reinterpret all factors
+before locating them into one design [33]. Assistive tools, such as Computer-aided design
+(CAD), Building Information Model (BIM), virtual reality, and design management software,
+are indeed required to help this intricate process [26, 33-34].
+2.2
+
+100
+
+105
+
+A view
+
+In architecture, a view is a visual connection with the outside world, allowing occupants to
+keep in touch with ongoing activities, time, and seasonal changes [35]. It can be regarded as
+one of the basic human needs, since the view provides humans information about the
+environment for their feeling of safety [36-37]. The view is separated into three main layers
+with different purposes [35]. Firstly, the sky is a source of natural light and weather
+information. Secondly, the city or landscape part provides information related to the
+environmental condition and surroundings. Lastly, the ground is to observe or recognize
+ongoing activities outside.
+Due to the significance of view in architecture, several view assessment measures have
+4
+
+110
+
+115
+
+been proposed for practitioners (see Table 1). The measures include, for example, the
+categories of view or information content received from exterior view [35]. Many studies
+agree that the view of nature, garden, and well-landscaped area tends to be more preferred by
+occupants than the city and urban environment [2-3]. This view type can positively change
+the emotional state and increase occupants’ satisfaction [1]. The content and composition of
+sky, land, ground, building, and city, also affect the view attractiveness. A wide view,
+containing more information, is more interesting than a close and narrow one [43].
+Furthermore, the quality of view outside is influenced by the density of both internal space
+and surroundings [2]. Sometimes, the openings and outside world can also affect occupants
+negatively [35]. For instance, the window facing directly to other buildings or service
+facilities may be harmful to privacy.
+Table 1. Examples of view assessment criteria
+
+No
+1.
+2.
+3.
+4.
+
+120
+
+125
+
+135
+
+140
+
+145
+
+References
+[2-5, 35]
+[35]
+[2]
+[2, 35, 38, 43]
+
+However, the perception of beauty and satisfaction of view may be varied. It depends on
+not only the view itself but also occupants and how we design the frame to capture it [38].
+The quality and impact of view also associate with the architectural mass and form, façade,
+interior space arrangement, and windows’ type, size, and mullion [10]. Architecture must be
+well designed and crafted carefully to capture the best view outside. However, in reality, the
+view must be balanced and weighed with other criteria, e.g., functionality, feasibility, and
+laws and regulations. Each criterion requires a large amount of information to be collected
+and pondered together. It is a herculean task for practitioners to handle this wealth of
+information from every design aspect at one time. Thus, assistive tools for architectural
+design are necessary.
+2.3
+
+130
+
+Criteria
+View type
+View composition
+Density
+Distance and privacy
+
+Simulation-based view assessment
+
+The simulation method as a convenient and effective tool has been widely adopted in the
+architectural design field. For the simulation-based view assessment, there are some methods
+developed utilizing projection [39], raytracing on hand-made models [40-41], or a fish-eye
+lens [39, 42]. However, they tend to rely on more manual work and thus are inefficient.
+Recently, a new technological window of opportunity opens for this study, consisting of more
+open-source and textured 3D city models, mature 3D view capture APIs, and robust online
+computer vision tools. Existing 3D city photo-realistic models from all kinds of resources can
+depict buildings and their neighbourhood environment without users’ initial effort, while
+making full use of 3D view capture techniques and computer vision tools can help visualize
+and quantify the view photos with higher automation and accuracy.
+For instance, Li and Samuelson [21] integrated the outside view assessment as an input
+into the window frame design effectively by using 3D city models within Google Earth
+Studio. The simulated views were assessed using the criteria including window direction,
+openings’ geometry, and human preference. Li et al. [25] classified the window views into
+two groups, natural and urban, for a city-scale view situation assessment. By harnessing the
+power of deep transfer learning and a high-automated 3D visualization platform, the window
+views of nature were distilled automatically, and consequently, a great potential of more view
+assessment-based applications has been activated. Their studies found that the view images
+generated from photo-realistic 3D city models are similar to the ground truth images in the
+
+150
+
+real world, and the assessment of views can reach a high accuracy by pixel statistics.
+However, there exists a gap in connecting the automated view assessment method with the
+building space planning in light of a more comprehensive judgment. Space planning
+concerning a view assessment may gain more momentum from these new technological
+breakthroughs in terms of efficiency and accuracy.
+3
+
+155
+
+160
+
+165
+
+Research methods
+
+This research comprises five stages to provide researchers with insights from architectural
+design practice, constitute knowledge contributions, and ultimately resolve real-world
+challenges (see Figure 3). It began with a comprehensive literature review to gain a holistic
+view of the current architectural design practice, view evaluation method, and CIM
+performance. Secondly, all information was analyzed, redefined, and discussed with
+practitioners to highlight critical challenges in the view assessment. It was followed by
+brainstorming to explore the potential solution in the third stage. This stage was to fabricate
+innovation in complex social conditions and bridge the gap between theoretical knowledge
+and design practice. In this research, the solutions were to identify view evaluation criteria for
+architectural design and develop a CIM-enabled view assessment model. The fourth stage
+was mainly about developing CIM as an assistive tool for assessing, visualizing, and
+facilitating the architectural design process, and aligning with the current practice. Finally,
+the proposed model was validated and improved through a case study implementation in
+Hong Kong SAR.
+
+Figure 3. Research methods
+
+6
+
+170
+
+4
+
+The integrated model for view assessment in architectural space planning
+
+After reviewing the literature, redefining the real-world challenges, and brainstorming the
+potential solutions, the new view assessment model is generated (see Figure 4). It is the
+consolidation of simulation-based view assessment and traditional site observation and
+evaluation for facilitating precise and rapid decision making.
+
+175
+
+Figure 4. The integrated model for view assessment in architectural space planning
+4.1
+
+180
+
+185
+
+Traditional view assessment
+
+At the beginning of the architectural design process, the design team visits a construction
+site to observe site-related factors. The collected qualitative data include, for example,
+surroundings, site terrain, wind direction, existing features or structures, traffic and
+transportation, noise, as well as view quality. Moreover, alternative data is also gathered for
+further analysis, discussion, and decision-making, such as maps, drawings, and pictures. In
+this stage, the team uses multiple tools to collect data of the site and surroundings [7-10],
+including a camera, drone, laser distance meter, surveying instruments, etc. The data is then
+analyzed manually by several methods, e.g., sketches and diagrams.
+4.2
+
+Simulation-based view assessment
+
+Apart from the physical site observation, the advancement in CIM and computational
+technology can support the simulation-based view assessment and strengthen the design. Its
+realization comprises three main stages (see Figure 5).
+
+190
+
+Figure 5. Workflow of simulation-based view assessment
+4.2.1
+
+195
+
+The process initiates with a 3D city model and 2D site preparation, and critical criteria
+selection. The criteria should be well selected and prioritized depending on specific project
+conditions, such as users’ requirements, building function, site location, and surroundings.
+This study searched through the scientific database and generates a list of view assessment
+criteria for practitioners to choose from (see Table 1).
+4.2.2
+
+200
+
+205
+
+Input
+
+Data processing
+
+The data processing consists of three key steps: geographic registration, observation site
+determination, and view site sampling (see Figure 5). Firstly, the 2D site is registered to 3D
+city models through coordinate transformation and matching to identify the development
+area. Thereafter, in light of the site settings such as shape and neighbourhood environmental
+characteristics, the representative observation site can be determined. Then to examine the
+view disparity quantitatively, the view site at eight directions are sampled from 0° at different
+heights. A sample height h (h=5m) is set here to simulate the view situation of different
+floors.
+
+8
+
+4.2.3
+
+210
+
+215
+
+As having a view of nature can result in a higher preference for the urban landscape, we
+set view type as an example criterion to demonstrate the semantic extraction and mapping
+process. The view features are classified into nature and urban groups in this study. Li’s
+method [44] is utilized to visualize and quantify the two indices automatically. Firstly, by
+mounting the virtual camera at the sample view sites of photo-realistic 3D city models, the
+view photos are captured in batch. Thereafter, one of the best pre-trained deep learning
+models on Cityscapes, Deeplab v3, is transferred to segment the view photos automatically.
+Making full use of its urban understanding, 19 classes of view features are detected and then
+mapped into two target groups using a multimodal regression. In the end, the predicted index
+of each view photo is collected with high accuracy and reliability.
+4.3
+
+220
+
+225
+
+230
+
+235
+
+Architectural space planning considering the view assessment
+
+Finally, the quantitative results from the previous stage can be used together with
+traditional view assessment from the site observation during the entire architectural design
+process. After gaining various project information, the design team considers the view
+assessment result and other factors in developing the initial concept design in responding to
+the identified problem. The building’s mass, form, and zoning are decided in this early stage.
+The important space is typically placed on the level and area with the best view in a site,
+while the back of the house or service zone is usually placed in an area with less potential or
+lower view quality. Then, this conceptual model is developed and detailed. The architectural
+plan, functions, rooms, circulations, and building envelope are designed with the
+consideration of view assessment results, site surroundings, and other factors. Typically, the
+important functions such as a lobby, living, and dining, are allocated to enjoy a preferred
+view, e.g., green area, open space, and harbourfront area. In interior design, the view
+evaluation result is also used for space and furniture arrangement. The position and location
+of all room features should be well located to make occupants enjoy the excellent view
+outside the openings. It can be seen that throughout the entire process, the design team refers
+to the view evaluation results while developing the design and generating sketches, drawings,
+and models.
+5
+
+240
+
+Semantic extraction and mapping
+
+A Case Study
+
+To validate the feasibility of the integrated approach, the Pokfield campus, the University
+of Hong Kong, Hong Kong SAR, was selected to be a case study. This planned building site
+would be redeveloped into a new office and education architecture with a height of around 90
+meters. The experimental process workflow is displayed in Figure 6.
+
+Figure 6. The implementation of proposed model in the case study
+
+245
+
+250
+
+The process began with the physical site observation. This stage had several difficulties.
+Firstly, due to the complicated site terrain and surroundings, the team could not capture the
+view from every direction and level without assistive tools, e.g., a drone. Furthermore, some
+photos were taken from entering surrounded buildings. It was indeed a tedious and timeconsuming task for practitioners. This result increases the potential of using computational
+technologies to aid the complicated design process.
+All data, including photos of view and surroundings, maps, and drawings, was then used
+for the traditional analysis (see Figure 7). It reveals that the visibility to natural elements such
+as mountains, sea, and vegetation, is blocked by high rise high-density constructions in many
+10
+
+directions and levels. However, what remains unclear is the exact level or angle to improve
+the detailed design of planning, interior space arrangement, openings, and façade design.
+
+255
+
+260
+
+Figure 7. Traditional view analysis
+Apart from the traditional method, the simulation-based view assessment was implemented
+into this case study. The curation of the datasets included 2D site design data and 3D photorealistic city models in this study. The 2D design of the case site, collected from HKU Estate
+Office [46], measured the site geometry accurately, from which the key view site can be
+determined by architects and engineers. The sketch map is shown in Figure 8a. 3D mesh
+models were collected from the Planning Department [45], Hong Kong SAR for surrounding
+environment expression, as shown in Figure 8b.
+
+265
+
+270
+
+275
+
+Figure 8. Data preparation of the case planned building site. (a) 2D site design, and (b)
+target building site and its environment.
+Cesium (version 1.73) as an open-source 3D visualization platform was used in this study
+to load 3D city models and generate the view photos through computer programs. The
+deeplab v3 model within the Tensorflow (version 2.4.1) framework was to segment the view
+photos. Then the multimodal regression was finally implemented in the data mining platform
+Orange3 (version 3.26.0). The whole process experimented in a workstation with an Intel i710700 CPU (2.90GHz, 16 cores), 128 GB memory, an 8G Nvidia GeForce RTX 2070
+SUPER GPU, and Ubuntu 20.04 64-bit operating system. By implementing the view
+assessment workflow (see Figure 5), each direction of the building site has a portfolio of
+nature view indices. The heat map representing view index distribution around the case
+planned site was visualized (see Figure 9). The nature view index ranges from 0 to 1, from
+which 0 indicates ‘poor’ and 1 stands for ‘excellent’.
+
+12
+
+Figure 9. The simulation-based view assessment result
+
+280
+
+285
+
+290
+
+295
+
+The simulation result reveals a huge different possession of natural resources in different
+directions and heights, which further reflects the design. The design team can use this
+detailed result and reinterpret it for architectural space planning and design development (see
+Figure 10). For instance, the lower part of the building site tends to have lower proportional
+nature views, such as the area ranging from 180°and 315° horizontally, and from ground
+level (0m) to 15m vertically. This podium area can be planned for support functions, which
+are not required a good view, such as circulations, storage, and mechanical, electrical, and
+plumbing systems. On the other hand, the upper-level part has a more favourable view,
+especially in the area ranging from 45°and 235°. This tower part should be reserved for the
+office, classroom, meeting room, library, research unit, etc. In some specific directions, the
+nature views are obviously scarce, such as the direction ranging from 315°(Northwest) to
+0°(North). The vertical circulations or building systems may be placed in this area. Last but
+not least, in some directions, the nature views are of significant variation from the vertical
+dimension, i.e. the direction from 135° to 315°. This view assessment result was then
+weighed and balanced with multiple criteria, e.g., users’ requirements, site conditions,
+building comfort, laws, and regulations, and construction method for architectural detail
+design, to generate the design and construction documents.
+
+Figure 10. The application of simulation-based view assessment for architectural space
+planning
+300
+
+This implementation corroborates that understanding and making full use of the view
+resources distribution could benefit architects to have a more comprehensive space planning.
+Moreover, the computational tool can be utilized to confirm the result of traditional view
+assessment and add more details for precise and rapid design decision-making.
+
+14
+
+6
+305
+
+310
+
+315
+
+320
+
+325
+
+330
+
+335
+
+340
+
+Discussion and Conclusion
+
+Architectural design is stipulated to consider emerging criteria in the Architecture,
+Engineering, and Construction (AEC) industry, e.g., sustainability, manufacturability, and
+assemblability. These demands make the process more complicated and time-consuming, and
+consequently, design guidelines and supporting tools are urgently required. In the early
+design stage, a view is a crucial factor affecting the building form, mass, void, and space
+planning. Presently, the view evaluation process is labour intensive without computational
+tools like other design criteria. City Information Model (CIM), with its capability to manage a
+large amount of information, is one of the promising approaches for the view assessment, but
+its realization should be discussed in more detail. This research develops CIM to be an
+assistive tool for view evaluation in architectural design.
+By adopting the 5-stage research method, this research affirms that CIM is a lessexpensive virtual platform supporting view assessment before architectural space planning.
+CIM can be implemented in three main stages: 1) input, 2) data preprocessing, and 3)
+semantic extraction and mapping. It transforms the evaluation process from qualitative to
+mixed methods: combining qualitative and quantitative data. It can be integrated with the
+physical site observation to support rapid and precise architectural space planning and design
+decision-making. This result also supports the current thought of generative design, where
+computational intelligence can automatically generate floor plans from project conditions.
+Despite its advantages, the practice of CIM-enabled view assessment in architectural
+design also has several challenges and limitations. For instance, it requires a huge effort to
+collect related information and build a digital model before simulation and automatic
+evaluation. The proposed model is therefore efficient to be utilized for a site with high
+density and complicated surroundings like Hong Kong. In addition, there is no “one size fits
+all” solution for every project. The view assessment criteria and CIM model development
+may be varied depending on particular conditions. Moreover, in reality, a view is merely one
+of the numerous architectural design criteria. The view analysis results have to be weighed
+and balanced with other factors, e.g., users’ requirements, site conditions, laws and
+regulations, feasibility, and aesthetics, before including in a project.
+This study constitutes both academic and industry contributions. Firstly, the proposed
+model moves the rhetoric closer to reality by integrating CIM with real-world architectural
+design practice. The result affirms CIM’s capabilities to aid the architectural design process,
+and highlights several core challenges. For practitioners, this research also provides the
+integrated model for view assessment in architectural space planning with three stages of
+implementation and practice example. However, this is merely the beginning of simulationbased quantitative view assessment and architectural design. As this study is grounded on the
+archival study and one case study in Hong Kong, additional cases from different contexts are
+necessary for generalization and model improvement. Future research is also recommended
+to integrate the proposed model with other design criteria and computational tools to advance
+the computer-aided generative design.
+References
+
+345
+
+[1] Ulrich R. S. Simons R. F. Losito B. D. Fiorito E. Miles M. A. and Zelson M. Stress
+recovery during exposure to natural and urban environments. Journal of environmental
+psychology, 11(3): 201-230, 1991.
+[2] Aries M. B. Veitch J. A. and Newsham G. R. Windows, view, and office characteristics
+predict physical and psychological discomfort. Journal of environmental psychology,
+
+350
+
+355
+
+360
+
+365
+
+370
+
+375
+
+380
+
+385
+
+390
+
+30(4): 533-541, 2010.
+[3] Kaplan R. The nature of the view from home: Psychological benefits. Environment and
+behavior, 33(4): 507-542, 2001.
+[4] Van Esch E. Minjock R. Colarelli S. M. and Hirsch S. Office window views: View
+features trump nature in predicting employee well-being. Journal of environmental
+psychology, 64: 56-64, 2019.
+[5] Ulrich R. S. View through a window may influence recovery from surgery. Science,
+224(4647): 420-421, 1984.
+[6] Urban harbour view room. On-line:
+https://www.pinterest.com/pin/385480049352664336, Accessed: 2/6/2021.
+[7] Fruchter R. Herzog S. Hallermann N. and Morgenthal G. Drone Site Data for Better
+Decisions in AEC Global Teamwork. In 16th International Conference on Computing in
+Civil and Building Engineering, Osaka, Japan, 2016.
+[8] Mortice Z. Incorporating drone imagery into design workflows. Journal of the American
+Institute of Architects, On-line: https://bit.ly/2ZZIQYP, Accessed: 8/3/2021.
+[9] Makstutis, G. (2018). Design process in architecture: From concept to completion.
+Laurence King.
+[10] Waczynska M. Sokol N. and Martyniuk-Peczek J. Computational and experimental
+evaluation of view out according to European Standard EN17037. Building and
+Environment, 188: 107414, 2021.
+[11] Gil J. City Information Modelling: a conceptual framework for research and practice in
+digital urban planning. Built Environment, 46(4): 501-527, 2020.
+[12] Nurminen A. Mobile 3D city maps. IEEE Computer Graphics and Applications, 28(4):
+20-31, 2008.
+[13] Oulasvirta A. Estlander S. and Nurminen A. Embodied interaction with a 3D versus 2D
+mobile map. Personal and Ubiquitous Computing, 13(4): 303-320, 2009.
+[14] Lee S. H. Park J. Park S. I. City Information Model-Based Damage Estimation in
+Inundation Condition. In Proceedings of the International Conference on Computing in
+Civil and Building Engineering (ICCCBE 2016), pages 5-8, Osaka, Japan, 2016.
+[15] Park S. H. Jang Y. H. Geem Z. W. and Lee S. H. CityGML-Based Road Information
+Model for Route Optimization of Snow-Removal Vehicle. ISPRS International Journal
+of Geo-Information, 8(12): 588, 2019.
+[16] Mignard C. and Nicolle C. Merging BIM and GIS using ontologies application to urban
+facility management in ACTIVe3D. Computers in Industry, 65(9): 1276-1290, 2014.
+[17] Xue F. Lu W. Chen Z. and Webster CJ. From LiDAR point cloud towards digital twin
+city: Clustering city objects based on Gestalt principles. ISPRS Journal of
+Photogrammetry and Remote Sensing, 167: 418-431, 2020.
+[18] Lu S. and Wang F. Computer aided design system based on 3D GIS for park design.
+Computer, Intelligent Computing and Education Technology, 26: 413-6, 2014.
+[19] Moser J. Albrecht F. and Kosar B. Beyond visualisation–3D GIS analyses for virtual city
+models. International Archives of the Photogrammetry, Remote Sensing and Spatial
+Information Sciences, 38(4): 15, 2010.
+[20] Krüger A. and Kolbe T. H. Building Analysis for urban energy planning using key
+indicators on virtual 3D city models-The energy atlas of Berlin. ISPRS-International
+Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences, 39:
+145-50, 2012.
+16
+
+395
+
+400
+
+405
+
+410
+
+415
+
+420
+
+425
+
+430
+
+435
+
+440
+
+[21] Li W. and Samuelson H. A new method for visualizing and evaluating views in
+architectural design. Developments in the Built Environment, 1: 100005, 2020.
+[22] Anton I. and Tănase D. Informed geometries. Parametric modelling and energy analysis
+in early stages of design. Energy Procedia. 85: 9-16, 2016.
+[23] Ercan B. and Elias-Ozkan S. T. Performance-based parametric design explorations: A
+method for generating appropriate building components. Design Studies, 38: 33-53,
+2015.
+[24] Guo W. Liu X. and Yuan X. Study on natural ventilation design optimization based on
+CFD simulation for green buildings. Procedia Engineering, 121: 573-81, 2015.
+[25] Li M. Xue F. Yeh A. G. and Lu W. Classification of photo-realistic 3D window views in
+a high-density city: The case of Hong Kong. In Proceedings of the 25th International
+Symposium on Advancement of Construction Management and Real Estate
+(CRIOCM2020), 2020.
+[26] Broadbent G. Design in architecture: architecture and the human sciences, 1975.
+[27] Harputlugil T. Prins M. Gültekin A. T. and Topçu Y. I. Conceptual framework for
+potential implementations of multi criteria decision making (MCDM) methods for design
+quality assessment. In Management and Innovation for a Sustainable Built Environment
+MISBE 2011, 2011.
+[28] Plowright P. D. Revealing architectural design: methods, frameworks and tools,
+Routledge, 2014.
+[29] Royal Institute of British Architects (RIBA). RIBA Plan of Work 2020 Overview, 2020.
+[30] Tan T. Lu W. Tan G. Xue F. Chen K. Xu J. Wang J. and Gao S. Construction-oriented
+design for manufacture and assembly guidelines. Journal of Construction Engineering
+and Management, 146(8): 04020085. 2020.
+[31] Royal Institute of British Architects (RIBA). RIBA Sustainable Outcomes Guide, 2019.
+[32] Xu J. and Lu W. Design for construction waste management. In Sustainable Buildings
+and Structures: Building a Sustainable Tomorrow: Proceedings of the 2nd International
+Conference in Sutainable Buildings and Structures (ICSBS 2019), pages 271, CRC Press.
+2019.
+[33] Laovisutthichai V. Lu W. and Bao Z. Design for construction waste minimization:
+guidelines and practice. Architectural Engineering and Design Management, 1-20, 2020.
+[34] Aliakseyeu D. Martens J. B. and Rauterberg M. A computer support tool for the early
+stages of architectural design. Interacting with Computers, 18(4): 528-555, 2006.
+[35] Markus T. A. The function of windows—A reappraisal. Building Science, 2(2): 97-121,
+1967.
+[36] Boyce P. Hunter C. and Howlett O. The benefits of daylight through windows.
+Rensselaer Polytechnic Institute, Troy, New York, 2003.
+[37] Lam W. M. C. Perception and Lighting as Formgivers for Architecture, McGraw-Hill,
+New York, 1977.
+[38] Matusiak B. S. and Klöckner C. A. How we evaluate the view out through the window.
+Architectural Science Review, 59(3): 203-211, 2016.
+[39] Hellinga H. and Hordijk T. The D&V analysis method: A method for the analysis of
+daylight access and view quality. Building and Environment, 79: 101-14, 2014.
+[40] Mardaljevic J. Aperture-based daylight modelling: Introducing the ‘View Lumen’. 2019.
+[41] Turan I. Reinhart C. and Kocher M. Evaluating spatially-distributed views in open plan
+work spaces. In Proceedings of the IBPSA International Building Simulation
+
+445
+
+450
+
+455
+
+Conference, 2019.
+[42] Abd-Alhamid F. Kent M. Calautit J. and Wu Y. Evaluating the impact of viewing
+location on view perception using a virtual environment. Building and Environment, 180:
+106932, 2020.
+[43] Tuaycharoen N. The reduction of discomfort glare from windows by interesting views,
+Doctoral dissertation, University of Sheffield, 2006.
+[44] Li M. Xue F. Wu Y. and Yeh A. G. A room with a view: automated assessment of
+window views for high-rise high-density areas using City Information Models (CIMs)
+and transfer deep learning. Landscape and Urban Planning, (Under review.)
+[45] Planning Department, Hong Kong SAR government. 3D Photo-realistic Model. On-line:
+https://www.pland.gov.hk/pland_en/info_serv/3D_models/download.htm, Accessed:
+6/2021.
+[46] Estate Office, The University of Hong Kong. Pokfield Campus Development. On-line:
+https://www.estates.hku.hk/project-management/project-profile/pokfield-campusdevelopment, Accessed: 6/2021
+
+18
+
+

@@ -1,0 +1,1175 @@
+Blockchain-enabled IoT-BIM Platform for Supply Chain Management in Modular Construction
+Xiao Li 1*, Weisheng Lu 2, Fan Xue 3, Liupengfei Wu 4, Rui Zhao 5, Jinfeng Lou 6, and Jinying Xu 7
+This is the peer-reviewed, post-print version of the paper:
+Li, X., Lu, W., Xue, F., Wu, L., Zhao, R., Lou, J., & Xu, J. (2022). Blockchain-enabled
+IoT-BIM Platform (BIBP) for supply chain management in modular construction.
+Journal of Construction Engineering and Management, 148(2), 04021195. Doi:
+10.1061/(ASCE)CO.1943-7862.0002229
+This material is shared under the permission of ASCE, and may be downloaded for personal
+use only. Any other use requires prior permission of ASCE. The official version of this paper
+can be accessed at https://doi.org/10.1061/(ASCE)CO.1943-7862.0002229
+
+Abstract
+Configuring a trustworthy IoT-enabled BIM Platform (IBP) is significant for modular
+construction to ensure transparency, traceability, and immutability throughout its fragmented
+supply chain management. However, most current IBPs are designed adopting a centralized
+system architecture, which fails to achieve a decentralized and effective one to ensure a
+single point of truth in BIM and prevent a single point of failure in IoT networks. To address
+this challenge, this study introduces permissioned blockchain with IBP and proposes a novel
+service-oriented system architecture of blockchain-enabled IoT-BIM platform (BIBP) for the
+data-information-knowledge (DIK) driven supply chain management in modular
+construction. Firstly, Infrastructure as a Service (IaaS) is designed with hardware, core
+technologies, and protocols to offer accurate data from daily practice to blockchain BIM.
+Blockchain BIM as a Service (BaaS) is then developed within the permissioned blockchain to
+ease the interoperability of the information, semantics, and meaningful inferences.
+Postdoctoral Fellow, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+SAR.
+
+1
+
+Email: xl1991@hku.hk, Tel.: (852) 5537 0842,
+ORCiD: 0000-0001-9702-4153; * Corresponding author
+Professor, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR.
+
+2
+
+Email: wilsonlu@hku.hk, Tel.: (852) 3917 7981,
+ORCiD: 0000-0003-4674-0357;
+3
+Assistant Professor, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+SAR.
+Email: xuef@hku.hk, Tel.: (852) 3917 4174, Fax: (852) 2559 9457,
+ORCiD: 0000-0003-2217-3693:
+Ph.D. student, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR.
+
+4
+
+Email: u3545425@connect.hku.hk, Tel.: (852) 6930 8019,
+ORCiD: 0000-0002-3768-9142
+5
+Research Assistant, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+SAR.
+ORCiD: 0000-0003-1993-3129
+Email: ruizhao@hku.hk, Tel.: (852) 6998 6845,
+Ph.D. student, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR.
+
+6
+
+Email: waseljf@connect.hku.hk, Tel.: (852) 9423 1962,
+ORCiD: 0000-0001-5748-0146
+7
+Postdoctoral Fellow, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+SAR.
+Email: jinyingxu@connect.hku.hk, Tel.: (852) 6025 1696,
+
+1
+
+ORCiD: 0000-0001-9589-6396;
+
+Furthermore, Software as a Service (SaaS) is configured with decentralized applications to
+achieve knowledgeable operations or processes with a crash fault-tolerant consensus
+mechanism. The demonstrative case study in a modular student residence project evaluates
+the proposed BIBP system prototype with the performance analysis of storage cost,
+throughput, latency, privacy, and feedback from stakeholders. The results indicate that BIBP
+has an effective system architecture with acceptable throughput and latency, can save storage
+costs to achieve a single point of truth in BIM, and avoid a single point of failure for IoT
+networks with privacy and security preserving mechanisms.
+Keywords: Blockchain, IoT, BIM, Supply Chain Management, Modular Construction
+
+1 Introduction
+The construction industry contributed a considerable 13% share of global Gross Domestic
+Product (GDP) at 7% employment of the world’s working population (Barbosa et al., 2017).
+However, it is encountering challenges such as declining total productivity, professional labor
+shortfall, and the aging workforce. To improve these issues, modular construction has been
+adopted worldwide, such as in Singapore (Hwang et al., 2018), UK (Innella et al., 2019),
+Canada (Liu et al., 2019), United States (Ramaji and Ali, 2016), Australia (Thai et al., 2020),
+and China (Liu et al., 2017). Practices in these countries have demonstrated its benefits,
+including shortened construction time, reduced site labor, minimized construction waste, and
+improved environment and safety (Li et al., 2019a).
+Modular construction becomes more demanding in high-density and resource-limited cities,
+such as Hong Kong, which take advantage of supply chain management (SCM) to outsource
+every piece of prefabricated components and transport them to local sites for installation (Luo
+et al., 2020). However, the rising fragmentation of such supply chain has attracted much more
+attention from stakeholders for efficient collaboration, visibility, accountability, and
+traceability, especially as more expensive assets such as prefabricated modules and units are
+produced and shipped off-site with the travel restrictions during coronavirus pandemic (Li et
+al., 2021).
+Academics and industry have collaboratively developed practical platforms for SCM in
+prefabricated construction by embracing Building Information Modeling (BIM) and Internet
+of Things (IoT) (Li et al., 2018a; Zhong et al., 2017; Xu et al., 2018; Zhai et al., 2019). These
+multi-dimensional IoT-BIM platforms can help collect near real-time data to increase
+visibility and traceability in production, logistics, and on-site installation. Different
+stakeholders can then track a project's cost and schedule (Li et al., 2020).
+However, the current IoT-BIM Platform works in a centralized way, leading to several issues:
+(1) although IoT does establish the connections between construction resources (e.g.,
+prefabricated modules) and BIM, it cannot ensure the single point of truth for any change in
+2
+
+BIM. It leaves room for human manipulation of BIM models without provenance (Xue and
+Lu, 2020); (2) random errors, noises, or malicious data generated from IoT sensors can result
+in a single point of failure for IoT networks, reducing data quality for BIM and negatively
+affecting the trustworthiness of IoT-BIM (Lee et al., 2021); (3) an open IoT-BIM platform
+can boost construction companies' competitiveness as more and more stakeholders (e.g.,
+customers) under industry 4.0 prefer to be involved in the transparent construction processes
+(Lu et al., 2021). However, the privacy and security of the open IoT-BIM can not be
+guaranteed in the existing system architecture. These persistent issues challenge the extensive
+and profound impact of IoT-BIM solutions for SCM in modular construction.
+Blockchain technology is well-known for its distributed database, trustworthy digital ledger,
+and a complete no-trust peer network with consensus protocols (Cachin, 2016). Recently,
+blockchain is also introduced into BIM and IoT to record the BIM modification history and
+build trust in the distributed IoT network (Zheng et al., 2019; Xue and Lu, 2020; Lu et al.,
+2021; Li et al., 2020). The integration of Blockchain and IoT-BIM may address the issues of
+the IoT-BIM platform in SCM of modular construction. However, configuring a blockchainenabled IoT-BIM platform (BIBP) for SCM in modular construction is now staying at a
+concept rather than a developed system and is still in its infancy. Designing effective system
+architecture with lower storage cost, lower latency, and higher throughput to ensure a single
+point of truth for BIM and avoid a single point of failure of IoT is challenging.
+Thus, this study aims to develop a brand new BIBP for SCM in modular construction. To this
+end, it has three concrete objectives: (1) establishing a Data-information-knowledge (DIK)
+driven supply chain management model for modular construction as a reference model for
+BIBP; (2) instantiating this theoretical model by proposing an effective system architecture of
+BIBP; and (3) validating the system architecture by implementing a prototype, using a case
+study as an evaluation experiment. The remainder of the paper is structured as follows.
+Subsequent to this introductory section is Section 2, which elaborates on related works of
+modular construction, supply chain management, IoT, BIM, and blockchain. Section 3
+delineates a DIK-driven SCM model, followed by the BIBP system architecture. Section 4
+provides a demonstrative evaluation experiment to illustrate and validate the functions and
+system architecture of BIBP. Finally, discussions are conducted in Section 5, and conclusions
+are drawn in Section 6.
+
+2 Background
+2.1 Supply Chain Management in Modular Construction (SCM-MC)
+Modular construction is a revolutionary construction method whereby 3D-volumetric fully
+finished modules are prefabricated in off-site factories and then shipped to the construction
+site for installation (Yin et al., 2019). Modular construction is distinguished by an advanced
+planning and optimization approach for the supply chain. According to Mentzer et al. (2001),
+3
+
+a supply chain is a network of actors (e.g., organizations or individuals) engaged in the flows
+of goods, services, finances, and information from a supplier to a customer. Therefore, SCM
+in modular construction can be defined as ensuring the flow of prefabricated products,
+services, data, information, and even knowledge to be smoothly delivered from production,
+logistics to on-site installation.
+Handling SCM of modular construction well in practice is challenging due to the old-decade
+issues, such as lack of trust, fragmentation, and discontinuity. Trust is commonly understood
+as the positive expectations one party has about another party’s intentions, and trust is
+fundamental for a transparent and secured supply chain (Luo et al., 2020). However, the
+construction industry is infamous for its lacking trust and prevalent adversarial relationship
+with one-off organizational settings, resulting in widespread claims, opportunism, risk
+aversion, less flexibility, mediocre quality, high cost, and poor value for money (MacLeamy,
+2004; Bankvall et al., 2010). The most worth-noticing cases in SCM for lack of trust are
+product provenance issues and disputable inspection.
+Fragmentation mainly results from the massive stakeholders and multiple stages (Hsu et al.,
+2019). SCM in modular construction involves more geographically distributed stakeholders,
+e.g., manufacturers, materials suppliers, and logistics agencies. To ensure resilient process
+management and assured quality, these stakeholders must keep frequent communication in
+multiple stages, e.g., design, production, storage, logistics, and on-site installation (See
+Fig.1). Thus, producing and delivering prefabricated modules at the right time and place to
+the right person requires a coordinated SCM system. However, the current SCM system in
+modular construction is inconsiderate and lacks multi-user-oriented functional modules, such
+as compliance check, process control, and quality assurance.
+The discontinuity can be ascribed to the low level of information traceability and
+immutability. For example, product data collected from the factory to the construction site is
+still mainly dependent on manual operations and paperwork (Zhai et al., 2019). Therefore,
+such time-consumed manual processes may bring in input errors, file missing, and data
+tampering. Furthermore, logistic companies still fail to achieve just-in-time deliveries due to
+information delays, as the lack of a synergistic information platform hinders the visibility,
+traceability, and even knowledge-based business intelligence of SCM (Li et al., 2018a; Li et
+al., 2019b). Together, these pain points stimulate the need for data-information-knowledge
+(DIK) driven SCM models in modular construction to ensure improved data privacy,
+effective information sharing, rapid knowledge consensus.
+
+4
+
+Figure 1. Process management and quality assurance in SCM-MC.
+2.2 BIM, IoT, Blockchain, and their Integration
+Building Information Modeling (BIM) has been widely used to improve the fragmentation
+and discontinuity in the construction SCM (Li et al. 2019a; Hijazi et al. 2021; Deng et al.
+2019). The BIM kernel is “information,” which helps stakeholders in construction SCM be
+informed of one another’s operations through collaboration. The definition of the above
+information can be supported by OpenBIM. One of the most salient OpenBIM standards is
+the Industry Foundation Classes (IFC), a commonly used schema for data exchange that
+promotes BIM interoperability among stakeholders. However, effective communication and
+responsible decision-making among stakeholders require real-time interaction between the
+physical world and BIM.
+The Internet of Things (IoT) is a growing concept that can help provide BIM with real-time
+data to link the physical resources with virtual BIM objects (Dave et al., 2018). Academia
+and industry have developed many enabling technologies to realize the concept of IoT, such
+as radio-frequency identification, near-field communication for short-range wireless (Xue et
+al., 2018), 5G for medium-range wireless (Li et al., 2018b), and low-power wide-area
+networking (e.g., LoraWan, NB-IoT) for long-range wireless (Mekki et al., 2018). Niu et al.
+(2016) also proposed a robust IoT model in construction, namely smart construction objects
+(SCOs), to augment construction resources with smartness.
+Integrating IoT data with BIM in real-time has become an essential paradigm for developing
+digital twin applications to enhance construction productivity. These applications have been
+widely utilized in monitoring construction resource and progress (Li et al., 2018a),
+occupational health and safety management (Kanan et al., 2018), construction logistics and
+supply chain management (Zhong et al., 2017), and facility management (Cheng et al., 2020).
+To achieve these applications, it needs numerous building blocks, such as system
+architecture, open BIM standards for interoperability, and protocols of information
+integration and management (Xu et al., 2018).
+5
+
+Service-Oriented Architecture (SOA) is commonly used to develop IoT-enabled BIM
+platforms by combining various web services. However, SOA still lacks a useful design
+pattern to achieve real-time BIM model updates, two-way interactions between IoT and BIM,
+and integration with other technologies (e.g., blockchain). These mainly rely on the
+interoperable open BIM standards and protocols for IoT-BIM integration. Tang et al. (2019)
+also summarized five mainstream approaches for integrating time-series IoT data with
+contextual BIM data. For example, integrating semantics web (for BIM) and relational
+database (for IoT) has been identified as a promising hybrid approach for IoT-enabled BIM
+platforms. However, the integration of BIM and IoT alone is insufficient to ensure data
+privacy and security and truly achieve trust among stakeholders. For example, the shared
+cloud BIM model and its data can be manipulated, and IoT sensors (e.g., RFID, GPS) may
+suddenly be powerless or noises reported to reduce data quality. Blockchain seems to hold
+the key.
+Blockchain is a distributed ledger of relevant data and transactions that are voluntarily agreed
+upon and shared across all peer-to-peer network users. (Nakamoto, 2008). Four components
+support a blockchain to function: cryptography, a distributed database, consensus mechanism,
+and smart contracts (Zheng et al., 2017). Cryptography, e.g., hashing algorithms, is applied to
+encrypt transactions based on the accepted protocol that makes the data hard to be tampered
+with (Beck et al., 2016). Distributed ledgers are also supported by an extensive network of
+computers, which records all data in each participant's ledger. The consensus deﬁnes the
+necessary agreement of maintaining network-wide synchronization of data transactions
+(Nguyen and Kim, 2018). Smart contracts are self-executing contracts that act automatically
+based on a consensus mechanism when certain trigger circumstances are met. (Buterin,
+2014). Permissionless and permissioned blockchain platforms are now available. (Helliar et
+al., 2020). A permissionless blockchain is entirely decentralized, allowing anybody to access
+the data contained in blocks, such as Bitcoin and Ethereum (Buterin, 2014). Only a few
+recognized users can validate transactions and access block data in a permissioned
+blockchain., such as Hyperledger Fabric (Cachin, 2016). Permissionless blockchain
+emphasizes openness and decentralization, whereas permissioned blockchain uses
+deterministic consensus methods to increase throughput. (Gupta et al., 2020). This renders
+permissioned blockchains more accessible to projects at a time-sensitive level regarding
+transparency, traceability, immutability, decentralization, privacy, and smartness (Qian and
+Papadonikolaki, 2020). However, few studies have investigated blockchain technology in
+SCM of modular construction. For example, Wang et al. (2020) established a blockchainbased information management system for a precast supply chain to improve traceability and
+information communication. Zhang et al. (2020b) further investigated an integrated
+framework of the quality traceability system for prefabricated components.
+In addition, numerous studies have explored the integration of blockchain and BIM, or
+integration of blockchain and IoT, separately. For example, Zheng et al. (2019) proposed a
+6
+
+blockchain-based BIM data audit mechanism to record the BIM modification history and
+ensure the integrity and provenance of BIM data. Xue and Lu (2020) developed a semantic
+differential transaction approach to minimize information redundancy and improve
+information interoperability in integrating BIM and blockchain. Moreover, Lu et al. (2021)
+proved that blockchain could build trust in the distributed IoT network via a sidechain and
+provide confidence in such massive IoT-oriented data sources for construction SCM. Lee et
+al. (2021) designed an integrated digital twin and blockchain system for traceable data
+transmission. The blockchain authenticates and provides trust to all data transactions to the
+digital twin, while the digital twin updates BIM in near real-time utilizing IoT. The previous
+studies demonstrate that the fusion of blockchain and IoT-BIM may have the potential to
+address the current issues of IoT-enabled BIM platforms in SCM of modular construction.
+However, they mainly focus on data traceability. Developing and designing an effective
+system architecture with lower storage cost, lower latency, and higher throughput to ensure a
+single point of truth for BIM, avoid a single point of failure of IoT, and map the complex
+data-information-knowledge paradigm to the SCM processes/end-users is challenging.
+2.3 Research Gaps
+Through the above analysis, three observations can be summarized: (1) there is a lack of a
+useful operation model for guiding trustworthy, integrated, and continuous SCM in modular
+construction; (2) the development and configuration of functions, services, and applications
+with such model faces challenges, e.g., unaccountable data, inconsiderate information, and
+dull knowledge; (3) integration of blockchain with IoT-BIM could be the solution but need an
+effective system architecture at the current stage for further ensuring a single point of truth
+for BIM and avoiding a single point of failure of IoT.
+
+3 System Architecture of BIBP
+As SCM's business processes in modular construction are fragmented due to involving more
+stakeholders, stages, and technologies, data from multimedia and multi-modal information
+becomes more complex and semantically meaningful. Consequently, the cross-relation
+among various data in SCM processes brings the semantic information into the data,
+information, and knowledge (DIK) paradigm. The DIK paradigm has been a successful
+framework for combining and elevating the multimodal data into the models of information
+and knowledge (Zins, 2007; Zhang et al., 2020a). Thus, it can help map the evidence from
+SCM practice (data, e.g., facts, signals, symbols), system (information, e.g., semantics,
+descriptions, functions) to users (knowledge, e.g., cognition, decision, evaluation). This
+mapping has the potential to contribute to the design of BIBP via the following aspects: (1) It
+can connect the service, virtual and physical elements in SCM-MC business processes from
+the perspective of DIK; (2) It can help identify the data sources, information requirements,
+and knowledge applications in SCM-MC processes for BIBP; (3) It can help configure the
+BIBP network by forming design dimensions and system organizations.
+7
+
+3.1 DIK-oriented SCM-MC model
+This study proposes a DIK-oriented SCM model for modular construction. As shown in
+Fig.2, this model presents its physical, virtual, and service layers with five dimensions:
+physical, data, information, knowledge, and service spaces.
+The physical layer observes the real-time status of processes and resources in physical space
+(PS). For example, production-transportation-installation flow and construction objects (e.g.,
+man, machine, material, method, environment (4M1E)) can serve in a decentralized IoT
+network. All data (e.g., structured, semi-structured, nonstructured) captured from PS can be
+mapped to data space (DS), and PS then communicates with the upper level through DS in a
+publish-subscribe manner.
+The virtual layer tries to mirror the virtual resources and processes using BIM and make PS
+work at its optimal state by incorporating information space (IS) and knowledge space (KS).
+DS offers interfaces for IS and KS to access the data. IS can describe and function the
+geometric and non-geometric information from the virtual BIM environment. KS can
+integrate knowledge models (e.g., learning, prediction, evaluation, reasoning) to serve as a
+brain to handle various SCM issues (e.g., constraints, risks, uncertainties) in PS, DS, or IS.
+The service layer bundles SCM processes and resources into services to make it easier for
+different SCM stakeholders in the service space (SS) to communicate.. For example,
+decentralized applications (Dapps) for process management and quality assurance could be
+stakeholders' immediate demands.
+
+8
+
+Figure 2. Three-layer DIK-oriented SCM model in modular construction
+3.2 Overall System Architecture of BIBP
+Based on the DIK-driven SCM model, BIBP is the integration of blockchain, IoT, and BIM,
+where IoT ubiquitously connects processes and resources in PS to the BIM-based IS while
+blockchain connects DS, IS and KS of BIBP with double chains in a secure, immutable,
+transparent, traceable, decentralized, and smart manner. Thus, BIBP is formalized as:
+Definition 1 BIBP:= {𝑃𝑃𝑃𝑃𝐼𝐼𝐼𝐼𝐼𝐼 , 𝐷𝐷𝐷𝐷, 𝐼𝐼𝐼𝐼𝐵𝐵𝐵𝐵𝐵𝐵 , 𝐾𝐾𝐾𝐾, 𝑆𝑆𝑆𝑆} ⋈ 𝐵𝐵𝑃𝑃𝑃𝑃−𝐷𝐷𝐷𝐷−𝐼𝐼𝐼𝐼−𝐾𝐾𝐾𝐾−𝑆𝑆𝑆𝑆
+
+Where 𝑃𝑃𝑃𝑃𝐼𝐼𝐼𝐼𝐼𝐼 connects physical processes and resources of PS to virtual 𝐼𝐼𝐼𝐼𝐵𝐵𝐵𝐵𝐵𝐵 , DS, KS, and
+SS are the other three dimensions of BIBP. 𝐵𝐵𝑃𝑃𝑃𝑃−𝐼𝐼𝐼𝐼−𝐷𝐷𝐷𝐷−𝐾𝐾𝐾𝐾−𝑆𝑆𝑆𝑆 denotes the blockchain
+networks and the transaction logics of five dimensions to support smart SCM in modular
+construction.
+
+9
+
+According to the BIBP definition, a system architecture of BIBP for configuring the DIKdriven SCM model is developed in Fig.3. Three layers and five dimension spaces in SCM are
+fused into a three-layer service-oriented architecture (SOA), including Infrastructure as a
+Service (IaaS), Blockchain BIM as a service (BaaS), and Software as a Service (SaaS). The
+platform uses the XaaS (Anything as a Service) paradigm to bridge the SCM practices and
+multiple stakeholders' demands in modular construction.
+
+Figure 3. System architecture of BIBP for SCM in modular construction
+IaaS includes hardware, core technologies, and protocols (e.g., IoT protocols and open
+BlockchainBIM standards), which are used to extract SCM data from daily practice to
+blockchain BIM. Each resource (4M1E) and process in SCM are connected with their virtual
+twin via IoT, serving as transaction monitoring nodes to observe statutes (e.g., disturbances,
+constraints, abnormal conditions). Blockchain IoT interfaces can offer local optimal-state
+operation control based on the smart contract. For example, the accelerometer mounted on
+prefabricated modules can help measure their vibrations during transportation. Once
+vibrations exceed the threshold, the accelerometer can publish this transaction proposal to the
+blockchain, and alerts to drivers and other stakeholders can be triggered by smart contracts
+when the proposed transaction has reached consensus in the decentralized network.
+
+10
+
+BaaS structure and interfaces hold the key to information management in the BIBP for interoperating
+the information, semantics, and meaningful inferences. There are two primary modules to achieve
+BaaS functionality. One is the blockchain BIM system to record the changes of BIM in the
+blockchain. The other is the open blockchain BIM interfaces, which extend IoT properties in IFC
+within the new blockchain BIM system. Based on the BaaS, knowledge models (KMs) for process
+management (PM) and quality assurance (QA) can be developed.
+
+SaaS meets multiple stakeholders' demands with the applications of knowledge-based
+stakeholder communication, PM, QA, BIM, and IoT through various KMs. These
+applications collect statutes of resources and processes to perceive instantaneous SCM
+performance via learning and evaluation. And then, these applications invoke KMs via smart
+contracts to intelligently improve the performance of SCM in modular construction.
+Furthermore, all SCM resources and processes are grouped as DIK services within the
+blockchain to serve end users and other connected systems (e.g., ERP, city information
+modeling (CIM), GIS) in a service-oriented manner.
+The system architecture of BIBP can not only connect physical construction resources to the
+virtual BIM system via traceable and authentic IoT but also define a smart contract-oriented
+PM/QA mechanism within the Blockchain BIM system to support the real-time improvement
+of SCM in modular construction. Furthermore, this configuration can allow BIBP to work as
+a whole to offer innovative SCM services, helping modular construction companies better
+compete in construction 4.0.
+3.2.1 Infrastructure as a Service (IaaS)
+The hardware and protocols in IaaS can serve in edge and cloud infrastructures (See Fig.4
+(a)). The edge comprises IoT-enabled construction resources (e.g., 4M1E), communication
+protocols, gateway nodes (GNs), broker nodes (BNs), and computing unit nodes (CUNs).
+Construction resources include man (e.g., worker), machine (e.g., crane, vehicle), material
+(e.g., prefabricated modules), method (e.g., inspection standards), environment (e.g.,
+production plant, construction site). The real-time statuses of construction resources are
+captured by IoT devices and sensors with various communication protocols. GNs work as the
+interface to preprocess the data from IoT and forward the unified data to BNs, CUNs, BIM
+nodes (BIMNs), and KM nodes (KMNs), meanwhile receiving and transmit their responses
+and orders to IoT-enabled construction resources. BNs assign proper CUNs to process the
+time-sensitive tasks at the edge or pass on the complex tasks to the cloud. BIMNs update the
+virtual models by incorporating the data from the edge. Cloud offers sufficient computing and
+storage capacity for BIM and KMs to handle computing-intensive but latency-tolerant tasks
+or share burdens from BNs and CUNs.
+A smart IoT plan is proposed in IaaS, where smart IoT can also work as an information
+exchange agent is called an “oracle” in the blockchain. It can be a flexible board of IoT
+sensors. For example, inertial measurement units and air pressure units can compensate the
+11
+
+GPS positions on precise movements and height data. Furthermore, for facility management,
+a supplement of passive RFID and QR codes can adhere to the prefabricated modules for a
+long time. For certain IoT applications, a mix of diverse IoT design profiles can provide the
+best performance-price ratio. Fig.4 (b) shows some detailed IoT plans. The initial plan
+includes two models: (1) A single low-energy GPS sensor for LBS logistics offshore. (2) For
+off-site plant and on-site assembly PM/QA, high-frequency, numerous movements and
+environmental sensors are required.
+Hardware and software protocols in the IaaS are designed to regulate the synchronization of
+SCM reality. As shown in Fig.4 (c), the SCM process involves several stages and various
+stakeholders. There are existing means to manage the SCM activities in practice, such as asdesigned BIM, documents, and orders of prefabricated modules, construction IoT for SCM,
+and the progress monitoring system. Therefore, comprehensive hardware and software
+protocols fulfill the need to map and integrate the data in existing means and systems to the
+BIBP platform.
+In comparison to existing blockchain systems in the construction industry, this research offers
+open blockchain IoT-BIM as the Infrastructure, which is based on an open BIM standard that
+is expanded from IFC. Extending the existing open BIM standard IFC (ISO 16739-1:2018) is
+a necessity in IaaS. Fig.4 (d) shows that the extended BIM standard can handle more
+functions than the conventional IFC standard. The new extension in IFC involves two parts.
+The first part is a semantic deferential transition (SDT) model developed by Xue and Lu
+(2020) for blockchain computability. As BIM models are usually massive in size, the
+blockchain cannot handle massive data due to network capability. Also, as shared by multiple
+stakeholders, BIM is subjected to simultaneous changes by different parties simultaneously.
+Therefore, a well-defined extension model to bridge the fundamental gap between the IFC
+and blockchain can manage the real-time, simultaneous changes as IFC change consensuses.
+The other extension to IFC is the IoT properties, which were non-existed in the current IFC
+properties. Examples include production line, logistics company, driver ID, defects, and
+maintenance history. These new IoT properties are attached to the IFC standard directly.
+
+12
+
+Figure 4. Hardware and protocols of BIBP.
+3.2.2 Blockchain BIM as a Service (BaaS)
+BIBP adopts the Hyperledger Fabric as the framework with the following advantages: a. it is
+a closed permission-based network that can provide higher throughputs and is very suitable
+for the scenario of project-based SCM in modular construction; b. it is under a modular
+architecture facilitating plug-in components development; c. It ensures consensus efficiency
+among peer nodes to enhance performance and scalability; d. Channels designed in Fabric
+offer a way to separate sensitive data; e. The Fabric with LevelDB facilitates query functions.
+BIBP includes the services of the BIBP network, ledger model, and smart contracts in BaaS.
+(1) BIBP network service: As shown in Fig.5, the BIBP network is a double-chain (e.g.,
+double channels in Hyperledger Fabric) structure that offers services of ledgers (L1, L2) and
+smart contracts (S1, S2) to facilitate DIK-driven agile SCM-MC. Each dimension of DIKSCM-MC can be considered as an organization 𝑅𝑅 ⊆ ℝ = {𝑅𝑅𝑃𝑃𝑃𝑃 , 𝑅𝑅𝐷𝐷𝐷𝐷 , 𝑅𝑅𝐼𝐼𝐼𝐼 , 𝑅𝑅𝐾𝐾𝐾𝐾 , 𝑅𝑅𝑆𝑆𝑆𝑆 } to join in
+a network, where any participant in an organization needs a verifiable identity that is issued
+with X.509 certificates by the corresponding certificate authority 𝐶𝐶𝐶𝐶 ⊆ ℂ𝔸𝔸 =
+{𝐶𝐶𝐶𝐶𝑃𝑃𝑃𝑃 , 𝐶𝐶𝐶𝐶𝐷𝐷𝐷𝐷 , 𝐶𝐶𝐶𝐶𝐼𝐼𝐼𝐼 , 𝐶𝐶𝐶𝐶𝐾𝐾𝐾𝐾 , 𝐶𝐶𝐶𝐶𝑆𝑆𝑆𝑆 }. For example, 𝐶𝐶𝐶𝐶𝑆𝑆𝑆𝑆 distributes X.509 certificates to
+recognize the participants (e.g., client, manufacturer, logistics provider, contractor) affiliated
+to 𝑅𝑅𝑆𝑆𝑆𝑆 . Also, 𝑅𝑅𝐼𝐼𝐼𝐼 and 𝑅𝑅𝑆𝑆𝑆𝑆 control the network by defining the policy rules specified in
+network configuration (NC). They also serve as network administration points for ordering
+service 𝑂𝑂𝐼𝐼𝐼𝐼 and 𝑂𝑂𝑆𝑆𝑆𝑆 . 𝑅𝑅𝐼𝐼𝐼𝐼 , 𝑅𝑅𝐾𝐾𝐾𝐾 , and 𝑅𝑅𝑆𝑆𝑆𝑆 can form a consortium on channel #1 (C1) for
+knowledge-based SCM services, where C1 is managed to comply with the policy rules
+defined in channel configuration (CC1) and can be described as:
+13
+
+𝑆𝑆1
+
+𝐿𝐿1
+
+Definition 2 C1:= �𝐴𝐴𝑆𝑆𝑆𝑆 , … , 𝐴𝐴𝐼𝐼𝐼𝐼𝐼𝐼 , 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 � ↔ �𝑃𝑃𝑆𝑆𝑆𝑆 , 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 , 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 � ↔ {𝑂𝑂𝐼𝐼𝐼𝐼 , 𝑂𝑂𝑆𝑆𝑆𝑆 }
+
+Where C1 comprises a set of stakeholder peer nodes 𝑃𝑃𝑆𝑆𝑆𝑆 ∈ 𝑅𝑅𝑆𝑆𝑆𝑆 , a set of process management
+and quality assurance KMs peer nodes 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 ∈ 𝑅𝑅𝐾𝐾𝐾𝐾 , and a set of BIM peer nodes 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 ∈
+𝑅𝑅𝐼𝐼𝐼𝐼 . DApps, such as stakeholder communication application 𝐴𝐴𝑆𝑆𝑆𝑆 , the intelligent PM-QA
+application 𝐴𝐴𝐼𝐼𝐼𝐼𝐼𝐼 , and BIM application 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 are allowed to connect with C1 based on 𝐶𝐶𝐶𝐶𝑆𝑆𝑆𝑆 ,
+
+𝐶𝐶𝐶𝐶𝐾𝐾𝐾𝐾 , and 𝐶𝐶𝐶𝐶𝐼𝐼𝐼𝐼 . Also, a smart contract packages S1 is adopted to produce business service,
+knowledge, and information level transactions from DApps and peer nodes, and these
+transactions are then sorted into blocks by 𝑂𝑂𝐼𝐼𝐼𝐼 or 𝑂𝑂𝑆𝑆𝑆𝑆 , and broadcast the validated transactions
+to each peer node in the C1 where they received the immutable copy of the ledger L1.
+Furthermore, 𝑅𝑅𝑃𝑃𝑃𝑃 , 𝑅𝑅𝐷𝐷𝐷𝐷 , and 𝑅𝑅𝐼𝐼𝐼𝐼 can form another consortium on channel #2 (C2) to achieve
+efficient data and information management of DIK-SCM-MC. C2 is governed by CC2 and
+formalized as:
+𝑆𝑆2
+
+𝐿𝐿2
+
+Definition 3 C2:= {𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 , … , 𝐴𝐴𝑆𝑆𝑆𝑆𝑆𝑆 } ↔ {𝑃𝑃𝐵𝐵𝐵𝐵 , 𝑃𝑃𝐶𝐶𝐶𝐶𝐶𝐶 , 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 } ↔ {𝑂𝑂𝐼𝐼𝐼𝐼 , 𝑂𝑂𝑆𝑆𝑆𝑆 }
+
+Where C2 includes a set of BNs 𝑃𝑃𝐵𝐵𝐵𝐵 and CUNs 𝑃𝑃𝐶𝐶𝐶𝐶𝐶𝐶 , belonging to 𝑅𝑅𝐷𝐷𝐷𝐷 , and a set of BIM
+peer nodes 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 ∈ 𝑅𝑅𝐼𝐼𝐼𝐼 . DApps, such as BIM application 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 , the IoT-enabled construction
+resources, named as smart construction objects (SCOs), for data and resources management
+application 𝐴𝐴𝑆𝑆𝑆𝑆𝑆𝑆 are allowed to sit in the C2 based on 𝐶𝐶𝐶𝐶𝐼𝐼𝐼𝐼 , 𝐶𝐶𝐶𝐶𝐷𝐷𝐷𝐷 , and 𝐶𝐶𝐶𝐶𝑃𝑃𝑃𝑃 . S2 is applied to
+generate operational data level transactions across DApps and peer nodes, which are then
+sorted into blocks by 𝑂𝑂𝐼𝐼𝐼𝐼 or 𝑂𝑂𝑆𝑆𝑆𝑆 , and broadcast the validated transactions to each peer node in
+the C2 where they received the immutable copy of the ledger L2.
+
+Figure 5. BIBP network
+14
+
+(2) Ledger service: the ledger stores factual information about SCM objects, namely, BIMbased PM and QA on L1 for C1, and SCOs on L2 for C2. A ledger is owned and retained by
+the decentralized peer nodes within the BIBP network. The ledger service in the BaaS
+contains two components: a world state and a blockchain (See Fig.6). The former presents the
+latest value of the objects' attributes, while the latter records the immutable history of all
+transactions that resulted in these current values of the world state. The world state is
+physically executed as a database (e.g., LevelDB, CouchDB) to offer simple and efficient
+storage and retrieval of ledger states. The blockchain is structured as a sequential log of
+interlinked blocks, where each block contains transactions in an ordered sequence, each
+transaction representing a query or update to the world state. Each block can be defined as a
+triple 𝐵𝐵𝑖𝑖 = {𝐻𝐻𝑖𝑖 , 𝐷𝐷𝑖𝑖 , 𝑀𝑀𝑖𝑖 }. A block header 𝐻𝐻𝑖𝑖 comprises three fields: block number, current
+block hash, and previous block header hash. Block data 𝐷𝐷𝑖𝑖 includes an ordered sequence of
+transactions. These transactions are recorded when the ordering service 𝑂𝑂𝐼𝐼𝐼𝐼 or 𝑂𝑂𝑆𝑆𝑆𝑆 generates
+the block. Block metadata 𝑀𝑀𝑖𝑖 includes a timestamp, the certiﬁcate, public key, and signature
+of the block creator. Each transaction 𝑇𝑇𝑖𝑖 contains a header, a cryptographic signature and a
+proposal from DApp, responses as the smart contract’s output, and endorsements from the
+required organizations with response signature.
+As a blockchain data structure is standardized in a ledger model, the world states W1 and W2
+in L1 and L2 can be defined as:
+𝑄𝑄𝑄𝑄
+
+Definition 4 W1:= �{⋃𝑖𝑖 〈𝐾𝐾𝑖𝑖𝑃𝑃𝑃𝑃 , 𝑉𝑉𝑖𝑖𝑃𝑃𝑃𝑃 〉}, {⋃𝑙𝑙 〈𝐾𝐾𝑙𝑙 , 𝑉𝑉𝑙𝑙
+
+𝑄𝑄𝑄𝑄
+
+𝐵𝐵𝐵𝐵𝐵𝐵
+〉}, {⋃𝑚𝑚 〈𝐾𝐾𝑚𝑚
+, 𝑉𝑉𝑚𝑚𝐵𝐵𝐵𝐵𝑀𝑀 〉}�
+
+W2:= ��⋃𝑗𝑗 〈𝐾𝐾𝑗𝑗𝑆𝑆𝑆𝑆𝑆𝑆 , 𝑉𝑉𝑗𝑗𝑆𝑆𝑆𝑆𝑆𝑆 〉�, {⋃𝑛𝑛 〈𝐾𝐾𝑛𝑛𝐵𝐵𝐵𝐵𝐵𝐵 , 𝑉𝑉𝑛𝑛𝐵𝐵𝐵𝐵𝐵𝐵 〉}�
+𝑄𝑄𝑄𝑄
+
+Where W1 includes three key-value 〈𝐾𝐾, 𝑉𝑉〉 pairs, namely, 〈𝐾𝐾𝑖𝑖𝑃𝑃𝑃𝑃 , 𝑉𝑉𝑖𝑖𝑃𝑃𝑃𝑃 〉, 〈𝐾𝐾𝑙𝑙 , 𝑉𝑉𝑙𝑙
+
+〈𝐾𝐾 𝐵𝐵𝐵𝐵𝐵𝐵
+
+, 𝑉𝑉
+
+𝐵𝐵𝐵𝐵𝐵𝐵 〉,
+
+𝑄𝑄𝑄𝑄
+
+〉 and
+
+presenting the current knowledge states of the ith PM, lth QA and the mth
+𝑄𝑄𝑄𝑄
+
+changes of the BIM model, respectively. 𝐾𝐾𝑖𝑖𝑃𝑃𝑃𝑃 and 𝐾𝐾𝑙𝑙
+
+denote the sequence number of SCM𝑄𝑄𝑄𝑄
+
+MC processes and quality inspection procedures. 𝑉𝑉𝑖𝑖𝑃𝑃𝑃𝑃 and 𝑉𝑉𝑗𝑗
+𝑄𝑄𝑄𝑄
+
+indicate a set of knowledge
+
+for 𝐾𝐾𝑖𝑖𝑃𝑃𝑃𝑃 and 𝐾𝐾𝑙𝑙 , including the results from optimization, simulation, prediction for PM and
+QA. 𝐾𝐾 𝐵𝐵𝐵𝐵𝐵𝐵 represents the identifier of the changes of the BIM model, and 𝑉𝑉 𝐵𝐵𝐵𝐵𝐵𝐵 indicates the
+properties of the changes of the BIM model, such as geometric and non-geometric
+information. Similarly, W2 demonstrates the current data states of the jth SCO. 𝐾𝐾𝑗𝑗𝑆𝑆𝑆𝑆𝑆𝑆
+
+indicates the identity of IoT-enabled construction resources and 𝑉𝑉𝑗𝑗𝑆𝑆𝑆𝑆𝑆𝑆 comprises the data
+
+regarding the resources, such as status, location, vibration, altitude, etc. In summary, each
+endorsed transaction causes the ledger to update the changing values of a key-value pair.
+
+15
+
+Figure 6. Ledger service model in BaaS.
+(3) Smart Contract Services: Smart contracts define the executable logics between the five
+dimensions of SCM in modular construction that generate new facts added to the ledger,
+facilitating the optimal PM-QA of SCM. In BaaS, two chaincodes (smart contract packages),
+namely S1 and S2, are deployed on C1 and C2, respectively.
+S1 comprises seven main smart contracts to support intelligent PM-QA of SCM, including
+value assessment contract (VAC), capacity assessment contract (CAC), availability
+assessment contract (AAC), process optimization contract (POC), quality control contract
+(QCC), BIM update contract (BUC), decision support contract (DSC). For a new order from
+a stakeholder, VAC, CAC, and AAC can help assess the order’s business value, as well as the
+capacity and availability of resources and processes, and determine whether approve this
+order depending on the responses from the three smart contracts. Based on the approved
+order, 𝐴𝐴𝐼𝐼𝐼𝐼𝐼𝐼 makes an initial plan as the transaction proposal to C1, where POC and QCC first
+optimize and simulate the plan by invoking KMs and then offer the optimal plan. 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 can
+use BUC to record the BIM model changes caused by the order and plan. When reaching a
+consensus, the optimized PM-QA plan can be the input from BIM to C2 by executing DSC.
+
+S2 includes four primary smart contracts to manage the data-oriented services across PS, DS,
+and IS, namely, state validation contract (SVC), state computing contract (SCC), state
+evaluation contract (SEC), and state update contract (SUC). Each 𝐴𝐴𝑆𝑆𝑆𝑆𝑆𝑆 perceives the statuses
+of construction resources and processes to understand current disturbance in PM and QA, and
+these states can be published as transaction proposals to C2. For a new proposal, SVC, SCC,
+and SEC can help check, compute, evaluate the data and then determine to approve the states
+if all three smart contracts produce positive responses. In the PM and QA, SUC can update
+the states to the 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 . 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 also subscribe to historical states and disturbances to learn the
+current PM and QA's performance and optimize future performance with appropriate KMs.
+16
+
+3.2.3 Software as a Service (SaaS)
+All the DApps, such as stakeholder communication application 𝐴𝐴𝑆𝑆𝑆𝑆 , the intelligent process
+management and quality assurance application 𝐴𝐴𝐼𝐼𝐼𝐼𝐼𝐼 , BIM application 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 , SCOs
+
+management application 𝐴𝐴𝑆𝑆𝑆𝑆𝑆𝑆 can work as SaaS in BIBP by involving consensus. The
+consensus is the convergence process of transactions through the BIBP network, where a
+consensus mechanism used in 𝑂𝑂𝐼𝐼𝐼𝐼 and 𝑂𝑂𝑆𝑆𝑆𝑆 can be applied to guarantee that the relevant peer
+nodes have agreed to a deal on the content and sequence of transactions. BIBP adopts
+Hyperledger Fabric as the core blockchain infrastructure in BaaS, and such permissioned
+blockchain works with a group of documented, defined, and frequently qualified peer nodes.
+Thus, BIBP uses a basic Crash Fault-Tolerant (CFT) consensus mechanism to control the
+transaction flow. As CFT in permissionless blockchain has no costly mining process such as
+PoW, it can reach higher throughput performance and lower latency. According to CFT, 𝐴𝐴𝑆𝑆𝑆𝑆 ,
+𝐴𝐴𝐼𝐼𝐼𝐼𝐼𝐼 , 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 , and 𝐴𝐴𝑆𝑆𝑆𝑆𝑆𝑆 can be the representative services to achieve consensus transaction
+flow.
+
+As presented in Fig.7 (a), a stakeholder communication begins with a transaction T1 with the
+proposal P, which includes the details and specifications of the order proposed by a user (e.g.,
+client stakeholder) via 𝐴𝐴𝑆𝑆𝑆𝑆 . 𝐴𝐴𝑆𝑆𝑆𝑆 chooses an identity from a wallet to decide this user's role
+and right to join C1 via the gateway. 𝐴𝐴𝑆𝑆𝑆𝑆 then passes P proposed by the user via the private
+key to other peer nodes 𝑃𝑃𝑆𝑆𝑆𝑆 , 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 , and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 . 𝑃𝑃𝑆𝑆𝑆𝑆 assesses the business value of P by
+implementing VAC in S1 and produces a response R1 with the endorsement E1 signed with
+the private key of 𝑃𝑃𝑆𝑆𝑆𝑆 . 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 assess the status, capacity, and availability of process
+
+and resources with BIM by executing KMs based smart contracts, such as CAC and AAC,
+which produces R2 with E2 and R3 with E3. 𝐴𝐴𝑆𝑆𝑆𝑆 then obtains endorsed responses and
+determines whether to proceed or end T1. When the endorsed responses reach a consensus,
+T1 can be delivered to the ordering service. 𝑂𝑂𝐼𝐼𝐼𝐼 and 𝑂𝑂𝑆𝑆𝑆𝑆 pack these transactions into a new
+block and broadcasts it to all peer nodes on C1. Once the peer nodes validate this new block,
+it will be recorded on the L1 of all peer nodes on C1. The peer nodes will then notify the
+connected DApp with the user that T1 has been processed. 𝐴𝐴𝐼𝐼𝐼𝐼𝐼𝐼 takes the notified and entire
+
+order transaction from 𝐴𝐴𝑆𝑆𝑆𝑆 as the input to get the initial plans as transaction T2 with proposal
+P, which is delivered to 𝑃𝑃𝑆𝑆𝑆𝑆 , 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 , and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 . 𝑃𝑃𝑆𝑆𝑆𝑆 , 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 , and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 optimize and simulate
+
+the plan with various constraints, risks, and uncertainties by executing POC and QCC, and
+generates R1 with E1, R2 with E2, and R3 with E3. 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 then record any BIM model change
+caused by the order and plan as transaction T3 with proposal P, and also need confirmation
+from 𝑃𝑃𝑆𝑆𝑆𝑆 , 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 , and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 . 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 , and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 can validate the change record and IFC objects
+by executing BUC and produces R2 with E2 and R3 with E3. 𝑃𝑃𝑆𝑆𝑆𝑆 can reach a consensus to
+confirm the results presented in BIM using DSC and generate R1 with E1.
+
+Fig.7 (b) demonstrates a transaction flow for data and information-oriented PM-QA of SCM.
+Once T2 is generated in C1, 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 may conduct cross-chain delivery to transform the
+17
+
+optimal plan into practical operations in C2 as transaction T1 with proposal P to guide the
+operations of PM and QA in PS. 𝑃𝑃𝐶𝐶𝐶𝐶𝐶𝐶 and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 can visually present and analyze the
+operation considering the current status of resources and processes by executing SCC and
+SEC. During the PM-QA processes, each 𝐴𝐴𝑆𝑆𝑆𝑆𝑆𝑆 publishes a real-time status as the transaction
+T2 with proposal P, which is delivered to 𝑃𝑃𝐵𝐵𝐵𝐵 . 𝑃𝑃𝐵𝐵𝐵𝐵 help judge whether there is an abnormal
+and complexity by implementing SVC and provides R1 with E2. If R1 presents an abnormal
+and complexity, 𝑃𝑃𝐵𝐵𝐵𝐵 deliver this state to 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 for further KMs processing by using SUC and
+generates R2 with E2. If R1 indicates a normal and simple condition, 𝑃𝑃𝐵𝐵𝐵𝐵 deliver this state to
+𝑃𝑃𝐶𝐶𝐶𝐶𝐶𝐶 for processing by using SCC and generates R3 with E3. 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 subscribes all the
+statuses from 𝑃𝑃𝑆𝑆𝑆𝑆𝑆𝑆𝑆𝑆 to assess the current states and improve the future performance by
+executing SEC with learning and prediction capacity. Besides, 𝑂𝑂𝐼𝐼𝐼𝐼 and 𝑂𝑂𝑆𝑆𝑆𝑆 capture these
+transactions and order them into a new block to update L2.
+
+(a)
+
+(b)
+Figure 7 Service-oriented transaction flow on (a) C1; and (b) C2.
+18
+
+4 Implementation and Evaluation
+4.1 Case Study
+A modular construction project in Hong Kong is used to test the BIBP in its SCM. This
+project is a student residence with two 17-floor towers comprising 1224 prefabricated hostel
+rooms and other supporting facilities (e.g., prefabricated toilet, kitchen). The graphical details
+of the project are shown in Fig. 8. Fig.9 demonstrates the processes of SCM in this project,
+including the production, logistics, and installation. Apart from the consultancies of architect,
+structure, and building service, the primary stakeholders in this project include HKU Estate
+Office (owner), Paul Y. Engineering (general contractor), Yahgee Modular House
+(manufacturer). All these stakeholders can access the BIBP through the peer nodes of 𝑃𝑃𝑆𝑆𝑆𝑆 . In
+this case test, each peer node for each stakeholder is a docker deployed in the server. The
+typical scenarios, e.g., intelligent process management and quality assurance, BIM status
+updates, IoT sensing and tracking, are included. The following steps illustrate the transaction
+logic in each application scenario: (1) The peer nodes handle transaction proposals from
+DApps by implementing smart contracts and produce responses with endorsements. (2)
+DApps receive certain transactions with responses and endorsements from peer nodes and
+sign their validity. (3) Ordering service nodes package the valid transactions into new blocks
+and distribute them to the related network's peer nodes. (4) The transactions in new blocks are
+then validated by each peer node and are thereby added to the ledger and dedicated to the
+network to notify DApps.
+
+Figure 8. Overview of the MC project for this experiment: (a) project overview; (b) typical
+floor layout; (c) five types of prefabricated module; and (d) BIM model of Module M1.
+19
+
+Figure 9. SCM process in BIBP for modular construction
+In this case study, the passive RFID is used as the IoT plan to track the process status of SCM
+in modular construction. The RFID tags are stuck to the modular units, and near-field
+communication tags are embedded in the truck. The BIBP GN is a data converter in the
+production factory, transportation vehicles, and construction site. All RFID events are
+captured through 𝐴𝐴𝑆𝑆𝑆𝑆𝑆𝑆 , computed via CUNs, validated and stored in the C2 of BIBP, which
+can be broadcast among all the participants. The validated processes are demonstrated in
+different colors through 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 , such as grayish-yellow (3D assembly & inspection), dark
+green (arriving at the site), dark blue (hoisting). These status changes (e.g., format:
+{‘ifcprocess’:{‘Material Check’→‘2D Panel Production’}}) in the BIM model can be finally
+updated into the C1 of BIBP. KM for QA/QC in 𝐴𝐴𝐼𝐼𝐼𝐼𝐼𝐼 is used to inspect the components or
+modules completed by the previous task, such as measuring the geometric differences
+between the as-built and as-designed models. The truck is recognized and confirmed by
+identifying the truck’s NFC tags.
+
+4.2 Prototype System
+The BIBP was built using Hyperledger Fabric (version 1.4), and the smart contracts in the
+chaincodes were written using Javascript. The development environment was Ubuntu 18.04,
+and docker with isolated containers consumes fewer hardware resources to ease system
+prototype development than virtual machines. Using SpringBoot (version 2.4.0) and
+AdminLTE (version. 3), we created backend and front-end prototypes for each peer node,
+including frameworks, tools, and components (see Fig. 10). SpringBoot is a Java backend
+20
+
+framework for web server and MySQL development. AdminLTE is a front-end framework
+based on Bootstrap that provides rapid development with responsive, reusable, and widely
+used components.
+
+Figure 10. Frameworks, tools, and components involved in this prototype development.
+In the prototype, 𝑃𝑃𝑆𝑆𝑆𝑆 , 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 , and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 are connected to form the C1 in Hyperledger Fabric
+
+for upper smart PM-QA in SCM. C2 includes 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 and other functional nodes (𝑃𝑃𝐵𝐵𝐵𝐵 and
+𝑃𝑃𝐶𝐶𝐶𝐶𝐶𝐶 ) to facilitate accurate status tracking and operations of PM-QA in SCM. Other external
+systems and DApps are also connected with the Hyperledger Fabric to facilitate the above
+executions. Networks, channels, chaincodes, blocks, transactions, membership service
+provider (MSP), and ordering service are all part of the BIBP.
+Fig. 11 (a) presents the BIBP network details, which includes five-dimension organizations
+(PS, DS, IS, KS, SS), two orders, and one cross-chain peer node (𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 ). Fig.11 (b) (c)
+demonstrates the examples of the web front end of the C1 and C2, in which the Hyperledger
+Fabric Cello graphical interfaces provide the comprehensive network composition,
+organization information, peer nodes, and chaincodes (see Fig.11 (d)). Each block stored
+transactions (20 transactions at most) that keep PM-QA events and links with other blocks
+based on their hash values to compose L1 and L2. The block size is configured to 98 MB, and
+CouchDB is applied for word state cache and retrieval. C1 includes six peer nodes and one
+chaincode (S1), while C2 contains three peer nodes and one chaincode (S2) heretofore. Six
+peer nodes in C1 correspond to the peer nodes in 𝑃𝑃𝑆𝑆𝑆𝑆 , 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 , and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 . There are four peer
+nodes are involved in 𝑃𝑃𝑆𝑆𝑆𝑆 : (1) the owner, who is also the orderer in the 𝑂𝑂𝑆𝑆𝑆𝑆 ; (2) the
+contractor; (3) the manufacturer; (4) the logistics agency. Each of 𝑃𝑃𝑃𝑃𝑃𝑃𝑃𝑃 and 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 has one
+peer node in C1, and each of 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 , 𝑃𝑃𝐵𝐵𝐵𝐵 , and 𝑃𝑃𝐶𝐶𝐶𝐶𝐶𝐶 has one peer node in C2.
+
+Fig.12 presents the configuration information for these nodes, and cryptogen in Hyperledger
+Fabric is used to ease the registration process by generating certificates such as admincert
+(for each node's administrator), cacert (for the order), and tlscacert (for the transaction) (for
+establishing connections). Each peer node has an administrator registered in either C1 or C2.
+At the back end, MSP handles CAs with various dimensions of SCM and the wallets of
+DApps, which ensures peer nodes can receive certiﬁcates and public-private keys as the
+21
+
+cryptographic identities. The administrator can also send requests to the sidechain's Fabric
+CA for offering certificates and the public-private key to operators in the associated
+organization, who are in charge of adding operation records to the sidechain. The ordering
+service, consortium, and each peer node are all configured in the C1's genesis block. In each
+peer node, an anchor peer 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 is created for cross-node communication in the C1 as well as
+cross-chain interactions between the C1 and C2. By collecting transactions, bundling them
+into a block, and distributing the block to peer nodes, the ordering service (configured in
+Fig.10) makes it easier to achieve an agreement on the sequence of transactions.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+Figure 11. BIBP prototype system: (a) BIBP network details; (b) C1 details; (c) C2 details;
+and (d) chaincode details.
+
+22
+
+Figure 12. Order configuration
+4.3 Performance Analysis
+This section introduces the storage cost, throughput, and latency performance measures used
+to assess the BIBP prototype in the experiment. There are two assumptions: (1) A total of 40
+modular products (one typical floor) are produced, transported, and installed in 60 days; (2)
+each modular product generates an average of 34 transactions (one order from 𝐴𝐴𝑆𝑆𝑆𝑆 , eleven
+PM-QA operations in 𝐴𝐴𝐼𝐼𝐼𝐼𝐼𝐼 , eleven status updates in 𝐴𝐴𝐵𝐵𝐵𝐵𝐵𝐵 , eleven times data collection by
+𝐴𝐴𝑆𝑆𝑆𝑆𝑆𝑆 ,). Tblock = 2 hours/block (12 working hours per day) can be used as the block time,
+which means a new block is created every half minute for recording SCM-MC transactions.
+As a result, based on a preliminary calculation, each block contains an average of four
+transactions.
+
+4.3.1 Storage Cost
+In the previous IoT-enabled BIM platform, the BIM model is stored in the webserver with the
+size can be around 128.84 MB (e.g., BIM model in Fig.9). To make the BIM model the single
+point of truth, we need to save the BIM model into the blockchain. However, it may lead to
+redundancy in the blockchain network if the BIM model's full information is stored in the
+blockchain network. In BIBP, any status change of the BIM is computed as the minimum
+SDTs. One transaction’s average size can be reduced to 1 KB (Xue and Lu, 2020), and all of
+the detailed information is kept in a local database. The total number of transactions in this
+experiment is 1360 (40 × 34) and the maximum scenario in each ledger of the network for the
+experiment only generates1360 KB (1360 × 1). For the present blockchain storage capacity, it
+23
+
+is a suitable size. Storage burdens may be freed from the BIBP system architecture, especially
+useful for tracking vital information in big BIM files.
+4.3.2 Throughput and Latency
+Fig. 13 presents the throughput simulated and measured at peer nodes by transactions per
+second, while the latency performance was tested by measuring the time of peer-to-peer
+transactions. Both metrics are simulated by changing the block size. When the block size is
+98 MB, the findings show that the Hyperledger Fabric can reach an acceptable throughput of
+around 331 transactions per second (TPSs) with a latency of about 100 ms. The system's
+latency is measured in milliseconds, as evidenced by the result. Each transaction may be
+published minutes or hours apart in actual SCM procedures for modular construction. Some
+material supply and production activities are also long processes that might take up to a day.
+As a result, the prototype's latency may be acceptable. This analysis established that
+permissioned blockchains, such as Hyperledger Fabric, are suitable for BIBP.Moreover, the
+performance of Hyperledger Fabric in throughput and latency has also been validated in
+other studies to indicate it outperforms Ethereum (Pongnumkul et al. 2017; Dabbagh et al.
+2020).
+
+Figure 13. Throughput and latency of the prototype system
+4.3.3 Privacy and Security Analysis
+According to Lu et al. (2021) and Li et al. (2021), the privacy and security analysis of the
+proposed BIBP (particularly for the IoT network) can be explored via confidentiality,
+integrity, non-repudiation, authentication, and authorization.
+24
+
+Confidentiality: thanks to its cross-chain design (e.g., two channels in Hyperledger Fabric)
+and private data, this study can maintain confidentiality and private data. The former
+facilitates IoT-related operations by creating channel #2, allowing transactions to be accessed
+exclusively by peers (e.g., 𝑃𝑃𝐵𝐵𝐵𝐵 , 𝑃𝑃𝐶𝐶𝐶𝐶𝐶𝐶 , 𝑃𝑃𝐵𝐵𝐵𝐵𝐵𝐵𝐵𝐵 ) who engage in channel #2. The latter implies
+that transactions are encrypted with a hash and kept in the private database of authorized
+peers. As a result, the suggested method protects both privacy and confidentiality.
+Integrity and non-repudiation: A transaction's integrity cannot be compromised while it is
+being sent. All transactions in channels #1 and #2 are tamper-proof and include timestamps.
+Furthermore, Transport Layer Security in Hyperledger Fabric allows transaction integrity
+check across peer nodes to avoid “man in the middle” attacks and otherwise secure
+connections.
+Authentication: Authentication mechanisms rely on digital signatures, which necessitate the
+possession of two cryptographically corresponding keys by each peer node: a public key that
+is widely distributed and serves as an authentication anchor and a private key used to
+generate digital signatures on transactions.
+Authorization: MSP in Hyperledger Fabric is used in this study to prove the identity of
+authorized peers. Smart contracts can only be activated by approved peers.
+4.3.4 Feedback from Stakeholders
+The primary stakeholders provide positive feedback on this prototype development. For
+example, HKU Estate Office (owner) said, “ We now understand how the physical BIBP is
+set up amongst the project stakeholders and know the virtual process of transaction flows in
+the BIBP prototype”. Paul Y. Engineering (general contractor) praised, “It is a uniform and
+open BIBP system suitable for different functions (e.g., inspections, progress monitoring,
+authentic data selection, privacy preservation) with involving different stakeholders.” And
+“We truly understand the immutability in BIBP through the chained blocks with hashed
+transactions and stakeholders’ consensus.” Yahgee Modular House (manufacturer)
+commented, “It is not easy to graphically visualize and monitor the data-informationknowledge transactions operation process, but we understand the rationality of how the IoT
+data (via a hash table, dictionary-like data structure), inspection form (via URL), and BIM
+information (via changes in IFC) stored and validated on the BIBP.” And “we learned that
+decentralized applications, such as quality inspection apps, how to interact with BIM, IoT,
+and blockchain system.”
+
+5 Discussion
+Three features of originality to the proposed BIBP system design are outlined below in
+comparison to previous studies.
+
+25
+
+•
+
+First, by combining blockchain, IoT, and BIM, BIBP can inherit the merits of
+permissioned blockchain for SCM of modular construction in secure communication,
+accountable operations, traceable data, transparent information, and reliable
+knowledge when compared with existing IoT-enabled BIM platforms. BIBP can not
+only minimize manual interruption to SCM processes via establishing ubiquitous IoT
+among physical construction resources but also integrate BIM-based functional nodes
+and knowledge model nodes to construct an SCM network in modular construction.
+
+•
+
+Secondly, in comparison to current blockchain systems in the construction industry,
+this research offers open blockchain IoT-BIM as the Infrastructure, which is based on
+an open BIM standard that is expanded from IFC. Therefore, the BIM in consensus
+and BIM in the local cache are IFC compatible. The open BIM standard can help the
+public body (e.g., government agency reluctant to mandating commercial software)
+access and assess the BIMs developed on commercial platforms. New information
+and functions are also easy to implement on an open BIBP.
+
+•
+
+Thirdly, DApps for stakeholder communication, intelligent PM-QA, BIM, and IoT are
+designed with various smart contracts in SaaS. Moreover, the consensus-oriented
+transaction flow has been proposed in BIBP to achieve on-chain, cross-chain, and offchain activities. The case study-based experiment has also indicated lower storage
+cost and acceptable latency and throughput than the traditional IoT-enabled BIM
+platform.
+
+Despite these advancements, this study faces a few limits and problems in terms of practical
+use.
+•
+
+Firstly, although the SDT can reduce the BIM model's redundancy, transactions in the
+PM-QA process of SCM are more complicated since the data, information, and
+knowledge, e.g., the analysis and solutions for constraints, risks, uncertainties, and
+disturbances, are dynamic and massive. Including them in each transaction can also
+lead to redundancy and low latency for the blockchain network. These complex
+transactions also prevent knowledge-based real-time optimization and control tasks.
+Thus, the extension of SDT to the knowledge models is needed.
+
+•
+
+Secondly, constraints, risks, uncertainties, and disturbances in the PM-QA processes
+of SCM in modular construction are complex and dynamic, and current smart
+contracts are almost deterministic. How to develop adaptive smart contracts to process
+these data, information, and knowledge is still challenging. As the complex SCM
+process of modular construction may require various knowledge models, they are not
+be elaborated and tested in this study.
+
+•
+
+Thirdly, the BIBP currently stays at the one case study experiment. It should be
+further developed and tested in more real off-site construction projects (e.g., modular,
+prefabricated, or panelized construction) based on the well-explained business process
+26
+
+analysis, completed open BIM standard, comprehensive IoT protocols, robust
+blockchain network with adaptive smart contracts, optimal block size, efficient
+consensus mechanism, and other Dapps or externally connected systems (e.g., ERP,
+GIS, CIM).
+
+6 Conclusion
+This study presents a service-oriented and decentralized system architecture of BIBP by
+linking three-layer and five-dimension SCM to support knowledge and information-driven
+smart SCM services and data-driven SCM operations in modular construction. BIBP
+integrates blockchain with IoT-BIM for conﬁguring DIK-driven SCM in modular
+construction toward construction 4.0. BIBP was explained based on its DIK-oriented SCM
+model, system architecture, IaaS (e.g., hardware, core technologies, and protocols), BaaS
+(e.g., BIBP network service, smart contract service, ledger service), and SaaS (e.g., DApps
+and transaction flow). Significant contributions are summarized threefold based on the
+findings in this study. Firstly, a brand new BIBP system architecture for configuring SCM in
+modular construction was developed by connecting blockchain with the IoT-BIM. BIBP
+embraced signiﬁcant merits in communicating information with security and transparency,
+and conducting operations with traceability and smartness while reducing competitive storage
+cost and achieving acceptable throughput and latency performance. Secondly, the
+configuration of IaaS, BaaS, and SaaS offered insights into the future industrial
+implementation of BIBP. Thirdly, the prototype system and its case study evaluation improve
+the feasibility of BIBP for SCM in modular construction. The experiment results indicated
+that the BIBP could carry out lower storage costs and reasonable throughput and latency.
+Future studies can improve and upgrade the proposed BIBP. For example, the design of the
+optimal consensus mechanism to achieve lower latency performance when increasing the
+number of transactions and the size of blocks, and also the development of adaptive smart
+contracts to more efficiently process complex data, information, and knowledge, such as
+constraints, risks, uncertainties, and disturbances in SCM of modular construction, by
+customizing the latest machine learning approaches.
+
+Acknowledgments
+The work presented in this paper was financially supported by the Hong Kong Innovation and
+Technology Commission (ITC) with the Innovation and Technology Fund (ITF) (No.
+ITP/029/20LP). This funding source had no role in the design and conduction of this study.
+
+Data Availability Statement
+Some or all data, models, or codes that support the findings of this study are available from
+the corresponding author upon reasonable request.
+
+27
+
+List of Abbreviations
+AAC
+BaaS
+BIBP
+BIM
+BNs
+BUC
+CAC
+CC
+CFT
+CUNs
+Dapps
+DIK
+DS
+DSC
+GNs
+IaaS
+IoT
+IS
+KM
+KS
+MC
+MSP
+NC
+POC
+PM
+PS
+QA
+QCC
+SaaS
+SCC
+SCM
+SCOs
+SDTs
+SEC
+SOA
+SUC
+SVC
+SS
+VAC
+4M1E
+
+Availability Assessment Contract
+BIM as a Service
+Blockchain-enabled IoT-BIM Platform
+Building Information Modeling
+Broker Nodes
+BIM Update Contract
+Capacity Assessment Contract
+Channel Configuration
+Crash Fault-Tolerant
+Computing Unit Nodes
+Decentralized Applications
+Data-Information-Knowledge
+Data Space
+Decision Support Contract
+Gateway Nodes
+Infrastructure as a Service
+Internet of Things
+Information Space
+Knowledge Model
+Knowledge Space
+Modular Construction
+Membership Service Provider
+Network Configuration
+Process Optimization Contract
+Process Management
+Physical Space
+Quality Assurance
+Quality Control Contract
+Software As A Service
+State Computing Contract
+Supply Chain Management
+Smart Construction Objects
+Semantic Differential Transactions
+State Evaluation Contract
+Service-Oriented Architecture
+State Update Contract
+State Validation Contract
+Service Space
+Value Assessment Contract
+Man, Machine, Material, Method, Environment
+
+References
+Bankvall, L., Bygballe, L., Dubois, A., & Jahre, M. (2010). Interdependence in supply chains
+and projects in construction. Supply Chain Management, 15(5), 385-393.
+Barbosa, F., Woetzel, J., & Mischke, J. (2017). Reinventing Construction: A Route of Higher
+Productivity. McKinsey Global Institute.
+28
+
+Beck, R., Stenum Czepluch, J., Lollike, N., & Malone, S. (2016). Blockchain–the gateway to
+trust-free cryptographic transactions.
+Buterin, V. (2014). A next-generation smart contract and decentralized application
+platform. white paper, 3(37).
+Cachin, C. (2016, July). Architecture of the hyperledger blockchain fabric. In Workshop on
+distributed cryptocurrencies and consensus ledgers (Vol. 310, No. 4).
+Cheng, J. C., Chen, W., Chen, K., & Wang, Q. (2020). Data-driven predictive maintenance
+planning framework for MEP components based on BIM and IoT using machine
+learning algorithms. Automation in Construction, 112, 103087.
+Dabbagh, M., Kakavand, M., Tahir, M., & Amphawan, A. (2020, September). Performance
+Analysis of Blockchain Platforms: Empirical Evaluation of Hyperledger Fabric and
+Ethereum. In 2020 IEEE 2nd International Conference on Artificial Intelligence in
+Engineering and Technology (IICAIET) (pp. 1-6). IEEE.
+Dave, B., Buda, A., Nurminen, A., & Främling, K. (2018). A framework for integrating BIM
+and IoT through open standards. Automation in Construction, 95, 35-45.
+Deng, Y., Gan, V. J., Das, M., Cheng, J. C., & Anumba, C. (2019). Integrating 4D BIM and
+GIS for construction supply chain management. Journal of Construction Engineering
+and Management, 145(4), 04019016.
+Gupta, S., Hellings, J., Rahnama, S., & Sadoghi, M. (2020). Building high throughput
+permissioned blockchain fabrics: challenges and opportunities. Proceedings of the
+VLDB Endowment, 13(12), 3441-3444.
+Helliar, C. V., Crawford, L., Rocca, L., Teodori, C., & Veneziani, M. (2020). Permissionless
+and permissioned blockchain diffusion. International Journal of Information
+Management, 54, 102136.
+Hijazi, A. A., Perera, S., Calheiros, R. N., & Alashwal, A. (2021). Rationale for the Integration
+of BIM and Blockchain for the Construction Supply Chain Data Delivery: A Systematic
+Literature Review and Validation through Focus Group. Journal of Construction
+Engineering and Management, 147(10), 03121005.
+Hsu, P. Y., Aurisicchio, M., & Angeloudis, P. (2019). Risk-averse supply chain for modular
+construction projects. Automation in Construction, 106, 102898.
+Hwang, B. G., Shan, M., & Looi, K. Y. (2018). Knowledge-based decision support system for
+prefabricated prefinished volumetric construction. Automation in Construction, 94,
+168-178.
+Innella, Filomena, Mehrdad Arashpour, and Yu Bai. "Lean methodologies and techniques for
+modular construction: Chronological and critical review." Journal of Construction
+Engineering and Management 145.12 (2019): 04019076.
+Kanan, R., Elhassan, O., & Bensalem, R. (2018). An IoT-based autonomous system for
+workers' safety in construction sites with real-time alarming, monitoring, and
+positioning strategies. Automation in Construction, 88, 73-86.
+
+29
+
+Lee, D., Lee, S. H., Masoud, N., Krishnan, M. S., & Li, V. C. (2021). Integrated digital twin
+and blockchain framework to support accountable information sharing in construction
+projects. Automation in construction, 127, 103688.
+Li, C. Z., Xue, F., Li, X., Hong, J., & Shen, G. Q. (2018a). An Internet of Things-enabled BIM
+platform for on-site assembly services in prefabricated construction. Automation in
+construction, 89, 146-161.
+Li, C. Z., Chen, Z., Xue, F., Kong, X. T., Xiao, B., Lai, X., & Zhao, Y. (2020a). A blockchainand IoT-based smart product-service system for the sustainability of prefabricated
+housing construction. Journal of Cleaner Production, 286, 125391.
+Li, S., Da Xu, L., & Zhao, S. (2018b). 5G Internet of Things: A survey. Journal of Industrial
+Information Integration, 10, 1-9.
+Li, X., Shen, G. Q., Wu, P., & Yue, T. (2019a). Integrating building information modeling and
+prefabrication housing production. Automation in Construction, 100, 46-60.
+Li, X., Wu, C., Wu, P., Xiang, L., Shen, G. Q., Vick, S., & Li, C. Z. (2019b). SWP-enabled
+constraints modeling for on-site assembly process of prefabrication housing
+production. Journal of Cleaner Production, 239, 117991.
+Li, X., Chi, H. L., Wu, P., & Shen, G. Q. (2020). Smart work packaging-enabled constraintfree path re-planning for tower crane in prefabricated products assembly
+process. Advanced Engineering Informatics, 43, 101008.
+Li, X., Wu, L., Zhao, R., Lu, W., & Xue, F. (2021). Two-layer Adaptive Blockchain-based
+Supervision model for off-site modular housing production. Computers in
+Industry, 128, 103437.
+Liu, G., Li, K., Zhao, D., & Mao, C. (2017). Business model innovation and its drivers in the
+Chinese construction industry during the shift to modular prefabrication. Journal of
+Management in Engineering, 33(3), 04016051.
+Liu, H., Sydora, C., Altaf, M. S., Han, S., & Al-Hussein, M. (2019). Towards sustainable
+construction: BIM-enabled design and planning of roof sheathing installation for
+prefabricated buildings. Journal of Cleaner Production, 235, 1189-1201.
+Lu, W.S., Li, X, Xue, F., Zhao, R., & Wu, L.P.F.(2021). Exploring Smart Construction Objects
+as Blockchain Oracles in Construction Supply Chain Management, Automation in
+Construction, 129,103816
+Luo, L., Jin, X., Shen, G. Q., Wang, Y., Liang, X., Li, X., & Li, C. Z. (2020). Supply Chain
+Management for Prefabricated Building Projects in Hong Kong. Journal of
+Management in Engineering, 36(2), 05020001.
+MacLeamy, P. A. T. R. I. C. K. (2004). Collaboration, integrated information and the project
+lifecycle in building design, construction and operation. WP-1202, The Construction
+Users Roundtable.
+Mazairac, W., & Beetz, J. (2013). BIMQL–An open query language for building information
+models. Advanced Engineering Informatics, 27(4), 444-456.
+
+30
+
+Marzouk, M., & Abdelaty, A. (2014). Monitoring thermal comfort in subways using building
+information modeling. Energy and Buildings, 84, 252-257.
+Mekki, K., Bajic, E., Chaxel, F., & Meyer, F. (2018, March). Overview of cellular LPWAN
+technologies for IoT deployment: Sigfox, LoRaWAN, and NB-IoT. In 2018 IEEE
+international conference on pervasive computing and communications workshops (pp.
+197-202). IEEE.
+Mentzer, J. T., DeWitt, W., Keebler, J. S., Min, S., Nix, N. W., Smith, C. D., & Zacharia, Z.
+G. (2001). Defining supply chain management. Journal of Business Logistics, 22(2), 125.
+Mohamed, A. G., Abdallah, M. R., & Marzouk, M. (2020). BIM and semantic web-based
+maintenance information for existing buildings. Automation in Construction, 116,
+103209.
+Nakamoto, S. (2008). Bitcoin: A peer-to-peer electronic cash system.(2008).
+NIBS,
+N.
+I.
+(2015).
+National
+BIM
+Standard-United
+States:
+https://www.nationalbimstandard.org/
+Nguyen, G. T., & Kim, K. (2018). A Survey about Consensus Algorithms Used in
+Blockchain. Journal of Information Processing Systems, 14(1).
+Pongnumkul, S., Siripanpornchana, C., & Thajchayapong, S. (2017, July). Performance
+analysis of private blockchain platforms in varying workloads. In 2017 26th
+International Conference on Computer Communication and Networks (ICCCN) (pp. 16). IEEE.
+Qian, X. A., & Papadonikolaki, E. (2020). Shifting trust in construction supply chains through
+blockchain technology. Engineering, Construction and Architectural Management.
+Ramaji, Issa J., and Ali M. Memari. (2016). Product architecture model for multistory modular
+buildings. Journal of Construction Engineering and Management, 142 (10), 04016047.
+Solihin, W., Eastman, C., Lee, Y. C., & Yang, D. H. (2017). A simplified relational database
+schema for the transformation of BIM data into a query-efficient and spatially enabled
+database. Automation in Construction, 84, 367-383.
+Tang, S., Shelden, D. R., Eastman, C. M., Pishdad-Bozorgi, P., & Gao, X. (2019). A review of
+building information modeling (BIM) and the internet of things (IoT) devices
+integration: Present status and future trends. Automation in Construction, 101, 127-139.
+Thai, H. T., Ngo, T., & Uy, B. (2020). A review on modular construction for high-rise buildings.
+Structures, 28,1265-1290.
+Wang, Z., Wang, T., Hu, H., Gong, J., Ren, X., & Xiao, Q. (2020). Blockchain-based
+framework for improving supply chain traceability and information sharing in precast
+construction. Automation in Construction, 111, 103063.
+Xu, G., Li, M., Chen, C. H., & Wei, Y. (2018). Cloud asset-enabled integrated IoT platform
+for lean prefabricated construction. Automation in Construction, 93, 123-134.
+
+31
+
+Xue, F., Chen, K., Lu, W., Niu, Y., & Huang, G. Q. (2018). Linking radio-frequency
+identification to Building Information Modeling: Status quo, development trajectory
+and guidelines for practitioners. Automation in Construction, 93, 241-251.
+Xue, F., & Lu, W. (2020). A semantic differential transaction approach to minimizing
+information redundancy for BIM and blockchain integration. Automation in
+Construction, 118, 103270.
+Yin, X., Liu, H., Chen, Y., & Al-Hussein, M. (2019). Building information modeling for offsite construction: Review and future directions. Automation in Construction, 101, 7291.
+Zhai, Y., Chen, K., Zhou, J. X., Cao, J., Lyu, Z., Jin, X., ... & Huang, G. Q. (2019). An Internet
+of Things-enabled BIM platform for modular integrated construction: A case study in
+Hong Kong. Advanced Engineering Informatics, 42, 100997.
+Zhang, C., Zhou, G., Li, H., & Cao, Y. (2020). Manufacturing blockchain of things for the
+configuration of a data-and knowledge-driven digital twin manufacturing cell. IEEE
+Internet of Things Journal, 7(12), 11884-11894.
+Zhang, Z., Yuan, Z., Ni, G., Lin, H., & Lu, Y. (2020 b). The quality traceability system for
+prefabricated buildings using blockchain: An integrated framework. Frontiers of
+Engineering Management, 7(4), 528-546.
+Zheng, R., Jiang, J., Hao, X., Ren, W., Xiong, F., & Ren, Y. (2019). bcBIM: A blockchainbased big data model for BIM modification audit and provenance in mobile
+cloud. Mathematical Problems in Engineering, 2019.
+Zheng, Z., Xie, S., Dai, H., Chen, X., & Wang, H. (2017, June). An overview of blockchain
+technology: Architecture, consensus, and future trends. In 2017 IEEE International
+Congress on Big Data (BigData congress) (pp. 557-564). IEEE.
+Zhong, R. Y., Peng, Y., Xue, F., Fang, J., Zou, W., Luo, H., ... & Huang, G. Q. (2017).
+Prefabricated construction enabled by the Internet-of-Things. Automation in
+Construction, 76, 59-70.
+Zins, C. (2007). Conceptual approaches for defining data, information, and knowledge. Journal
+of the American Society for Information Science and Technology, 58(4), 479-493.
+
+32
+
+

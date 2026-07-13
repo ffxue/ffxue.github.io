@@ -1,0 +1,996 @@
+Construction Inspection Information Management with
+Consortium Blockchain
+Liupengfei Wu 1*, Weisheng Lu 2, Fan Xue 3
+This is the authors’ pre-print version (before peer review) of the paper:
+Wu, L., Lu, W., & Xue, F. (2020). Construction inspection information management with
+consortium blockchain. Proceedings of the 25th International Symposium on Advancement of
+Construction Management and Real Estate (CRIOCM2020), Springer, in press. Merit Paper Award.
+This file is shared for personal and academic use only, under the license CC BY-NC-ND 4.0
+(Non-Commercial, No Derivatives, and with an Attributed citation when you use). The final
+published version of this paper can be found at: [LINK_TO_SPRINGERLINK]. Any uses other than
+personal and academic purposes must obtain appropriate permissions from Springer first.
+Abstract: Blockchain can be regarded as a distributed database that records transaction data in a shared
+manner. This new technology is considered destructive and can transfer many data-driven industries,
+including construction. On the other hand, as one of the necessary measures to ensure quality, progress,
+and safety, construction inspection records still rely on paper. This leads to many problems, such as
+time-consuming, input errors, file loss, and even data manipulation. This research aims to develop a
+blockchain-based construction information management platform to expand blockchain applications in
+construction inspection management. First, conduct a literature review to explore blockchain technologies,
+types of blockchains, blockchain platforms, and existing construction inspection processes and issues.
+Based on the review, a method called design thinking is used to develop a blockchain prototype. As a result,
+a consortium blockchain prototype is developed to help inspection information management. The proposed
+solution can be tested and fine-tuned in future research. The study also discusses issues related to the
+current blockchain implementation, which provides numerous opportunities for further investigation. Not
+only limited to general discussions, one contribution of this research is the development of a configurable
+prototype so that construction stakeholders can follow and develop their blockchain-based solutions.
+Keywords: Blockchain; Construction industry; Information management; Inspection; Smart contract.
+
+1* Liupengfei Wu
+
+Corresponding author, Department of Real Estate and Construction, University of Hong Kong, Hong Kong, China
+E-mail: u3545425@connect.hku.hk
+Weisheng Lu
+Department of Real Estate and Construction, University of Hong Kong, Hong Kong, China
+
+2
+
+3 Fan Xue
+Department of Real Estate and Construction, University of Hong Kong, Hong Kong, China
+
+1
+
+1 Introduction
+
+2
+
+Blockchain was first known as the basic technology of cryptocurrency in 2008[1]. Subsequently, blockchain was
+
+3
+
+introduced for applications beyond cryptocurrency. Perera et al. (2020) pointed out that blockchain is considered
+
+4
+
+to have disruptive capabilities and can change many global industries, including the construction industry[2].
+
+5
+
+Blockchain can be seen as an immutable ledger, recording information in a decentralized manner. It combines
+
+6
+
+three key underlying technologies: distributed database, cryptography, and consensus protocols[1]. Together,
+
+7
+
+these underlying technologies enable information to be submitted, endorsed, and shared with a high degree of
+
+8
+
+security. Blockchain can be divided into three types, namely public, private, and consortium. They are
+
+9
+
+categorized by the right to access ledger on the blockchain[2]. Many existing blockchain platforms, such as R3
+
+10
+
+Corda and Hyperledger Fabric, can develop decentralized applications. If the existing platform does not meet
+
+11
+
+user requirements, one can also develop a self-built platform.
+
+12
+
+Construction inspection plays a vital role in every phase of projects. In general, construction inspections are
+
+13
+
+usually carried out as a contractual responsibility performed by the consultants to offer the client an independent
+
+14
+
+view of construction quality, work progress, and site safety. Most of the existing inspection information is
+
+15
+
+recorded on paper[3]. Issues such as incorrect placement of steel bars, schedule delays, and unsafe operation
+
+16
+
+behaviors are identified and integrated through manual processes; therefore, the process is expensive, inefficient,
+
+17
+
+and error-prone. Also, the construction stakeholders are known for their lack of mutual trust. The development
+
+18
+
+of mutual trust between stakeholders (e.g., clients, main contractors, consultants, and subcontractors) in
+
+19
+
+construction depends on tamper-proof construction inspection records[4]. Nevertheless, existing information
+
+20
+
+management technologies cannot meet the stakeholders’ requirements.
+
+21
+
+The aim of this paper is threefold: (a) to explain blockchain technology so that stakeholders in the
+
+22
+
+construction industry understand its potential; (b) to develop a consortium blockchain prototype (Hyperledger
+
+23
+
+Fabric-based) by following which stakeholders in construction can develop their case-specific blockchain
+
+24
+
+solutions for managing construction inspection information; (c) To discuss issues related to the current
+
+25
+
+blockchain implementation so that future research can provide potential solutions. The rest of the paper is
+
+26
+
+structured into ﬁve sections. In the second section, we briefly introduce blockchain and describe inspection
+
+27
+
+works in the construction industry. In the third section, we provide the methodology. In the fourth section, we
+
+28
+
+propose our blockchain prototype. Discussions are conducted to deepen the understanding of blockchain
+
+29
+
+technology in the fifth section, and conclusions are given at last.
+
+30
+
+2 Literature Review
+
+31
+
+2.1 Blockchain Technology
+
+32
+
+Cryptography, distributed databases, and consensus mechanism are the three basic technologies of blockchain[2].
+
+33
+
+Blockchain protects transaction data and interactions on the chain through a hash algorithm and public key
+
+34
+
+infrastructure (PKI). PKI guarantees that the transaction data is encrypted and decrypted through the
+
+35
+
+unique relationship between the public key and the corresponding private key, while the hash algorithm
+
+36
+
+ensures that the transaction data is tamper-proof[2]. The blockchain retains a growing set of transaction data,
+
+37
+
+bundled together into blocks of data (Figure 1). Each block includes the block number, the previous block’s
+
+38
+
+hash, the current block’s hash, the timestamp, the target difficulty, and the nonce[5]. A nonce is a random
+
+39
+
+number that considers the network rules to identify the hash. The hash value is unique for each block, so if
+
+40
+
+people intentionally or unintentionally alter the block’s transaction data, the corresponding hash value will be
+
+41
+
+changed instantly. Each block retains the previous block’s hash value to ensure that the current block cannot be
+
+42
+
+changed without changing the previous block.
+
+43
+44
+
+Figure 1. Blockchain structure
+
+45
+
+A blockchain database is not a single information storage source but is composed of ledgers scattered in
+
+46
+
+many locations in a shared manner[2]. A distributed database is also a network where participants (also called
+
+47
+
+peer nodes) can have transactions without intermediaries. The blockchain consensus mechanism makes direct
+
+48
+
+transactions between interacting parties possible. The blockchain’s consensus mechanism is to accept the
+
+49
+
+transaction data into the distributed ledger by verifying the transaction data’s order and correctness[5]. There are
+
+50
+
+many consensus algorithms to choose from, such as Proof of Work (PoW), Proof of Stake (PoS), and Practical
+
+51
+
+Byzantine Fault Tolerance (PBFT), and each consensus has its own advantages and disadvantages.
+
+52
+
+2.2 Blockchain Options
+
+53
+
+Blockchain can be categorized as public, consortium, and private[2]. The public blockchain allows anyone
+
+54
+
+interested to join, and everyone can read the data on the public blockchain[1]. Public blockchains are commonly
+
+55
+
+used for cryptocurrencies such as Bitcoin. The consortium blockchain only allows a limited number of
+
+56
+
+pre-authorized groups/organizations to read data and submit transactions[1]. The private blockchain is only open
+
+57
+
+to one organization, so the network is centralized[1]. Many existing blockchain frameworks and platforms can be
+
+58
+
+used to implement public, private and consortium blockchains. Table 1 gives an overview of three popular
+
+59
+
+blockchain platforms. People can also develop customized platforms, but it may be challenging to ensure their
+
+60
+
+code security.
+
+61
+
+Table 1. Popular blockchain platforms overview
+
+Features
+
+Ethereum[2]
+
+Hyperledger Fabric[2]
+
+Ripple[6]
+
+Industry usage
+
+Cross-industry
+
+Cross-industry
+
+Financial Services
+
+Blockchain type
+
+Public
+
+Consortium
+
+Private
+
+Consensus
+
+Proof of Work/
+Proof of Stake
+
+Pluggable
+consensus
+
+Ripple
+consensus
+
+Mining rewards
+
+No
+
+Yes
+
+No
+
+protocol
+
+62
+
+2.3 Construction Inspection
+
+63
+
+In construction projects, the client entrusts inspectors to manage the project quality, schedule, safety, contract,
+
+64
+
+and other aspects of a business. The inspector is an impartial third party between the client and the contractor
+
+65
+
+who can correctly handle disputes. Besides, inspectors are required to understand engineering and technical
+
+66
+
+knowledge, accounting, and construction regulations. Quality control inspections usually include on-site
+
+67
+
+inspections of materials and construction processes[7]. The purpose of quality control inspections is to ensure
+
+68
+
+high-end quality at delivery. Inspectors can also check quality-related documents, work instructions, and action
+
+69
+
+plans to control the construction process better and prevent opportunism. Besides, regular progress inspections
+
+70
+
+are conducted on construction sites to ensure that the project can be completed within the agreed contract time[8].
+
+71
+
+Construction inspections are also important to ensure that relevant people work in a safe environment[9]. For
+
+72
+
+example, check whether there are fences to prevent people from falling from heights, ensure that employees
+
+73
+
+wear personal protective equipment, and check whether equipment and work platforms are maintained. On-site
+
+74
+
+inspectors usually keep daily construction logs or on-site diaries, photos, and construction progress meeting
+
+75
+
+minutes, and then submit reports regularly.
+
+76
+
+There are many problems with construction inspection information management. At present, a large
+
+77
+
+number of inspection works are paper-based[10]; construction inspection records can be tampered or altered
+
+78
+
+without being found[11]. Also, there may be information gaps between participants because many inspection
+
+79
+
+forms are filled out and sent manually, which leads to informal filling, incomplete attachments, poor real-time
+
+80
+
+sharing, and low efficiency[11]. Moreover, compared with other engineering industries, construction projects are
+
+81
+
+temporary and one-off. Therefore, organizations involved in construction projects find it difficult to maintain
+
+82
+
+long-term partnerships. The development of mutual trust between organizations with different interests is
+
+83
+
+challenging. Without trust, many organizations are reluctant to share detailed inspection information[11].
+
+84
+
+Participants can cut corners and blame others in collaboration because the existing information management
+
+85
+
+system has very low traceability[11]. Participants may also be dishonest and violate the contract to pursue private
+
+86
+
+interests[11].
+
+87
+
+Blockchain, with its salient features, has the potential to solve the above-mentioned inspection information
+
+88
+
+management issues. Blockchain can introduce reliability and immutability. Based on the hash algorithm, no one
+
+89
+
+can modify or tamper with approved records[2]. The agreed inspection information is stored in distributed
+
+90
+
+ledgers, and all participants have the same ledger that updates simultaneously. This can enhance information
+
+91
+
+transparency and sharing[2]. In addition, all participants have encrypted signatures based on PKI. Combining the
+
+92
+
+signature with timestamps, the blockchain can ensure the traceability of inspection information[11]. Each
+
+93
+
+inspection document needs to be endorsed by relevant stakeholders based on a consensus mechanism. Therefore,
+
+94
+
+blockchain can establish mutual trust between stakeholders and prevent later disputes[11]. By combining
+
+95
+
+blockchain and smart contracts, inspection information can be automatically checked according to contracts,
+
+96
+
+regulations, and standards to ensure construction quality, progress, and safety. Smart contracts are digital
+
+97
+
+contracts that can perform operations when predetermined conditions are met[1].
+
+98
+
+3 Methodology
+
+99
+
+This research used a hybrid approach, which includes literature reviews and design thinking (Figure 2).
+
+100
+
+Generally speaking, a literature review is a systematic method of collecting and integrating previous research
+
+101
+
+results[12]. As a research method, an organized literature review lays a concrete footing for advancing the
+
+102
+
+existing knowledge system and promoting theory development[13]. Through comprehensive findings, a literature
+
+103
+
+review can solve research problems with capabilities that no single study has. In view of the difficulty of
+
+104
+
+exhausting all related research work, it is usually necessary to delimit the research scope. Keywords used to
+
+105
+
+search for related papers in this study include “Construction Inspection”, “Block chain”, “Blockchain”,
+
+106
+
+“Consortium Blockchain”, and “Hyperledger Fabric”. A preliminary analysis was conducted to determine each
+
+107
+
+paper’s basic information; that is, the research objectives include blockchain applications and technologies,
+
+108
+
+construction inspection process, information management, and information management systems.
+
+109
+110
+
+Figure 2. Proposed Hyperledger Fabric-based solution
+
+111
+112
+
+Next, this research adopted design thinking to learn from existing practices and design a prototype suitable
+
+113
+
+for construction inspection information management. It emphasizes “thinking like a designer”, who usually
+
+114
+
+focuses on improving a product’s functionality according to customer needs[14]. The design thinking process
+
+115
+
+includes five stages, namely, empathize, define, ideate, prototype, and test. In this research, empathy was about
+
+116
+
+understanding the interrelationships among construction stakeholders (e.g., customers, contractors, and
+
+117
+
+consultants). In the next step, we defined the key issue. The issue here was to propose a Hyperledger-fabric
+
+118
+
+prototype so that a consortium blockchain-based system can manage construction inspection information. Then,
+
+119
+
+we carried out several group meetings to discuss and propose various design options. Finally, a designed
+
+120
+
+prototype was proposed. The testing stage was not covered in this study. In future research, this stage will aim to
+
+121
+
+interact with users to fine-tune the proposed solutions.
+
+122
+
+4 Proposed Solution
+
+123
+
+The upper part of Figure 3 shows a typical quality, progress, and safety inspection process. The
+
+124
+
+contractor’s engineer can submit an inspection request from the construction site. Usually, a client entrusts
+
+125
+
+consultants (e.g., inspectors) to conduct inspections on construction sites. The client’s project manager will
+
+126
+
+supervise the entire inspection process in the project-based organization, endorse the consultant’s
+
+127
+
+inspection reports, and issue payment instructions if all content meets the contracts and requirements.
+
+128
+
+To achieve reliability, immutability, information sharing, traceability, and self-execution in business
+
+129
+
+transactions, organizations participating in inspection must have identical and immutable inspection
+
+130
+
+records as the foundation for building trust. Based on the review in Section 2.2, we chose the consortium
+
+131
+
+blockchain because it allows multiple authorized parties to join the blockchain network and ensures
+
+132
+
+privacy. Besides, consortium blockchain can provide membership services (e.g., identity authorization and
+
+133
+
+verification) for multiple parties. In the process of cooperation, different information may have different degrees
+
+134
+
+of confidentiality. The ideal platform should provide isolated communication channels to protect privacy. For
+
+135
+
+example, the client can establish an isolated communication channel with the inspector without the contractor’s
+
+136
+
+involvement. As a result, the Hyperledger Fabric platform is selected for construction inspection information
+
+137
+
+management.
+
+138
+139
+
+Figure 3. Proposed Hyperledger Fabric-based solution
+
+140
+141
+
+The designed blockchain system based on Hyperledger Fabric in the lower part of Figure 2 can
+
+142
+
+enhance inspection information management. This digital inspection platform can benefit all construction
+
+143
+
+stakeholders. The submission of inspection requests can be digitalized and sent to inspectors to perform
+
+144
+
+inspections effectively. Inspectors use their smart devices (e.g., smartphones, iPads) to complete
+
+145
+
+assignments, conduct inspections, approve inspection forms or record any unqualified events, and report to
+
+146
+
+the client’s project manager through the platform. Photos and conversation records can also prove the
+
+147
+
+inspection process. The advantages of this platform include quickness, digitization, and transparency.
+
+148
+
+Another advantage is that all submitted documents should reach a consensus in the blockchain to prevent
+
+149
+
+future disputes. Most importantly, there is a timestamp on each inspection-related document submitted to
+
+150
+
+the platform. The platform can also enhance trust because the blockchain structure provides security,
+
+151
+
+auditability, and the submitted documents are immutable.
+
+152
+
+In the designed Hyperledger Fabric blockchain network, the Client, Consultant, and Contractor plan
+
+153
+
+to use this platform to manage inspection information. The Client is the initiator of the network. Client,
+
+154
+
+Consultant, and Contractor can have applications that perform inspection information in two channels.
+
+155
+
+Client and Consultant can privately exchange information about inspections in channel 1, while Client,
+
+156
+
+Consultant, and Contractor can also communicate in channel 2 together. The peer nodes Project manager
+
+157
+
+and Inspector have two ledgers, which record inspection information related to Channel 1 and 2. They also
+
+158
+
+have two smart contracts associated with channels 1 and 2, respectively. In contrast, the contractor’s peer
+
+159
+
+node Engineer has only one ledger and one smart contract associated with channel 2. CC1 and CC2 are
+
+160
+
+“Endorsement Policies”, so relevant parties can manage their channel access rights through them. Similarly,
+
+161
+
+NC4 allows the Client and Contractor to manage the entire blockchain network. O1 and O2 are two
+
+162
+
+ordering nodes used to manage the channel (e.g., packing inspection documents into blocks). Each
+
+163
+
+organization also has a certification authority that can issue digital identities to their peers.
+
+164
+
+5 Discussion
+
+165
+
+There are many existing problems in real life related to blockchain implementation. Security is one of the
+
+166
+
+biggest issues related to blockchain. In the construction industry, practitioners mistakenly believe that
+
+167
+
+blockchain can be a panacea to ensure the information's authenticity. However, there is an off-chain issue
+
+168
+
+that needs to be resolved in the future. For example, there is no 100% secure solution to ensure that
+
+169
+
+information is not tampered with before being submitted to the blockchain. Therefore, it is necessary to
+
+170
+
+convene engineers, blockchain developers, and even lawyers to sit down and discuss the security
+
+171
+
+framework for off-chain issues. Also, because the number of participants in a construction project is
+
+172
+
+limited and clients have strong decision-making power, determining the number of peer nodes in a
+
+173
+
+construction project to reduce the risk of 50% attacks will become a big challenge. A 50% attack means
+
+174
+
+that once someone has 50% of the blockchain network's computing power, they have the opportunity to
+
+175
+
+tamper with the information on the blockchain[2].
+
+176
+
+Secondly, how to choose a blockchain is also a problem. Although some studies have provided some
+
+177
+
+guidelines for construction practitioners to decide whether they need to use the blockchain, to the best of
+
+178
+
+our knowledge, no studies have proposed a systematic method to guide users to choose blockchain types
+
+179
+
+and platforms. Simultaneously, there is also a lack of relevant literature and industry guidance to help
+
+180
+
+people design a blockchain system that meets their needs. The lack of guidelines for choosing blockchain
+
+181
+
+options greatly limits the implementation of blockchains in real life.
+
+182
+
+Finally, one of the most issues concerned by the construction industry- the economic cost of using
+
+183
+
+blockchain-based systems has not received much attention. Only a small amount of literature calculates the
+
+184
+
+cost of blockchain transactions. However, there is no detailed explanation and case to prove the overall
+
+185
+
+cost of blockchain use. The blockchain cost may include initial platform setup, deployment, cloud storage,
+
+186
+
+ongoing maintenance, and monitoring. Thus, when better empirical data is available, a detailed cost-benefit
+
+187
+
+analysis is required.
+
+188
+
+6 Conclusions
+
+189
+
+The purpose of construction inspections is to ensure construction projects’ quality, progress, and safety.
+
+190
+
+However, there are many problems with current construction inspection information management. For
+
+191
+
+example, inspection information is easily tampered with and cannot be shared in real-time. The inspection
+
+192
+
+information received by clients is not reliable, and the traceability is low. Besides, it is not possible to
+
+193
+
+automatically check whether the information meets the requirements. In terms of inspection information
+
+194
+
+management, blockchain allows various construction stakeholders to realize immutable, transparent,
+
+195
+
+shared, traceable, and automatic construction inspection information management and this is the footing
+
+196
+
+for mutual trust.
+
+197
+
+This paper proposed a blockchain-based prototype for managing construction inspection information
+
+198
+
+in a decentralized manner. The Hyperledger Fabric platform under the consortium blockchain can collect,
+
+199
+
+encrypt, share, and record construction inspection information. Also, with the support of smart contracts,
+
+200
+
+an automated compliance check process can be realized. Further research should be conducted to test and
+
+201
+
+fine-tune the proposed prototype. In addition, this research discusses issues related to blockchain
+
+202
+
+applications. These issues provide many opportunities for future investigations. One of the important
+
+203
+
+contributions of this research is developing of the configurable prototype so that construction project
+
+204
+
+stakeholders can follow and develop their blockchain-based solutions.
+
+205
+
+References
+
+206
+
+[1]Hasselgren, A., Kralevska, K., Gligoroski, D., Pedersen, S. A., & Faxvaag, A. (2020). Blockchain in
+
+207
+
+healthcare and health sciences—A scoping review. International Journal of Medical Informatics, 134,
+
+208
+
+104040.
+
+209
+
+[2]Perera, S., Nanayakkara, S., Rodrigo, M. N. N., Senaratne, S., & Weinand, R. (2020). Blockchain
+
+210
+
+Technology: Is it Hype or Real in the Construction Industry?. Journal of Industrial Information
+
+211
+
+Integration, 100125.
+
+212
+213
+214
+215
+
+[3]Ochoa, S. F., Bravo, G., Pino, J. A., & Rodríguez-Covili, J. (2011). Coordinating loosely-coupled work
+in construction inspection activities. Group Decision and Negotiation, 20(1), 39-56.
+[4]Lau, E., & Rowlinson, S. (2009). Interpersonal trust and inter‐firm trust in construction projects.
+Construction Management and Economics, 27(6), 539-554.
+
+216
+
+[5]Xia, Q. I., Sifah, E. B., Asamoah, K. O., Gao, J., Du, X., & Guizani, M. (2017). MeDShare: Trust-less
+
+217
+
+medical data sharing among cloud service providers via blockchain. IEEE Access, 5, 14757-14767.
+
+218
+
+[6]Benji, M., & Sindhu, M. (2019). A study on the Corda and Ripple blockchain platforms. In Advances in
+
+219
+220
+221
+
+Big Data and Cloud Computing (pp. 179-187). Springer, Singapore.
+[7]Wang, L. C. (2008). Enhancing construction quality inspection and management using RFID
+technology. Automation in construction, 17(4), 467-479.
+
+222
+
+[8]Moeini, S., Oudjehane, A., Baker, T., & Hawkins, W. (2017). Application of an interrelated UAS-BIM
+
+223
+
+system for construction progress monitoring, inspection and project management. PM World Journal,
+
+224
+
+6(8), 1-13.
+
+225
+
+[9]Tang, S., Roberts, D., & Golparvar-Fard, M. (2020). Human-object interaction recognition for
+
+226
+
+automatic construction site safety inspection. Automation in Construction, 120, 103356.
+
+227
+228
+
+[10]Ochoa, S. F., Bravo, G., Pino, J. A., & Rodríguez-Covili, J. (2011). Coordinating loosely-coupled work
+in construction inspection activities. Group Decision and Negotiation, 20(1), 39-56.
+
+229
+
+[11]Zhong, B., Wu, H., Ding, L., Luo, H., Luo, Y., & Pan, X. (2020). Hyperledger fabric-based consortium
+
+230
+
+blockchain for construction quality information management. Frontiers of Engineering Management,
+
+231
+
+1-16.
+
+232
+233
+234
+235
+236
+237
+
+[12]Baumeister, R. F., & Leary, M. R. (1997). Writing narrative literature reviews. Review of general
+psychology, 1(3), 311-320.
+[13]Webster, J., & Watson, R. T. (2002). Analyzing the past to prepare for the future: Writing a literature
+review. MIS quarterly, xiii-xxiii.
+[14]Brown, T., & Wyatt, J. (2010). Design thinking for social innovation. Development Outreach, 12(1),
+29-43.
+
+

@@ -1,0 +1,1274 @@
+Pushing the Boundaries of Modular-Integrated Construction: A Symmetric Skeleton GrammarBased Multi-objective Optimization of Passive Design for Energy Savings and Daylight Autonomy
+Qianyun Zhou 1, Fan Xue 2*
+This is the peer-reviewed post-print version of the paper:
+Zhou, Q., & Xue, F. (2023). Pushing the boundaries of modular-integrated
+construction: A symmetric skeleton grammar-based multi-objective optimization of
+passive design for energy savings and daylight autonomy. Energy and Buildings, 296,
+113417. Doi: 10.1016/j.enbuild.2023.113417
+The final version of this paper is available at: https://doi.org/10.1016/j.enbuild.2023.113417.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+Highlights
+5
+
+10
+
+⋅
+
+Automatic MiC envelopes and layout generation by a novel SSG-MOO method.
+
+⋅
+
+Multi-objective optimization formulation for passive MiC design.
+
+⋅
+⋅
+
+A pilot MiC study in Hong Kong produced 5 selected Pareto optima out of 625.
+Up to 0.42% energy savings and 9.71% spatial daylight autonomy improvement
+against the baseline.
+
+⋅
+
+A multi-level analysis of results and design strategies for practitioners.
+
+Abstract
+
+15
+
+20
+
+25
+
+Modular-integrated Construction (MiC) is an emerging construction technique promoted in the
+building sector for high productivity and low waste emission in the construction phase; yet, the
+standardized modules also bring new challenges, such as balancing passive energy efficiency
+and spatial daylight autonomy, to the operational phase. This paper proposes a Symmetric
+Skeleton Grammar-based Multi-Objective Optimization (SSG-MOO) method to formulate
+parametric MiC envelopes and detailed layout, with the two objective functions being energy
+efficiency and interior daylight performance in the operational phase. Pareto optima of the
+SSG-MOO, computed by the Non-dominated Sorting Genetic Algorithm II, are generally
+verified and analyzed in three levels, i.e., MOO’s solution space, SSG layout, and MiC design
+parameters. A case study of MiC residential building in Hong Kong demonstrated the SSGMOO method through five new passive MiC designs (i.e., spatial reorganization of three
+architectural modules, and parameter tuning of the envelops and corridors), achieving up to
+0.42% energy savings and 9.71% spatial daylight autonomy improvement compared to the
+baseline design. The contribution of this paper is two-fold, including a novel and sound SSG-
+
+1 Qianyun Zhou, MArch,
+Research Assistant, Department of Real Estate and Construction, The university of Hong Kong, Pokfulam, Hong Kong, China
+E-mail: qianyunz@hku.hk ORCiD: https://orcid.org/0000-0002-5466-6225
+2 Fan Xue, PhD
+Assistant Professor, Department of Real Estate and Construction, The university of Hong Kong, Pokfulam, Hong Kong, China
+E-mail: xuef@hku.hk ORCiD: https://orcid.org/0000-0003-2217-3693
+* Corresponding author, Tel: +852 3917 4174, Fax: +852 2559 9457, Email: xuef@hku.hk
+
+1
+
+30
+
+MOO formulation for parametric MiC designs, and offering time-efficient and evidence-based
+design tactics for MiC designers and industrial practitioners to push boundaries of MiC.
+Keywords
+Modular-integrated Construction; Multi-objective Optimization; Symmetric Skeleton
+Grammar; Energy Efficiency; Daylight Performance; Passive Generative Design
+
+1 Introduction
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+Worldwide, over 34% of final energy is consumed by the building and construction sector,
+emitting a third of green gas emissions (UNEP 2022). As a high-rise high-density city, Hong
+Kong receives roughly 60% of greenhouse gas emissions from the building sector, and the
+energy consumption has risen by 13.7% from 2010 to 66416 TJ in 2020 in the residential sector
+(EMSD 2022). The high energy consumption necessitates the development of novel sustainable
+construction technologies. Recently, a list of innovative sustainable construction technologies,
+such as modular construction and 3D printing, offer more advantages of enhancing productivity,
+reusability, and occupational safety than energy savings over the construction life cycle (Wang
+et al. 2020; Li et al. 2022).
+Modular-integrated Construction (MiC) is a novel construction technology best-known
+in the construction phase. MiC assembles free-standing integrated and volumetric modules
+before on-site installation (Pan & Hon 2020). According to Abdelmageed & Zayed (2020),
+MiC outperforms many construction technologies, including prefabrication, panelized
+construction, and hybrid construction, with higher productivity and safety, maintaining lower
+energy consumption and wastage in the construction phase. MiC also facilitates manufacturing,
+assembly, supply chain, and logistics management (Li et al. 2022). Therefore, MiC is highly
+promoted in Hong Kong, where around 20,000 new units of public housing projects are
+expected to use MiC technology for the 10-year period from 2022/23 to 2031/32 (HKHA 2022).
+However, the standard modularization also brings new challenges, such as constrained building
+designs and exponential combinations of modules.
+However, few studies have addressed optimum MiC designs in the operational phase,
+which involves up to 80%–90% of the total energy consumption (Habash 2022). Echenagucia
+et al. (2015) demonstrated that the optimal design of buildings could successfully improve
+indoor environmental comfort. Appropriate natural illumination and thermal comfort, for
+example, can save energy from lighting, cooling, and heating throughout the operational phase.
+Furthermore, MiC is a new technology without detailed written standards. Therefore, it is
+urgent and vital to study the optimal design for energy-efficient MiC buildings for the
+operational phase.
+Generally, energy-efficient MiC building designs are highly related to passive design
+strategies, such as proper building layouts, windows, and insulation materials in the walls and
+roof (Baños et al. 2011; Fang & Cho 2019). Building layouts, different from other architectural
+components (such as windows), are infeasible to reconstruct by variables only, due to the
+2
+
+65
+
+70
+
+75
+
+80
+
+85
+
+90
+
+95
+
+100
+
+topological properties. Some state-of-the-art research has suggested the connection patterns
+between multiple modules, but the lack of a generic rule has made widespread implementation
+challenging. Previous studies suggested shape grammar as a transferable formulation for
+automatic layout generation in computer-aided design systems, which was operated through
+replacement rules on finite shapes (Haakonsen et al. 2023). Over the past fifty years, shape
+grammar has evolved to encode the design language of classic architectural projects and has
+been applied to generalize design guidelines to represent and generate a diverse range of
+architectural layouts. However, the existing shape grammars are subject to specific building
+types and require to be redefined manually in each design situation. Applying traditional shape
+grammars to guide the replacement rules thus is a labor-intensive procedure. Additionally, MiC
+layouts exhibit symmetry and standardization, notably in high-density Hong Kong. Thus, a
+generic and symmetric generation grammar is required for efficiently creating MiC layouts. In
+addition to energy efficiency, there are additional objectives such as visual comfort and health
+(Echenagucia et al. 2015). In the literature, multi-objective optimization (MOO) is often
+adopted to guide designers in generating optimal passive design with complex objectives
+(Hamdy et al. 2016).
+This paper proposes a symmetric skeleton grammar-based Multi-objective
+Optimization (SSG-MOO), a computer-aided passive design method, for energy-efficient MiC
+designs. First, a symmetric skeleton grammar is defined to formulate the layout and envelope
+of a standard MiC story using a set of design variables, including window-to-wall ratios,
+window heights, corridor axis, corridor lengths, and module distribution. Two objective
+formulations are then defined, with numerical simulations of energy use intensity (EUI) and
+spatial daylight autonomy (sDA), for evaluating the building performance of MiC design. MOO
+algorithms can optimize the SSG formulation against the two objectives by perturbating the
+passive MiC designs, with two hard constraints on the total modules and total floor area. Indepth analysis of the Pareto front are presented for validation and insights, with comparisons
+between the SSG-MOO’s optima and the baseline design. A pioneering 19-story MiC housing
+project was studied in Hong Kong to demonstrate the proposed method. The contribution of
+this paper is thus twofold: (i) A novel SSG-MOO formulation of energy-efficient and ambientdaylighting MiC designs and (ii) a time-efficient method and evidence-based design principles
+for planners and designers to push the boundaries of MiC.
+The remainder of the paper is structured as follows: Section 2 reviews previous research
+for building layout grammars and passive design optimization. Section 3 elaborately presents
+the research method in four parts and proposes an SSG-MOO method, emphasizing the
+symmetric skeleton grammar, for energy-efficient MiC designs. Then, Section 4 explains the
+experimental settings and analyzes the results in three levels. Finally, Sections 5 and 6 discuss
+the main findings and summarize the conclusions.
+
+3
+
+2 Literature review
+2.1 Modular building design rules and grammars
+
+105
+
+110
+
+115
+
+120
+
+In prefabricated and modular construction, layout rules and grammars have been studied with
+prefabricated modules. Gan et al. (2019) parameterized the modular building layouts by
+measuring one core area and multiple wings; each wing consisted of a corridor and adjacent
+household modules. Gan (2022) later extended the parameterized modular layouts with a graph
+model representing the topological, geometric, and semantic information. Zhang et al. (2021)
+then explored the connection patterns of multiple-shaped architectural modules to generate
+layout rules. Nevertheless, for MiC typologies, which are highly efficient and standardized, a
+systematic and scalable grammar for generating standard floor layouts is still lacking.
+Shape grammar has been developed as a systematic formalization of recursive rules to
+represent and generate floor layouts of various building types since the 1970s in the literature,
+as illustrated in Figure 1 (Stiny & Gips 1972; Ning & Peiman 2018; Haakonsen et al. 2023).
+For example, Stiny and Mitchell (1978) employed a parametric shape grammar to generate the
+ground plans of Palladio’s villas. Koning and Eizenberg (1981) encoded the design language
+of Frank Lloyd Wright’s prairie house with a shape grammar derivation. Similarly, Gülen
+(1996) and Duarte (2005) created varied architectural layouts for different types of residential
+houses by defining the connection rules of the shape grammar. Ruiz-Montiel et al. (2013)
+studied proximity relationships of architectural spaces with given design requirements using
+shape grammars and reinforcement learning, presenting diverse design solutions for singlefamily housing. Moreover, Paulino et al. (2023) developed the Reviver shape grammar for
+converting historic buildings into social housing; the Reviver grammar helped to generate
+various types of housing layouts, i.e., studios, one-bedroom, and two-bedroom apartments.
+
+125
+
+Figure 1. The timeline review of shape grammars and modular building design rules in the
+literature
+
+130
+
+The benefits of shape grammar include encoding the topological variations and
+presenting universal properties for building layouts by summarizing the architectural design
+guidelines. However, the existing shape grammars often need to be manually redefined by
+designers regarding different built objects; and the generated building footprints are commonly
+4
+
+135
+
+non-standardized. MiC with mass construction and standardized manufacturing properties
+cannot be fully adapted to existing shape grammars. Thus, a concise and scalable generative
+grammar is urgently needed for the represent the standardized modules of MiC.
+2.2 Multi-objective optimization for passive building design
+
+140
+
+145
+
+150
+
+155
+
+160
+
+165
+
+170
+
+Passive building design promotes solutions with comfortable indoor environments that
+effectively reduce energy consumption during the operational phase (Sadineni et al. 2011).
+Later, computer-aided passive design optimization relieved designers from manually
+modifying numerous architectural parameters (Stevanović 2013). The optimization is often an
+iterative procedure coupled with numerical simulation tools. The popular tools for building
+performance simulation in optimization studies are EnergyPlus and TRNSYS (Nguyen et al.
+2014). Usually, designers are required to address multiple – and sometimes conflictive –
+objectives simultaneously for achieving a comfortable indoor environment, such as proper
+illumination and thermal comfort (Liu et al. 2020; Zheng et al. 2023). Therefore, the MOO
+method has been widely adopted to find the optimal solutions for comfortable and low-energy
+passive building design (Clarke & Hensen 2015; Hamdy et al. 2016).
+Existing MOO techniques can be classified into two categories: aggregate weight
+functions and Pareto-based optimization methods (Baños et al. 2011). Aggregating functions
+transform all the objectives into a single weighted-sum function to optimize the objectives.
+However, aggregating functions have several limitations, such as constant weights and linear
+summation, that oversimplify complex objectives and return only a single solution after the
+lengthy search process (Hajela & Lin 1992). In contrast, Pareto-based MOO examines a set of
+trade-off optimal solutions (a Pareto set) between each objective and determines appropriate
+solutions (Nguyen et al. 2014). Pareto-based MOO can overcome the major drawbacks of
+aggregating functions. The common algorithms for Pareto-based MOO are metaheuristics,
+including Genetic Algorithm (GA), Covariance Matrix Adaptation Evolutionary Strategy
+(CMA-ES), Harmony Search (HS), Particle Swarm Optimization (PSO), and Ant Colony
+Optimization (ACO). GA, in particular the Non-dominated Sorting Genetic Algorithm (NSGAII) (Hamdy et al. 2016), was the most prominent Pareto-based MMO algorithm for building
+performance problems in the literature (Evins 2013; Ascione et al. 2017; Ciardiello et al. 2020).
+Popular optimization environments for NSGA-II include Matlab (Ljung & Singh 2012),
+modeFRONTIER (Clarich et al. 2011), and Grasshopper (Wallacei, Galapagos, Octopus) on
+Rhinoceros (Makki et al. 2015).
+Existing MOO studies of passive designs using NSGA-II in the literature were
+primarily conducted from three perspectives, i.e., the building envelopes, floor layout, and
+building form-finding. For example, with NSGA-II, Didier et al. (2013) studied the optimal
+thermophysical properties of the dwelling’s envelope in two French climates, targeting reduced
+annual energy consumption and improved summer comfort. Echenagucia et al. (2015) further
+explored the optimal envelope variables to minimize energy consumption for heating, cooling,
+and lighting in four urban contexts (i.e., Palermo, Torino, Frankfurt, and Oslo). The research
+5
+
+175
+
+180
+
+was conducted on an office building by optimizing the number, position, shape, and type of
+windows and the thickness of masonry walls. Moreover, the study developed by Zhang et al.
+(2021) showed the effectiveness of optimizing floor layouts to enhance energy efficiency in
+the early design stage for a residence case in Beijing. Based on four different climate zones, an
+MOO study by Konis et al. (2016) concluded that the optimum building form and orientation
+could considerably improve the performance of daylighting and energy efficiency.
+Therefore, it can be concluded that passive design optimization based on MOO can
+effectively achieve energy reductions in heating, ventilation, air conditioning (HVAC) and
+artificial lighting by modifying architectural properties (Tian et al. 2018). This paper thus aims
+to design energy-efficient and daylight-autonomous MiC that rely the least on heating, cooling,
+and lighting, using an MiC design grammar and optimum modular fenestration and layouts.
+3 Research methods
+
+185
+
+This paper presents a bi-objective passive design optimization method focusing on MiC
+envelope and layout. As shown in Figure 2, the method contains four parts: (1) A symmetric
+skeleton grammar of combinatorial MiC design variables; (2) Definition of the SSG-MOO
+problem of energy-efficient and ambient-daylighting MiC with constrains; (3) MiC design
+generation by solving SSG-MOO; (4) Pareto optima selection and multi-level verification and
+analysis.
+
+190
+
+6
+
+Figure 2. The proposed SSG-MMO method for energy-efficient and ambient-daylighting
+MiC design.
+3.1 Definition of symmetric skeleton grammar and design variables
+
+195
+
+200
+
+205
+
+210
+
+This section defines a symmetric skeleton grammar deriving from the basic features of shape
+grammar and aesthetics to represent the spatial topology between MiC modules. The grammar
+first indicates the core point from which the axis of symmetry is subsequently defined. Later,
+the skeletons of the main corridors (Sci) are defined, where i denotes the number of circulation
+corridors. By rotating Sci through the angle θ (clockwise rotation from Y-axis), the spatial
+topology of the corridor skeletons to the core point is obtained, which is saved as Sci’. The
+grammar constructs sub-skeletons for sub-corridors (Ssi) and locations for modules by
+determining the placement of sub-skeleton nodes (Snj) or module nodes (Mnj). Then, the
+modules are arranged by vectors (Mvj). Here j represents the total number of modules in relation
+to the number of occupants. The entire layout is horizontally symmetrical. Therefore, for
+symmetrical wings, the computed decision is only required once to generate the mirrored wing;
+this setting can considerably increase the computational speed. The derivation tree diagram for
+this grammar is illustrated in Figure 3. The grammar well represents the majority layouts of
+new residential buildings in Hong Kong; for example, Figure 4 shows the standard layouts for
+public housing in Hong Kong (HKHA 2020).
+
+Figure 3. The derivation tree diagram for the proposed symmetric skeleton grammar.
+
+7
+
+215
+
+220
+
+225
+
+Figure 4. Examples of symmetric skeleton grammar representation of public housing layouts
+in Hong Kong.
+With the symmetric skeleton grammar, a MiC model can be decoded and parameterized
+in Rhinoceros3D (Ver.7.0) with Grasshopper. The former is the professional 3D CAD software
+with high compatibility, whereas the latter is a graphical algorithm editor interacting 3D
+modeling with numerical simulations (McNeel 2023). As shown in Figure 2, a MiC layout
+consists of symmetric and asymmetric parts. The symmetric parts include three main corridors
+(Sc1’, Sc2’, Sc3’) with two nodes (Sn1, Sn1’) generating sub-corridors (Ss1, Ss2, Ss1’, Ss2’), where
+θ1, θ2, and θ3 are 0°, 270°, and 90°, respectively. The midpoint of the corridor axis (Sc2’, Sc3’)
+can be altered within the vertical range (Pc). Three parameters of corridors’ lengths (L1, L2, L3)
+are variable, while L4 is a constant value when the number of modules per floor is determined.
+Different modules (e.g., MA, MB, MC) are arrangeable for the layout according to Mvj, while
+each module has a parametric window with the WWR and height variables on the north (WWRN,
+WHN) or south (WWRS, WHS) side of the module. The asymmetric part is usually much smaller
+than the symmetric ones in size, which differs between projects. The three fixed-location
+modules (Cw, Ct, Bw) are arranged in the bottom of the south, also with parametric windows.
+3.2 Definition of SSG-MOO problem of energy-efficient and ambient-daylighting MiC
+
+230
+
+235
+
+We formulate the MOO of passive MiC envelope and layout design as a bi-objective problem:
+arg minx∈X EUI(SSG(x)), sDA−1(SSG(x))
+subject to GFA(SSG(x)) = TGFA,
+(1)
+Σ Mnj = Constant
+Where SSG maps input design parameters to an MiC layout, EUI is the energy use intensity
+(kWh/(m2·yr)) that is calculated by dividing the total energy used per year by the gross floor
+area (Konis et al. 2016), sDA−1 refers to the inversed spatial daylight autonomy (to minimize)
+that expresses the annual deficiency of ambient daylight levels for the interior environment,
+quantifying the percentage of minimum received brightness during daytime working hours in
+8
+
+240
+
+245
+
+250
+
+255
+
+260
+
+the target space (Heschong et al. 2012), the first constraint is that the SSG’s gross floor area is
+equal to the expected value (TGFA), x stands for a combination of the n design variables (x1,
+x2, ..., xn), and X means the set of all possible combinations. And the second constraint is the
+constant number of total modules.
+The EUI computation is based on an integrated energy model of multi-feature data,
+including local climate data, construction materials, construction type, and HVAC. The energy
+model (.osm) can be translated into the .idf file via the OpenStudio component in Honeybee
+(Ver.1.5) and run on the built-in EnergyPlus program (Roudsari & Pak 2013). The target
+meteorological data can be downloaded from the EnergyPlus weather website through
+the Ladybug (Ver.1.5) EPWmap component (ASHRAE 2021). As a result, the EUI and related
+end-use value (i.e., heating, cooling, interior lighting, and the other end-uses) can be calculated.
+The sDA−1 is the reciprocal of sDA. In general, sDA assesses whether the floor area
+receives a minimum target illuminance of 300lx for at least 50% of the year during standard
+occupied hours (sDA300/50%) on the horizontal work plane. According to the LEED V4.1
+standard (standard for green building design, construction, operations, and performance), the
+average sDA300/50% value for the regularly occupied floor area should be reached 40% to earn
+one point of standard daylight evaluation, and 50% for two points (Pilechiha et al. 2020;
+USGBC 2022). The formula for sDA can be defined as (Pilechiha et al. 2020): sDA = Σρ =1…N
+ST(ρ) / N, where ST(ρ) = 1 if stρ ≥ 𝜏𝜏 ty, and ST(ρ) = 0 if stρ ≤ 𝜏𝜏 ty. stρ is the occurrence count
+
+above the sDA illuminance threshold at point ρ; ty is the annual timestamp count, and 𝜏𝜏 denotes
+the temporal fraction threshold. Assuming an N-point grid with function ST(ρ), the value turns
+to one when point ρ in the grid has a minimum required illuminance that exceeds a given
+percentage of the total occupied time, and zero vice versa. Later, the Honeybee-Radiance
+components launch the annual daylight simulation for each sensor based on the preset grid size
+(Gs). Since sDA takes probability between zero and one, the interval of sDA−1 is one to ∞. By
+
+minimizing the sDA−1, the SSG-MMO in Eq. (1) tends to improve MiC layouts toward less
+deficiency of ambient daylighting.
+265
+
+270
+
+275
+
+3.3 MiC design generation with SSG-MOO
+Many MOO algorithms can solve the SSG-MOO problem in Eq. (1). For simplicity and clarity,
+the NSGA-II algorithm implemented in Wallacei (Ver. 2.7), an add-on that interacts with
+simulation data with Honeybee and Ladybug in Grasshopper (Makki et al. 2018), is adopted in
+the remainder of this paper. The design variables described in Section 3.1 are transferred as
+genes, while EUI and sDA−1 values in Eq. (1) are then positioned and sorted among the
+objective space. The major algorithmic parameters of NSGA-II are population size and
+crossover/mutation index.
+The output of NSGA-II is the Pareto optima that is the set of non-dominated solutions.
+A dominated solution indicates all its objective values are inferior than another (or more)
+solutions (Deb et al. 2002; Li et al. 2023). However, it can be time-consuming and
+computationally challenging for decision-makers to analyze the entire Pareto optima or quickly
+9
+
+select a unique ‘best solution’. Proper selection, verification, and analysis are thus essential for
+prioritizing the most promising solutions for MiC practitioners.
+3.4 Multi-level verification and analysis of selected Pareto front
+280
+
+285
+
+290
+
+295
+
+300
+
+This paper employs verification and analysis in three levels for validating the selected solutions
+on the Pareto front. The three levels are MOO solution space, SSG modular layout, and MiC
+design parameters.
+Firstly, the bi-objective ranking of the Pareto optimal solutions is sorted, compared, and
+analyzed. The overall density and trending curves of Pareto front are summarized for the
+alternative. Then, we extend the ‘Utopia’ point method with the baseline MiC layout as the
+second reference solution in the solution space. The ‘Utopia’ point is the virtual position of the
+ideal solution in the objective space, obtained by minimizing each objective function without
+regard for other objective function (Showkatbakhsh & Makki 2022). A rectangular-shaded area
+can be drawn between the ‘Utopia’ point and the baseline MiC reference point. Pareto optimal
+solutions in the rectangular are most desirable for decision-makers, due to all the objectives are
+superior than the baseline. This screening approach can effectively save time and effort for
+practitioners to select multiple Pareto optimal solution(s) while keeping the variation and
+diversity of the selected subsets.
+Secondly, the modular layouts of the selected Pareto optima are generated by SSG for
+visualization and assessment. The selection and arrangement of multiple modules can be
+assessed and compared together with the baseline MiC layout. The layouts’ improvement
+effects on the target performance are analyzable accordingly.
+Finally, passive design variables are explored, and general design trends for energyefficient MiC design are presented. The data sample is based on the selected Pareto optimal
+solutions. This paper applies Spearman’s correlation to testing the correlations between the two
+optimization objectives and the eleven design variables. The Spearman’s correlation
+coefficient (r) is a value between −1 and 1. And the significant (e.g., p < 0.001) correlations
+often indicate interesting relations to investigate and interpret further with domain knowledge.
+4 Experimental tests
+
+305
+
+4.1 Experimental settings
+
+310
+
+A pioneering 19-story MiC residential building was the test case in this paper. The building is
+a university student hostel located at 142 Pokfulam Road, Hong Kong, Latitude 22°15’51.76”
+N, Longitude 114°8’7.72” E, and to be completed by the second quarter of 2024 (HKSAR
+2021). Figure 5 (a) depicts the climatic indicators for the building, explicitly showing the meanminimum-maximum dry bulb temperature and global horizontal radiation values for each
+month. As shown in Figure 5 (a), the dry-bulb temperatures reach more than 30 °C in summer
+in Hong Kong, with average winter levels around 10 °C; and the summer lasts approximately
+six months. Figure 5 (b) shows the baseline MiC layout, which was designed by a professional
+architect consultant, consisting of a core tube with six different types of modules. Modules Bw,
+10
+
+315
+
+Cw, and Ct remain spatially constant in this study, and the corresponding window features were
+added to the optimization calculation. The spatial layouts for the three modules, MA, MB, and
+MC, were then reorganized in the optimization. The width and height of each module type are
+fixed at 2.5 m and 3.15 m, respectively. Those modules differ primarily in terms of length and
+windows’ features.
+
+320
+
+325
+
+330
+
+335
+
+Figure 5. (a) Annual climate indicators for Hong Kong SAR. (b) The baseline MiC layout.
+Table 1 lists the design variables considered in the SSG-MOO experiments, along with
+data units and ranges. The design variables were divided into two types: corridors and windows.
+L1 was based on Sc1’, varied from 0 to 2 m, and controlled the corridor length on the north; L2
+and L3, which were based on Ss1 and Ss2, respectively, modified the length of the northern and
+southern sub-corridors, with values ranging from 1m to 6m. Pc guided the vertical movement
+(0% to 100%) of the horizontal corridors along the axis of symmetry. WWRN and WWRS varied
+between 20% and 70% for the south and north facades, respectively. Moreover, WHN and WHS
+were optimized in the range of 1.0m to 2.5m. The TGFA in this experiment was 531.34 m2, and
+the modules number (C) was 31. To fulfill the requirement for the number of occupants on
+each floor, modular amount and L4 were fixed values of 31 and 13.75 m, respectively.
+Table 1. Independent variables in MiC parametric design excluding selection of modules.
+Type
+Corridor
+
+Component
+Corridor length (L1, L2, L3)
+
+Unit
+m
+
+Window
+
+Vertical range for the corridor %
+axis (Pc)
+Window-to-Wall
+Ratio %
+(WWRN, WWRS)
+Window height (WHN, WHS)
+m
+
+Variable’s value range
+0 ≤ L1≤ 2.00; 1.00 ≤ L2, L3 ≤
+6.00
+0 ≤ Pc ≤ 100
+20 ≤ WWRN, WWRS ≤ 70
+1.0 ≤ WHN, WHS ≤ 2.5
+
+Table 2 lists the material settings for MiC envelopes. In this case, the single clear glass
+had a thickness of 0.006m, where the U-value was 5.78 W/m2K, the Solar Heat Gain
+Coefficient (SHGC) value was 0.775, and the visible transmittance value was 0.881. The wall
+and floor slab thicknesses were set as 0.14 m and 0.1 m, respectively, with U-values as 3.72
+W/m2K and 2.89 W/m2K. The above parameters referred to the energy modeling
+recommendations for residential buildings specified in the Hong Kong environmental
+11
+
+340
+
+evaluation (Qin & Pan 2020). According to Honeybee Heat Cool Templates, the HVAC system
+was configured as a “Window AC with baseboard electric” for high-rise apartments. In addition,
+the construction set applied “ASHRAE 90.1 2019” for building vintages and “2-Hot” for the
+climate zone. The numerical simulations were then conducted with a resolution grid size (Gs =
+0.5m).
+Table 2. Material parameter settings for MiC envelopes.
+Envelopes
+Single clear glass
+Wall
+Floor
+
+345
+
+350
+
+355
+
+360
+
+Thickness
+(m)
+0.006
+0.140
+0.100
+
+k
+(W/mK)
+0.900
+2.160
+2.160
+
+U_ Factor
+(W/m2K)
+5.78
+3.72
+2.89
+
+SHGC
+0.775
+−
+−
+
+Visible
+Transmittance
+0.881
+−
+−
+
+For the NSGA-II algorithm settings, both the generation size and generation count were
+chosen as 25, producing a total population of 625. And the index for crossover and mutation
+distribution was set as 20 in Wallacei. The rest parameters of NSGA-II algorithm were set
+according to the existing literature expertise (Chantrelle et al. 2011; Makki et al. 2015;
+Showkatbakhsh & Makki 2022).
+4.2 Experimental results and analysis
+The experiments were conducted on a desktop computer with an Intel (R) Core i7-10700 CPU
+@ 2.90 GHz processor and 32 GB memory. The total time cost was 15.56 hours to solve the
+SSG-MOO problem by the NSGA-II algorithm and the simulations. A total of 39 Pareto optima
+were returned. Within the Pareto-Utopia shaded area, as shown in Figure 6 (a), the five selected
+MiC Pareto optima decreased the EUI values and increased daylight performance for the same
+floor area and units as the baseline case. The visualization analysis of daylight and energy enduse for each of these five options is shown in Figures 6(b) and (c). In Figure 6(b), the closer
+the color is to red, the more daylight can be received, and the closer it is to blue, the less. In
+particular, the energy end use (in heating, cooling, lighting, equipment, and water) of these five
+options is presented in detail in Figure 6(c).
+
+Figure 6. The selection and comparative analysis of the five MiC Pareto optima. (a) 39 Pareto
+optima solution space; (b) Modular layouts of the five selected MiC Pareto optima with
+daylighting visualization; (c) End use intensity of the selected.
+12
+
+365
+
+370
+
+375
+
+380
+
+385
+
+390
+
+395
+
+400
+
+4.2.1 On the MOO solution space level
+Every dot in Figure 6 indicates a Pareto optimum, i.e., a Pareto optimal solution, and they
+depict the Pareto front collectively. In Figure 6 (a), the purple square symbol represents the
+‘Utopia’ point, the blue diamond symbol shows the location of the baseline MiC scheme, and
+the magenta triangular symbol highlights the five selected MiC Pareto optima. The closer a
+point is to the square “Utopia” point, the superior the behavior of the specific solution in
+relation to that objective. The rectangular shading area bounded by the ‘Utopia’ point and the
+baseline case suggests the most promising Pareto optimal solutions, which were superior than
+both objective values – or dominate over – the input baseline case.
+In addition to the five options located in the Pareto-Utopia shaded area, Figure 6(a)
+shows five more Pareto optimal solutions between the baseline point and the horizontal dash
+line sDA−1 = 2.5. The threshold sDA−1 = 2.5 (or sDA = 40%) will grant at least one point based
+on LEED V4.1 standard. These five options might also be available for the project team to
+consider, if they would like to emphasize on the EUI. In the remainder of this section, we
+mainly focus on the five MiC designs in Figure 6 (b) without loss of generality.
+4.2.2 On SSG modular layout level
+Figure 6(b), (c) and Table 3 comprehensively compare the layouts of the five selected MiC
+Pareto solutions and the baseline project concerning the improvement magnitude in energy and
+daylighting performance. In Table 3, the improvement magnitude [% Imp.*] is the percentage
+increase or decrease, where v0 is the EUI value of the baseline scheme, and v1 is the EUI value
+of the calculated option; w0 represents baseline scheme’s sDA, and w1 represents the sDA value
+of the calculated option. For the MOO process, modules Bw, Cw, and Ct (three modules arranged
+horizontally below) remain spatially constant in this paper. The baseline MiC design solution
+consists of 12 MA, 2 MB, and 14 MC. And the baseline scheme simulated the EUI as 133.259
+kWh/m2·yr and the sDA as 56.05%.
+Option 1 reduces annual energy consumption by 0.42% per square meter compared to
+the baseline scheme. In terms of modular layout, Option 1 arranges more MB than the baseline
+one and tends to be essentially flat at the northern boundary. Similarly, Options 2 and 3 are
+close to the horizontal line in the layout of the modules on the north side. Option 2 has a higher
+energy efficiency than Option 3, with close indoor daylighting performance. Option 4, which
+arranges the three modules evenly on the north and south sides, computed the EUI as 133.151
+kWh/m2·yr, a reduction of 0.08% compared to the baseline one, while the sDA improves by
+7.78%. Option 5 significantly improves the performance of daylighting with an increase of
+9.71%, while its building energy consumption is reduced by only 0.05%. It can also be noticed
+that from Option 1 to Option 5, as the value of sDA increases from 57% to 61.49%, the energy
+consumption of cooling increases from 38.913 kWh/m2·yr to 39.357 kWh/m2·yr, while the
+energy use of lighting gradually decreases.
+
+13
+
+405
+
+Table 3. Objective values and improvements of the five Pareto optimal solutions of MiC
+designs in Figure 6 (b).
+EUI
+EUI [% Imp.*]
+sDA (%)
+sDA [% Imp.*]
+2
+(kWh/m ·yr)
+1
+132.693
+0.42
+57.00
+1.69
+2
+132.799
+0.35
+57.47
+2.53
+3
+132.878
+0.29
+57.71
+2.96
+4
+133.151
+0.08
+60.41
+7.78
+5
+133.192
+0.05
+61.49
+9.71
+Baseline
+133.259
+56.05
+*
+: Improvement by percentage, (v0 − v1)/v0 × 100% for EUI, (w1 – w0)/w0 × 100% for sDA.
+Option
+
+410
+
+415
+
+Overall, from Option 1 to Option 5, the annual energy consumption per square meter
+of the MiC designs gradually increases, while the daylight performance shows an opposite
+trend. Compared with the baseline scheme, the five Pareto optimal schemes all meet the
+requirements of the LEED V4.1 standard to obtain two points for daylight assessment, and all
+have improved the energy efficiency for MiC design.
+4.2.3 On MiC design parameters level
+Figure 7 shows the Spearman’s rank correlations between the design variables and the two
+objectives. Figure 7 contains histograms at diagonal subfigures, and the lower half involves
+scatter plots and trend lines, where the color and size of the circle in the upper triangle indicate
+the sign and value of the correlation coefficient (r). Note that six insignificant variables (Pc, L1,
+L2, L3, WHN, WHS) in this case are hidden in Figure 7. Specifically, the findings reveal
+significant and very strong correlations (r = ± 0.91, p ≤ 0.001, N = 39) between WWRS and
+the two objectives.
+
+420
+
+Figure 7. Results of Spearman’s correlation analysis based on 39 Pareto optima, with
+histograms, scatter plots, and the correlation coefficient r (cool color indicates positive, size
+stands for strength) and significance (*** p ≤ 0.001, ** p ≤ 0.01, * p ≤ 0.05, two-tailed).
+14
+
+Similarly, WWRN shows strong correlations (r = ± 0.70, p ≤ 0.001, N = 39) with EUI
+
+425
+
+and sDA−1. For the three types of modules, the number of MB has a moderate positive
+correlation (r = 0.47, p ≤ 0.01, N = 39) with EUI, whereas the number of MA and MC has a
+moderate negative correlation (r = –0.47) with EUI. It can be found an opposite result in
+correlation coefficients of MB and MA, MC calculated by sDA−1. Moreover, the results show
+that the number of MB has a robust negative correlation with the number of MA and MC, with
+a coefficient of –1.0 (p ≤ 0.001), while the number of MA has a robust positive correlation
+
+430
+
+435
+
+440
+
+445
+
+450
+
+(1.0) with the number of MC. However, the values of WHN and WHS did not show significant
+correlations with EUI or sDA−1.
+
+Figure 8. Comparison of 11 design parameters and the layout perimeter between 39 MiC
+Pareto optimal solutions and the baseline project.
+Figure 8 compares the statistics of optimized design variables in the 39 MiC Pareto
+optima against the baseline design parameters. In the baseline solution, Pc is assigned as 50%,
+which means that the axis of the horizontal corridors is located in the middle of the core tube.
+As shown by the red bolded short line in the box plot, the median value of the optimized Pc
+was 30%, which means that the axis of the horizontal corridors is shifted towards south. The
+optimized values of L2 are mainly distributed between 3.75m and 5.25m, which are slightly
+larger than the baseline parameters (3.66m). L2 is utilized to modify the length of the subcorridor on the north side, and a smaller Pc value would also mean an increase in L2. The
+optimized values of L3 are slightly smaller than the baseline parameters (3.66m), with the
+median of 2.26m. In contrast, the difference between the median value of optimized L1 and the
+baseline solution is tiny, at 0.17m.
+Meanwhile, the three types of modules are distributed in distinct ways. Figure 8 shows
+that the data spread of three types of modules is relatively concentrated. The number of MB is
+significantly higher than the baseline scheme, with a median of 26. The total number for MA is
+slightly lower than that of MC, with median values of 2 and 0, respectively.
+The optimized window design parameters vary considerably from the baseline
+parameters, especially for the WWRN, and WWRS. In the baseline scheme, the WWRN and
+WWRS were designed with an equal value of 35%, while the WHN and WHS were both in 1.2m.
+15
+
+455
+
+460
+
+However, the optimized WWRN shows higher values, predominantly between 47% and 64%.
+The values for the optimized WWRS, on the other hand, are mainly distributed between 21%
+and 40%. With regard to the height of the windows, the optimal solutions emphasize the almost
+same height of the windows on the north side (WHN) and the south side (WHS). The median
+value of the window’s height on the north is 2.0m, while the value is 2.1m for the south side.
+Moreover, the optimized schemes’ median perimeter value is roughly 137m, which is
+substantially less than the baseline project’s perimeter value of 167.7m, indicating that the
+optimized schemes were more compact.
+4.3 Sensitivity analysis
+
+465
+
+470
+
+475
+
+A sensitivity analysis was conducted to identify a cost-effective MOO setting from the aspects
+of daylighting simulation grid size and total population size. The grid size substantially
+influences the quantity of sensors utilized in daylight simulations, which subsequently affects
+the sDA computation outcomes and the simulation time frame. In the preliminary study, six
+grid sizes (i.e., 0.1 m, 0.2 m, 0.5m, 1m, 1.5m, and 2m) were selected for daylighting simulation
+of the baseline model, and the corresponding simulation times required for each case were
+documented, as illustrated in Figure 9. The computing time exhibited a substantial increase
+when the grid size was reduced to less than 0.5 m. E.g., a 0.2 m grid necessitated 135 seconds
+for computation, whereas a 0.1 m grid demanded 454 seconds. For the case in this paper, Figure
+9 suggests that there was an ‘elbow point’ around time = 60s. Thus, a grid size of 0.5 m was
+selected to maintain a reasonable trade-off between computation time (i.e., 48 seconds per
+simulation on average) and accuracy.
+
+Figure 9. Sensitivity testing results of grid size for daylighting simulation. (a) The sDA
+values and time required for each simulation against grid size (dashed line indicates 60s); (b)
+Daylighting simulation results.
+Figure 10 compares the number and location of the Pareto optimal solutions in three
+situations: total population size in 100 (10 chromosomes times by 10 generations), 625, and
+16
+
+480
+
+485
+
+490
+
+2500. The experiments led to 14, 39, and 90 Pareto optima in 2.28 h, 15.56 h, and 72.48 h,
+respectively. In Figure 10 (a), there was only one Pareto optimum in the Pareto-Utopia shaded
+area when the population was 100. In contrast, the number of the most promising Pareto optima
+reached 16 after examining the population of 2,500, as shown in Figure 10 (c). In Figure 10 (c),
+the new Pareto optima in the shaded area progressed the five options in Figure 10 (b) to a
+limited extent, but it required a significant amount of time and effort for the decision-makers
+to compute and compare the final optimal solutions. Therefore, increasing the population size
+can generate slightly more promising solutions, at the costs of computer time for computation
+and experts’ time for narrowing down the candidate MiC schemes for decision-makers.
+
+Figure 10. Scatter plot of Pareto optima against the population size of NSGA-II. (a)
+Population size as 100; (b) Population size as 625; (c) Population size as 2,500.
+5 Discussion
+
+495
+
+500
+
+505
+
+510
+
+The SSG-MMO method presented in this paper shows promising experimental results in
+improving ambient daylighting and reducing operational energy costs in the early design phase
+of MiC projects. The three-level comparative analysis provides an efficient and elaborate way
+of analyzing the information in the MiC Pareto optima. By subject to the target gross floor area,
+the decision-makers have the flexibility to compare multiple Pareto optimal solutions under a
+defined number of occupants. In terms of modular layout, the optimized MiC designs arrange
+more MB than the baseline one and tends to be essentially flat at the northern boundary.
+According to Spearman’s correlation analysis, the value of WWRN, and WWRS have a robust
+correlation with optimizing the energy efficiency and daylight performance in the Hong Kong
+region.
+Therefore, the optimized parameters for MiC window and corridor design can also be
+summarized into valuable suggestions for energy-efficient design strategies. Specifically, the
+optimized window design parameters indicate that the window ratio should be distinguished
+for the north and south sides, while the values of WWR should be increased on the north side.
+Meanwhile, the optimized Pc suggests that the corridors’ layout becomes more passive energy
+efficient as it is shifted southward. The optimization results for the window and corridor
+parameters are consistent with the geographical location and climatic conditions of Hong Kong.
+Therefore, for Hong Kong in a subtropical climate, the energy-efficient MiC designs (with a
+due north orientation) should increase the ratio of windows on the north side of the building
+
+17
+
+515
+
+520
+
+525
+
+530
+
+535
+
+540
+
+545
+
+550
+
+and design the axis of the horizontal corridor towards the southern part of the core, as well as
+reduce the concavity of the northern boundary.
+However, there are three groups of limitations in this paper. Firstly, there are limitations
+in the SSG-MOO formulation. This paper mainly conducts optimization from energy
+consumption and daylighting aspects, without other operational performance indicators for
+MiC design, such as target wind load, ventilation, personalized thermal comfort, and carbon
+emissions. Also, the envelope optimization in this paper concerns the size of the windows
+regardless of the influence of different materials and coating on energy efficiency. Therefore,
+the conclusive design tactics may be overridden by other design needs in practice. Secondly,
+this paper is limited in applying NSGA-II as the only algorithm. In the future, other MOO
+algorithms, such as CMA-ES and PSO, are also potential to solve the SSG-MOO problem for
+MiC. Lastly, the numerical computational results need further validation and comments by
+field experts.
+6 Conclusion
+Novel construction technologies are required with lifecycle passive designs to address energy
+crises and comfort concerns. This paper presents a symmetric skeleton grammar to handle the
+constrained MiC designs and MOO to cope with the exponential combinations of various
+modules for energy efficiency and daylight autonomy in the operational phase. A pilot MiC
+project was studied in Hong Kong to evaluate the proposed method. By optimizing 11 design
+variables regarding windows, corridors, and layouts of MiC modules, five optimized options
+were selected from 39 Pareto optima using the Pareto-Utopia shaded screening method.
+Meanwhile, the optimal design tactics can be summarized to passive MiC designs for energy
+efficiency and daylight autonomy: (i) the ratio of north-facing windows (WWRN) should be
+increased, and (ii) the axis of the horizontal corridor should move southward, while maintaining
+flatness at the northern boundary.
+The main contribution of this paper can be concluded in two aspects. From the MiC
+researchers’ perspective, the method presents a symmetric skeleton grammar of MiC designs.
+Moreover, the proposed bi-objective formulation optimizes the parametric MiC designs in an
+energy-efficient and sufficient daylighting manner. From the industrial practitioners’
+perspective, the SSG-MOO with Pareto-Utopia-shaded screening method can efficiently assist
+designers in selecting the optimized solution(s) with multi-level evidence-based information.
+And valuable energy-efficient design strategies can be suggested for MiC designers in Hong
+Kong.
+In the future, researchers can broaden the goals of MiC design optimization for wind
+load, thermal comfort, and carbon emissions, and taking into account the impact of different
+envelope materials on building performance. Furthermore, advanced MOO algorithms can be
+studied and applied to address the complex SSG-MOO problems. In addition, human experts
+can be included in the loop to verify and guide the Pareto optima selection for multi-level
+evidence-based decision making.
+18
+
+Acknowledgment
+The study was supported by Hong Kong Research Grants Council (RGC) (Nos. 27200520,
+C7080-22GF, T22-504/21-R).
+References
+555
+
+560
+
+565
+
+570
+
+575
+
+580
+
+585
+
+590
+
+595
+
+Abdelmageed, S. & Zayed, T. (2020). A study of literature in modular integrated construction
+- Critical review and future directions. Journal of Cleaner Production, 277, 124044.
+doi:10.1016/j.jclepro.2020.124044
+Ascione, F., Bianco, N., Masi, R. F., Mauro, G. M. & Vanoli, G. P. (2017). Resilience of robust
+cost-optimal energy retrofit of buildings to global warming: A multi-stage, multiobjective
+approach.
+Energy
+and
+Buildings,
+153,
+150-167.
+doi:10.1016/j.enbuild.2017.08.004
+ASHRAE. (2021). Weather Data Viewer. Retrieved 12 21, 2022, from
+https://www.ashrae.org/technical-resources/bookstore/weather-data-center#weather
+Baños, R., Manzano-Agugliaro, F., Montoya, F., Gil, C., Alcayde, A. & Gómez, J. (2011).
+Optimization methods applied to renewable and sustainable energy: A review.
+Renewable
+and
+Sustainable
+Energy
+Reviews,
+15(4),
+1753-1766.
+doi:10.1016/j.rser.2010.12.008
+Chantrelle, F. P., Lahmidi, H., Keilholz, W., Mankibi, M. E. & Michel, P. (2011). Development
+of a multicriteria tool for optimizing the renovation of buildings. Applied Energy, 88(4),
+1386-1394. doi:10.1016/j.apenergy.2010.10.002
+Ciardiello, A., Rosso, F., Dell'Olmo, J., Ciancio, V., Ferrero, M. & Salata, F. (2020). Multiobjective approach to the optimization of shape and envelope in building energy design.
+Applied Energy, 280, 115984. doi:10.1016/j.apenergy.2020.115984
+Clarich, A., Russo, R. & Carriglio, M. (2011). Multi-objective optimization with modefrontier
+interfaces for ansa and metapost. 4th ANSA & μETA International Conference, (pp. 116). Thessaloniki, Greece.
+Clarke, J. & Hensen, J. (2015). Integrated building performance simulation: Progress,
+prospects and requirements. Building and Environment, 91, 294-306.
+doi:10.1016/j.buildenv.2015.04.002
+Deb, K., Pratap, A., Agarwal, S. & Meyarivan, T. (2002). A fast and elitist multiobjective
+genetic algorithm: NSGA-II. IEEE Transactions on Evolutionary Computation. 6(2),
+pp. 182 - 197. IEEE. doi:10.1109/4235.996017
+Didier, G., Berangere, L. & Françoise, T. (2013). Multi-objective optimization of a building
+envelope for thermal performance using genetic algorithms and artificial neural
+network. Energy and Buildings, 67, 253-260. doi:10.1016/j.enbuild.2013.08.026
+Duarte, J. P. (2005). Towards the mass customization of housing: The grammar Siza's houses
+at Malagueira. Environment and planning B: Planning and Design, 32(3), 347-380.
+doi:10.1068/b31124
+Echenagucia, T. M., Capozzoli, A., Cascone, Y. & Sassone, M. (2015). The early design stage
+of a building envelope: Multi-objective search through heating, cooling and lighting
+energy
+performance
+analysis.
+Applied
+Energy,
+154,
+577–591.
+doi:10.1016/j.apenergy.2015.04.090
+EMSD. (2022). Hong Kong energy end-use data. Retrieved 2 6, 2023, from
+https://www.emsd.gov.hk/filemanager/en/content_762/HKEEUD2022.pdf
+Evins, R. (2013). A review of computational optimisation methods applied to sustainable
+building design. Renewable and Sustainable Energy Reviews, 22, 230-245.
+doi:10.1016/j.rser.2013.02.004
+19
+
+600
+
+605
+
+610
+
+615
+
+620
+
+625
+
+630
+
+635
+
+640
+
+645
+
+Fang, Y. & Cho, S. (2019). Design optimization of building geometry and fenestration for
+daylighting
+and
+energy
+performance.
+Solar
+Energy,
+191,
+7-18.
+doi:10.1016/j.solener.2019.08.039
+Gan, V. J. (2022). BIM-based graph data model for automatic generative design of modular
+buildings.
+Automation
+in
+Construction,
+134,
+104062.
+doi:10.1016/j.autcon.2021.104062
+Gan, V. J., Wong, H., Tse, K., Cheng, J. C., Lo, I. M. & Chan, C. (2019). Simulation-based
+evolutionary optimization for energy-efficient layout plan design of high-rise
+residential buildings. Journal of Cleaner Production, 231, 1375-1388.
+doi:10.1016/j.jclepro.2019.05.324
+Gülen, Ç. (1996). A shape grammar: The language of traditional Turkish houses. Environment
+and Planning B: Planning and Design, 23(4), 443-464. doi:10.1068/b230443
+Haakonsen, S. M., Rønnquist, A. & Labonnote, N. (2023). Fifty years of shape grammars: A
+systematic mapping of its application in engineering and architecture. International
+Journal of Architectural Computing, 21(1), 5-22. doi:10.1177/14780771221089882
+Habash, R. (2022). Building as an energy system. In Sustainability and Health in Intelligent
+Buildings (pp. 59-94). Woodhead Publishing. doi:10.1016/B978-0-323-988261.00003-X
+Hajela, P. & Lin, C. Y. (1992). Genetic search strategies in multicriterion optimal design.
+Structural optimization, 4, 99–107. doi:10.1007/BF01759923
+Hamdy, M., Nguyen, A.-T. & Hensen, J. L. (2016). A performance comparison of multiobjective optimization algorithms for solving nearly-zero-energy-building design
+problems. Energy and Buildings, 121, 57-71. doi:10.1016/j.enbuild.2016.03.035
+Heschong, L., Wymelenberg, K. V., Andersen, M., Digert, N., Fernandes, L., Keller, A.,
+Loveland, J., McKay, H., Mistrick, R., Mosher, B., Reinhart, C., Rogers, Z. & Tanteri,
+M. (2012). Approved Method: IES Spatial Daylight Autonomy (sDA) and Annual
+Sunlight Exposure (ASE). In IES (pp. LM-83-12). New York: Illuminating Engineering
+Society
+of
+North
+America.
+Retrieved
+2
+15,
+2023,
+from
+https://www.usgbc.org/resources/ies-lighting-measurements-lm-83-12-approvedmethod-ies-spatial-daylight-autonomy-sda-and-a
+HKHA. (2020, October 30). Standard Block Typical Floor Plans. Hong Kong: Hong Kong
+Housing
+Authority.
+Retrieved
+12
+21,
+2022,
+from
+https://www.housingauthority.gov.hk/en/global-elements/estate-locator/standardblock-typical-floor-plans/
+HKHA. (2022). Publication Archive: 2021/22 Annual Report. Hong Kong: Hong Kong
+Housing
+Authority.
+Retrieved
+12
+21,
+2022,
+from
+https://www.housingauthority.gov.hk/en/about-us/publications-andstatistics/publication-archive/index.html
+HKSAR. (2021). Information paper provided by the Administration concerning the annual
+progress report on implementation of Hostel Development Fund. Hong Kong:
+Legislative Council of the Hong Kong Special Administrative Region. Retrieved 12 21,
+2022, from https://www.legco.gov.hk/yr20-21/english/panels/ed/papers/edcb4-16451-e.pdf
+Koning, H. & Eizenberg, J. (1981). The language of the prairie: Frank Lloyd Wright's prairie
+houses. Environment and Planning B: Urban Analytics and City Science, 8(3), 295-323.
+doi:10.1068/b080295
+Konis, K., Gamas, A. & Kensek, K. (2016). Passive performance and building form: An
+optimization framework for early-stage design support. Solar Energy, 125, 161-179.
+doi:10.1016/j.solener.2015.12.020
+
+20
+
+650
+
+655
+
+660
+
+665
+
+670
+
+675
+
+680
+
+685
+
+690
+
+695
+
+Li, M., Xue, F. & Yeh, A. G. (2023). Bi-objective analytics of 3D visual-physical nature
+exposures in high-rise high-density cities for landscape and urban planning. Landscape
+and Urban Planning, 233, 104714. doi:10.1016/j.landurbplan.2023.104714
+Li, X., Lu, W., Xue, F. & Wu, L. (2022). Blockchain-Enabled IoT-BIM Platform for Supply
+Chain Management in Modular Construction. Journal of Construction Engineering and
+Management, 148(2), 04021195. doi:10.1061/(ASCE)CO.1943-7862.0002229
+Li, X., Wu, C., Xue, F., Yang, Z., Lou, J. & Lu, W. (2022). Ontology-based mapping approach
+for automatic work packaging in modular construction. Automation in Construction,
+134, 104083. doi:10.1016/j.autcon.2021.104083
+Liu, S., Kwok, Y. T., Lau, K. K.-L., Ouyang, W. & Ng, E. (2020). Effectiveness of passive
+design strategies in responding to future climate change for residential buildings in hot
+and
+humid
+Hong
+Kong.
+Energy
+and
+Buildings,
+228,
+110469.
+doi:10.1016/j.enbuild.2020.110469
+Ljung, L. & Singh, R. (2012). Version 8 of the Matlab System Identification Toolbox. IFAC
+Proceedings Volumes, 45(16), 1826-1831. doi:10.3182/20120711-3-BE-2027.00061
+Makki, M., Farzaneh, A. & Navarro, D. (2015). The Evolutionary Adaptation of Urban Tissues
+through Computational Analysis. Real time-Proceedings of the 33rd eCAADe
+Conference. 2, pp. 563-571. Vienna: Vienna University of Technology.
+doi:10.52842/conf.ecaade.2015.2.563
+Makki, M., Showkatbakhsh, M. & Song, Y. (2018). Wallacei - An Analytic and Evolutionary
+Engine for Grasshopper 3D. Retrieved 12 21, 2022, from https://www.wallacei.com/
+McNeel, R. (2023). Grasshopper®(Version 1.0.0007): algorithmic modeling for Rhino.
+Retrieved 7 7, 2023, from https://www.grasshopper3d.com/
+Nguyen, A.-T., Reiter, S. & Rigo, P. (2014). A review on simulation-based optimization
+methods applied to building performance analysis. Applied Energy, 113, 1043-1058.
+doi:10.1016/j.apenergy.2013.08.061
+Ning, G. & Peiman, A. B. (2018). Shape Grammars: A Key Generative Design Algorithm. In
+Handbook of the Mathematics of the Arts and Sciences (pp. 1385-1405). Springer
+International Publishing.
+Pan, W. & Hon, C. K. (2020). Briefing: Modular integrated construction for high-rise buildings.
+Proceedings of the Institution of Civil Engineers-Municipal Engineer. 173, pp. 64-68.
+Thomas Telford Ltd. doi:10.1680/jmuen.18.00028
+Paulino, D. M., Ligler, H. & Napolitano, R. (2023). A Grammar-Based Approach for
+Generating Spatial Layout Solutions for the Adaptive Reuse of Sobrado Buildings.
+Buildings, 13(3), 722. doi:10.3390/buildings13030722
+Pilechiha, P., Mahdavinejad, M., Rahimian, F. P., Carnemolla, P. & Seyedzadeh, S. (2020).
+Multi-objective optimisation framework for designing office windows: quality of view,
+daylight
+and
+energy
+efficiency.
+Applied
+Energy,
+261,
+114356.
+doi:10.1016/j.apenergy.2019.114356
+Qin, H. & Pan, W. (2020). Energy use of subtropical high-rise public residential buildings and
+impacts of energy saving measures. Journal of Cleaner Production, 254, 120041.
+doi:10.1016/j.jclepro.2020.120041
+Roudsari, M. S. & Pak, M. (2013). Ladybug: A parametric environmental plugin for
+grasshopper to help designers create an environmentally-conscious design.
+Proceedings of the 13th international IBPSA conference (pp. 3128-3135). Lyon, France:
+Building Simulation Conference Proceedings. doi:10.26868/25222708.2013.2499
+Ruiz-Montiel, M., Boned, J., Gavilanes, J., Jiménez, E., Mandow, L. & Pérez-de-la-Cruz, J.-L.
+(2013). Design with shape grammars and reinforcement learning. Advanced
+Engineering Informatics, 27(2), 230-245. doi:10.1016/j.aei.2012.12.004
+
+21
+
+700
+
+705
+
+710
+
+715
+
+720
+
+725
+
+730
+
+Sadineni, S. B., Madala, S. & Boehm, R. F. (2011). Passive building energy savings: A review
+of building envelope components. Renewable and Sustainable Energy Reviews, 15(8),
+3617-3631. doi:10.1016/j.rser.2011.07.014
+Showkatbakhsh, M. & Makki, M. (2022). Multi-Objective Optimisation of Urban Form: A
+Framework for Selecting the Optimal Solution. Buildings, 12(9), 1473.
+doi:10.3390/buildings12091473
+Stevanović, S. (2013). Optimization of passive solar design strategies: A review. Renewable
+and Sustainable Energy Reviews, 25, 177-196. doi:10.1016/j.rser.2013.04.028
+Stiny, G. & Gips, J. (1972). Shape Grammars and the Generative Specification of Painting and
+Sculpture. IFIP Congress (pp. 1460–1465). Amsterdam: Information Processing 71.
+Retrieved
+from
+https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=6dc9c55dade1361
+93780a3ce0f5269036c5127cf
+Stiny, G. & Mitchell, W. J. (1978). The palladian grammar. Environment and planning B:
+Planning and design, 5(1), 5–18. doi:10.1068/b050005
+Tian, Z., Zhang, X., Jin, X., Zhou, X., Si, B. & Shi, X. (2018). Towards adoption of building
+energy simulation and optimization for passive building design: A survey and a review.
+Energy and Buildings, 158, 1306-1316. doi:10.1016/j.enbuild.2017.11.022
+UNEP. (2022). Global Status Report for Buildings and Construction: Towards a Zero-emission,
+Efficient and Resilient Buildings and Construction Sector. Nairobi: United Nations
+Environment
+Programme
+(UNEP).
+Retrieved
+3
+9,
+2023,
+from
+https://www.unep.org/resources/publication/2022-global-status-report-buildings-andconstruction
+USGBC. (2022). Daylight | Indoor Environmental Quality. U.S. Green Building Council.
+Retrieved 12 21, 2022, from https://www.usgbc.org/credits/new-construction-schoolsnew-construction-retail-new-construction-data-centers-new-9
+Wang, M., Wang, C. C., Sepasgozar, S. & Zlatanova, S. (2020). A Systematic Review of
+Digital Technology Adoption in Off-Site Construction: Current Status and Future
+Direction
+towards
+Industry
+4.0.
+Buildings,
+10(11),
+204.
+doi:10.3390/buildings10110204
+Zhang, J., Liu, N. & Wang, S. (2021). Generative design and performance optimization of
+residential buildings based on parametric algorithm. Energy and Buildings, 244,
+111033. doi:10.1016/j.enbuild.2021.111033
+Zheng, L., Lu, W., Wu, L. & Zhou, Q. (2023). A review of integration between BIM and CFD
+for building outdoor environment simulation. Building and Environment, 228, 109862.
+doi:10.1016/j.buildenv.2022.109862
+
+22
+
+

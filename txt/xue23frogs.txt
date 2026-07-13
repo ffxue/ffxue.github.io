@@ -1,0 +1,705 @@
+ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences, Volume X-M-1-2023
+29th CIPA Symposium “Documenting, Understanding, Preserving Cultural Heritage:
+Humanities and Digital Technologies for Shaping the Future”, 25–30 June 2023, Florence, Italy
+
+SURFACE OR SKELETON? AUTOMATIC HIERARCHICAL CLUSTERING OF 3D
+POINT CLOUDS OF BRONZE FROG DRUMS FOR HERITAGE DIGITAL TWINS
+Fan Xue1,*, Wenjin Zhang2; Guangji Xu3, Qianyun Zhou1, Yijie Wu1
+1 The University of Hong Kong, Hong Kong S.A.R. (China) – xuef@hku.hk, qianyunz@hku.hk, yijiewu@connect.hku.hk
+2 Guangzhou Okay Information Technology Ltd., Guangzhou,
+3 Anthropology Museum of Guangxi,
+
+China – zhangwenjin@okaygis.com
+Nanning, China – 9115857@qq.com
+
+KEY WORDS: Digital heritage, bronze frog drum, 3D point cloud, 3D shape skeleton, hierarchical clustering, heritage digital twin.
+
+ABSTRACT:
+In the era of digital twins, high-definition 3D point clouds of cultural relics, such as the bronze drums of ancient Southeast Asia and
+China, are increasingly available as digital heritage. This study applies an automatic hierarchical clustering method to compare and
+cluster 14 unstructured 3D models of frogs on drums based on the dissimilarity metric of the minimum error from 2,000 iterations of
+global registration. Furthermore, this study compares two forms of 3D presentation: surface points and 3D shape skeletons. The
+experimental results on 14 high-definition frogs showed that four groups – three-legged with baby, four-legged with baby, threelegged without baby, and four-legged without baby – were consistently (TPR = 0.857) detected, regardless of the 3D presentation
+using point clouds or shape skeletons. Both basic surface points and advanced shape skeleton effectively clustered 3D heritage
+details for heritage digital twins and advanced heritage documentation. The findings also imply that geospatial analytics using either
+surface 3D point clouds or skeleton can shed light on unsupervised learning and quantitative understanding of unstructured point
+clouds of numerous cultural heritages.
+
+1. INTRODUCTION
+With the advancing remote sensing and geospatial technologies,
+cultural heritage has increasingly embraced digital modeling
+and digital twins. Digital heritages can preserve geometries,
+identify art forgeries, and strengthen the interaction of digital
+multimedia with a broad audience (Gomes et al., 2014). 3D
+color meshes and point clouds are popular formats of digital
+heritage. However, both meshes and point clouds are often
+unstructured data that exist in native or raw forms of points and
+tiny triangles (Zhang et al., 2021). They can support
+visualization and visual analysis but lack semantic information
+and knowledge about cultural heritages (Yang et al., 2021).
+Heritage Digital Twins (HDT) and advanced heritage
+documentation demand automatic processing methods and
+quantitative understandings of unstructured digital heritage data
+(Niccolucci et al., 2022). For example, an HDT can have a rich
+list of semantic properties and recommended hyperlinks to
+similar HDTs based on the user’s preferences. On the one hand,
+the mm-accurate 3D sensor data enables new quantitative
+evidence and analytics for supporting and supplementing
+heritage science and conservation studies. On the other hand,
+the high-level complexity of 3D data, the diversity of assets, and
+the sheer quantities of parts, patterns, and details make it
+difficult to analyze, classify, and interpret digital heritages in
+traditional ways (Grilli and Remondino, 2019; Chen and Xue,
+2023). Thus, geospatial technologies, such as semantic
+segmentation of 3D data, have been studied recently (Yang et
+al., 2023).
+Bronze drums are body-decorated percussion instruments with a
+single head and a curving waist. They originated in central and
+western Yunnan in the eighth century BC and spread across
+
+Fig. 1. Eight types of ancient bronze drums in China. A.
+Wanjiaba type; B. Shizhaishan type; C. Lengshuichong type;
+D. Beiliu type; E. Lingshan type; F. Zunyi type; G. Majiang
+type; H. Ximeng type. (Source: Lu et al., 2020, CC-BY 4.0)
+South China and Southeast Asia as spiritual, sacrifice, and
+musical instruments (Lu et al., 2020). Today, China has
+preserved over 1,500 ancient bronze drums of various types,
+and hundreds more are found in Burma, Laos, Thailand, and
+Vietnam (Cooler, 1995). A bronze drum is divided into three
+parts: the drum face, the drum body, and the drum foot, which
+
+This contribution has been peer-reviewed. The double-blind peer-review was conducted on the basis of the full paper.
+https://doi.org/10.5194/isprs-annals-X-M-1-2023-293-2023 | © Author(s) 2023. CC BY 4.0 License.
+
+293
+
+ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences, Volume X-M-1-2023
+29th CIPA Symposium “Documenting, Understanding, Preserving Cultural Heritage:
+Humanities and Digital Technologies for Shaping the Future”, 25–30 June 2023, Florence, Italy
+
+correlate to the sky, earth, and underground of the universe. The
+ornamental patterns that surround the drum are classified into
+five major content categories: geometric, animal, plant,
+religious, and narrative patterns. Typically, three-dimensional
+statues, such as frogs, are frequently used to embellish the
+margins of the drum surface (Zhang and Kamal, 2022).
+Bronze drums in China, for example, can be classified into eight
+types according to their scale and excavation locations, as
+shown in Figure 1. The frog drums, as shown in types C, D, and
+E in Fig. 1, are larger in size and all have frogs as decorations.
+Usually, a frog drum has a face diameter of 70 to 100 cm,
+whereas the D type has the widest face diameter of 165 cm
+(Tang, 2007). On the top, frog decorations indicate rains and
+prosperous offspring, while the solar pattern in the middle of a
+drum top standards for aspiration for sunlight.
+The decorations on the drums are believed to be associated with
+totem worship traditions of Karen, Zhuang, Wa, and other
+ethnicities that evolved over history. For example, Zhou
+(1178/2018) reported, “bronze drums often unearthed in
+Guangxi by the tillers … with a perfect circle with bent body …
+five sitting frogs, each with a baby on its back.” Zhu
+(1948/1961) noted that “surrounding frogs indicate [the chief’s]
+title; the more frogs, the more honorable title.” In short, the frog
+drums’ types, designs, patterns, and decorative details such as
+frogs and babies on back have long evolved. Thus, it is of
+interest in cultural, musical, and historical studies to analyze the
+evolutionary designs and production of frog drums using
+interdisciplinary qualitative and quantitative research methods,
+such as geospatial technologies and machine learning.
+Geospatial technologies were applied to the quantitative study
+topics about bronze drums, too (Lu et al., 2020). The
+digitalization of ancient bronze drums entails close-up
+photogrammetry, high-definition digital image capture, laser
+scanning technology (Gomes et al., 2014), recording and
+preservation of text, audio, video, and 3D analysis and
+modeling (Lan, 2015). Multi-baseline stereo matching, multibeam forward intersection, and block adjustment have been
+employed to study feature matching and multi-baseline stereo
+positioning, thereby enhancing the reliability and accuracy of
+point cloud data on the surface of the bronze drums (Zhang,
+2017). However, the manual 3D analysis, modeling, and
+enrichment of digital heritage require significant time, space,
+and human resources. Therefore, there is a strong need for
+automatic processing of the 3D details of digital bronze drums.
+Numerous 3D processing techniques utilizing supervised
+learning encounter challenges when dealing with heterogeneous
+forms, non-parametric shapes, and sophisticated decorations
+against maximum fidelity (Gomes et al., 2014). Additionally,
+the processing of unstructured points to elaborate bronze drum
+ornamentation can be massive, and volumetric and semantic
+data about digital bronze drums may be unavailable. The school
+of supervised machine learning is thus heavily limited by the
+difficulties above. Unsupervised learning techniques were thus
+studied for processing similarity in 3D point clouds.
+3D similarity between point clouds, in general, can be measured
+as the root-mean-squared error (RMSE), mismatching ratio, or
+heterogeneity functions defined on basic 3D features, such as
+geometry (e.g., points, edges, and primitives), color, normals,
+and curvatures (Alexiou and Ebrahimi, 2020). Advanced
+similarity measures, such as cross sections for urban objects
+(Xue et al., 2020), shape skeletons for coral and tree details
+
+Fig. 2. Research methods of this paper.
+(Huang et al., 2013), and graph models of persons (Yang et al.,
+2022), have demonstrated proficiency in comprehending the
+unstructured and non-parametric 3D point cloud data. Example
+applications of 3D similarity in heritage documentation include
+clustering of ancient Chinese bridge detailing for HDTs (Pan et
+al., 2019), 3D motifs extraction (Yunus et al., 2021), contour
+surface alignment for digital restoration of decorated fragments
+(Hernandez et al., 2019), and hierarchical clustering of 3D
+points in the HSV space for automatic alternation detection
+(Musicco et al., 2021). In summary, many basic 3D similarity
+measures were successfully adopted for a variety of heritage
+documentation purposes in the literature; Yet the pros and cons
+of advanced measures such as shape skeletons and graph
+models are not well studied.
+This paper aims to apply an unsupervised hierarchical clustering
+method to understand the 3D details of bronze frog drums, and
+compare the basic surface point-based dissimilarity measure and
+a shape skeleton-based one. First, we adopt the RMSE
+dissimilarity definition in (Xue et al., 2020), then apply an
+optimization algorithm to compute the dissimilarity. Finally,
+hierarchical clustering groups similar frogs together. With
+clustering results from 3D point clouds and shape skeletons of
+the same frogs, the representativeness of the two 3D forms can
+be compared. Encouraging results were observed. The
+contribution of this paper, thus, lies in (i) proving the concept of
+automatic hierarchical clustering of complex heritage objects
+such as bronze frogs and (ii) pinpointing evidence that surface
+point clouds and shape skeletons are both appropriate for
+understanding the (dis)similarities and clustering HDTs.
+
+2. RESEARCH METHODS
+Figure 2 shows the technical processes employed in this study,
+which involved two input datasets of 3D point clouds and shape
+skeletons of frog drums. The focus of this study is on decorative
+frogs. Initially, we collected 3D point clouds of frog drums and
+computed the shape skeleton for each point cloud. Following
+this, we calculated pairwise dissimilarities in each dataset using
+the least global registration error matrix. The dissimilarity
+matrix triggered an automatic hierarchical clustering process for
+grouping geometrically similar objects. No training datasets or
+human annotations are required in this unsupervised learning
+process. Finally, we quantitatively compared the grouping
+
+This contribution has been peer-reviewed. The double-blind peer-review was conducted on the basis of the full paper.
+https://doi.org/10.5194/isprs-annals-X-M-1-2023-293-2023 | © Author(s) 2023. CC BY 4.0 License.
+
+294
+
+ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences, Volume X-M-1-2023
+29th CIPA Symposium “Documenting, Understanding, Preserving Cultural Heritage:
+Humanities and Digital Technologies for Shaping the Future”, 25–30 June 2023, Florence, Italy
+
+cylinder models, to make them consistent in format and size
+with the point clouds.
+2.2 Dissimilarity definition
+This paper adopts the most well-known basic metric for
+measuring dissimilarity between a pair of surface point clouds,
+i.e., the minimum RMSE (Xue et al., 2020):
+dissimilarity(Ci, Cj) =
+minr,t∈ℝ³ RMSE(Ci, trans(rot(Cj, r),t)),
+
+(1)
+
+where the RMSE function returns the error between the surface
+point cloud pair (Ci, Cj); r = [rx, ry, rz] is the set of 3D rotation
+parameters defined on ℝ³, and t = [tx, ty, tz] is the set of 3D
+translation parameters. That is, the dissimilarity in the least
+global registration error of the two point clouds. The RMSE
+exploits the octree data structure to compute the nearest points.
+The RMSE computation also reuses the maximum-depth
+sampling of Cj in Xue et al. (2019) for an efficient computing,
+which is set to depth = 6 in this paper.
+
+Fig. 3. Collection of 14 frogs on three drums in Anthropology
+Museum of Guangxi (color in the right figures indicates
+height). (a) Close-range LiDAR and photogrammetry; (b)
+realistic 3D drum models; (c) 14 frog models segmented.
+results, assessed the meaningfulness of the results, and
+identified any anomalies from the two 3D forms of frogs.
+2.1 Data collection and preprocessing
+Figures 3a and 3c showcase the three bronze frog drums
+selected from the Anthropology Museum of Guangxi, China,
+identified by registration IDs 60, 104, and 139. As shown in
+Figure 3a, a close-range LiDAR device MarvelScan was
+adopted for scanning mm-accurate 3D point clouds, and a
+digital camera Sony Alpha A7 for 3D true-color textures. The
+team fused the two data sources as color mesh models, where
+this paper focuses on the decorative frogs’ details.
+A total of 14 frogs were segmented after removing the drum
+top’s plane. The frogs were named clockwise, as depicted in
+Figure 3c. Subsequently, all frog mesh models were scaled to a
+uniform height of 1.0 and uniformly sampled into 100,000
+colorless points to control the triangle density and colors. This
+process generated a collection of 14 point clouds, each
+containing approximately 100,000 points and occupying an
+estimated 2.6MB (.PLY format) of disk space. It is important to
+note that the heading direction of each frog was preserved from
+the drum model.
+The final step of preprocessing is the preparation of 3D shape
+skeletons. In this study, we apply the axial skeleton in the
+computational geometry algorithms library (CGAL, ver. 5.3) to
+triangulated surface meshes of frogs (Gao et al., 2015). To
+control the variables of skeleton point density and normals, we
+created very-thin cylinders connecting the closest skeleton
+points for each frog, using the octree data structure in the
+open3d package (ver. 0.15, in Python 3.8). Then, 100,000
+colorless points were uniformly sampled from the curvature-like
+
+For a pair of continuous 3D shape skeletons Si and Sj, we apply
+a dense sampling process to convert the skeletons into
+associated point clouds CSi and CSj. The dissimilarity can then
+be computed from the two dense point clouds using the same
+Eq. (1).
+To solve the minimization problem in Eq. (1) for measuring
+dissimilarity, an iterated algorithm DIviding RECTangle
+(DIRECT) is applied. The DIRECT is proven efficient and
+effective in the global registration of noisy point clouds (Wu et
+al., 2021; Xue et al., 2020). In contrast, some conventional
+point clouds registration methods such as iterative closest point
+(ICP) are not good at global registration of complex point
+clouds (Wu et al., 2021). The GN_DIRECT module in the nlopt
+package (https://github.com/stevengj/nlopt, ver. 2.7) provides a
+fast implantation of the DIRECT algorithm. The maximum
+iteration, i.e., the primary parameter, of the DIRECT algorithm
+was set to 2,000.
+The pairwise problem solving of the dissimilarity values
+between N objects yields a N×N dissimilarity matrix via Eq.
+(1). The diagonal elements of the dissimilarity matrix are all 0,
+and the data is spread symmetrically diagonally.
+
+2.3 Automatic
+threshold
+
+hierarchical
+
+clustering
+
+with
+
+adaptive
+
+A hierarchical structure can be established from the
+dissimilarity matrix generated in Section 2.2 by gradually
+pairing up the most similar items. The hierarchy clustering
+(hclustering) module in the scipy package (ver. 1.8) provides
+cluster visualization with dendrograms. A tree form represents
+the cluster hierarchy. The roots reflect unique groups of values,
+and the leaves are composed of single sample values.
+The threshold to cut the hierarchical tree into groups is adaptive
+in this paper. It is defined as average dissimilarity of the
+dendrogram’s lowest branch and the root (highest branch). For
+example, if the root sits at dissimilarity = 0.3 and the lowest
+branching is dissimilarity = 0.2, the threshold of grouping will
+be 0.25. One can lift the threshold to a greater value to have
+fewer but more general groups; similarly, one can tighten it to
+for more groups.
+
+This contribution has been peer-reviewed. The double-blind peer-review was conducted on the basis of the full paper.
+https://doi.org/10.5194/isprs-annals-X-M-1-2023-293-2023 | © Author(s) 2023. CC BY 4.0 License.
+
+295
+
+ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences, Volume X-M-1-2023
+29th CIPA Symposium “Documenting, Understanding, Preserving Cultural Heritage:
+Humanities and Digital Technologies for Shaping the Future”, 25–30 June 2023, Florence, Italy
+
+2.4 Comparative analysis
+In this step, we employ a multi-class confusion matrix, also
+known as an error matrix, to compare the two sets of grouping
+results. A confusion matrix is a statistical tool that can compare
+classification results against the ground truth. The confusion
+matrix is a popular analytical tool in the literature of data
+sciences. Table 1 shows an example confusion matrix with nine
+cells for three classes. The three diagonal cells represent the true
+positives (TPs) of the three classes. The non-diagonal cells
+represent incorrect predictions, such as one X being predicted
+as Z and one Y being predicted as Z in the upper triangle in
+Table 1. The true positive rate (TPR) in Table 1 is thus
+calculated as (3+3+2)/10 = 0.8. In this study, we use results of
+basic 3D point-based clustering to group the rows and those of
+shape skeletons to group the columns. To enhance visual
+clarity, the preferred diagonal cells are highlighted in bold fonts
+and cool color backgrounds, and erroneous cells in warm color
+backgrounds, while the zero values have been omitted.
+
+Truth
+
+X
+Y
+Z
+
+Predicted as
+X
+Y
+3
+3
+
+Z
+1
+1
+2
+
+Table 1. Example confusion matrix for classifying 10 objects
+into 3 classes.
+
+Fig. 4. Dissimilarity matrices between the 14 frogs (cold color
+indicates similar). (a) Surface point clouds; (b) shape skeleton
+
+In summary, the dissimilarity definition in Sect. 2.2 and the
+automatic, adaptive hierarchical clustering in Sect. 2.3
+collectively respond to the research objective of complex 3D
+heritage objects understanding, using the bronze frogs as a case
+study. The group level comparison in Sect. 2.4 further examines
+whether the clustering results are consistent from basic surface
+points and advanced shape skeletons.
+
+from a worn frog ornament. The group in light yellow consists
+of three objects, i.e., B2, B4, and B6, which are the three-legged
+frogs on drum B with even serial numbers. The other group of
+“with baby” in green included A1, A2, and A3, which are the
+big four-legged frogs on drum A. The two groups in red and
+blue did not carry babies; they were the odd sequence of threelegged frogs on drum B and four-legged frogs on drum C,
+respectively. The unusual individual was A4, which was a worn
+frog ornament with no more details on the head and back.
+Overall, the clustering results at adaptive threshold = 0.11, as
+shown in Fig. 5a, were reasonable and successful.
+
+3. RESULTS
+3.1 Hierarchical clustering
+Fig. 4 shows the two dissimilarity matrices of point clouds and
+shape skeletons, respectively. In the visualized dissimilarity
+matrix in Fig. 4a, the highest dissimilar between frogs’ point
+clouds was 0.2407 between A4 and B6. The objects closet to
+A4 were C1 and C2, with a dissimilarity value at 0.14 (rounding
+of 0.1393). Meanwhile, the lowest dissimilar was 0.08
+(rounding of 0.0790) between B1 and B5, and between B4 and
+B6. Thus, the grouping threshold for 3D point clouds was
+(0.14+0.08) / 2 = 0.11. Similarly, the lowest dissimilar was 0.11
+between B4 and B6 in Fig. 4b, while A4’s lowest dissimilarity
+was 0.24. So, the threshold was 0.175 for the shape geometry’s
+results. Overall, the color distribution patterns in the subfigures
+are alike in Fig. 4, where A1 was an exception.
+Figure 5 manifests the results of four groups from the thresholds
+and distinguishes them in colored boxes. There are two main
+types in Fig. 5a using surface 3D point clouds, namely, frog
+ornaments with babies and frog ornaments without babies, apart
+
+Fig. 5b shows the clustering results using shape skeletons. The
+two main types were the same as those in Fig, 5a. Two groups
+in light yellow (i.e., “three-legged with baby”) and red (i.e.,
+“three-legged without baby”) are identical to those in Fig. 5a.
+For the rest two groups, most instances remained the same,
+while A1 was clustered into “without baby” – thus in a different
+group. The reason was that the baby on the top of A1 was worn
+so that it lost the “baby topological hole/branch” feature in the
+first two groups. In addition to the unusual individual A4, C4
+was another one for the considerable noises on the two left legs,
+which were perhaps surveying errors or worn. Overall, the
+clustering results at adaptive threshold = 0.175, as shown in
+Fig. 5b, were reasonable and successful. Furthermore, most
+frogs in Fig. 5 were clustered in the same four groups, which
+were three-legged with baby, four-legged with baby, threelegged w/o baby, and four-legged w/o baby, respectively.
+
+This contribution has been peer-reviewed. The double-blind peer-review was conducted on the basis of the full paper.
+https://doi.org/10.5194/isprs-annals-X-M-1-2023-293-2023 | © Author(s) 2023. CC BY 4.0 License.
+
+296
+
+ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences, Volume X-M-1-2023
+29th CIPA Symposium “Documenting, Understanding, Preserving Cultural Heritage:
+Humanities and Digital Technologies for Shaping the Future”, 25–30 June 2023, Florence, Italy
+
+Fig. 5. Dendrogram of hierarchical clustering of the 14 frogs (color box stands for group). (a) Using surface point clouds; (b)
+using shape skeletons; (c) Close views of the 3D mesh details
+3.2 Comparison results
+4. DISCUSSION AND CONCLUSION
+Table 2 contrasts the two sets of grouping. Out of the 14
+instances, only two instances were inconsistent. The C4 was
+grouped as “four-legged with baby” using surface point cloud,
+but as “Unusual” using shape skeleton. The A1 was grouped as
+“four-legged with baby” using surface, but “four-legged without
+baby” using shape skeleton. The TPR = 12/14 = 0.857, which
+showed a high-level consistency between the two groups. The
+consistency also indicates both surface 3D point clouds and
+shape skeletons were appropriate for clustering the 14 frogs and
+quantitative comparisons for HDTs and advanced heritage
+documentation.
+Group using shape skeleton
+I
+II
+III IV V
+Group
+using
+surface
+point
+clouds
+
+I. Three-legged
+with baby
+II. Four-legged
+with baby
+III. Three-legged
+IV. Four-legged
+V. Unusual
+
+3
+1
+
+2
+3
+
+3
+
+1
+1
+
+Table 2. Confusion matrix of the two clustering results.
+
+Heritage Digital Twins (HDT) and advanced heritage
+documentation demand automatic processing methods and
+quantitative understandings of unstructured heritage 3D data.
+This paper clusters 3D heritage details without training datasets
+and annotations. The paper presents an annotation-free
+hierarchical clustering method for comparing and grouping
+decorative frogs on bronze drums. The method includes a
+dissimilarity measurement based on minimum global
+registration error and a hierarchical clustering with adaptive
+thresholds. A comparative analysis of the dissimilarity measures
+with basic surface point clouds and advanced shape skeletons
+was conducted to identify the consistency of the two measures.
+As shown in Fig. 6a, 12 out of 14 frogs received consistent
+(TPR = 0.857) clustering, in four groups plus an ‘Unusual’
+group. The 12 clustering results successfully reflected the
+morphological analysis of the photo-realistic 3D frog mesh
+models, as shown in Fig. 6a. The rest two frogs, however,
+received inconsistent grouping using surface points and shape
+skeleton. As circled in Fig. 6b, Frog A1’s bay had no
+subsidence on its sides, so it was not recognized by the
+skeleton; Frog C4’s skeleton was hindered by the geometric
+
+This contribution has been peer-reviewed. The double-blind peer-review was conducted on the basis of the full paper.
+https://doi.org/10.5194/isprs-annals-X-M-1-2023-293-2023 | © Author(s) 2023. CC BY 4.0 License.
+
+297
+
+ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences, Volume X-M-1-2023
+29th CIPA Symposium “Documenting, Understanding, Preserving Cultural Heritage:
+Humanities and Digital Technologies for Shaping the Future”, 25–30 June 2023, Florence, Italy
+
+noises around the left forefoot and a small bump on the left hide
+
+Lastly, the patterns on drum tops and curved frog bodies were
+
+Fig. 6. Comparison of the 14 photo-realistic 3D frog mesh models. (a) 12 consistent clustered frogs; (b) 2 inconsistent frogs
+leg.
+
+not included.
+
+Overall, the automatic hierarchical clustering method was
+proven helpful in processing complex heritage objects, such as
+bronze frogs, regardless of using surface points or shape
+skeletons. In addition, the consistency in the results pinpointed
+new evidence that surface point clouds and shape skeletons are
+both appropriate for understanding the (dis)similarities and
+groups for HDT and advanced heritage documentation.
+
+Future research directions are recommended as follows. First,
+researchers can include and contrast heterogenous frog drums
+from other museums in other provinces and countries. A study
+of the sampling level of shape skeleton can lead to lightweight
+skeleton points, which may be much faster in comparing and
+documenting heavy-sized 3D surface point clouds. New robust
+shape skeleton extraction algorithms are also recommended to
+tolerate inevitable geometric noises in scanned 3D heritage
+models.
+
+The annotation-free hierarchical clustering methods can be
+applied to other decorative details on cultural relics. Examples
+are solar patterns on drum tops, Roman temple columns,
+cathedral pillar details, teapot handles, Chinese tie beam
+woodcarving, and terracotta tiles. Based on a dissimilarity
+equation like Eq. (1), the new 3D heritage details' error matrix
+can quantitatively measure the geometrical differences and
+automatically group similar decorative details together.
+The study in this paper is not free from limitations. First, the
+source frog drums were limited to one museum, while the
+number of frog instances was limited to 14. Secondly, the shape
+skeleton computation adopted from Gao et al. (2015) may be
+sensitive to local geometric noises. In addition, the computation
+was controlled to be slow – 100,000 sampled points for
+mimicking complex objects – for both data presentations.
+
+ACKNOWLEDGEMENTS
+The study presented in this study was supported by Natural
+Science Fund of Guangdong (No. 2023A1515010757).
+
+REFERENCES
+Alexiou, E., Ebrahimi, T., 2020: Towards a point cloud
+structural similarity metric. In 2020 IEEE International
+Conference on Multimedia & Expo Workshops (ICMEW),
+IEEE. doi.org/10.1109/ICMEW46912.2020.9106005
+
+This contribution has been peer-reviewed. The double-blind peer-review was conducted on the basis of the full paper.
+https://doi.org/10.5194/isprs-annals-X-M-1-2023-293-2023 | © Author(s) 2023. CC BY 4.0 License.
+
+298
+
+ISPRS Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences, Volume X-M-1-2023
+29th CIPA Symposium “Documenting, Understanding, Preserving Cultural Heritage:
+Humanities and Digital Technologies for Shaping the Future”, 25–30 June 2023, Florence, Italy
+
+Chen, S.H., Xue, F., 2023: Automatic BIM detailing using deep
+features of 3D views. Automation in Construction, 148,
+104780. doi.org/10.1016/j.autcon.2023.104780
+
+In 2007 Annual Meeting of the Ethnographic Museum
+Committee of the Chinese Museum Association. Beijing, 2007.
+Liaoning Nationalities Press.
+
+Cooler, R.M., 1995: The Karen Bronze Drums of Burma:
+Types, Iconography, Manufacture, and Use. Leiden,
+Netherlands: E. J. Brill.
+
+Wu, Y., Shang, J., Xue, F., 2021: RegARD: symmetry-based
+coarse registration of smartphone’s colorful point clouds with
+CAD drawings for low-cost digital twin buildings. Remote
+Sensing, 13(10), 1882. doi.org/10.3390/rs13101882
+
+Gao, X., Loriot, S., Tagliasacchi, A., 2015: Triangulated surface
+mesh skeletonization. In CGAL User and Reference Manual.
+CGAL
+Editorial
+Board.
+https://doc.cgal.org/4.7/Surface_mesh_skeletonization/index.ht
+ml (17 October 2015)
+Gomes, L., Bellon, O.R.P., Silva, L., 2014: 3D reconstruction
+methods for digital preservation of cultural heritage: A survey.
+Pattern
+Recognition
+Letters,
+50,
+3-14.
+doi.org/10.1016/j.patrec.2014.03.023
+Grilli, E., Remondino, F., 2019: Classification of 3D Digital
+Heritage.
+Remote
+Sensing,
+11(7),
+847.
+doi.org/10.3390/rs11070847
+Hernandez, R.D.L., Vincke, S., Bassier, M., Mattheuwsen, L.,
+Derdeale, J., Vergauwen, M, 2019: Puzzling engine: A digital
+platform to aid the reassembling of fractured fragments.
+International Archives of the Photogrammetry, Remote Sensing
+and Spatial Information Sciences. XLII-2/W15, 563-570.
+doi.org/10.5194/isprs-archives-XLII-2-W15-563-2019
+Huang, H., Wu, S., Cohen-Or, D., Gong, M., Zhang, H., Li, G.,
+Chen, B., 2013: L1-medial skeleton of point cloud. ACM
+Transactions
+on
+Graphics,
+32(4),
+65.
+doi.org/10.1145/2461912.2461913
+Lan, P., 2015: The application of close-range photogrammetry
+to the digitization of ancient bronze drums (in Chinese).
+Enterprise Technology and Development, 9, 30-32.
+cqvip.com/qk/91281a/201505/665346887.html
+Lu, Q., Li, Y., Zou, G., Gong, S., 2020: Separation or
+integration? Further insights from a study on chemical datasets
+of ancient bronze drums from South and Southeast Guangxi,
+China. Journal of Cultural Heritage, 44, 15-26.
+doi.org/10.1186/s40494-022-00808-0
+Musicco, A., Galantucci, R.A., Bruno, S., Verdoscia, C.,
+Fatiguso, F, 2021: Automatic point cloud segmentation for the
+detection of alterations on historical buildings through An
+unsupervised and clustering-based machine learning approach.
+ISPRS Annals of the Photogrammetry, Remote Sensing and
+Spatial
+Information
+Sciences,
+V-2-2021,
+129-136.
+doi.org/10.5194/isprs-annals-V-2-2021-129-2021
+Niccolucci, F., Felicetti, A., Hermon, S., 2022: Populating the
+data space for cultural heritage with Heritage Digital Twins.
+Data, 7(8), 105. doi.org/10.3390/data7080105
+Pan, Y., Dong, Y., Wang, D., Chen, A., Ye, Z., 2019: Threedimensional reconstruction of structural surface model of
+heritage bridges using UAV-based photogrammetric point
+clouds. Remote Sensing, 11(10), 1204.
+Tang, J., 2007: An introduction to the bronze drums in the
+collection of the Guangxi Zhuang Autonomous Region
+Museum and an exploration of their classification (in Chinese).
+
+Xue, F., Lu, W., Chen, Z., Webster, C.J., 2020: From LiDAR
+point cloud towards digital twin city: Clustering city objects
+based on Gestalt principles. ISPRS Journal of Photogrammetry
+and
+Remote
+Sensing,
+167,
+418-31.
+doi.org/10.1016/j.isprsjprs.2020.07.020
+Xue, F., Lu, W., Webster, C.J., Chen, K., 2019: A derivativefree optimization-based approach for detecting architectural
+symmetries from 3D point clouds. ISPRS Journal of
+Photogrammetry and Remote Sensing, 148, pp.32-40.
+10.1016/j.isprsjprs.2018.12.005
+Yang, Q., Ma, Z., Xu, Y., Li, Z., Sun, J., 2022: Inferring point
+cloud quality via graph similarity. IEEE Transactions on
+Pattern Analysis and Machine Intelligence, 44(6), 3015-3029.
+doi.org/10.1109/TPAMI.2020.3047083
+Yang, S., Hou, M., Li, S., 2023: Three-dimensional point cloud
+semantic segmentation for cultural heritage: A comprehensive
+review.
+Remote
+Sensing,
+15(3),
+548.
+doi.org/10.3390/rs15030548
+Yang, S., Hou, M., Shaker, A., Li, S., 2021. Modeling and
+processing of smart point clouds of cultural relics with complex
+geometries. ISPRS International Journal of Geo-Information,
+10, 617. doi.org/10.3390/ijgi10090617
+Yunus, K., Şenol, H. İ., Polat, N., 2021: Three-dimensional
+modeling and drawings of stone column motifs in Harran Ruins.
+Mersin
+Photogrammetry
+Journal,
+3(2),
+48-52.
+doi.org/10.53093/mephoj.1012937
+Zhang, J., Li, M., Zhang, W., Wu, Y., Xue, F., 2021: Prospect
+of architectonic grammar reconstruction from dense 3D point
+clouds: Historical building information modeling (HBIM) of
+Guangdong cultural heritages. In Proceedings of the 25th
+International Symposium on Advancement of Construction
+Management and Real Estate, 1421-1431. Singapore, 2021.
+Springer. doi.org/10.1007/978-981-16-3587-8_97
+Zhang, X., Kamal, J., 2022: Research on the decorative patterns
+of the bronze drums (DPBD) in China: A systematic literature
+review. Malaysian Journal of Social Sciences and Humanities,
+7, 10. doi.org/10.47405/mjssh.v7i10.1858
+Zhang, Z., 2017: 3D reconstruction of bronze drum collections
+based on multiple baseline of close-range photogrammetric
+technology (in Chinese with English abstract). Natural science
+journal
+of
+Xiangtan
+University,
+39,
+119-22.
+cqvip.com/qk/92705x/201701/671860905.html
+Zhou, Q., 1178: Bronze drums (in ancient Chinese). Lingwai
+Daida, 7. Reprinted in 2018 by China Bookstore Publishing,
+ISBN 9787514920468.
+Zhu, C., 1948: Study of bronze drums. Chronicle of Binyang
+County. Reprinted in 1961 by Guangxi Archives.
+
+This contribution has been peer-reviewed. The double-blind peer-review was conducted on the basis of the full paper.
+https://doi.org/10.5194/isprs-annals-X-M-1-2023-293-2023 | © Author(s) 2023. CC BY 4.0 License.
+
+299
+
+

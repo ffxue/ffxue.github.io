@@ -1,0 +1,309 @@
+Digital twinning hoisting process of high-rise MiC components based on 4D
+point cloud and BIM models
+Dong Liang, M.S.,1 Sou-Han Chen, M.S.,2 Yijie Wu, M.S.,3 Zhe Chen, M.S.,4 and Fan Xue,
+Ph.D.,5
+This is the authors’ version of the paper:
+Liang, D., Chen, S.-H., Wu, Y., Chen, Z. & Xue, F. (2025). Digital twinning hoisting
+process of high-rise MiC components based on 4D point cloud and BIM models.
+Proceedings of the 29th International Symposium on Advancement of Construction
+Management and Real Estate, Springer, in press.
+This file is shared for personal and academic use only, under the license CC BYNC-ND 4.0 (Non-Commercial, No Derivatives, and with an Attributed citation
+when you use). The final published version of this paper can be found at:
+[LINK_TO_SPRINGERLINK]. Any uses other than personal and academic purposes must
+obtain appropriate permissions from Springer first.
+1
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong
+Kong; e-mail: leodong@connect.hku.hk
+2
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong
+Kong; e-mail: hankchen@connect.hku.hk
+3
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong
+Kong; e-mail: yijiewu@connect.hku.hk
+4
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong
+Kong; e-mail: cz77@connect.hku.hk
+5
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong
+Kong; e-mail: xuef@hku.hk
+ABSTRACT
+Hoisting is the most crucial phase in the on-site construction of Modular Integrated
+Construction (MiC) which adopts the concept of “factory assembly followed by on-site
+installation”. The main reason is the hoisting of MiC modules substantially influences the
+efficiency and safety of on-site installation due to heavy and unbalanced module loads,
+especially during blind lifting. However, existing monitoring, and planning methods for
+improving the safety and efficiency of MiC hoisting were confirmed to have limitations, such as
+underutilization of sensing data or disconnection between simulation and real-time situation of
+the construction site. This paper aims to introduce a digital twin (DT) method based on 4D point
+cloud (4DPC) sensing and as-designed BIM to effectively improve the safety and efficiency of
+the MiC hoisting process. The conceptual framework of DT for MiC hoisting was proposed, and
+a six-step technical route was specified. The initial test results showed that the movement of MiC
+can be accurately monitored, based on which further DT simulation will be done in the future.
+–1–
+
+1. INTRODUCTION
+Hoisting is the most critical process of the on-site construction of MiC building, which
+consists of modules that are manufactured in an off-site prefabrication factory and transported to
+the site for installation (Zheng et al. 2020). The hoisting process will not only significantly
+impact the overall project time and efficiency, but is a major source of on-site construction risk
+(Lei et al. 2013). The unique challenge of lifting modules first comes from their large size, heavy
+weight, and complex load conditions. Meanwhile, the construction of MiC often happens in
+constrained urban environments, and thus the complexity of hoisting and positioning these
+modules will be high. In addition, blind lifting scenarios (where the operator's direct line of sight
+is obscured) further increase the difficulty of the operation and exacerbate the risk factor.
+Therefore, the lifting phase requires extra attention from the aspect of work efficiency and safety
+risk, especially when dealing with heavy, unbalanced module loads and blind lifts (Shapira &
+Lyachin 2009).
+Some monitoring and planning methods were already used to reduce the risks and
+increase the efficiency of the MiC hoisting process (Zhu et al. 2022; Liu et al. 2021), but they
+were confirmed insufficient to improve the situation. Specifically, manual supervision and some
+traditional sensing approaches were used to monitor the hoisting process at construction sites, but
+few real-time or near-real-time coordination and control analyses were conducted based on
+sensing results. Therefore, the hoisting efficiency and monitoring cannot benefit a lot from the
+supervision or monitoring work. Despite some studies focusing on path planning or control of
+hoisting, most of them mainly conducted the analysis based on pre-designed 3D models or static
+site reconstruction models. Due to the temporary nature of the construction site, dynamic
+environmental change must be considered (Sacks et al. 2005). To overcome the existing
+challenges, some advanced technologies are urgently to be introduced.
+DT, a digital replica of a physical system (Tao et al. 2022), has the potential to effectively
+improve the safety and efficiency of MiC hoisting. DT provides real-time monitoring, updating,
+simulating, analyzing, controlling, predicting, optimizing, validating, and seamlessly
+coordinating. By using DT, the hoisting can be real-time monitored and managed alongside the
+whole process. There is a profound interaction between the physical and digital components
+through the continual and dynamic data exchange in DT. Therefore, to develop effective DT for
+MiC hoisting, the most critical thing is to sense and map objects and the environment in the
+physical world to models in the virtual world for real-time simulation.
+However, most existing sensing technologies find it difficult to meet the requirements of
+sensing and mapping for developing construction DT due to their technical limitations.
+Specifically, IoT-based and image-based sensors were widely criticized for the vulnerability of
+signals caused by long distances and obstacles (Zhang et al. 2012) and the lack of depth (Chen et
+al. 2017), respectively. The emergence of 4DPC, known for its precise spatial and temporal
+awareness, provides a promising sensing way for developing DT (Silva et al. 2022). 4DPC
+
+–2–
+
+additionally incorporates temporal information into a traditional 3D point cloud, a collection of
+three-dimensional data points or coordinates (Xue et al. 2019; Xue et al. 2020; Wu et al. 2024).
+4DPC was popular in some dynamic sensing assignments, such as the perception of autonomous
+driving and monitoring of construction-related activities (Liang et al. 2023) due to its several
+advantages, such as high resolution, comprehensive spatial-temporal information, and
+insensitivity to light conditions, (Liang & Xue 2022). The authors proposed a semantic
+registration method of 4DPC for monitoring crane-related activities in previous research. The
+proposed method could accurately and near-real-time detect objects from as-designed BIM,
+which is a digital representation of the physical and functional characteristics of a facility (Chen
+& Xue 2023; Liang & Xue 2023).
+This paper aims to propose a DT method for the MiC hoisting process to improve
+efficiency and safety in construction sites. One contribution of the proposed method is
+integrating the 4DPC sensing method and BIM to bridge the physical world and the virtual
+environment. The other one is conducting optimal planning and coordination strategy based on
+the real-time data in the construction site.
+2. RELATED WORKS
+In the last ten years, many studies have focused on monitoring hoisting activities for
+safety concerns, but less further analysis was conducted based on monitoring results. Fang et al.
+(2016) developed real-time pro-active safety assistance for mobile crane hoisting operations
+based on a series of IoT sensors, which require high device and installation costs. In addition,
+Fang et al. (2018) used the camera to track the crane load sway, but only the 2D location of the
+load can be identified. Zhou et al. (2019) employed an IoT-based safety monitoring system for
+blind hoisting, and it was already applied in a practical project. Chian et al. (2022) proposed an
+image-based deep learning method to detect and track the fall zone of crane load, but it was
+criticized for overreliance on the quality of the training set.
+Meanwhile, computer-aided automated path planning has also been the subject of several
+research to improve hoisting efficiency and safety. Kayhani et al. (2021) used Dijkstra's method
+to find the shortest crane-lift path from the starting point to the destination point. Hu and Fang
+(2020) combined Building Information Modeling (BIM) and the RRT* algorithm to find the
+optimal crane-lift path. Zhu et al. (2022) integrate metaheuristic optimization and virtual
+prototyping to optimize the path planning for high-rise MiC modules. However, all of them were
+only analyzed in the virtual environment without considering the real site condition.
+There are few DT-related studies in the construction field. A recent literature study
+conducted by Boje et al. (2020) discussed the transition route toward a semantic construction
+DT, which is different from traditional BIM applications in the current practice of the
+construction industry.
+
+–3–
+
+3. METHOD
+To improve the efficiency and safety of the MiC hoisting process, the conceptual
+framework of DT was proposed, as shown in Figure 1(a). There are mainly four parts, i.e.,
+sensing on-site hoisting of MiC, establishing parametric models, conducting the simulation, and
+making near-real-time hoisting management strategies. Figure 1(b) illustrates six specific steps
+to develop the proposed DT for MiC hoisting.
+
+⋅
+
+Figure 1. DT of MiC hoisting: (a) conceptual framework; (b) technical route.
+Step 1: BIM models for construction sites need to be created before hoisting. Herein,
+BIM models include high-rise MiC buildings (including every single MiC module) and
+on-site tower cranes. As-designed BIM will play a crucial role in the subsequent parts of
+the work.
+
+–4–
+
+⋅
+
+⋅
+
+⋅
+
+⋅
+⋅
+
+Step 2: The LiDARs will be installed to collect 4DPC data on the construction site. Onsite 4DPC collection is required to cover the potential area of the MiC hoisting process.
+Meanwhile, the 4DPC data preprocessing, such as data registration from multi-devices
+and background removal, will be conducted.
+Step 3: The semantic registration will be conducted on preprocessed 4DPC based on asdesigned BIM. In specific, the BIM object will be registered into the 4DPC through an
+optimization process. The detailed semantic registration method can be found in the
+previous study by authors (Liang et al. 2024).
+Step 4: According to the semantic 4DPC and as-designed BIM, the construction objects
+and facilities can be mapped into the virtual world. The hoisting-related objects and tower
+cranes will be represented by mathematical models for the following simulation.
+Step 5: The simulation will be conducted for safety and efficiency improvement. The
+specific assignment can be optimal path planning or risk prediction.
+Step 6: Based on the simulation result towards the hoisting path, potential risk, and
+coordination. The assistance and visualization system can be established for crane
+operators and on-site or off-site managers.
+
+4. EXPERIMENTAL SETUP
+In this paper, steps 1, 2, and 3 illustrated in Figure 1(b) were already finished. A novel
+4DPC sensing device, as shown in Figure 2(a), was developed in-house (Xue et al. 2024) to
+collect the high-definition 4D motion data of construction activities. Two 4DPC LiDAR were
+installed on a temporary platform at the construction site at an angle of one looking down and
+one looking up, to cover the entire hoisting process of the MiC from the ground to the
+installation location. The 4DPC LiDAR used in this study was the Livox Mid-70. It is suitable
+for this high-rise MiC hoisting project due to its great ability, i.e., a 70.4° circular field of view, a
+maximum detection range of 260 m, and a recommended detection range of 90m (about the 30story height). The LiDAR scanned 4DPC data with centimeter-level accuracy at a rate of 20
+frames per second. However, the target resolution may have been reduced due to the limited
+scanning duration per frame. In total, the devices collected 1 hour of 4DPC data in lvx format,
+with a size of 80 MB per minute, from the construction site. In this paper, 15-min 4DPC data
+including a complete hoisting process was selected to validate the method. To achieve a trade-off
+between the updating frequency and sufficient resolution of registration, 4DPC data was
+aggregated every 0.5 seconds, i.e., a frame rate at 2 fps, resulting in a total of 1800 frames.
+The proposed method's computational experiment was conducted on a desktop computer
+equipped with an Intel i7-10700 2.9 GHz CPU, 32 GB of memory, Python 3.8, and Windows 11
+64-bit, operating in single-threaded mode. The geometric point-level error for 4DPC points was
+less than 2cm at a 20m distance. In the registration process, both the BIM objects and input
+4DPC utilized voxel grid sizes of 150mm.
+
+–5–
+
+Figure 2. (a) On-site installation of the device; (b) Example of 4DPC data frame
+5. INITIAL RESULT AND DISCUSSION
+The initial result will be discussed in this section. Figure 3(a) illustrates the accurate
+registration result in the start (t=1), process (t=800), and end (t=1800). From the registration
+result, the 3D location and direction information can be extracted. For illustration purposes,
+figure 3(b) shows the movement of the MiC module in the z-axis direction. In specific, the center
+of the MiC module rose from a height of around 350 cm to 870 cm and then went down to about
+600cm. After temporary adjustment, the MiC module was hoisted to the height of 2670 cm and
+finally stopped at the installation location (nearly 2110 cm).
+Further DT analysis will be conducted based on the registration result of 4DPC and asdesigned BIM.
+
+Figure 3. Registration result: (a) 3D illustration of 4DPC; (b) Decomposed movement in zaxis direction.
+
+6. CONCLUSION AND FUTURE WORK
+The hoisting process significantly impacts the efficiency and safety of on-site MiC
+construction due to heavy and unbalanced module loads, particularly during blind hoisting.
+–6–
+
+However, the traditional monitoring or planning methods are difficult to effectively reduce the
+risk and improve the efficiency of MiC hoisting due to technical limitations.
+This paper tries to improve the safety and efficiency of the MiC hoisting process by
+introducing Digital Twin (DT) which is based on the 4DPC sensing and BIM. The conceptual
+framework was proposed, and the 6-step technical route was determined. The initial results
+presented that the spatial-temporal information of the MiC module can be accurately obtained.
+Based on the sensing results, further work will focus on establishing mathematical representation
+(modeling) and DT simulation for different purposes in the future.
+Acknowledgment
+This study was supported by the Innovation and Technology Commission (ITC) (No.
+ITP/004/23LP) and Shenzhen Science, Technology and Innovation Commission (SZSTI) (No.
+SGDX20201103093600002). We appreciate the Paul Y. Engineering and XenseTech Ltd. to
+provide data collection support on the case project site.
+REFERENCES
+
+Boje, C., Guerriero, A., Kubicki, S. & Rezgui, Y. (2020). Towards a semantic construction digital twin:
+Directions for future research. Automation in Construction, 114, 103179. doi:10.1016/j.autcon
+.2020.103179
+Chen, J., Fang, Y. & Cho, Y. K. (2017). Real-time 3D crane workspace update using a hybrid
+visualization approach. Journal of Computing in Civil Engineering, 31(5), 04017049.
+doi:10.1061/(ASCE)CP.1943-5487.0000698
+Chen, S. H. & Xue, F. (2023). Automatic BIM detailing using deep features of 3D views. Automation in
+Construction, 148, 104780. doi:10.1016/j.autcon.2023.104780
+Chian, E. Y., Goh, Y. M., Tian, J. & Guo, B. H. (2022). Dynamic identification of crane load fall zone: A
+computer vision approach. Safety Science, 156, 105904. doi:10.1016/j.ssci.2022.105904
+Fang, Y., Chen, J., Cho, Y. K., Kim, K., Zhang, S. & Perez, E. (2018). Vision-based load sway
+monitoring to improve crane safety in blind lifts. Journal of Structural Integrity and
+Maintenance, 3(4), 233-242. doi:10.1080/24705314.2018.1531348
+Fang, Y., Cho, Y. K. & Chen, J. (2016). A framework for real-time pro-active safety assistance for mobile
+crane lifting operations. Automation in Construction, 72, 367-379.
+doi:10.1016/j.autcon.2016.08.025
+Hu, S. & Fang, Y. (2020). Automating crane lift path through integration of BIM and path finding
+algorithm. Proceedings of the 37th International Symposium on Automation and Robotics in
+Construction, (pp. 522-529). doi:10.22260/ISARC2020/0072
+Kayhani, N., Taghaddos, H., Mousaei, A., Behzadipour, S. & Hermann, U. (2021). Heavy mobile crane
+lift path planning in congested modular industrial plants using a robotics approach. Automation in
+Construction, 122, 103508. doi:10.1016/jautcon.2020.103508
+Lei, Z., Taghaddos, H., Olearczyk, J., Al-Hussein, M. & Hermann, U. (2013). Automated method for
+checking crane paths for heavy lifts in industrial projects. Journal of Construction Engineering
+and Management, 139, 04013011. doi:10.1061/(asce)co.19437862.0000740
+Liang, D. & Xue, F. (2022). Applications of 4D Point Clouds (4DPC) in Digital Twin Construction: A
+SWOT Analysis. Proceedings of the 27th International Symposium on Advancement of
+Construction Management and Real Estate (pp. 1231-1238). Singapore: Springer.
+doi:10.1007/978-981-99-3626-7_95
+
+–7–
+
+Liang, D. & Xue, F. (2023). Integrating automated machine learning and interpretability analysis in
+architecture, engineering and construction industry: A case of identifying failure modes of
+reinforced concrete shear walls. Computers in Industry, 147, 103883.
+doi:10.1016/j.compind.2023.103883
+Liang, D., Chen, S.-h., Chen, Z., Wu, Y., Chu, L. Y. & Xue, F. (2024). 4D point cloud-based spatialtemporal semantic registration method for monitoring construction activities for mobile cranes.
+Automation in Construction, under review.
+Liang, D., Chen, Z., Kong, L., Wu, Y., Chen, S.-H. & Xue, F. (2023). 4D Point Cloud (4DPC)-driven
+real-time monitoring of construction mobile cranes. 2023 European Conference on Computing in
+Construction and the 40th International CIB W78 Conference. Heraklion, Greece: European
+Council on Computing in Construction. doi:10.35490/EC3.2023.258
+Liu, Z., Meng, X., Xing, Z. & Jiang, A. (2021). Digital twin-based safety risk coupling of prefabricated
+building hoisting. Sensors, 21(11), 3583. doi:10.3390/s21113583
+Sacks, R., Navon, R., Brodetskaia, I. & Shapira, A. (2005). Feasibility of Automated Monitoring of
+Lifting Equipment in Support of Project Control. Journal of Construction Engineering and
+Management, 131(5), 604-614. doi:10.1061/~ASCE!0733-9364~2005!131:5~604!
+Shapira, A. & Lyachin, B. (2009). Identification and analysis of factors affecting safety on construction
+sites with tower cranes. Journal of Construction Engineering and Management, 135, 24-33.
+doi:10.1061/(ASCE)0733-9364(2009)135:1(24)
+Silva, M. F., Green, A., Morales, J., Meyerhofer, P., Yang, Y., Figueiredo, E., Costa, J. C. & Mascareñas,
+D. (2022). 3D structural vibration identification from dynamic point clouds. Mechanical Systems
+and Signal Processing, 166, 108352. doi:10.1016/j.ymssp.2021.108352
+Tao, F., Xiao, B., Qi, Q., Cheng, J. & Ji, P. (2022). Digital twin modeling. Journal of Manufacturing
+Systems, 64, 372-389. doi:10.1016/j.jmsy.2022.06.015
+Wu, Y., Xue, F., Li, M. & Chen, S.-H. (2024). A novel Building Section Skeleton for compact 3D
+reconstructionfrom point clouds: A study of high-density urban scenes. ISPRS Journal of
+Photogrammetry and Remote Sensing, in press.
+Xue, F., Lu, W., Chen, Z. & Webster, C. J. (2020). From LiDAR point cloud towards digital twin city:
+Clustering city objects based on Gestalt principles. ISPRS Journal of Photogrammetry and
+Remote Sensing, 167, 418-431. doi:10.1016/j.isprsjprs.2020.07.020
+Xue, F., Lu, W., Websterb, C. J. & Chen, K. (2019). A derivative-free optimization-based approach for
+detecting architectural symmetries from 3D point clouds. ISPRS Journal of Photogrammetry and
+Remote Sensing, 148, 32-40. doi:10.1016/j.isprsjprs.2018.12.005
+Xue, F., Wang, Y., Wu, Y., Chen, Z., Chen, S.-H. & Liang, D. (2024). Remote sensing of 4D point cloud
+(4DPC) for smart construction: A novel time-dynamic data source exploiting self-driving car’s
+low-cost LiDAR sensors. ASCE International Conference on Computing in Civil Engineering, (p.
+In Submission).
+Zhang, C., Hammad, A. & Rodriguez, S. (2012). Crane pose estimation using UWB real-time location
+system. Journal of Computing in Civil Engineering, 26(5), 625-637. doi:10.1061/(asce)cp.19435487.0000172
+Zheng, Z., Zhang, Z. & Pan, W. (2020). Virtual prototyping- and transfer learning-enabled module
+detection for modular integrated construction. Automation in Construction, 120, 103387.
+doi:10.1016/j.autcon.2020.103387
+Zhou, C., Luo, H., Fang, W., Wei, R. & Ding, L. (2019). Cyber-physical-system-based safety monitoring
+for blind hoisting with the internet of things: A case study. Automation in Construction, 97, 138150. doi:10.1016/j.autcon.2018.10.017
+Zhu, A., Zhang, Z. & Pan, W. (2022). Crane-lift path planning for high-rise modular integrated
+construction through metaheuristic optimization and virtual prototyping. Automation in
+Construction, 141, 104434. doi:https://doi.org/10.1016/j.autcon.2022.104434
+
+–8–
+
+Zhu, A., Zhang, Z. & Pan, W. (2022). Crane-lift path planning for high-rise modular integrated
+construction through metaheuristic optimization and virtual prototyping. Automation in
+Construction, 141, 104434. doi:10.1016/j.autcon.2022.104434
+
+–9–
+
+

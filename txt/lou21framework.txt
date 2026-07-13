@@ -1,0 +1,433 @@
+A generic framework for BIM component naming
+Jinfeng Lou1*, Jinying Xu2, Weisheng Lu3, Fan Xue4
+This is the authors’ pre-print version (after peer review) of the paper:
+Lou J., Xu J., Lu W., Xue F. (2021). A generic framework for BIM component naming.
+Proceedings of the 26th International Symposium on Advancement of Construction
+Management and Real Estate (CRIOCM2021), Springer, in press.
+This file is shared for personal and academic use only, under the license CC BY-NC-ND 4.0
+(Non-Commercial, No Derivatives, and with an Attributed citation when you use). Any uses
+other than personal and academic purposes must obtain appropriate permissions from Springer
+first.
+Abstract: The advent of Building Information Model (BIM) has established a new paradigm of
+project management. BIM contains more and more information generated with the evolution of
+projects. Most of the information in BIM is organized in an object-oriented way. Thus, the unit of
+information management is every single component in BIM. The name of every component, one of
+the metadata, provides an efficient tool to manage a wealth of information. However, there are very
+few studies and standards focusing on the component names. In practice, the disorder in component
+names and incompatibility with stakeholders’ requirements can be easily identified. To solve these
+problems, this study proposed a list of criteria that component names should fulfill and developed
+a naming framework following these criteria. The major contribution of this study is the generic
+framework that can help to formulate an appropriate naming convention and facilitate information
+management at a project level.
+Keywords: Building information modeling (BIM); name; naming; component.
+
+1* Jinfeng Lou
+
+Corresponding author, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong,
+China
+E-mail: waseljf@connect.hku.hk
+Jinying Xu
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+2
+
+Weisheng Lu
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+3
+
+4 Fan Xue
+
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+
+1 Introduction
+Building Information Modeling (BIM) has been regarded as a disruptive technology in Architecture,
+Engineering, Construction (AEC) industry. It is widely accepted that BIM is defined as a digital
+representation of the physical and functional characteristics of a facility[1]. BIM not only serves as
+a shared database to store huge volumes of data, but also has the potential to achieve more intelligent
+and automated functions by making the most of the data[2]. Extensive studies have demonstrated
+these possible applications, such as 3D visualization[3], clash detection[4], cost management[5],
+facility management[6], schedule management[7], and simulation[8]. All these applications are based
+on structured and well-organized data in BIM, which is represented in a machine-readable form.
+Towards the target of digitization and automation, extensive work has focused on translating the
+human-readable documents (e.g., PDF, Word) into machine-readable data format (e.g., XML,
+JSON). The value of BIM lies in its structured data. However, the amount of data in BIM keeps
+increasing and becomes more and more unmanageable as the project evolves[9]. Therefore, tools
+that are capable of handling large volumes of data are needed. Metadata is the primary one of these
+tools[10][11].
+Metadata, in short, is the data that describes other data[12]. It has become a pervasive and
+indispensable part of people’s daily lives. Exemplary usages of metadata include the index numbers
+to books in libraries, the prices of products on online shopping platforms, and the tags of photos on
+social media. Metadata can be utilized to categorize, filter, identify, and locate data items quickly[13].
+For data management, metadata often provides information about name, creation, modification, size,
+type, and other features[14]. Among these metadata, names are the most common and important piece
+of metadata. Names serve as the primary identity tags, often using natural language that can be
+understood by human[15][16]. In BIM models, there are various names, such as component names,
+object names, material names, layer names, and others. This study has a focus on BIM component
+names.
+Previous literature has underlined the role of names in project management[17][18]. Given a
+prominent naming convention, names are able to disambiguate by explicitly displaying features of
+components. Therefore, when implementing BIM, practitioners begin to value a standard naming
+convention. BIM Execution Plan (BEP) is a plan that describes the process of information modeling
+in detail with the aim of promoting information management throughout the life cycle of a project[19].
+BEP pinpoints a checklist of requirements for BIM of a project, among which component naming
+is one of the most important considerations[20].
+However, the practical implementation of naming components is still not ideal. Reasons for
+this could be disorder in component names[21] and incompatibility with project requirements[22]. To
+solve these problems, this study aims to propose a generic component-naming framework for
+information management at a project level. The rest of this paper is organized as follows. Section 2
+is the literature review revealing some basic concepts, the current status of naming components, and
+problems of current practices in construction projects. Section 3 will introduce the method used in
+this study. A generic framework for naming components is proposed in Section 4. Finally,
+conclusions are drawn in the last section.
+
+2 Literature Review
+
+2.1 Basic concept of name
+The Merriam-Webster dictionary explains the noun “name” as “a word or phrase that constitutes the
+distinctive designation of a person or thing”[23]. This definition delineates the most important
+characteristic of a name to be distinctive. A name virtually serves as a searchable metadata tag of an
+item. In a BIM model, a component name is utilized to reveal the primary information and
+distinguish it from other components. Here, it is worth noting that some IDs, such as Element ID in
+Revit and Globally Unique Identifier (GUID) in Industry Foundation Class (IFC), function as an
+identifier of components[24]. This is what names and IDs have in common. The differences lie in
+two aspects. First, a name contains more semantic information, making them easier to be understood
+by a human, while an ID is a string of alphanumeric characters that are hard to remember. Second,
+a name can be changed, but an ID has to be constant throughout the whole life cycle[25]. Preferably,
+a name reflects the current states or properties of the component in real-time. In other words, a name
+should be modified, if needed, as the properties change. An ID must be preserved, regardless of
+software platforms and stages.
+It's worth noting that there is often confusion between component names and object names in
+most cases. It should be clarified that, according to NBS[26], components refer to “specific instances
+of each type that may require management such as inspection, maintenance, service or replacement
+during ‘in-use’ phase”, also known as “instance”, “occurrence” or “element”. Objects refer to “items
+having state, behavior and unique identity”, also known as “entity” or “element”[26]. An example of
+objects can be a wall object, while a component can be an instance of the wall object in a particular
+project. Object names can help to build and develop an object library to retrieve and reuse BIM
+objects and expedite the modeling process[16], which is beyond the scope of this study. This study
+focuses on the component names, i.e., the names of instances, to facilitate the management of a
+particular project.
+
+2.2 Current status of naming components
+The importance of consistent and semantically rich names has been highlighted at every stage of a
+building's life cycle in previous studies. In the planning and design stages, Merschbrock &
+Munkvold[27] pointed out that a consistent and unique naming convention for parametric
+components, containing information about the location and type of components, enables designers
+to perceive the components easily. In the phases of construction, the unique component names pave
+the way for users’ instant recognition to establish the component records[28] and for software tools’
+identification to generate construction schedules[29]. For facility management (FM) stages, BecerikGerber et al.[30] derived the data requirement structure for BIM-enabled FM from expert interviews,
+of which names and IDs are the primary data and situated at the top. It is worth noting that names
+also play a key role in information exchange among these stages. Throughout the life cycle,
+extensive efforts have been paid to facilitate information flow by reusing the data created in previous
+stages and avoiding the process of data re-entry. Construction Operations Building Information
+Exchange (COBie) is one of the salient data exchange standards which defines the information
+transfer from design and construction phases to FM phases. COBie practices require rigorous
+procedures to name a component for retrieving and validating data from various phases[31].
+Therefore, the seamless flow of accurate information among stakeholders can be enhanced, by
+simply establishing and implementing an appropriate naming convention.
+It is widely admitted that the problem of naming components is of fundamental importance in
+
+project management, while very few academic and industrial efforts have been paid on solving this
+issue. Table 1 summarizes some of the existing naming conventions for BIM components. These
+conventions often specify that an informative name contains several fields of semantic information,
+such as category, type, location, sequential number, and so on. A final name is obtained by sorting
+the semantic information in a certain order. For example, Chen et al.[22] proposed a naming
+convention in the form of “<Function> _ <Type> _ <Location> _ <Sequential number> _
+<Description>”. An example provided by Chen et al. (2017) is “PF_TX8_2/F_2_M1”, where “PF”
+means precast façade (Function), “TX8” means the façade shape (Type), “2/F” means the second
+floor (Vertical Location), “2” means the second room (Horizontal Location), and “M1” is the mold
+type (Description).
+Table 1. Summary of naming conventions for BIM components
+Reference
+
+Country or Region
+
+Naming Convention
+
+ISO[32]
+
+Global
+
+<IfcSubtype><Sequential number>
+
+USC
+
+[33]
+
+USA
+
+<Type>-<ID>
+
+Chen et al.[22]
+
+Hong Kong
+
+<Type>_<Subtype>_<Location>_<Sequential
+number>_<Description>
+
+USGSA[34]
+
+USA
+
+<Type>-<Description>
+
+MOHURD[35]
+
+China
+
+<Project name>_<System>_<Location>_<Component
+type>_<Design phase>_<Description>
+
+2.3 Problems of current practices
+With very few available naming conventions, BIM component names in practice can be confusing
+and harmful to the efficiency of project management. Two major reasons can be identified. The first
+possible reason can be non-conformance between existing naming conventions and project
+requirements[22]. Names may contain a lot of unessential information, while the information in need
+is not available. One should take the practitioners’ needs into full consideration when designating a
+naming convention. The second reason is about the disorder of component names. In most cases,
+arbitrary component names are assigned. Table 2 shows some examples of such names exported
+from a particular BIM model. Moreover, the same component can be labeled with different terms,
+i.e., synonyms, by different stakeholders. These inconsistent names require additional work for
+manual mapping and hinder the information exchange between multiple stakeholders[21]. Practical
+experiences also show that the disparities in BIM component naming could be the trigger for
+coordination issues and conflicts[15]. To address these problems, this study aims to propose a generic
+component-naming framework to help various projects develop their own suitable conventions.
+Table 2. Examples of arbitrary names in a BIM model
+No.
+
+Names of BIM components
+
+1
+
+Steel-Stainless-NA
+
+2
+
+M_1000
+
+3
+
+9 Meters High
+
+4
+
+01 Cotton
+
+5
+
+800 x 2100
+
+6
+
+Standard
+
+3 Method
+As a pioneering and innovative exploratory research, this study developed a fundamental naming
+system for the whole supply chain of modularized construction using design think methodology.
+Design thinking is an approach of technical and social innovation to solve complex problems in a
+user-centric way[36]. It emphasizes the designer’s thorough understanding through direct close
+observation of what is wanted, needed, and liked[37][38]. It uses the designer’s sensibility and methods
+to provide a solution-orientated approach to solving complex problems that are new. The design
+thinking methodology has five stages, i.e., empathize, define, ideate, prototype, and test, that adopt
+multiple research methods. The ‘empathize’ stage aims to gain an empathic understanding of what
+people do, how they think, and what they need. The ‘define’ stage states what the problem is, what
+the constraints are, and what to change. The ‘ideate’ stage thinks about how new innovations can
+help and what the innovation should look like. At the ‘prototype’ stage, creative frameworks and
+ideas will be built. Finally, the innovation will be executed, verified, and communicated in the ‘test’
+stage. The different stages are non-linear and not always sequential. For example, the ‘prototype’
+stage may inspire new ideas. The test results can help create new ideas, reveal new insights about
+the problem, and learn more about users.
+Under the umbrella of design thinking, literature review, archival study, brainstorming, and
+survey were used as methods for inspiration (empathize and define), ideation (ideate and prototype),
+and implementation (test). For the research purpose, we first explored the concept of name and the
+current status of naming components through literature review and archival study in the empathy
+stage. Then we identified the problems in current practice based on results from the last stage and
+survey. Afterward, the naming criteria were derived from the defined problems. Based on these
+explorations, we proposed a generic naming framework by brainstorming and surveys. The test
+stage is not covered in this study. Future work should be validated and refined the proposed naming
+framework by exploratory case study.
+
+Figure 1. Research method in this study
+
+4 Framework for naming components
+
+4.1 Criteria for component names
+After synthesizing the previous naming practices and the current problems of naming components,
+we summarized the following criteria for naming BIM components:
+(1) Uniqueness. Every BIM component is supposed to have a unique name. Duplicate information
+can be detected directly by name.
+(2) Informativeness. Every component name should contain enough information that is
+understandable for a trained worker.
+(3) Conciseness. The name should contain only necessary information. Any extra characters or
+spaces should be removed.
+(4) Accuracy. The wrong and ambiguous information should not be contained in the name. The
+name should describe the component accurately.
+(5) Consistency. All component names in the BIM model should follow the same naming convention
+and the same taxonomy system.
+(6) Conformance. The information in the name and the order thereof should conform to the
+requirements of specific projects.
+(7) Machine-readableness. In order to automate name management, component names should be
+machine-readable.
+
+4.2 The proposed framework
+Based on the above criteria, this study derived a generic framework for naming BIM components
+(Figure 2).
+
+Figure 2. The generic framework for naming components
+The first stage is to define a layered component hierarchy of a particular construction project.
+The rationale is that an analogy can be drawn between a project made up of components and a
+society made up of people. People in society are organized to form a hierarchical structure, such as
+the individual-family hierarchy. Similarly, a construction project can be broken down iteratively
+into simple and unitary parts by product, space, or others. Such a hierarchy clearly clarifies the
+relationship. Names that contain the relationship can be informative and easily perceivable by a
+
+human. In this stage, two steps are required, i.e., drawing the hierarchical structure of a construction
+project and layering the hierarchy. To draw the hierarchical structure, one can learn from the existing
+results of decomposition, such as the hierarchy in IFC (IfcProject - IfcSite - IfcBuilding - IfcStorey),
+and adapt it in line with the project characteristics. The granularity of the bottom level within the
+hierarchy should be every single component. As the hierarchy is layered, names should convey
+information from each layer to demonstrate the relationship. Thus, it should keep as few layers as
+possible for the conciseness of names. Examples of the layered hierarchy can be building-storycomponent, or story-unit-component. This stage mainly considers two criteria, namely,
+informativeness and conciseness. The relationships between components are explicitly defined to
+pave the way for an informative name. For conciseness, the hierarchical structure is divided into as
+few layers as possible.
+The second stage is to determine the information in each layer of the hierarchy. For
+conformance, the information in each layer should be determined by due consideration of all the
+stakeholders’ requirements. For example, under the hierarchy of building-story-component,
+building number (e.g., 01), loading level of story (e.g., high level of loading), and component type
+(e.g., door) can be selected for each layer. Individually, information from each layer is not
+necessarily unique, but together, all the information can identify a unique component. In this stage,
+methods of brainstorm, questionnaire, and interview may help to come up with plenty of information
+for each layer. Then, the information of each layer that needs to display in names is determined
+jointly by all stakeholders. This stage mainly takes into account three criteria, i.e., uniqueness,
+conformance, and informativeness.
+The third stage is to define the vocabulary for the selected information. Each information
+should be represented by a term selected from a predefined vocabulary. Each term in the vocabulary
+should be unique in form and meaning. To be consistent, a predefined vocabulary can be controlled
+to follow the same classification system and avoid the dilemma where multiple taxonomies are
+adopted. There are many existing resources, e.g., IFC, UniClass and OmniClass, that can be reused
+to save a lot of time for defining the vocabulary. Some modifications and additions may also be
+needed to make the vocabulary more accurate to describe the components. The criteria of uniqueness,
+accuracy, and consistency are embodied in this stage.
+The final stage is to organize the information in a systematic and logical way. Before
+organizing the information, the abbreviation is strongly recommended for the sake of brevity. Then
+the delimiter should be chosen to connect different pieces of information. Consistent use of delimiter
+can help machines separately read names. The initially formed name should be evaluated and
+revised by stakeholders as appropriate. In this stage, conciseness, consistency, and machinereadableness are the main considerations for naming components.
+
+5 Conclusion
+Component names are primary tools to manage voluminous information during the lifecycle of
+buildings. However, little research has paid effort on what kind of name is qualified and how to
+formulate a qualified naming convention. This study adopted the method of design thinking to
+propose the criteria for component names and develop a generic naming framework. The criteria
+include uniqueness, informativeness, conciseness, accuracy, consistency, conformance, and
+machine-readableness, which guide the development of the naming framework. The generic
+
+framework contains four stages, i.e., define the layered hierarchy of a construction project,
+determine the information in each layer of the hierarchy, define the vocabulary for the selected
+information, and organize the information in a systematic and logical way. It is generic enough that
+almost all types of projects can follow this framework and formulate an appropriate naming
+convention for a specific project. Future research should focus on the validation of the framework
+by case study.
+
+References
+[1] NIBS. (2021). Building Information Modeling (BIM). https://www.wbdg.org/bim.
+[2] Lou, J., Lu, W., & Xue, F. (2020). A review of BIM data exchange method in BIM collaboration.
+In Proceedings of the 25th International Symposium on Advancement of Construction
+Management and Real Estate. Springer, In press.
+[3] Johansson, M., Roupé, M., & Bosch-Sijtsema, P. (2015). Real-time visualization of building
+information models (BIM). Automation in Construction, 54, 69-82.
+[4] Hu, Y., Castro-Lacouture, D., & Eastman, C. M. (2019). Holistic clash detection improvement
+using a component dependent network in BIM projects. Automation in Construction, 105,
+102832.
+[5] Vigneault, M. A., Boton, C., Chong, H. Y., & Cooper-Cooke, B. (2020). An innovative
+framework of 5D BIM solutions for construction cost management: a systematic review.
+Archives of Computational Methods in Engineering, 27(4), 1013-1030.
+[6] Wetzel, E. M., & Thabet, W. Y. (2015). The use of a BIM-based framework to support safe
+facility management processes. Automation in Construction, 60, 12-24.
+[7] Li, C. Z., Zhong, R. Y., Xue, F., Xu, G., Chen, K., Huang, G. G., & Shen, G. Q. (2017).
+Integrating RFID and BIM technologies for mitigating risks and improving schedule
+performance of prefabricated house construction. Journal of Cleaner Production, 165, 10481062.
+[8] Barazzetti, L., Banfi, F., Brumana, R., Gusmeroli, G., Previtali, M., & Schiantarelli, G. (2015).
+Cloud-to-BIM-to-FEM: Structural simulation with accurate historic BIM from laser scans.
+Simulation Modelling Practice and Theory, 57, 71-87.
+[9] Smith, D. K., & Tardif, M. (2009). Building information modeling: a strategic implementation
+guide for architects, engineers, constructors, and real estate asset managers. John Wiley &
+Sons.
+[10] Duval, E., Hodgins, W., Sutton, S., & Weibel, S. L. (2002). Metadata principles and
+practicalities. D-lib Magazine, 8(4), 1082-9873.
+[11] Kang, T. W., & Choi, H. S. (2015). BIM perspective definition metadata for interworking
+facility management data. Advanced Engineering Informatics, 29(4), 958-970.
+[12] Greenberg, J. (2005). Understanding metadata and metadata schemes. Cataloging &
+classification quarterly, 40(3-4), 17-36.
+[13] Baca, M. (Ed.). (2016). Introduction to metadata. Getty Publications.
+[14] Riley, J. (2017). Understanding metadata. National Information Standards Organization
+(NISO), Washington DC, United States.
+[15] Taylor, J. E. (2007). Antecedents of successful three-dimensional computer-aided design
+implementation in design and construction networks. Journal of construction engineering and
+management, 133(12), 993-1002.
+[16] Duddy, K., Beazley, S., Drogemuller, R., & Kiegeland, J. (2013). A platform-independent
+product library for BIM. In Proceedings of the 30th CIB W78 international conference.
+WQBook.
+
+[17] Gandhi, S., & Jupp, J. (2014). BIM and Australian green star building certification. In
+Computing in Civil and Building Engineering (2014) (pp. 275-282).
+[18] Shafiq, M. T., Matthews, J., & Lockley, S. R. (2012). Requirements for model server enabled
+collaborating on building information models. International Journal of 3-D Information
+Modeling (IJ3DIM), 1(4), 8-17.
+[19] NBS. (2017). What is a BIM Execution Plan (BEP). https://www.thenbs.com/knowledge/whatis-a-bim-execution-plan-bep.
+[20] Hergunsel, M. F. (2011). Benefits of building information modeling for construction managers
+and BIM based scheduling. Worcester Polytechnic Institute.
+[21] Goedert, J. D., & Meadati, P. (2008). Integrating construction process documentation into
+building information modeling. Journal of construction engineering and management, 134(7),
+509-516.
+[22] Chen, K., Lu, W., Wang, H., Niu, Y., & Huang, G. G. (2017). Naming objects in BIM: A
+convention and a semiautomatic approach. Journal of Construction Engineering and
+Management, 143(7), 06017001.
+[23] Merriam-Webster. (2021). Name. https://www.merriam-webster.com/dictionary/name.
+[24] Du, J., Zou, Z., Shi, Y., & Zhao, D. (2018). Zero latency: Real-time synchronization of BIM
+data in virtual reality for collaborative decision-making. Automation in Construction, 85, 5164.
+[25] Xue, F., & Lu, W. (2020). A semantic differential transaction approach to minimizing
+information redundancy for BIM and blockchain integration. Automation in Construction, 118,
+103270.
+[26] NBS. (2019). NBS BIM Object Standard. NBS, UK.
+[27] Merschbrock, C., & Munkvold, B. E. (2015). Effective digital collaboration in the construction
+industry–A case study of BIM deployment in a hospital construction project. Computers in
+Industry, 73, 1-7.
+[28] Chong, H. Y., Lopez, R., Wang, J., Wang, X., & Zhao, Z. (2016). Comparative analysis on the
+adoption and use of BIM in road infrastructure projects. Journal of Management in
+Engineering, 32(6), 05016021.
+[29] Kim, H., Anderson, K., Lee, S., & Hildreth, J. (2013). Generating construction schedules
+through automatic data extraction using open BIM (building information modeling)
+technology. Automation in Construction, 35, 285-295.
+[30] Becerik-Gerber, B., Jazizadeh, F., Li, N., & Calis, G. (2012). Application areas and data
+requirements for BIM-enabled facilities management. Journal of construction engineering and
+management, 138(3), 431-442.
+[31] Anderson, A., Marsters, A., Dossick, C. S., & Neff, G. (2012). Construction to operations
+exchange: Challenges of implementing COBie and BIM in a large owner organization. In
+Construction Research Congress 2012: Construction Challenges in a Flat World (pp. 688-697).
+[32] ISO. (1998). ISO 4157-1:1998 Construction drawings — Designation systems — Part 1:
+Buildings and parts of buildings. https://www.iso.org/standard/26189.html.
+[33] USC. (2012). Building Information Modeling (BIM) Guidelines (version 1.6). USC Capital
+Construction
+Development
+and
+Facilities
+Management
+Services.
+https://facilities.usc.edu/uploads/documents/cas/BIMGuidelines_VS1_6_2012.pdf.
+[34] USGSA. (2019). BIM Technical Standards: Parametric Components. US General Services
+Administration.
+https://www.gsa.gov/real-estate/design-construction/3d4d-buildinginformation-modeling/guidelines-for-bim-software/guidelines/technical-standards/bimtechnical-standards-parametric-components.
+[35] MOHURD. (2018). Standard for graphic expression of building information modeling (JGJ/T
+448-2018). Ministry of Housing and Urban-Rural Development of the People’s Republic of
+
+China.
+[36] Pavie, X., & Carthy, D. (2015). Leveraging uncertainty: a practical approach to the integration
+of responsible innovation through design thinking. Procedia-Social and Behavioral Sciences,
+213, 1040-1049.
+[37] Brown, T. (2008). Design thinking. Harvard business review, 84(6), 84.
+[38] Brown, T., & Wyatt, J. (2010). Design thinking for social innovation. Development Outreach,
+12(1), 29-43.
+
+View publication stats
+
+

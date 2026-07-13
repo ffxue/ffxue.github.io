@@ -1,0 +1,646 @@
+The Heterogeneity of BIM Objects in Different Construction Contexts
+Jing WANG1, Weisheng LU2, Diandian LIU3, and Fan XUE4
+1
+
+PhD Candidate, Department of Real Estate and Construction, Faculty of
+Architecture, The University of Hong Kong, Hong Kong; e-mail:
+jingww@connect.hku.hk
+2
+Associate Professor, Department of Real Estate and Construction, Faculty of
+Architecture, The University of Hong Kong, Hong Kong; e-mail: wilsonlu@hku.hk
+3
+PhD Candidate, Department of Real Estate and Construction, Faculty of
+Architecture, The University of Hong Kong, Hong Kong; e-mail:
+liudd@connect.hku.hk
+4
+Research Assistant Professor, Department of Real Estate and Construction, Faculty
+of Architecture, The University of Hong Kong, Hong Kong; e-mail: xuef@hku.hk
+This is the pre-print version of the paper
+Wang, J., Lu, W., Liu, D., & Xue, F. (2018). The Heterogeneity of BIM
+Objects in Different Construction Contexts. In Construction Research
+Congress 2018, pp. 210-220. Doi: 10.1061/9780784481264.021
+The final version is available here: https://doi.org/10.1061/9780784481264.021
+
+ABSTRACT
+Building Information Modelling (BIM) objects are the primary ‘building
+blocks’ that form a building information model to store, organize and visualize project
+information. ‘One size does not fit all’; BIM objects, along with their associated
+information, vary significantly from one construction context to another. In parallel
+with the deepening of BIM globalization is the increasing emphasis of “BIM
+localization”, whereby designers desire a context-specific BIM object library that is in
+accord with the local building specifications and construction needs. Prevailing
+practice is to manually make the BIM objects and organize them in a library. This
+practice, however, could be inefficient, tedious and error-prone, particularly when the
+task is to deal with millions of objects in real-life projects. This study aims to explore
+the heterogeneity of BIM objects, with a view to facilitating the design of such contextspecific BIM libraries using automatic or semi-automatic approaches. It first identifies
+the critical parameters that distinguish a general BIM object. Taking these parameters
+as the comparison criteria, the study further explores the variations of BIM objects in
+different construction contexts and the underlying factors leading to the variations.
+With such parameters identified, it is able to use the computational power to build up
+the BIM objects library (e.g. from other sources) for a specific construction context.
+The study outcomes could enable efficient BIM design and promote BIM
+implementation in real-life projects. The study could also contribute to the existing
+knowledge of BIM objects and offer significant implications to soft-landing BIMbased building project delivery.
+
+1
+
+Keywords: BIM objects, heterogeneity, object parameters, Industry Foundation
+Classes, contextual attributes.
+
+INTRODUCTION
+It has been widely acknowledged that Building Information Modelling (BIM)
+is revolutionizing the landscape of building design and information management in the
+global architecture, engineering, and construction (AEC) industry (Eastman et al. 2011;
+Hardin and McCool 2015; Chen et al. 2017). Unlike traditional modelling methods,
+BIM, from a layman’s perspective, is to assemble various BIM objects together to
+digitally represent the physical or functional characteristics of a facility. BIM objects
+stand at the central position in BIM design and subsequent BIM-based project delivery.
+BIM objects are not only the ‘building blocks’ to compose a BIM model; more
+importantly, they store, organize and visualize substantial building information into
+their geometry and non-geometry parameters (Lee et al. 2006; Pratt 2004; Eastman et
+al. 2011). In a sense, the BIM objects can be deemed as carriers of domain knowledge
+and expertise on building design and project delivery, as their parameters are modified
+according to engineering and project requirements (Belsky et al. 2016; Gao et al. 2017).
+Considerable efforts have been paid to exploring the potential of BIM objects
+in enhancing efficient BIM utilization and promotion. For example, the Industry
+Foundation Classes (IFC) schema standardizes the representation of BIM objects and
+their parameters for data exchange between different BIM applications
+(buildingSMART 2016). Lu et al. (2017) proposed a conceptual model to efficiently
+develop an open-access BIM object library, with the aim to facilitate BIM design by
+organizing the existing BIM resources and making them available to BIM users. Ali
+and Mohamed (2017) depicted a method to group BIM objects by trade (e.g. structural,
+mechanical etc.), making it possible for different stakeholders to get the necessary
+information for professional analyses. Besides, several voluntary organizations,
+working together with some material suppliers, have started to develop online BIM
+objects libraries in view of the inadequacy of the elementary and scarce of BIM objects
+provided by BIM vendors. Popular BIM object libraries include BIMobject, MagiCAD,
+The National BIM Library in the UK, Product spec - the national library of products in
+New Zealand, and so on. Despite the joint efforts, soft-landing of these ideas has been
+hindered in practice due to the lacking consideration of the influence that local
+environment will exert on BIM objects.
+One size does not fit all; BIM objects, along with their associated information,
+vary significantly from one construction context to another. This could be crucial to
+local BIM implementation to a substantial extent (Sebastian and Berlo 2010). BIM
+objects are intrinsically clusters of information of corresponding building and
+construction projects (Lu et al. 2017), which vary significantly as their locations
+changing. For example, every construction context has their own building codes,
+specifications, and engineering requirements, which requires a unique set of contextspecific BIM objects with parameters in line with the local requirements. The culture
+difference will also influence the construction practice, and consequently the
+information stored in BIM objects (Xiao and Boyd 2007). Therefore, when utilizing
+BIM objects in practice, huge manual efforts are necessary to tailor the BIM objects to
+2
+
+the local building specifications and construction needs. This could be inefficient,
+tedious and error-prone, particularly when it comes to dealing with millions of objects
+in a complex, real-life project.
+This paper aims to explore the heterogeneity of BIM objects in different
+construction contexts, which is a critical and foremost step to develop a contextspecific BIM object library using automatic or semi-automatic approaches. By
+heterogeneity, we mean the variation of BIM object parameters in different
+construction contexts, specifically, how and why BIM objects vary in different
+countries. The remainder of the paper starts with a review of IFC documents and
+literature to identify the critical BIM object parameters and their representations in IFC
+documents. Based on the outcomes, the methodology of the paper is presented in the
+following section. The variations of identified BIM object parameters in different
+construction contexts are shown in Section 4, followed by a discussion summarizing
+the underlying contextual attributes leading to the variations, and the concluding
+remarks in the last section.
+
+LITERATURE REVIEW
+IFC Schema – the Description of BIM Object Information
+The Industry Foundation Classes (IFC) is a widely-adopted data exchange
+schema that facilitates BIM interoperability in the AEC industry (Eastman, et al. 2011).
+Developed by buildingSMART, IFC defines the information of BIM objects using an
+EXPRESS based entity-relationship model, which consists of more than 600 entities
+organized into an object-based inheritance hierarchy (BuildingSMART 2016). Figure
+1 illustrates parts of the IFC4 Add2 schema. IfcRoot is at the most abstract level,
+derived from which there are three fundamental entity types in an IFC model –
+IfcObjectDefinition captures semantically treated tangible object items (e.g. products,
+processes, resources, etc.), IfcPropertyDefinition defines the characteristics of both
+general object types and specific object occurrences, and IfcRelationship assigns
+property information to the corresponding BIM objects while specifying the
+relationships among objects. Today, IFC has been widely adopted as a general standard
+and supported by many BIM software vendors (Gao et al. 2017; Ali and Moahmed
+2017).
+
+Figure 1. Parts of the IFC4 Add2 schema
+
+3
+
+BIM Object Parameters
+Previous studies have explored BIM object parameters and their classifications
+in different application scenarios (Table 1). Although the classification criteria vary in
+the studies, they emphasize some parameters in common, such as identification,
+geometry, material, manufacturer, technical attributes, and information relating to
+project delivery. This is fundamental and essential to support BIM object utilization
+and consequently wider BIM adoptions.
+However, despite the joint efforts of academia and industry, the influence of
+local contexts on BIM object parameters has never been studied systematically. It is
+not enough to simply identify the object parameter types for wider applications of BIM
+objects in practice. To do so requires a systematic study to figure out in what aspect, to
+what extent and how the local contexts will constrain and influence the BIM object
+parameters.
+Table 1. The classification of BIM object parameters
+Research/
+industry
+
+Application Scenario
+
+Pratt (2004)
+
+BIM object contents
+exchange
+
+Functional type; Geometry;
+
+Belsky et al.
+(2016)
+
+Semantic enrichment
+for BIM objects
+
+Function; Geometry; Material; Identity;
+Aggregation relationships;
+Composition relationships.
+
+Chen and
+Wu (2013)
+
+Parametric BIM object
+modelling
+
+Basic Object Data (Identification,
+Classification, Geometry, Quantities,
+and Phasing); Representation data
+(Material)
+
+Open
+Geospatial
+Consortium
+(OGC, 2007)
+
+Object data description
+in CityGML for virtual
+3D city and landscape
+
+Geometrical, Topological, Semantic,
+and Appearance properties.
+
+Autodesk
+Revit
+
+Modelling and
+professional analysis
+(e.g. thermal)
+
+Identification (number, name, type,
+description); Classification (OmniClass
+code and description); Geometry;
+Material; Quantities; Manufacturer;
+Cost; Phasing; LEED, Thermal and
+Structural Properties, etc.
+
+(2017)
+
+Object Parameters
+
+Attributes; Relations between objects;
+Behavioural rules.
+
+4
+
+RIBA
+(2014)
+
+Object data description
+defined in NBS BIM
+Object Standard
+
+Authorship, Identification (name,
+Uniclass code, and product link),
+Manufacturer, NBS description, and
+reference, etc.
+
+NIBS (2012)
+
+Information Collection
+via Cobie to improve
+handover to owneroperator
+
+Authorship, Identification (created by,
+category, Description, type, code, etc.)
+Manufacturer, Warranty, Geometry,
+Material
+
+CIBSE
+
+Product description for
+manufacturer defined
+in Product Data
+Templates(PDTs)
+
+Manufacturer, Construction,
+Application, Dimension, Performance,
+Electrical, Controls, Sustainability,
+Operations and Maintenance
+
+(2016)
+
+METHODOLOGY
+The primary aim of this paper is to explore the heterogeneity of BIM objects in
+different countries, or say, to figure out how and why BIM objects and their parameters
+vary in different construction contexts. There are three necessary steps to achieve the
+aim:
+(1) To identify the critical parameters that define a BIM object;
+(2) To summarize the features of the identified BIM object parameters in
+various construction contexts; and
+(3) To analyze the contextual attributes that will influence BIM object
+heterogeneity.
+Step (1) is particularly necessary given that there is a myriad of object
+parameters identified for different application scenarios. Based on the literature review
+presented in the previous chapter, we selected three types of critical BIM object
+parameters for heterogeneity analysis in this paper. They are,
+• Identification: the name, classification, code, or other attributes for users to
+recognize individual objects;
+• Geometry & representation: the physical characteristics and appearance of
+BIM objects, such as dimensions, materials, colours, etc; and
+• Behaviour: the influence of BIM objects to the external systems, such as
+the function (e.g. structural, thermal, acoustic attributes), and information
+relating to project delivery (e.g. cost, manufacturer, construction).
+For each identified parameter, the context-specific features are summarized and
+discussed in Step (2) and (3). This is based on a review of literature, standards, and
+industry reports, as well as the analysis of BIM objects from bimobject, one of the
+largest online BIM object libraries providing objects from manufacturers. We collected
+and analyzed the data of 102 fixed frame windows to identify context-specific features
+of BIM objects. The selected construction contexts are Hong Kong, China, the United
+5
+
+Kingdom, and the United States. They are in the leading position of BIM
+implementation and have their own sets of BIM standards, regulations and industry
+reference. Admittedly, the analysis of context-specific object features is not exhaustive,
+but it is an important step to unravel the general patterns of BIM object heterogeneity.
+
+THE BIM OBJECT HETEROGENEITY IN DIFFERENT CONTEXTS
+Identification
+The identification parameters are essentials for BIM users to recognize
+individual BIM objects. The object name is one of the primary identifiers, which makes
+it possible to connect the BIM object with external information sources (e.g. technical
+specifications) and retrieve BIM object information efficiently (Goedert and Meadati
+2008; Gandhi and Jupp 2014). The object name consists of several description
+segments (e.g. functions, types), which are ordered according to their importance
+perceived by the BIM designers (Chen et al. 2017). The perception of BIM designers
+can be influenced by several factors, including the knowledge, owners’ requirements,
+the local building and construction industry, the culture, etc. Therefore, BIM object
+naming conventions could vary in different countries/regions. Table 2 is a summary of
+BIM object naming conventions of Hong Kong, China, the UK and the US. It is
+identified that the naming conventions vary in segment wording, selection, and
+ordering. The Hong Kong naming convention emphasizes the features of objects, the
+one of the UK focuses on the source of objects, while the US on the classification of
+objects. It should be noticed that the object naming in China doesn’t show any distinct
+feature due to a lack of BIM object naming standard.
+Another important identifier is the classification system, which describes BIM
+objects in a standardized way (Afsari and Eastman 2016). Various classification
+systems are adopted in different countries, presented in Figure 2. The percentage
+indicates how many percents of BIM objects (fixed frame windows from bimobject)
+are classified by the system. It is implied that Uniclass is the most popular classification
+system in Hong Kong, China, and the UK, while CSI MasterFormat, OmniClass and
+CSI UniFormat II gain more support in the US.
+Table 2. The Summary of BIM object naming conventions
+Context
+
+Specification
+
+Published by
+
+Naming Convention
+
+Hong
+Kong
+
+BIM Library
+Components
+Reference
+
+Hong Kong
+Housing Authority
+(HKHA), 2010
+
+<Author>_<Location>_
+<Type>_<Features>_
+<Series>_<Codes>
+
+China
+
+/
+
+/
+
+/
+
+The UK
+
+NBS BIM
+Object
+Standard
+
+Royal Institute of
+British Architects,
+2014
+
+<Role>_<Manufacturer>_
+<Type> _<Subtype/Product
+code> _<Differenciator>
+
+6
+
+The
+USA
+
+BIM
+Guidelines
+
+NYC Department
+of Design and
+Construction, 2012
+
+<Category>_<Type>_
+<Subtype>_<Manufacturer>
+_<Description>
+
+E/A Design
+Division
+
+The Port Authority
+of NY & NJ, 2012
+
+<Type>_<Subtype>_
+<Manufacturer>_<Series/
+Model>_<Description>
+
+BIM Standard
+Manual
+
+100%
+90%
+80%
+70%
+60%
+50%
+40%
+30%
+20%
+10%
+0%
+
+HK
+Uniclass
+
+China
+CSI MasterFormat
+
+UK
+OmniClass
+
+US
+CSI UniFormat II
+
+Figure 2. Classification systems in different construction contexts
+Geometry & Representation
+The geometry and representation parameters, describing the physical features
+and appearance of BIM objects, are constrained by domain knowledge and expertise to
+meet the project requirements (Lee et al. 2004). It includes a broad range of contextual
+issues, such as building specifications, general architectural styles, aesthetics, available
+construction materials from the market, etc. In this regard, the parameters of geometry
+and representation will distinctively vary in different construction contexts. For
+example, the materials variation of fixed frame windows is presented in Figure 3, where
+the percentage indicates the proportion of BIM objects made from the materials. Glass
+and Aluminium, implied from the figure, are the most popular materials especially in
+Hong Kong and China. Glass is necessary for the lighting, while aluminium is chosen
+for its high performance in terms of affordability, design flexibility, durability, and
+energy saving. Thus, aluminium is often used for windows of high-rise buildings that
+are particularly common in HK. It is also suggested that a larger portion of windows is
+made from wood in the UK, while a wider variety of materials adopted in the US,
+compared to the other three countries.
+
+7
+
+100%
+80%
+60%
+40%
+20%
+0%
+
+Hong Kong
+
+China
+
+UK
+
+US
+
+Aluminium
+
+Fiber Glass
+
+Glass
+
+PVC
+
+Plastic
+
+Steel
+
+Vinyl
+
+Wood
+
+Figure 3. Materials in different construction contexts
+Behaviour
+The behaviour parameter indicates the reaction of BIM objects to the external
+stimulates (Lee et al. 2004), or say, the influence that BIM objects exert on the external
+system. One of the illustrators is the function parameter of BIM objects, such as the
+structural, thermal, acoustic attributes. In IFC files, these parameters are usually
+defined in a form of <Attributes>_<Values>_<Units> in IfcProperty. The Value
+could be single, listed, enumerated or bounded in different unit systems with design
+specifications and domain expertise embedded. Thus, a value might vary significantly
+in different contexts. For example, the distributed imposed loadings of floor objects are
+2.0 kPa, 2.0 kPa, 1.5 kPa for domestic buildings in Hong Kong, China, and the UK
+respectively. Comparatively, in the US, the floor loading is presented as a list value in
+both imperial unit system and international unit system (Figure 4).
+
+Figure 4. The floor distributed imposed loading attributes used in the US
+(sources: Minimum Design Loads for Buildings and Other Structures)
+
+DISCUSSION
+BIM objects are the primary “building blocks” that store, organize and visualize
+project information in the BIM environment. Project information distinguishes BIM
+objects from any other forms of product representation, and BIM objects vary in
+different construction contexts as the project information changes.
+The BIM object variation, or say, its heterogeneity in different construction
+contexts could be classified into two categories – the variation of the information itself,
+8
+
+and the way of information presentation and organization. The former one goes beyond
+the environment of BIM and is largely determined by the domain expertise. This
+includes context-specific project knowledge and experience. For example, the object
+parameters of geometry, representation, and behaviour are numerically or textually
+constrained by factors such the local resources, industry specifications, building
+features, project delivery methods and even the cultures. This is one of the reasons why
+wood materials are more widely used for construction in the European countries such
+as the UK rather than in Hong Kong.
+The object identification parameter, comparatively, depends more on the
+standardization of information presentation and organization in BIM environment. It
+varies textually in different countries, as building departments are trying to publish
+their own BIM standards in line with local requirements to promote BIM
+implementation.
+Four contextual attributes are summarized in this study to account for the BIM
+object heterogeneity. They are:
+• Local resources, such as materials, manpower, machinery, technology,
+finance, space, etc.
+• Regulations and policies, which standardize information representation
+and organization in BIM objects, and set minimum requirements to
+constrain the object contents.
+• Architectural features, mainly influencing the geometry and representation
+parameters of BIM objects, as well as defining a unique set of BIM objects
+in different regions.
+• Culture, which causes differences in people’s thinking, learning and thus
+practice in construction (Xiao and Boyd 2007). It may directly influence
+individual patterns to determine the values of BIM object attributes or be
+embedded into other contextual features such as architectural features,
+regulations, and policies.
+This study, by exploring the heterogeneity of BIM objects in different
+construction contexts, offers both practice significance and academic merits. Firstly, it
+is valuable to develop national BIM object libraries to enhance BIM design efficiency.
+By following the deliverables of the study, local project requirements can be analyzed,
+interpreted and understood much easier. This is important for library developers to
+enrich BIM object local semantics and provide a particular set of BIM objects in line
+with local BIM users’ needs. Besides, the study acts as an essential step towards
+developing BIM object ontology by identifying the critical BIM object parameters and
+their data representations in the model.
+
+CONCLUSIONS
+As the most fundamental elements that stores building information in line with
+domain expertise and project requirements, the BIM object with rich local semantics is
+necessary for efficient BIM design and subsequent project delivery. Without a general
+understanding of how BIM object parameters change in different construction contexts,
+it is difficult to develop a library to organize these BIM objects for local BIM design,
+let alone promoting local BIM implementation to a substantial extent. This paper, by
+9
+
+exploring BIM object heterogeneity in different construction contexts, has both
+academic merits and immediate practical significance. It identifies three BIM object
+parameters that are critical to defining a BIM object, namely the identification,
+geometry and representation, and the behaviour. This is an essential step to explore
+BIM knowledge, such as BIM object ontology and semantics, which are fundamental
+to support a wide range of BIM application towards an intelligent project delivery.
+Based on the identified parameters, the paper summarizes the variations of BIM object
+parameters in different contexts, and the underlying contextual attributes leading to
+these variations. The attempt is the fundamental research frontiers to explore general
+knowledge of BIM localization. Besides, this study offers significant implications to
+analyze the local requirements of BIM object information and its representation. This
+facilitates the development of a localized BIM object library by providing a particular
+set of BIM objects that meet the local users’ needs, and therefore, enhance BIM design
+efficiency and local promotion.
+
+REFERENCES
+Ali, M., and Mohamed, Y. (2017). “A method for clustering unlabeled BIM objects
+using entropy and TF-IDF with RDF encoding”. Advanced Engineering
+Informatics, 33, 154-163.
+Afsari, K., and Eastman, C. M. (2016). “A comparison of construction classification
+systems used for classifying building product models”. Proc., 52nd ASC
+Annual Int. Conference.
+Belsky, M., Sacks, R., and Brilakis, I. (2016). “Semantic enrichment for building
+information
+modelling”. Computer‐Aided
+Civil
+and
+Infrastructure
+Engineering, 31(4), 261-274.
+BuildingSMART. the IFC4 Add 2 Schema (2016). <http://www.buildingsmarttech.org/specifications/ifc-releases/ifc4-add2>.
+Chartered
+Institution
+of
+Building
+Services
+Engineers.
+(2016).
+<
+http://www.cibse.org/knowledge/bim-building-informationmodelling/product-data-templates>.
+Chen, K., Lu, W., Wang, H., Niu, Y., and Huang, G. G. (2017). “Naming Objects in
+BIM: A Convention and a Semiautomatic Approach”. J. of Constr. Eng. and
+Manage., 143(7), 06017001.
+Cheng, Y. M., and Wu, I. C. (2013). “Parametric BIM Objects Exchange and Sharing
+between Heterogeneous Systems”.
+Eastman, C. M., Eastman, C., Teicholz, P., and Sacks, R. (2011). BIM handbook: A
+guide to building information modeling for owners, managers, designers,
+engineers and contractors. John Wiley & Sons.
+Gandhi, S., and Jupp, J. (2014). “BIM and Australian Green Star Building
+Certification.” Computing in Civil and Building Engineering, 275-282.
+Gao, G., Liu, Y. S., Lin, P., Wang, M., Gu, M., and Yong, J. H. (2017). “BIMTag:
+Concept-based automatic semantic annotation of online BIM product
+resources”. Advanced Engineering Informatics, 31, 48-61.
+
+10
+
+Goedert, J. D., and Meadati, P. (2008). “Integrating construction process
+documentation into building information modeling.” J. Constr. Eng. Manage.,
+134(7), 509-516.
+Hardin, B., and McCool, D. (2015). BIM and construction management: proven tools,
+methods, and workflows. John Wiley & Sons.
+Hong Kong Housing Authorigy. (2010). “Building Information Modelling (BIM)
+Library Components Reference for Development and Construction Division of
+Hong
+Kong
+Housing
+Authority”.
+Retrieved
+from
+<
+https://www.housingauthority.gov.hk/en/common/pdf/businesspartnerships/resources/building-information-modelling/libraryreference.pdf>.
+Lee, G., Sacks, R., and Eastman, C. M. (2006). “Specifying parametric building object
+behavior (BOB) for a building information modeling system”. Automation in
+construction, 15(6), 758-776.
+Lu, W.S., Chen K., Wang J., and Xue F. (2017). “Developing an Open Access BIM
+Objects Library: A Hong Kong Study”. Proc., the Joint Conference on
+Computing in Construction (JC3), July 4-7, 2017, Heraklion, Greece, 407-414.
+National Institute of Building Science. (2012). Construction Operations Building
+Information
+Exchange
+(COBie):
+Version
+2.40
+Update.
+<
+http://www.nibs.org/?page=bsa_cobiev24>.
+New York City Department of Design and Construction. (2012). “BIM Guidelines”.
+Retrieved
+from
+<
+http://www.nyc.gov/html/ddc/downloads/pdf/DDC_BIM_Guidelines.pdf>.
+Open
+Geospatial
+Consortium
+(2007).
+CityGML.
+<https://www.3dcitydb.org/3dcitydb/citygml/>.
+Port Authority of New York & New Jersey. (2012). “E/A Design Division BIM
+Standard Manual”. Retrieved from <https://www.panynj.gov/businessopportunities/pdf/engineering-consultants-ead-bim-standard-manuaseptember-2012.pdf>.
+Pratt, M. J. (2004). “Extension of ISO 10303, the STEP standard, for the exchange of
+procedural shape models.” Proc., Shape Modeling Applications, IEEE, 317326.
+Royal
+Institute
+of
+British
+Architects.
+(2014).
+<
+https://www.nationalbimlibrary.com/resources/bimobjectstandard/NBS-BIMObject-Standard-v1_3_0616.pdf>.
+Sebastian, R., and van Berlo, L. (2010). “Tool for benchmarking BIM performance of
+design, engineering and construction firms in the Netherlands”. Architectural
+Engineering and Design Management, 6(4), 254-263.
+Xiao, H., and Boyd, D. (2007). “A cross-culture analysis of construction practice
+through knowledge events”. Proc., 23rd Annual ARCOM Conference, 181190.
+
+11
+
+

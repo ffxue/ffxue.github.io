@@ -1,0 +1,775 @@
+3D point cloud data enabled facility management: A critical review
+Jinying Xu 1, Ke Chen 2, Fan Xue 3, Weisheng Lu 4*
+This is the pre-print version of the paper:
+Xu, J., Chen, K., Xue, F., & Lu, W. (2018). 3D point cloud data enabled
+facility management: A critical review. In F. Long et al. (Eds.): CRIOCM
+2018,Proceedings of the 23rd International Symposiumon Advancement of
+Construction Management and Real Estate, pp. 641–657. Springer. Doi:
+10.1007/978-981-15-3977-0_49
+The full version is available at: http://doi.org/10.1007/978-981-15-3977-0_49
+Abstract: Although the value of 3D point cloud data (PCD) has been increasingly
+recognized by the architectural, engineering, construction and facility operations (AECO) sectors,
+there is much less actual application of PCD in facility management (FM) than other stages. In
+order to facilitate the exploration of using PCD for FM, this study aims to summarize existing
+research effort and identify the gaps based on a systematic review of previous studies touching
+upon the PCD-enabled FM. This review was guided by a conceptual model that consists of four
+key components associated with PCD application process, including target objects, PCD sensing,
+model output and applications. 47 papers published in 21 academic journals were collected for the
+analysis. It was found that Light Detection and Ranging (LiDAR), photogrammetry, and Synthetic
+Aperture Radar (SAR) were the three mostly used technologies for collecting the PCD. The raw
+signals, such as fragments of point cloud and photos, collected by these technologies need to be
+pre-processed for generating the PCD, and segmentation and meshing are two general aspects of
+PCD post-processing to create models. It was also found that most studies focused on geometric
+properties, data processing, feature extraction, object recognition, and model generation, seldom
+would they dig deeper for decision-making support of FM applications. Based on the results, three
+major gaps of PCD-enabled FM were concluded, including (1) overlooking the valuable
+non-geometric properties (e.g. specifications of materials, relations between objects); (2) less
+focusing on providing decision support functions; and (3) hovering at data level rather than
+information level. Eleven possible research directions including semantics enrichment, real-time
+model generation, longitudinal analysis, and smart living applications of PCD-enabled FM were
+thus suggested for future research.
+Keywords: Point cloud data; facility management; decision support; as-built modeling; semantics.
+Jinying Xu
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+
+1
+
+Ke Chen
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+
+2
+
+3 Fan Xue
+
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+4* Weisheng Lu
+
+Corresponding author, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong,
+China
+E-mail: wilsonlu@hku.hk
+
+1 Introduction
+Nowadays, with the increasing affordability of obtaining accurate 3D point clouds data (PCD) by
+Synthetic Aperture Radar (SAR), Light Detection and Ranging (LiDAR) and photogrammetry,
+PCD has been widely used as digitalized representations of buildings[1] and infrastructure. Many
+studies in computer vision, remote sensing, and AEC have adopted PCD for 3D building and city
+model generation and 3D Global Positioning System (GPS) navigation. Typical applications of
+PCD in the construction industry include object recognition[2], building information modeling
+(BIM)[3], progress tracking[4], safety assessment[5], quality control and management[6], site activity
+monitoring[7], and energy performance modeling[8], most of which are at the construction stage[9].
+In contrast, research on the use of PCD in facility management (FM) is not as intensive as
+that in other project phases. FM is a profession that encompasses multiple disciplines to ensure
+functionality of the built environment by integrating people, place, process, and technology[10].
+FM covers a wide range of operation and maintenance services and is directly connected with the
+success of the facilities and their relevant business[11]. All these services required the accurate,
+real-time information, which can be retrieved from PCD. However, current applications of PCD in
+FM is rather limited. In order to allow future exploration on PCD-enabled FM to proceed on a
+more solid foundation, it is necessary to summarize the existing efforts and identify the gaps.
+The aim of this paper, therefore, is to revisit the PCD-enabled FM. In this paper, the
+PCD-enabled FM is conceptualized into a closed loop of processes, i.e., (1) object property
+measurement, (2) PCD sensing and processing, (3) model supported decision-making, and (4)
+applications in object-based FM. Each process is extensively reviewed based on the existing
+literature. As a result, the limitations of current PCD-enabled FM studies are concluded and future
+research directions are recommended.
+The remainder of the following parts is: A summary of the research method is presented in
+Section 2. Section 3 shows the analytical results of the systematic review. Section 4 discusses the
+limitations of current research and suggests future research directions. Finally, the conclusion is
+given in Section 5.
+
+2 Research method
+To investigate the PCD-enabled FM, a preliminary search in Elsevier Scopus Database was
+conducted on March 13, 2018. Scopus is one of the biggest databases of research publications
+with access to more than 12000 journals[ 12 ]. The search conditions were setup as
+(TITLE-ABS-KEY ("point cloud") AND TITLE-ABS-KEY (facility OR operation)) AND (LIMIT-TO
+(DOCTYPE, "ar" )) AND (LIMIT-TO (SRCTYPE, "j" )), Which means the searched results must
+contain “point cloud” and at least one of “facility” and “operation” in the title, abstract or
+keywords of journal articles. There were only 25 results returned. Based on their titles and
+abstracts, only 5 were identified as relevant to civil engineering and construction domains. Using a
+snow-ball search, i.e., checking their reference and the authors’ other publications not in the prior
+searched results manually, another 42 articles were found based on the first-identified 5 papers.
+All the 47 articles are screened by the authors to ensure that they are closely related to
+PCD-enabled FM. A list of the journals of the selected articles is shown in Table 1.
+
+Table 1. Source of the selected articles
+Journal Title
+
+No.
+
+Journal Title
+
+No.
+
+Automation in Construction
+
+14
+
+Structural Survey
+
+1
+
+Journal of Computing in Civil Engineering
+
+8
+
+Structural Control and Health Monitoring
+
+1
+
+Sensors
+
+3
+
+Surveying and Built Environment
+
+1
+
+Advanced Engineering Informatics
+
+2
+
+Journal of Surveying Engineering
+
+1
+
+Computers, Environment and Urban Systems
+
+2
+
+Remote Sensing
+
+1
+
+Construction and Building Materials
+
+2
+
+Simulation Modelling Practice and Theory
+
+1
+
+Computer-Aided Civil and Infrastructure
+Engineering
+Mediterranean Archaeology and Archaeometry
+International Journal of Automation and
+Computing
+Open Construction and Building Technology
+Journal
+Journal of Civil Engineering and Management
+
+2
+1
+1
+1
+
+Digital Applications in Archaeology and
+Cultural Heritage
+IEEE Journal on Selected Topics in Signal
+Processing
+Electronic Journal of Information
+Technology in Construction
+ISPRS Journal of Photogrammetry and
+Remote Sensing
+
+1
+1
+1
+1
+
+1
+
+As shown in Table 1, the 47 articles were collected from 21 journals, among which 14
+journals published only one relevant paper. Automation in Construction and Journal of Computing
+in Civil Engineering are the top two journals publishing PCD-enabled FM research. Figure 1
+shows the yearly distribution of the selected articles. As shown in Figure 1, the combination of
+FM and PCD started around 2006 as far as we concerned and it is still in an early stage. However,
+the publication number remained at a very low level until 2013 and achieved a peak in 2014. The
+overall number was steady and relevant research continued to be active after 2014. What lies
+behind this development trend is the fact that the affordable price and the popularization of remote
+sensing equipment in the 2010s made it possible to widely apply this technology. Another possible
+reason was the fever of digitalizing everything from the 2010s. Even though, the publication
+number of PCD-enabled FM was much less than that of PCD-enabled construction applications [9].
+
+Figure 1. Yearly distribution of selected articles
+
+A conceptual model is proposed to guide the analysis of the collected articles (Figure 2). The
+four blocks in different color in Figure 2 signify the four important nodes of the information flow
+while the arrows speak for the processes of data/information handling. The dashed arrows
+
+represent the links between the physical and cyber systems. The ‘Object’ block includes the target
+human beings and facilities. The properties of an object comprise its geometrical and
+non-geometric features. PCD sensing is the process of data acquiring with equipment such as laser
+scanners or digital cameras. Processing the obtained PCD to recognize objects and generate 3D
+models is the field where the majority research concentrates. This step is crucial because it
+transforms massive and noisy signal data to valuable information. With data processing, the
+isolated PCD sets will be ready to fabricate a semantically rich model for decision support.
+Moreover, PCD and the generated model have the potential to monitor target facilities and protect
+human beings. This model and its elements, procedures and approaches as well as the logic behind
+the closed loop are further elaborated in the next section.
+
+Figure 2. The conceptual model beneath PCD-enabled FM research
+
+3 PCD-enabled FM research
+As shown in Figure 2, the information in PCD-enabled FM research flows from the object to PCD,
+then to a PCD generated model and finally from a model supported application to the object,
+which forms a closed loop. The basis of this cycle is the data collected from objects, the target of
+FM. However, data not transformed to information is just a pile of loose sand, only when
+converted to information which can support decision-making, does the PCD data become the solid
+foundation of FM applications. The information is valuable only when it consists of one or more
+well-formed data that are meaningful[13] by providing the details of ‘who’, ‘what’, ‘where’, and
+‘when’ (4Ws), i.e., tell end-users what is happening to who at which place at an exact time. The
+4Ws, the essence of information, are directly concerned with the decision-making. In this section,
+the properties of objects that can be recorded by PCD, the PCD sensing and processing
+approaches, the output of the PCD and how to use them in FM applications will be thoroughly
+concluded, and the research gaps will be revealed.
+
+3.1 Object properties
+Objects are the cells of facilities which facilitate the function of a convenience or service.
+Facilities have an all-encompassing scope, ranging from physical ones, such as transport facilities,
+medical facilities and telecommunication facilities, to spiritual ones like cultural facilities and
+correctional facilities. Therefore, there are myriads of objects in these facilities, varying from as
+big as walls, roofs, highways to as small as bulbs, bolts and sockets. When researchers talk about
+facility management, they typically refer to the physical facilities, for instance, transportation
+infrastructure, buildings of residence, commerce, administration and medical care. These built
+facilities are all designed, constructed, utilized, operated and maintained by human beings and
+serve for better living of human beings. Generally, the properties of these objects can be divided
+
+into geometry and non-geometry category.
+Geometry concerns about the shape, size, dimensions, symmetry, position, color, texture and
+their topology[14]. In AECO sector, the shapes of columns, beams, plates, walls, and windows are
+usually basic cylinders or polyhedrons like cubes or prisms with polygons, especially
+quadrilaterals. But there are also more and more special-shaped structures, e.g., the roofs of
+Sydney Opera House and China's National Centre for the Performing Arts (the Egg Building).
+Table 2 illustrates some examples of different types of objects in AECO sector, it can be noticed
+that the shape of the same type object can be completely changed. However, the current database
+of PCD objects, the most representative online open source platform Point Cloud Library (PCL)
+for instance, are usually too generalized to optimize all parts[15]. Consequently, there are presently
+three types of geometry-related methods of point clouds modelling, i.e., model-driven, data-driven
+and hybrid-driven[16]. The top-down model-driven methods search best match between PCD and
+existing object models from a model library with quicker speed. In contrast, the bottom-up
+data-driven processes identify geometric primitives and their topology to extract object models
+from PCD. While hybrid-driven methods combine model-driven and data-driven methods, which
+forestall the limitations of both methods, to convert the object modeling to graph matching with
+basic topology graph elements in a model library [14].
+Table 2. Examples of common and special objects in AECO sector
+
+Scores of researchers have been contributing to the geometry modelling of PCD with
+building objects. Holz et al. [17] proposed a modular registration framework for aligning 3D PCD
+with objects in PCL, they also overviewed registration algorithms, usage examples and application
+tips for 3D PCD model-driven registration. Furthermore, Balali et al. [18] conducted a 3D traffic
+sign detection and classification method based on the geometrical features, i.e., the shape together
+with color. More precisely, cylinder was used to automatically detect pipes, conduits, and some
+ducts from 3D PCD in real-life buildings with very high accuracy [19]. Polygonal models from
+unstructured PCD were automatically created by extracting a group of RANSAC (Random sample
+consensus)-based locally ﬁtted planar primitives, their boundary polygons, and local adjacency
+relations[20]. On the other hand, symmetry is another significant property which can be adopted for
+regular or repeated geometric 3D structure discovery [21]. However, recent symmetry detection and
+symmetry-aware geometry processing studies are mostly conducted in computer graphics, while
+AECO sector hasn’t gone deep into this level yet to our best knowledge. Besides, Gao et al. [22]
+pointed out that there can be discrepancy of shape, dimension and composition between
+as-designed BIM and PCD. Therefore, the classification and extraction of different geometry
+property need to be further explored, together with the combination and interoperability of
+different open source databases.
+Non-geometry properties, including the specifications of materials, family types, functions,
+
+assembly order [14], and relations between objects, are of significant importance by adding rich
+information to the properties. These properties embedded in BIM make BIM essentially different
+from and more advanced than CAD. They provide more compact, high-level description of objects
+in a facility instead of purely raw PCD [23], enabling robots, computers to reason about objects and
+interact with its environment in a goal-directed way [24]. Chen et al.,[25] concluded the geometry
+and non-geometry information requirements of construction and FM stages, as displayed in Table
+3. It can be easily noticed that both the types and requirements of non-geometric information are
+greater than that of geometric information. However, limited research explored the non-geometric
+properties in depth.
+Table 3. Geometric and non-geometric information requirements of construction and FM stages [25]
+Stage
+
+Geometric
+Site information
+(coordinate’s data and
+layout);
+
+Construction
+
+Building spaces (ﬂoor,
+zones, rooms, openings);
+Utility lines;
+Dimension of building
+components.
+
+Non-geometric
+Construction materials (status, quality, category, manufacturer);
+Precast elements (quality, category, manufacturer);
+Equipment attributes (ID, type, status);
+Financial data;
+Location of labor, materials, and machine;
+Project performance data;
+Construction schedule;
+Construction activity status;
+Site environment.
+
+Building services (location,
+
+Building services (identiﬁcation number, manufacturer);
+
+relationship);
+
+Status of mechanical, electrical, and plumbing equipment;
+
+Building spaces (ﬂoor,
+
+Maintenance record;
+
+Facility
+
+zones, rooms, openings);
+
+Indoor environment;
+
+Management
+
+Utility lines;
+
+Attributes of replaced components;
+
+Speciﬁcation of exterior
+
+Maintenance status;
+
+enclosure products;
+
+Maintenance schedule;
+
+Furnishing.
+
+Operation records.
+
+Both geometric and non-geometric information can be generalized to semantic information,
+which are increasingly used throughout a building’s life cycle, from design, through construction,
+and into the FM phase[26]. To name a few, a predefined semantic net encompassing general
+architectural knowledge about indoor environments was used for in-door semantic scene
+interpretation from the scanned PCD [27]. Koppula et al. [28] proposed a graphical semantic labeling
+model to capture a variety of properties and contextual relationships (local graphic appearance and
+shape cues, object co-occurrence and geometric relationships included) in 3D indoor scenes of
+homes and offices. Though growing attention has been paid to the semantics of objects and
+models of facilities, most of the transformations from raw 3D PCD into semantic information
+were conducted manually through labor-demanding, time-consuming, and error-prone processes
+[23]
+. In addition, few studies provided rich enough semantics model to enable decision-making and
+applications of smart FM till now.
+
+3.2 PCD sensing and processing
+
+3D PCD is obtained by visible access to scanned surface of physical objects using SAR, LiDAR
+technology or photogrammetry. Figure 3 illustrates the sensing methods of PCD. SAR employs
+radar operating at the microwave region of the electromagnetic spectrum to acquire point clouds
+or images. Since radar has the ability to penetrate the cloud, it can be used on a spacecraft or
+aircraft for high resolution of earth observation and surveying. Different from radar used in SAR,
+LiDAR is a widespread technology used for 3D scanning of various objects with pulsed laser light
+at ultraviolet, visible, or near infrared regions. There are generally three types of LiDAR, i.e.,
+Airborne Laser Scanning (ALS), Mobile Laser Scanning (MLS), and Terrestrial Laser Scanning
+(TLS). A laser scanning system typically consists of a LiDAR unit, a scanner, a GPS receiver and
+an Inertial Measurement Unit (IMU). ALS is an active remote sensing system with a LiDAR
+instrument mounted on an airplane platform, while the LiDAR of MLS or TLS is mounted on a
+moving platform (e.g., vehicle or mobile phone) or a tripod respectively. Photogrammetry is also
+commonly employed for 3D mapping and object reconstruction in AECO sector by extracting
+PCD from massive 2D photos taken by digital cameras equipped within a spacecraft (spaceborne),
+a plan or drone (airborne), or mounted on a vehicle or built in a mobile phone (mobile). Either
+adopting a single digital camera to acquire 2D calibrated images or a Multi-view Stereo (MVS)
+camera to take 3D stereo pictures is common and workable. Stereo-photogrammetry, a special
+case of photogrammetry which focuses on 3D coordination of objects is emerging as a robust
+technique in 3D reconstruction and dynamic characteristics detecting. Jalayer et al.[29] evaluated
+different technologies including field inventory, photo/video log, integrated GPS/GIS (Geographic
+Information System) mapping systems, aerial/satellite photography, TLS, MLS, ALS for
+collecting roadside features data. Discussions of each types of PCD sensing equipment and their
+instructions is not within the scope of this paper.
+
+Figure 3. Point cloud sensing methods
+
+Closely following the sensing step is the PCD processing, which transforms raw PCD to
+well-formed objects or models. A general workflow of PCD processing is shown in Figure 4. A
+pre-processing procedure including filtering, registration, shearing and re-sampling is the prior
+step, among which densification might be needed before re-sampling if the density of point clouds
+is too sparse. Noise is inevitable due to the surrounding environment, scene complexity, weather
+
+conditions and equipment status, therefore noise filtering or reduction is fundamental to generate
+ideal datasets for further processing. Another most-studied pre-processing step known as
+registration (or point matching) is essential to align the local coordinate frame of different point
+clouds datasets in a global coordinate system[30]. Iterative closest point (ICP) is a frequently
+adopted algorithm in registration to minimize the difference between two sets of PCD [17]. There
+are other registration algorithms, for example, robust point matching (RPM), thin plate spline
+robust point matching (TPS-RPM), kernel correlation (KC), Gaussian mixture models (GMM),
+coherent point drift (CPD), and sorting the correspondence space (SCS). This paper won’t go
+in-depth with the introduction of these algorithms and their comparison. There are a lot research
+dealing with the semi-automated registration[31] or automated registration[32][33]. Shearing is to clip
+redundant parts of the registered PCD of targeted facilities. If some PCD parts of the targeted
+facility are obviously intensive or scattered than other parts after the former pre-processing
+procedures, a data re-sampling will be needed to ensure the equal density distribution of the whole
+PCD.
+
+Figure 4. General PCD processing workflow
+
+After pre-processing, comprehensive PCD will be well-prepared for main processing which
+
+generally includes meshing and segmentation/classification. Depending on different requirements
+or situations of PCD usage, order of the two steps are not fixed. Meshing of point clouds is to
+represent a geometric object with a set of simple polyhedral meshes from PCD. Meshing
+comprises a set of processing steps, including mesh representation, mesh compression, rendering,
+progressive transmission, editing operations, smoothing, parameterization, and shape
+reconstruction[34]. Mesh simplification, removing elements whilst preserving mesh ﬁdelity, is the
+basis of constructing Level of Detail (LoD) mesh representations and was the most discussed in
+meshing[35]. Majority of meshing simplifications are triangular dominated[36], with an increase in
+quadrilateral dominated[ 37 ] with the growth of data complexity. After mesh representation,
+shape/object reconstruction will be conducted for segmentation or model generation, after other
+might procedures such as smoothing, lighting, rendering, etc. depending on the requirements of
+models.
+Segmentation is to divide or disintegrate the given PCD set into non-overlap objects or
+regions with homogenous spatial and spectral characteristics for feature extraction, object
+recognition or model generation[38]. Traditional segmentation is data-driven using images with
+region growing approach or range data with edge-based technique. Model-driven segmentation
+methods will be used when the mathematical expression of the objects to be extracted is known,
+for which Hough Transform (HT) and RANSAC approaches are frequently adopted[39]. For most
+of the time, segmentation was done manually or semi-automatically, which is slow, painstaking,
+skill-specialized, and prone to errors. For example, Yang and Dong had to manually select training
+and validation targets, manually count number of objects in a shape-based segmentation method
+for MLS point clouds; Rau and Chen[40] proposed a semi-automated segmentation of building
+rooftops from photogrammetric 3D lines (either complete or incomplete). Challenges including
+density, surface roughness, curvature, clutter, occlusion, messing/erroneous data, abstraction and
+scale lead to the complexity and difficulty of automated segmentation[41]. However, researchers
+never stop exploring automated segmentation methods, to name a few, Khaloo and Lattanzi[42]
+proposed a region growing algorithm to automatically segment large scale PCD of surfaces with
+planar and non-planar; Díaz-Vilariño et al.[43] presented a model-driven approach to automatically
+segment columns of as-built buildings based on HT.
+The sensing and processing procedures are so complex that not all aspects can be concluded
+and discussed due to the limitation of words. However, the key point is choosing sensing methods
+and equipment, as well as processing procedures and algorithms according to the requirements of
+the applications. Researchers should bear in mind that how to make the most of data sensed and
+convert them into valuable information in this whole process is always the first priority. In FM,
+the accuracy and richness of data and information deserve most attention, which does not
+necessary mean that the process methods can be neglected. Considering the complexity and huge
+amount of objects in FM, automated processing approaches are in urgent demand. Coming
+research has a duty to promote semantic enrichment during PCD sensing and processing to foster
+smart applications of buildings, infrastructure and cities.
+
+3.3 PCD output and decision support
+Based on the 3D PCD sensing and processing procedures, final feature extraction, object
+recognition or model generation will be conducted for applications. Features, higher level entities
+that model the correspondence between information and activities[ 44 ], can be divided into
+
+spatial-based features and shape-related features according to Gao et al.[22], as illustrated in Table
+4. In practice, Priestnall et al.[ 45] extracted surface roughness from a digital surface model
+produced by LiDAR using both topographic and spectral characteristics; Yoon et al.[46] detected
+concrete tunnel installations and physically damaged parts of the liner using the geometric and
+radiometric features from 3D PCD for automated tunnel routine inspections and maintenance;
+Yang et al.[47], proposed a framework to identify contextual features like relative positions, relative
+directions, and spatial patterns for road facilities using MLS data.
+Table 4. Classification of features and object recognition approach, summarized from [22] and [48]
+Features
+
+Examples
+
+Object recognition approach
+
+Relative location, distance, angle,
+Spatial-based
+
+relationships (i.e., orthogonal, parallel,
+
+2D overlap area matching; Spatial
+
+features
+
+adjacent, coplanar), surface roughness,
+
+relationship-based graph matching
+
+connectivity
+Shape, shape distribution, size, similarity,
+surface area, surface normal, orientation,
+Shape-related
+
+volume, dimension, linearity, planarity,
+
+Distribution-based 3D shape matching;
+
+features
+
+scattering, omnivariance, anisotropy,
+
+Distribution-based 2D shape matching
+
+eigenentropy, eigenvalues and change of
+curvature
+
+Object recognition is the next step of feature extraction. The objects can be outdoor objects
+such as pedestrians[49], railways[50], poles[51], traffic signs[52], and trees[53] and indoor objects like
+walls[54], floors, ceilings, windows, doorways, and steel structures[55] etc. Different features of
+point clouds help to recognize objects; thus object recognition approaches can also be divided into
+two categories according to two different types of features, i.e., spatial-based object recognition
+methods and shape-based object recognition methods. Among the four object recognition
+approaches displayed in Table 4, spatial relationship based approach achieved the best precision
+and recall of spatial relationship, but it takes the longest time, while 2D overlap area mapping is
+on the contrary[22]. Recently, Sharif et al.[2] adapted and examined an automatic model-based 3D
+objects finding from 3D construction PCD robustly and quickly.
+Some research may also target at further 3D CAD or BIM model generation which has two
+categories of methods, i.e., data-driven and model-driven. The former is bottom-up aiming at
+organizing models from given geometrical and topological information; while the latter top-down
+requiring predefined typical sub-models matched with the raw data[56]. Data-driven methods can
+generate buildings with complex shapes but have no ability to handle strongly noisy data. On the
+contrary, model-driven algorithms are robust to erroneous data, however are not competent to
+describe buildings with miscellaneous shapes. Many researchers have been studying the
+automatical construction of 3D building models[ 57 ], historical architecture[ 58 ], indoor
+environment[59], pipelines[60], and industrial plants[61] from PCD, Hinks et al.[62] reported a flight
+planning optimization strategy using ALS to create urban infrastructure model. Früh and Zakhor[63]
+even proposed a drive-by-scanning methods of generating large-scale model of a city at
+ground-level.
+However, with so much research focusing on algorithms and methods of processing PCD,
+extracting features, recognizing objects and generating models, few studies have tried to reach
+
+decision support of FM. Some special cases are: MLS data was adopted to analyze pedestrian
+crossing environments for safety management[49], extract vertical walls for solar potential
+assessment[54], and collision detection of 3D models[64]; TLS data was utilized to conduct concrete
+structures health assessment[65], monitor the structural health of a bridge[66], as well as automatic
+detect and analyze cracks in timber beams[67]; Gonzalez-Aguilera et al.[68] presented a method to
+analyze geometric information and urban density attributes automatically from ALS data; Ma et
+al.[69] proposed an approach to compile BIM and PCD to generate synthetic as-damaged models
+for post-earthquake operations. Actually, PCD supported models of built environment will ease
+communication between stakeholders about the maintenance, refurbishment and regeneration[70],
+which is of great potential value to support the decision of FM. Most current research just need to
+go a step further to exploit the information in their extracted features, recognized objects and
+generated models.
+
+4 Discussion and conclusion
+Based on the 47 selected articles which are closely related to PCD-enabled FM, this paper
+reviewed the geometric and non-geometric properties of objects, PCD sensing methods and
+processing workflow, and feature extraction, object recognition or model generation from
+processed PCD, as well as the gaps of decision support for FM applications. Among semantics
+information, geometric properties received more attention than non-geometric ones, though the
+latter add more value to information. To acquire data for information production, SAR, LiDAR,
+and photogrammetry are three main sensing methods of PCD. The raw signals need to be
+pre-processed through filtering, registration, shearing, resampling etc. for followed PCD
+processing, which mainly includes segmentation and meshing. After that, the processed PCD will
+be extracted and recognized for model creation. Generally, most research would stop after feature
+extraction, object recognition or model generation, with only a small number going further to
+support FM decision-making.
+According to the analytical results, it is safe to conclude that there are three major gaps in the
+existing PCD-enabled FM research. First, few studies went deep to symmetry, not to mention
+semantics enrichment level. Second, little attention was paid to decision support and practical
+applications in FM. Third, previous studies often failed in converting data to information. Possible
+reasons for these three gaps could be: (1) FM research concerns more about strategy management
+than information management; (2) the improvement of hard aspects such as intelligence and
+automation of facilities and services draws more attention than soft parts such as documentation
+and information visualization; and (3) using PCD to facilitate FM requires multidisciplinary
+knowledge, which includes but not limited to FM, remote sensing, and computing. However, it is
+generally difficult for single researcher to obtain all the required knowledge.
+To sum up, a lot of further research work is still needed in order to address the
+above-mentioned gaps in PCD-enabled FM research. Future research can be conducted in the
+following eleven directions: (1) enriching the semantics of 3D facility models generated from the
+PCD[71]; (2) utilizing geometric properties such as regularity[21], symmetry[14], and repetition for
+quick object recognition and model generation of typical facilities for further FM applications; (3)
+generating detailed models of complex facilities to supplement the scope of FM and study the
+uniqueness of their management; (4) generating more accurate and higher LoD models of exterior
+
+façades and interior environment for better visualization[72]; (5) improving the capacity and
+efficiency of PCD storage; (6) increasing algorithm scalability and computing performance for
+large-scale FM studies[67]; (7) developing unified framework, standards, libraries for sharing,
+updating and storing PCD of FM for wider range (city-level or even nation-level for example) of
+FM research; (8) modeling real-time status of facilities for monitoring and control, safety
+management, and emergency management[6]; (9) studying of real-life cases of PCD adoption in
+FM and its cost benefits; (10) analyzing longitudinal evolution of facilities to study the changes in
+facility properties and human behaviors; and (11) exploring potential applications including
+sustainable energy, intelligent services, smart living with the accurate facility models[73].
+
+References
+[1] Wang, C., Cho, Y. K., and Kim, C. (2015). Automatic BIM component extraction from point
+clouds of existing buildings for sustainability applications, Automation in Construction, 56,
+1-13
+[2] Sharif, M. M., Nahangi, M., Haas, C., and West, J. (2017). Automated model‐based finding of 3D
+objects in cluttered construction point cloud models, Computer‐Aided Civil and Infrastructure
+Engineering, 32(11), 893-908.
+[3] Yang, J., Shi, Z. K., and Wu, Z. Y. (2016). Towards automatic generation of as-built BIM: 3D
+building facade modeling and material recognition from images, International Journal of
+Automation and Computing, 13(4), 338-349.
+[4] Braun, A., Tuttas, S., Borrmann, A., and Stilla, U. (2015). A concept for automated construction
+progress monitoring using BIM-based geometric constraints and photogrammetric point
+clouds, Journal of Information Technology in Construction, 20(5), 68-79.
+[5] Soilán, M., Riveiro, B., Sánchez-Rodríguez, A., and Arias, P. (2018). Safety assessment on
+pedestrian crossing environments using MLS data, Accident Analysis & Prevention, 111, 328-337.
+[6] Wang, J., Sun, W., Shou, W., Wang, X., Wu, C., Chong, H. Y., Liu, Y., and Sun, C. (2015).
+Integrating BIM and LiDAR for real-time construction quality control, Journal of Intelligent &
+Robotic Systems, 79(3-4), 417-432.
+[7] Kwon, S., Lee, M., Lee, M., Lee, S., and Lee, J. (2013). Development of optimized point cloud
+merging algorithms for accurate processing to create earthwork site models, Automation in
+Construction, 35, 618-624.
+[8] Ham, Y., and Golparvar-Fard, M. (2013). An automated vision-based method for rapid 3D energy
+performance modeling of existing buildings using thermal and digital imagery, Advanced
+Engineering Informatics, 27(3), 395-409.
+[9] Chen, K., Lu, W., Peng, Y., Rowlinson, S., and Huang, G. Q. (2015). Bridging BIM and building:
+From a literature review to an integrated conceptual framework, International Journal of Project
+Management, 33(6), 1405-1416.
+[10] International Facility Management Association (IFMA) (2013). What is facility management?, at:
+https://www.ifma.org/about/what-is-facility-management (Retrieved at May 21, 2018).
+[11] Chotipanich, S. (2004). Positioning facility management. Facilities, 22(13/14), 364-372.
+[12] Falagas, M. E., Pitsouni, E. I., Malietzis, G. A., and Pappas, G. (2008). Comparison of PubMed,
+Scopus, web of science, and Google scholar: strengths and weaknesses, The FASEB
+journal, 22(2), 338-342.
+[13] Floridi L. (2005). Semantic Conceptions of Information, The Stanford Encyclopedia of Philosophy
+(Winter Edition), Edward N. Zalta (ed.), at: https://seop.illc.uva.nl/entries/information-semantic/
+
+(Retrieved at May 21, 2018).
+[14] Xue, F., Lu, W., and Chen, K. (2018). Automatic generation of semantically rich as-built building
+information models using 2D images: A derivative-free optimization approach, Computer-Aided
+Civil and Infrastructure Engineering. In press, doi: 10.1111/mice.12378.
+[15] Miknis, M., Davies, R., Plassmann, P., and Ware, A. (2016). Efficient point cloud pre-processing
+using the point cloud library, International Journal of Image Processing, 10(2), 63-72.
+[16] Wang, R., Peethambaran, J., and Chen, D. (2018). LiDAR Point Clouds to 3-D Urban Models: A
+Review, IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing,
+11(2), 606-627.
+[17] Holz, D., Ichim, A. E., Tombari, F., Rusu, R. B., and Behnke, S. (2015). Registration with the
+point cloud library: A modular framework for aligning in 3-D, IEEE Robotics & Automation
+Magazine, 22(4), 110-124.
+[18] Balali, V., Jahangiri, A., and Machiani, S. G. (2017). Multi-class US traffic signs 3D recognition
+and localization via image-based point cloud model using color candidate extraction and
+texture-based recognition, Advanced Engineering Informatics, 32, 263-274.
+[19] Ahmed, M. F., Haas, C. T., and Haas, R. (2014). Automatic detection of cylindrical objects in built
+facilities, Journal of Computing in Civil Engineering, 28(3), 04014009.
+[20] Arikan, M., Schwärzler, M., Flöry, S., Wimmer, M., and Maierhofer, S. (2013). O-snap:
+Optimization-based snapping for modeling architecture, ACM Transactions on Graphics, 32(1), 6.
+[21] Pauly, M., Mitra, N. J., Wallner, J., Pottmann, H., and Guibas, L. J. (2008). Discovering structural
+regularity in 3D geometry, ACM Transactions on Graphics, 27(3), 43.
+[22] Gao, T., Ergan, S., Akinci, B., and Garrett, J. (2014). Evaluation of different features for matching
+point clouds to building information models, Journal of Computing in Civil Engineering, 30(1),
+04014107.
+[23] Xiong, X., and Huber, D. (2010). Using context to create semantic 3d models of indoor
+environments, In: Proceedings of the British Machine Vision Conference. BMVA Press, pp.
+45.1-45.11.
+[24] Nüchter, A., and Hertzberg, J. (2008). Towards semantic maps for mobile robots, Robotics and
+Autonomous Systems, 56(11), 915-926.
+[25] Chen, K., Lu, W. S., Xue, F., Zheng, L. Z., and Liu, D. D. (2018). Smart gateway for bridging BIM
+and building, In Proceedings of the 21st International Symposium on Advancement of
+Construction Management and Real Estate (pp. 1307-1316). Springer, Singapore.
+[26] Xiong, X., Adan, A., Akinci, B., and Huber, D. (2013). Automatic creation of semantically rich 3D
+building models from laser scanner data, Automation in Construction, 31, 325-337.
+[27] Nüchter, A., Surmann, H., Lingemann, K., and Hertzberg, J. (2003). Semantic scene analysis of
+scanned 3D indoor environments, In: Proceedings of the Eighth International Fall Workshop on
+Vision, Modeling, and Visualization, pp. 215-221.
+[28] Koppula, H. S., Anand, A., Joachims, T., and Saxena, A. (2011). Semantic labeling of 3d point
+clouds for indoor scenes, In Advances in Neural Information Processing Systems (pp. 244-252).
+[29] Jalayer, M., Gong, J., Zhou, H., and Grinter, M. (2015). Evaluation of remote sensing technologies
+for collecting roadside feature data to support highway safety manual implementation, Journal of
+Transportation Safety & Security, 7(4), 345-357.
+[30] Tang, P., Huber, D., Akinci, B., Lipman, R., and Lytle, A. (2010). Automatic reconstruction of
+as-built building information models from laser-scanned point clouds: A review of related
+techniques, Automation in Construction, 19(7), 829-843.
+[31] Bosché, F. (2012). Plane-based registration of construction laser scans with 3D/4D building
+models, Advanced Engineering Informatics, 26(1), 90-102.
+[32] Kim, C., Son, H., and Kim, C. (2013). Fully automated registration of 3D data to a 3D CAD
+model for project progress monitoring, Automation in Construction, 35, 587-594.
+
+[33] Kim, P., Chen, J., and Cho, Y. K. (2017). Automated point cloud registration using visual and
+planar features for construction environments, Journal of Computing in Civil Engineering, 32(2),
+04017076.
+[ 34 ] Daniels, J., Silva, C. T., Shepherd, J., and Cohen, E. (2008). Quadrilateral mesh
+simplification, ACM Transactions on Graphics, 27(5), 148.
+[35] Cignoni, P., Montani, C., and Scopigno, R. (1998). A comparison of mesh simplification
+algorithms, Computers & Graphics, 22(1), 37-54.
+[36] Lin, H. W., Tai, C. L., and Wang, G. J. (2004). A mesh reconstruction algorithm driven by an
+intrinsic property of a point cloud, Computer-Aided Design, 36(1), 1-9.
+[37] Petitjean, S. (2002). A survey of methods for recovering quadrics in triangle meshes, ACM
+Computing Surveys, 34(2), 211-262.
+[38] Prerna, R., and Singh, C. K. (2016). Evaluation of LiDAR and image segmentation based
+classification techniques for automatic building footprint extraction for a segment of Atlantic
+County, New Jersey, Geocarto International, 31(6), 694-713.
+[39] Sampath, A., and Shan, J. (2010). Segmentation and reconstruction of polyhedral building roofs
+from aerial lidar point clouds, IEEE Transactions on Geoscience and Remote Sensing, 48(3),
+1554-1567.
+[ 40 ] Rau, J. Y., and Chen, L. C. (2003). Robust reconstruction of building models from
+three-dimensional line segments, Photogrammetric Engineering & Remote Sensing, 69(2),
+181-188.
+[41] Dimitrov, A., and Golparvar-Fard, M. (2015). Segmentation of building point cloud models
+including detailed architectural/structural features and MEP systems, Automation in
+Construction, 51, 32-45.
+[42] Khaloo, A., and Lattanzi, D. (2017). Robust normal estimation and region growing segmentation
+of infrastructure 3D point cloud models, Advanced Engineering Informatics, 34, 1-16.
+[43] Díaz-Vilariño, L., Conde, B., Lagüela, S., and Lorenzo, H. (2015). Automatic detection and
+segmentation of columns in as-built buildings from point clouds, Remote Sensing, 7(11),
+15651-15667.
+[ 44 ] Regli III, W. C. (1995). Geometric algorithms for recognition of features from solid
+models (Doctoral dissertation), The University of Maryland.
+[45] Priestnall, G., Jaafar, J., and Duncan, A. (2000). Extracting urban features from LiDAR digital
+surface models, Computers, Environment and Urban Systems, 24(2), 65-78.
+[46] Yoon, J. S., Sagong, M., Lee, J. S., and Lee, K. S. (2009). Feature extraction of a concrete tunnel
+liner from 3D laser scanning data, NDT & E International, 42(2), 97-105.
+[47] Yang, B., Dong, Z., Liu, Y., Liang, F., and Wang, Y. (2017). Computing multiple aggregation
+levels and contextual features for road facilities recognition using mobile laser scanning
+data, ISPRS Journal of Photogrammetry and Remote Sensing, 126, 180-194.
+[48] Weinmann, M., Jutzi, B., Hinz, S., and Mallet, C. (2015). Semantic point cloud interpretation
+based on optimal neighborhoods, relevant features and efficient classifiers, ISPRS Journal of
+Photogrammetry and Remote Sensing, 105, 286-304.
+[49] Soilán, M., Riveiro, B., Sánchez-Rodríguez, A., and Arias, P. (2018). Safety assessment on
+pedestrian crossing environments using MLS data, Accident Analysis & Prevention, 111, 328-337.
+[50] Yang, B., and Fang, L. (2014). Automated extraction of 3-D railway tracks from mobile laser
+scanning point clouds, IEEE Journal of Selected Topics in Applied Earth Observations and
+Remote Sensing, 7(12), 4750-4761.
+[51] Rodríguez-Cuenca, B., García-Cortés, S., Ordóñez, C., and Alonso, M. C. (2015). Automatic
+detection and classification of pole-like objects in urban point cloud data using an anomaly
+detection algorithm, Remote Sensing, 7(10), 12680-12703.
+[52] Balali, V., Jahangiri, A., and Machiani, S. G. (2017). Multi-class US traffic signs 3D recognition
+
+and localization via image-based point cloud model using color candidate extraction and
+texture-based recognition, Advanced Engineering Informatics, 32, 263-274.
+[53] Alonzo, M., Bookhagen, B., and Roberts, D. A. (2014). Urban tree species mapping using
+hyperspectral and lidar data fusion, Remote Sensing of Environment, 148, 70-83.
+[54] Jochem, A., Höfle, B., and Rutzinger, M. (2011). Extraction of vertical walls from mobile laser
+scanning data for solar potential assessment, Remote Sensing, 3(4), 650-667.
+[55] Laefer, D. F., and Truong-Hong, L. (2017). Toward automatic generation of 3D steel structures for
+building information modelling, Automation in Construction, 74, 66-77.
+[56] Huang, X. (2013). Building reconstruction from airborne laser scanning data, Geo-spatial
+Information Science, 16(1), 35-44.
+[57] Truong‐Hong, L., Laefer, D. F., Hinks, T., and Carr, H. (2013). Combining an angle criterion with
+voxelization and the flying voxel method in reconstructing building models from LiDAR
+data, Computer‐Aided Civil and Infrastructure Engineering, 28(2), 112-129.
+[ 58 ] Murphy, M., McGovern, E., and Pavia, S. (2013). Historic Building Information
+Modelling–Adding intelligence to laser and image based surveys of European classical
+architecture, ISPRS journal of photogrammetry and remote sensing, 76, 89-102.
+[59] Jung, J., Hong, S., Yoon, S., Kim, J., and Heo, J. (2015). Automated 3D wireframe modeling of
+indoor structures from point clouds using constrained least-squares adjustment for as-built
+BIM, Journal of Computing in Civil Engineering, 30(4), 04015074.
+[60] Patil, A. K., Holi, P., Lee, S. K., and Chai, Y. H. (2017). An adaptive approach for the
+reconstruction and modeling of as-built 3D pipelines from point clouds, Automation in
+Construction, 75, 65-78.
+[61] Son, H., Kim, C., and Kim, C. (2015). 3D reconstruction of as-built industrial instrumentation
+models from laser-scan data and a 3D CAD database based on prior knowledge, Automation in
+Construction, 49, 193-200.
+[62] Hinks, T., Carr, H., and Laefer, D. F. (2009). Flight optimization algorithms for aerial LiDAR
+capture for urban infrastructure model generation, Journal of Computing in Civil
+Engineering, 23(6), 330-339.
+[63] Früh, C., and Zakhor, A. (2004). An automated method for large-scale, ground-based city model
+acquisition, International Journal of Computer Vision, 60(1), 5-24.
+[64] Schauer, J., and Nüchter, A. (2015). Collision detection between point clouds using an efficient kd
+tree implementation, Advanced Engineering Informatics, 29(3), 440-458.
+[65] Yang, H., Xu, X., and Neumann, I. (2014). The benefit of 3D laser scanning technology in the
+generation and calibration of FEM models for health assessment of concrete
+structures, Sensors, 14(11), 21889-21904.
+[66] Sánchez‐Rodríguez, A., Riveiro, B., Conde, B., and Soilán, M. (2018). Detection of structural
+faults in piers of masonry arch bridges through automated processing of laser scanning
+data, Structural Control and Health Monitoring, 25(3), e2126.
+[67] Cabaleiro, M., Lindenbergh, R., Gard, W. F., Arias, P., and van de Kuilen, J. W. G. (2017).
+Algorithm for automatic detection and analysis of cracks in timber beams from LiDAR
+data, Construction and Building Materials, 130, 41-53.
+[68] Gonzalez-Aguilera, D., Crespo-Matellan, E., Hernandez-Lopez, D., and Rodriguez-Gonzalvez, P.
+(2013). Automated urban analysis based on LiDAR-derived building models, IEEE Transactions
+on Geoscience and Remote Sensing, 51(3), 1844-1851.
+[69] Ma, L., Sacks, R., Zeibak-Shini, R., Aryal, A., and Filin, S. (2015). Preparation of synthetic
+as-damaged models for post-earthquake BIM reconstruction research, Journal of Computing in
+Civil Engineering, 30(3), 04015032.
+[70] Arayici, Y. (2007). An approach for real world data modelling with the 3D terrestrial laser
+scanner for built environment, Automation in Construction, 16(6), 816-829.
+
+[71] Pärn, E. A., and Edwards, D. J. (2017). Conceptualising the FinDD API plug-in: A study of
+BIM-FM integration. Automation in Construction, 80, 11-21.
+[72] Baik, A. (2017). From point cloud to jeddah heritage BIM nasif historical house–case
+study. Digital Applications in Archaeology and Cultural Heritage, 4, 1-18.
+[73] Jochem, A., Höfle, B., and Rutzinger, M. (2011). Extraction of vertical walls from mobile laser
+scanning data for solar potential assessment. Remote sensing, 3(4), 650-667.
+
+

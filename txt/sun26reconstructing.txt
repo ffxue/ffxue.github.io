@@ -1,0 +1,936 @@
+Reconstructing Ground-Penetrating Radargrams into 3D
+Point Cloud Format for Building Inspection: A Web AR
+Approach Evaluated by Technology Acceptance Model
+Meng Sun1*, Longyong Wu1, Ying Katherine Deng1, Xiao Li2, and Fan Xue1
+1
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong, China
+2
+Department of Civil Engineering, The University of Hong Kong, Pokfulam, Hong Kong, China
+sunmhku01@connect.hku.hk, wulongyong@connect.hku.hk, ydeng@hku.hk, shell.x.li@hku.hk, xuef@hku.hk
+Abstract –
+Non-destructive Testing (NDT) is important for
+building structure inspection. Ground Penetrating
+Radar (GPR) is an effective non-destructive testing
+technique for building inspections, yet the complexity
+of the radargram data has limited its widespread
+adoption in engineering practice. This paper presents
+an approach for reconstructing raw GPR radargrams
+into 3D point clouds for intuitive visualization and
+interactive analysis. To evaluate the usability and
+industry acceptance, this paper conducts a
+questionnaire survey based on the Technology
+Acceptance Model (TAM) among 44 industry
+professionals in Hong Kong. The results indicated
+that the 3D reconstruction approach received
+perceived usefulness of 3.26 (Belief that technology
+improves performance) and perceived ease of use of
+3.55 (Belief that technology is easy to use), with the
+“see-through” function being the most highly
+regarded. Additional attitude and behavior intention
+research further confirmed the approach’s
+advantages in terms of intuitiveness and crossplatform compatibility. This paper verified the
+feasibility and acceptance of reconstructing GPR
+radargrams into 3D point clouds, which can benefit
+digital transformation in building inspection.
+Keywords –
+Ground Penetrating Radar (GPR); Technology
+Acceptance Model (TAM); 3D reconstruction; Point
+cloud; Building inspection
+
+1
+
+Introduction
+
+People spend “an average of 87% of their time in
+enclosed buildings,” according to a U.S. national survey
+[1]. The aging and deterioration of buildings will
+inevitably lead to a degradation of structural performance,
+posing a potential threat to residents, public safety, and
+even cultural heritage buildings. Building inspection is
+
+1
+2345
+
+crucial for identifying potential risks and related facility
+management issues [2, 3].
+The verification of internal structures in the past
+relied on destructive tests, which could leave scars on
+buildings [4]. Such destructive tests are infeasible for
+certain types of buildings, such as protected heritage
+buildings [5]. As a Non-destructive Testing (NDT)
+method, Ground Penetrating Radar (GPR) has been
+introduced for subsurface building inspection using
+electromagnetic signals [6, 7]. GPR can detect subsurface
+features in as-built buildings and cultural heritage
+practices [8, 9, 10]. However, a persistent knowledge gap
+exists between inspectors and the interdisciplinary
+heritage conservation team, as complex raw radargrams
+(B-scan/C-scan) are difficult for inspectors to interpret
+and use in decision-making [4, 11]. Advanced 3D
+reconstruction is the key to filling the gap in processing
+the complexity of GPR results, and to enable complex
+shapes analysis using stereopsis vision [12, 13].
+This paper presents a Web AR approach to
+reconstructing raw GPR radargrams into 3D point clouds
+(GPR-AR) to overcome subjectivity in conventional
+interpretations by intuitive, conclusive visual evidence.
+However, whether this approach can be accepted by
+industry professionals requires further evaluation and
+analysis.
+The Technology Acceptance Model (TAM) is an
+information system theory in various fields to interpret
+and evaluate how users will accept and utilize new
+technology [2]. TAM clarifies the underlying mechanism
+of technology adoption by revealing the causal
+relationships between each external variable and actual
+system use. The external variables (EVs) encompass
+external environmental factors that affect potential users;
+EVs include respondents’ backgrounds, technology
+characteristics, and usage context [14, 15]. The central
+conceptual component of TAM includes two key
+constructs, i.e., perceived usefulness (PU) and perceived
+ease of use (PEOU) [16, 17]. PU refers to the extent to
+which the respondents believe a particular technology
+
+can enhance their work performance, while PEOU
+represents the degree to which the respondents believe
+using this technology is effortless [14].
+This paper further presents a TAM-based analysis to
+assess the acceptance of the proposed GPR-AR. The
+GPR-AR employed advanced array GPR devices to
+acquire raw electromagnetic signals and reconstructed
+them into a 3D point cloud. A TAM-based questionnaire
+survey targeting professionals was conducted to assess
+the perceived potential for usability and ease of use. The
+contribution of this paper is twofold: (i) an intuitive and
+precise approach to assist the stakeholders in inspecting
+the building materials; (ii) a high degree of acceptance of
+reconstructing GPR radargrams into 3D point clouds in
+the Architecture, Engineering, and Construction (AEC)
+industry.
+
+2
+
+The 3D Reconstructed GPR in the Web
+AR (GPR-AR) Approach
+
+2.1
+
+Overview
+
+Fig. 1 shows an overview of the 3D reconstructed
+GPR presented in the web AR (GPR-AR) approach. It
+comprises four layers: acquisition, processing,
+visualization, and interaction. The approach begins with
+the acquisition layer to collect on-site data. Then, the raw
+GPR radargram is converted to a 3D point cloud. Next, a
+3D reconstruction of GPR scanning results is performed
+in the processing layer, followed by the visualization
+layer. The interaction layer provides valuable functions
+to construction stakeholders and facilitates building
+inspection.
+
+Fig. 1 The technical framework of GPR-AR
+
+2
+2346
+
+2.2
+
+Layer-wise technical implementation
+
+The acquisition layer bridges real-world conditions
+into data. Regarding hardware control, the GPR device’s
+parameters should result in sharp and clear
+electromagnetic signals. Then, a standard GPR grid scan
+is carried out to acquire a GPR project data file. Note that
+GPR data acquisition precedes any processing.
+The processing layer generates C-scans and then
+transforms raw GPR radargrams into 3D point clouds.
+The Inverse Distance Weighted gridding method is used
+to convert B-scan data to C-scan data. Besides gridding,
+cell size, search radius, and moving average are
+necessary parameters. The spacing between C-scans is
+set as 0.01m. After the above processing, several C-scan
+slices can be generated and then passed into the point
+cloud reconstruction. The outcome point clouds serve for
+3D visualization and enable 3D object detection. Each Cscan slice will be converted into a 2D point cloud slice,
+where the pixel coordinates (x, y) and slice depth (z) are
+mapped to spatial positions. Rather than RGB colors, the
+reflection intensity should be labeled at the discretized
+points. In visualization equalization of GPR-AR,
+logarithmic and normalization operations lead to define a
+new index:
+= (ln − ln
+)/(ln
+− ln
+),
+where is the reflection intensity,
+and
+are
+the maximum and minimum reflection intensity in all
+slices. The labeled point cloud slice is finally stacked
+based on the spatial depth and merged into a structured
+point cloud.
+The third layer visualizes the incoming point cloud in
+two modalities: isometric 3D and augmented reality (AR).
+The isometric 3D is convenient for offline visualization
+and analysis. AR mode aims to map an isometric 3D
+model for online rendering and visualization.
+
+User functions in the interaction layer facilitate user
+operations, as shown in Fig. 2. A sliding filter controls
+point-level visibility based on the RI range. Adequately
+adjusting the filter hides low-value noises and highlights
+building elements. The 3D interface adopts adjustable
+XYZ-axis cutting planes for focused zones. Length and
+area measurements enable users to efficiently measure
+spatial data using mouse clicks.
+
+3
+
+Evaluation Using a
+Survey Based on TAM
+
+3.1
+
+Survey design
+
+Questionnaire
+
+A questionnaire survey was designed based on the
+TAM, as shown in Fig. 4. The respondents were
+professionals in the AEC industry to reflect the
+acceptance levels of experts [16, 18, 17]. EVs use
+respondents’ experience and their technology usage
+context. PU in TAM is measured by evaluating the core
+functions of the platform, while the overall usability
+rating measures PEOU. The outcomes of PU and PEOU
+surveys reflect the respondents’ attitudes and behavioral
+intentions towards use (ABI). This paper employs TAM
+and designs a structured questionnaire to evaluate the
+acceptance of the GPR-AR platform among professionals.
+
+Fig. 2 Interface of the GPR-AR platform
+
+2.3
+
+A demonstration case of reconstruction
+
+Fig. 3 shows a demonstration case of GPR-AR. In
+this case, a GPR scan was conducted on an aging stair of
+the MuiWo watchtower in Hong Kong, and the results
+were processed using GPR-AR. The raw B-scans are
+isolated and difficult for non-specialists to interpret. In
+contrast, GPR-AR provides a simple, easy-to-use 3D
+visualization of results. Using the length measurement
+function, the spacing between vertical and horizontal
+rebars was easily measured at 0.17m and 0.16m,
+respectively. The result was confirmed by the exposed
+rebar layout in Fig. 3. Two horizontal rebars are detected
+at a depth of 16 cm, spaced approximately 23 cm apart in
+the 3D visualization. The user-friendly GPR-AR
+interface and functions enabled stakeholders to measure
+and interpret the internal details.
+
+Fig. 4 GPR-AR platform survey based on the
+TAM [16, 14]
+The questionnaire comprises three sections, as listed
+in Table 1: background information about the
+respondents, the GPR-AR platform evaluation and openended feedback on the GPR-AR platform. Each question
+corresponds to one specific TAM construct. The
+questionnaire was electronically distributed to industry
+professionals after two professional workshops on GPR.
+Table 1 The structure of the GPR-AR evaluation
+questionnaire
+Section
+Backgro
+und
+
+Evaluati
+on
+
+Fig. 3 A demonstration case of GPR-AR
+
+3
+2347
+
+Questions
+Q1 How long have you been working in
+the AEC industry?
+Q2 How much do you know about
+GPR?
+Q3 How useful do you find GPR
+technology for building inspection?
+Q4 How intuitive is the “see-through”
+visualization feature of the GPR-AR
+platform?
+Q5 How useful do you find the length
+measurement tool in the GPR-AR
+platform to be for the building
+inspection?
+Q6 How useful do you find the area
+measurement tool in the GPR-AR
+
+Constructs
+EV
+EV
+PU
+PEOU
+PU
+
+PU
+
+platform to be for the building
+inspection?
+Q7 How would you rate the ease of use PEOU
+of the GPR platform?
+Q8 To what extent can the GPR-AR PU
+platform
+improve
+the
+building
+inspection?
+Q9 Which aspect of the GPR-AR ABI
+platform needs the most improvement?
+Feedbac
+Q10 What other suggestions do you ABI
+k
+have for developing and applying the
+GPR-AR platform?
+(Note: EV refers to external variables; PU refers to perceived
+usefulness; PEOU refers to perceived ease of use; ABI refers to
+attitudes and behavioral intentions towards use)
+
+A five-point Likert scale was adopted in the
+evaluation [3]. Four questions correspond to PU (Q3, 5,
+6, 8) to collect respondents’ responses, including Not at
+all helpful = 1, Slightly helpful = 2, Moderately helpful =
+3, Very helpful = 4, and Indispensable = 5. For the
+question corresponding to PEOU (Q4, 7), a five-point
+Likert scale was also used, where Very difficult = 1,
+Somewhat difficult = 2, Neutral = 3, Somewhat easy = 4,
+and Very easy = 5. Notably, although the “see-through”
+visualization is the prerequisite for platform use, it
+primarily serves to reduce the burden of data
+interpretation. Therefore, Q4 was classified as PEOU,
+which in turn has an indirect impact on PU.
+
+3.2
+
+Data collection
+
+To ensure the accuracy and relevance of the
+investigation, the target population was limited to active
+professionals in the fields of construction, safety
+inspection, and heritage protection in Hong Kong. These
+professionals, selected from the Hong Kong Institute of
+Engineers (HKIE, 90.9%) and the Society of Registered
+Safety Officers (SRSO, 9.1%), were affiliated with
+contractors, developers, government agencies, and
+
+universities. All participants hold a high degree of
+professional standing and technical expertise. The survey
+was conducted during industry seminars and workshops
+from June to July 2025, ensuring that the feedback
+received was from practitioners familiar with on-site
+inspection challenges and emerging digital tools.
+The collected data was processed into three
+categories. The data collected in the background section
+were categorical. The data in Section Evaluation are
+ordinal (e.g., Indispensable = 5 in the PU-related
+questions). The data in Section Feedback is open-ended
+qualitative data. All the ordinal data were analyzed using
+descriptive statistics to evaluate the GPR-AR platform.
+Means, variances, and standard deviations were
+calculated for each question to summarize central
+tendency and response dispersion.
+
+4
+
+Findings
+
+4.1
+
+Questionnaire survey results
+
+A thorough survey was carried out to evaluate the
+functions and applications of the GPR-AR platform.
+Among the 44 respondents, more than 75% have at least
+1 year of professional experience in building construction
+or building safety, with 21 having over 10 years.
+For those professional respondents, 45% had no
+prior knowledge of GPR, while others had only basic
+awareness (41%) or were familiar with general principles
+(14%), indicating that GPR is well-known but not widely
+applied within the construction and safety industry.
+The evaluation results of three core functions are
+listed in Table 2. “See-through visualization” was the
+most recognized function, with more than half of the
+respondents finding it very helpful (score ≥ 4). Length
+and area measurement are also considered essential
+
+Table 2 Evaluation of core functions on the GPR-AR platform
+Functions
+Construct
+Mean
+Variance
+Standard
+deviation
+
+“See-through”
+visualization
+PEOU
+3.55
+0.38
+
+Length measurement
+
+Area measurement
+
+PU
+3.30
+0.39
+
+PU
+3.34
+0.54
+
+0.62
+
+0.74
+
+0.62
+
+Distribution
+
+1: Not at all helpful; 2: Slightly helpful; 3: Moderately helpful; 4: Very helpful; 5: Indispensable
+
+4
+2348
+
+functions in engineering practice. Moreover, these
+industry stakeholders believed that the GPR-AR platform
+should be improved in several key functions of concern
+in the industry, including interface design (mentioned by
+52%), functional design (50%), and processing speed
+(26%). Some professionals also suggested that
+conversion from a 3D scan to a 2D drawing/BIM is
+needed [19].
+
+4.2
+
+TAM model assessment
+
+Four-item PU and two-item PEOU constructs were
+created to calculate composite scores (Table 2). The
+reliability of the PU was tested using Cronbach’s alpha
+value (α), while the internal consistency of PEOU was
+evaluated through the correlation coefficient between the
+only two items [20]. For the ordered Likert-scale data, a
+nonparametric Spearman rank correlation analysis was
+employed to examine the influence of respondent EVs on
+platform evaluation [3].
+As shown in Table 3, PU demonstrated excellent
+reliability (α = 0.803) based on its four-item scale. The
+PU composite was 3.26 (mean score of four items), with
+a distribution indicating a tendency towards higher scores.
+PEOU only included two items that significantly reduced
+α (0.434); therefore, an alternative 2-item correlation
+analysis was applied [21]. The 2-item construct
+demonstrated acceptable reliability for short scales, as
+indicated by the Spearman coefficient (ρ > 0.30, p < 0.05).
+Consequently, the 2-item composite score was calculated
+to provide preliminary evidence of internal consistency.
+
+loading and composite reliability (CR). In Table 3, the
+items demonstrated significance and had factor loadings
+greater than 0.4 (Q4’s was close to 0.4), which can be
+considered a sufficient variance-explained rate for their
+construct. CR of PU was greater than 0.7, indicating good
+aggregation validity; CR of PEOU was within (0.4, 0.7),
+indicating a moderate but acceptable aggregation effect.
+The distributions of PU and PEOU by EVs
+(professional experience and GPR knowledge level) were
+elaborated in Fig. 5. PU of GPR-AR by professionals was
+significantly influenced by their professional background.
+PU had a “U-shaped relationship” with their professional
+experience, while PU was positively correlated with the
+GPR knowledge level. This indicates that GPR-AR is of
+great value to new practitioners and experienced
+professionals alike. On the other hand, PEOU was not
+significantly affected by their GPR knowledge level. This
+is because ease of use is an objective attribute of a
+technology, while usefulness is an evaluation that
+depends on the cognition and needs.
+A Spearman correlation matrix was established to
+analyze the correlations among EV, PEOU, and PU. The
+correlation between EV and other constructs indicated
+the extent to which technology has become popularized.
+The work experience and GPR knowledge in EV were
+mutually independent. It was found that the correlation
+between the two items and other assessment variables
+was insignificant (Table 4). Organizations and
+stakeholders continue to maintain a conservative attitude,
+which aligns with the TAM. There was a significant
+correlation between PU and PEOU (r = 0.654), consistent
+
+Table 3 Questionnaire analysis of evaluation items
+Construct
+
+Perceived
+usefulness (PU)
+
+Item
+
+Factor Loading
+
+Q3
+
+0.357
+
+Q5
+
+0.894
+
+Q6
+
+0.850
+
+Q8
+
+0.784
+
+Q4
+
+0.487
+
+Perceived ease of
+use (PEOU)
+Q7
+
+α
+
+CR
+
+0.803
+
+0.821
+
+0.434
+
+0.437
+
+Distribution
+
+0.569
+
+Confirmatory factor analysis (CFA) assesses
+whether the measurement model accurately reflects the
+construct or variable being measured. Content validity
+was confirmed through classification using TAM.
+Convergent validity was evaluated by the extracted factor
+
+5
+2349
+
+with a prior TAM study [22]. This positive correlation
+reflects the interrelationship between PU and PEOU.
+Especially in the context of emerging technologies,
+PEOU has a significant impact on PU.
+
+The live poll indicated that students recognized that
+GPR-AR can improve: (i) 3D presentation of subsurface
+over 2D sections (93%), (ii) uses for non-destructive
+testing (81%), and accurate rebar locations/details (76%).
+We received 15 pieces of feedback comparing GPR-AR
+with the mainstream GPR processing software Geolitix.
+Generally, it was agreed that GPR-AR has advantages in
+terms of intuitive 3D visualization, a lightweight user
+experience, an open-source and free nature, and crossplatform compatibility. However, the feedback also
+revealed deficiencies in functional depth and data
+analysis capabilities. It supplemented the ABI of the
+TAM-based survey and provided a clear direction for the
+functional optimization of the web AR approach.
+
+Fig. 5 Distribution of PU and PEOU by EVs
+Table 4 Discriminant validity: Spearman correlation and
+AVE root value
+EV
+PU
+PEOU
+
+EV
+0.927
+-0.077
+(p=0.618)*
+-0.165
+(p=0.284)*
+
+PU
+
+PEOU
+
+0.744
+0.654
+(p=0.001)*
+
+0.53
+
+*Values in parentheses represent the significance level, and the
+diagonal values are √AVE
+
+4.3
+
+Attitude and behavior intention from
+students’ feedback
+
+Given the limited practical experience with GPR
+among professionals in the above survey, it is valuable to
+gather additional comparative feedback from users with
+technical awareness. An exploratory study was
+conducted targeting 70 postgraduates with primary
+knowledge of GPR. Comparative evaluations and
+development suggestions for the GPR-AR platform and
+the mainstream commercial software Geolitix were
+collected. The thematic analysis method was employed
+to code and categorize the textual data, with a focus on
+respondents’ attitudes and behavior intentions towards
+the platform. This provides an additional perspective for
+the TAM study, jointly forming a triangular validation
+framework for evaluating GPR-AR.
+
+6
+2350
+
+5
+
+Discussion and Limitations
+
+5.1
+
+Survey analysis
+
+The questionnaire design in this paper was based on
+the TAM, aiming to structurally assess the potential
+application of the GPR-AR platform for building
+inspection. The survey results indicated that respondents
+had a high PU, especially in the “see-through”
+visualization aspect. The PEOU also reached a positive
+level, indicating that the platform has a strong foundation
+of user acceptance. Few correlations were identified
+between EV and the evaluation variables (Table 4),
+which demonstrates the ease of use of GPR-AR.
+Although the Q3 description directly focuses on
+usability, limited familiarity with GPR and the wording
+of Q3 hinder respondents from clearly distinguishing
+between PU and PEOU for an emerging technology,
+resulting in a relatively low factor loading. Besides,
+correlated PU and PEOU (r = 0.654, p < 0.001) in the
+TAM results in PEOU items inadvertently capturing
+some of the PU construct [16, 22]. The boundary
+between “usability” and “ease of use” among these
+professionals, lacking sufficient experience, may be
+blurred [23]. Additionally, reliability analysis for PEOU
+involving a small number of items may limit the accuracy.
+Future research should adopt a more comprehensive PU
+and PEOU scale to clarify reliability and validity.
+Based on the ABI feedback from students and the
+results of industry questionnaires, the platform is
+expected to be systematically enhanced. Expected
+improvements include optimizing user interface
+interactions, improving the intuitiveness of operations,
+and developing advanced analysis functions, such as
+machine-learning-based rebar recognition and intelligent
+defect diagnosis [24]. More case studies will also be used
+to verify engineering usability and ease of use.
+In summary, the web AR approach (GPR-AR) has
+addressed the limitations of interpreting 1D and 2D GPR
+radargrams in building inspection. The investigation
+
+results regarding the GPR-AR platform indicate that its
+visualization function effectively leverages augmented
+reality to make complex GPR data more comprehensible
+and accessible. This TAM analysis demonstrates that
+reconstructing raw GPR radargrams into 3D point clouds
+effectively reduces professional barriers to GPR, making
+it more accessible to diverse stakeholders.
+
+5.2
+
+References
+
+Limitations and prospects of GPR-AR
+
+While the TAM-based survey indicates that GPRAR could contribute to AEC practice, it is limited to
+directly measuring improvements in inspection. Future
+research will focus on objective performance metrics
+using GPR-AR, such as accuracy and time efficiency, to
+verify perceptions.
+Beyond the perceptual scope of this study, several
+technical challenges should be addressed for the wide
+adoption of GPR-AR. Firstly, the next phase of research
+should focus on the precise co-registration of volumetric
+point clouds between the surface and the subsurface.
+Secondly, the operation-led trajectory deviations will
+affect the accuracy of the results. Reducing the influence
+of operational errors during the analysis process is a
+research goal for future development. Moreover, the 3D
+model is currently an intuitive visualization without any
+annotations or segmentation. Future implementations
+aim to integrate semantic models and geometric
+algorithms to achieve a detailed digital twin model [25,
+26, 27].
+Despite these challenges, GPR-AR holds significant
+promise for a wide range of applications in the AEC
+industry. During building inspections, intuitive 3D
+visualization enables non-professional stakeholders to
+locate internal rebars and detect defects without
+destructive tests. In the field of heritage protection, the
+approach is helpful for conducting subsurface heritage
+documentation. In addition, the approach's intuitive,
+easy-to-use nature makes it more convenient for
+collaborative
+infrastructure
+monitoring.
+These
+application scenarios demonstrate the great potential of
+GPR-AR.
+
+6
+
+integrating machine learning algorithms to enable
+automatic object recognition. This research provides
+empirical evidence for the digital applications of GPR in
+building inspections, which align with Hong Kong’s
+smart city development goals and the global digital
+transformation of the construction industry.
+
+Conclusion
+
+This paper integrates the reconstruction of Ground
+Penetrating Radar (GPR) radargrams into 3D point
+clouds within a web AR platform for building inspection.
+A questionnaire survey based on the Technology
+Acceptance Model (TAM) revealed that this integration
+was well accepted. The scores for perceived usefulness
+(PU) and perceived ease of use (PEOU) performed well,
+indicating potential application in engineering practice.
+Future work can focus on the following aspects:
+achieving precise registration of surface and subsurface
+point clouds, optimizing operation-leading errors, and
+
+7
+2351
+
+[1] N. E. Klepeis et al., "The National Human Activity
+Pattern Survey (NHAPS): a resource for assessing
+exposure to environmental pollutants," Journal of
+Exposure Science & Environmental Epidemiology,
+vol. 11, no. 3, pp. 231-252, 2001.
+https://doi.org/10.1038/sj.jea.7500165
+
+[2] Tsukasa Mizutani, Jingzi Chen, and Shuto
+Yotsumoto, "The 3D localization of subsurface
+pipes from Ground Penetrating Radar images using
+edge detection and point cloud segmentation,"
+Measurement, vol. 236, p. 115102, 2024. [Online].
+https://doi.org/10.1016/j.measurement.2024.115102
+
+[3] Songbo Hu, Yihai Fang, Eric Windholz, and
+Kourosh Khoshelham, "Factors influencing the
+adoption of remote visual inspection in building
+regulatory activities," Journal of Management in
+Engineering, vol. 41, p. 05025002, 2025. [Online].
+https://doi.org/10.1061/JMENEA.MEENG-6559
+
+[4] Wenting Zhan, Wei Pan, Winnie Law, and Haipeng
+Shen, "Stakeholders’ knowledge, attitudes, and
+intentions of adopting Modular Integrated
+Construction for sustainable development in Hong
+Kong," Journal of Management in Engineering, vol.
+40,
+p.
+04023070,
+2024.
+[Online].
+https://doi.org/10.1061/JMENEA.MEENG-5642
+
+[5] D. M. McCann and M. C. Forde, "Review of NDT
+methods in the assessment of concrete and masonry
+structures," NDT & E International, vol. 34, pp. 71–
+84, 2001. [Online]. https://doi.org/10.1016/S09638695(00)00032-3
+
+[6] Wallace Wai-Lok Lai, Xavier Dérobert, and Peter
+Annan, "A review of Ground Penetrating Radar
+application in civil engineering: A 30-year journey
+from Locating and Testing to Imaging and
+Diagnosis," NDT & E International, vol. 96, pp. 58–
+78,
+2018.
+[Online].
+https://doi.org/10.1016/j.ndteint.2017.04.002
+
+[7] Kevin Lee and Chen Feng, "GPR-Former: Contextaware
+moisture
+detection,"
+International
+Symposium on Automation and Robotics in
+Construction (ISARC) Proceedings, vol. 2025
+Proceedings of the 42nd ISARC, Montreal, Canada,
+pp.
+1–8,
+2025.
+[Online].
+https://doi.org/10.22260/ISARC2025/0002
+
+[8] Eduardo Diz-Mellado et al., "Non-destructive
+testing and Finite Element Method integrated
+procedure for heritage diagnosis: The Seville
+
+Cathedral case study," Journal of Building
+Engineering, vol. 37, p. 102134, 2021. [Online].
+https://doi.org/10.1016/j.jobe.2020.102134
+
+[9] Anne Lalagüe, Matthew A. Lebens, Inge Hoff, and
+Eivind Grøv, "Detection of rockfall on a tunnel
+concrete lining with Ground-Penetrating Radar
+(GPR)," Rock Mechanics and Rock Engineering,
+vol. 49, pp. 2811–2823, 2016. [Online].
+https://doi.org/10.1007/s00603-016-0943-y
+
+[10] Mercedes Solla et al., "A Building Information
+Modeling approach to integrate geomatic data for
+the documentation and preservation of cultural
+heritage," Remote Sensing, vol. 12, p. 4028, 2020.
+[Online]. https://doi.org/10.3390/rs12244028
+[11] F. Hassani, "Documentation of cultural heritage;
+techniques, potentials, and constraints," , vol. XL5-W7,
+2015,
+pp.
+207–214.
+[Online].
+https://doi.org/10.5194/isprsarchives-XL-5-W7-2072015
+
+[12] Alexander Bornik and Wolfgang Neubauer, "3D
+Visualization techniques for analysis and
+archaeological interpretation of GPR data," Remote
+Sensing, vol. 14, p. 1709, 2022. [Online].
+https://doi.org/10.3390/rs14071709
+
+[13] Fan Xue, Weisheng Lu, Christopher J. Webster, and
+Ke Chen, "A derivative-free optimization-based
+approach for detecting architectural symmetries
+from 3D point clouds," ISPRS Journal of
+Photogrammetry and Remote Sensing, vol. 148, pp.
+32–40,
+2019.
+[Online].
+https://doi.org/10.1016/j.isprsjprs.2018.12.005
+
+[14] Stanisław Fel, Jarosław Kozak, and Piotr Horodyski,
+"Responsibility and AI: Exploring technology
+acceptance models," Journal of Innovation &
+Knowledge, vol. 10, p. 100852, 2025. [Online].
+https://doi.org/10.1016/j.jik.2025.100852
+
+[15] Jiwoong Shin, Sungwoo Moon, Bong-ho Cho,
+Sungjoo Hwang, and Byungjoo Choi, "Extended
+technology acceptance model to explain the
+mechanism of modular construction adoption,"
+Journal of Cleaner Production, vol. 342, p. 130963,
+2022.
+[Online].
+https://doi.org/10.1016/j.jclepro.2022.130963
+
+[16] Fred D. Davis, "Perceived Usefulness, Perceived
+Ease of Use, and User Acceptance of Information
+Technology," MIS Quarterly, vol. 13, pp. 319–340,
+1989. [Online]. https://doi.org/10.2307/249008
+[17] Viswanath Venkatesh, "Determinants of perceived
+ease of use: Integrating control, intrinsic motivation,
+and emotion into the Technology Acceptance
+Model," Information Systems Research, vol. 11, pp.
+342–365,
+2000.
+[Online].
+https://doi.org/10.1287/isre.11.4.342.11872
+
+[18] Nikola Marangunić and Andrina Granić,
+"Technology acceptance model: a literature review
+from 1986 to 2013," Universal Access in the
+
+8
+2352
+
+Information Society, vol. 14, pp. 81–95, 2015.
+[Online]. https://doi.org/10.1007/s10209-014-0348-1
+[19] Alexis Toledo Bórquez, Felipe Muñoz La Rivera,
+Rodrigo F. Herrera, and Javier Mora Serrano,
+"Augmented reality and ultrasonic sensor-based
+tool for rebar inspection on construction sites,"
+Automation in Construction, vol. 176, p. 106288,
+2025.
+[Online].
+https://doi.org/10.1016/j.autcon.2025.106288
+
+[20] Lee J. Cronbach, "Coefficient alpha and the internal
+structure of tests," Psychometrika, vol. 16, pp. 297–
+334,
+1951.
+[Online].
+https://doi.org/10.1007/BF02310555
+
+[21] Jose M. Cortina, "What is coefficient alpha? An
+examination of theory and applications," Journal of
+Applied Psychology, vol. 78, pp. 98–104, 1993.
+[Online]. https://doi.org/10.1037/0021-9010.78.1.98
+[22] William R. King and Jun He, "A meta-analysis of
+the technology acceptance model," Information &
+Management, vol. 43, pp. 740–755, 2006. [Online].
+https://doi.org/10.1016/j.im.2006.05.003
+
+[23] Mark Turner, Barbara Kitchenham, Pearl Brereton,
+Stuart Charters, and David Budgen, "Does the
+technology acceptance model predict actual use? A
+systematic literature review," Information and
+Software Technology, vol. 52, pp. 463–479, 2010.
+[Online]. https://doi.org/10.1016/j.infsof.2009.11.005
+[24] Meng Sun, Dong Liang, Jiajia Wang, Bate Bate,
+and Fan Xue, "Clarity in DEM cementation
+predictions: Integrating automated machine
+learning and interpretability analysis of shear wave
+velocity," Advanced Engineering Informatics, vol.
+69,
+p.
+104060,
+2026.
+[Online].
+https://doi.org/10.1016/j.aei.2025.104060
+
+[25] Fan Xue, Wenjin Zhang, Guangji Xu, Qqianyun
+Zhou, and Yijie Wu, "Surface or skeleton?
+Automatic hierarchical clustering of 3D point
+clouds of bronze frog drums for heritage digital
+twins," ISPRS Annals of the Photogrammetry,
+Remote Sensing and Spatial Information Sciences,
+vol. X-M-1-2023, pp. 293–299, 2023. [Online].
+https://doi.org/10.5194/isprs-annals-X-M-1-2023-2932023
+
+[26] Meng Sun, Rui Zhao, and Fan Xue, "The
+Opportunities and Challenges of Multimodal
+GenAI in the Construction Industry: A Brief
+Review," The 29th International Symposium on
+Advancement of Construction Management and
+Real Estate (CRIOCM2024), 2024
+[27] Dong Liang et al, "Transfer learning from building
+information model-based synthetic data for threedimensional module detection in point clouds of
+modular-integrated
+construction
+hoisting,"
+Engineering Applications of Artificial Intelligence,
+vol. 164, p. 113243, 2026. [Online].
+https://doi.org/10.1016/j.engappai.2025.113243
+
+

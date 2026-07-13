@@ -1,0 +1,4141 @@
+This is the authors' manuscript. The final version is available at:
+http://doi.org/10.1016/j.autcon.2018.01.001
+
+An Internet of Things-enabled BIM platform for on-site assembly
+
+1
+
+services in prefabricated construction
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+
+Clyde Zhengdao Li a; Fan Xue b; Xiao Li c; Jingke Hong d; Geoffrey Qiping Shen e
+a Assistant Professor, College of Civil Engineering, Shenzhen University, Shenzhen,
+
+China. Email: clydelee718@gmail.com
+b Research Assistant Professor, Department of Real Estate and Construction, Faculty of
+
+Architecture, The University of Hong Kong, Hong Kong. Email: xuef@hku.hk
+c
+
+Ph.D. Candidate, Department of Building and Real Estate, The Hong Kong
+Polytechnic University, Hung Hom, Kowloon, Hong Kong. Email:
+shell.x.li@connect.polyu.hk
+d Research professor, School of Construction Management and Real Estate, Chongqing
+
+University, Chongqing, China. Email: hongjingke@cqu.edu.cn
+e * Corresponding author, Chair Professor of Construction Management, Department of
+
+Building and Real Estate, Faculty of Construction and Environment, The Hong Kong
+Polytechnic University, Hung Hom, Hong Kong. Telephone: +852 2766 5817. Email:
+bsqpshen@polyu.edu.hk
+
+24
+
+Abstract:
+
+25
+
+Building Information Modelling (BIM) serves as a useful tool in facilitating the on-site
+
+26
+
+assembly services (OAS) of prefabricated construction for its benefits of powerful
+
+27
+
+management of physical and functional digital presentations. However, the benefits of
+
+28
+
+using BIM in the OAS of prefabricated construction cannot be cultivated with an
+
+29
+
+incomplete, inaccurate, and untimely data exchange and lack of real-time visibility and
+
+30
+
+traceability. To deal with these challenges, an Internet of Things (IoT)-enabled platform
+
+31
+
+is designed by integrating IoT and BIM for prefabricated public housing projects in
+
+32
+
+Hong Kong. The demands of the stakeholders were analysed; then smart construction
+
+33
+
+objects (SCOs) and smart gateway are defined and designed to collect real-time data
+
+34
+
+throughout the working processes of on-site assembly of prefabricated construction
+
+35
+
+using the radio frequency identification (RFID) technology. The captured data is
+
+36
+
+uploaded to cloud in real-time to process and analyse for decision support purposes for
+
+37
+
+the involved site managers and workers. Visibility and traceability functions are
+
+38
+
+developed with BIM and virtual reality (VR) technologies, through which managers
+
+39
+
+can supervise the construction progress and approximate cost information in a real-time
+
+1
+
+40
+
+manner. The IoT-enabled platform can provide various decision support tools and
+
+41
+
+services to different stakeholders, for improving the efficiency and effectiveness of
+
+42
+
+daily operations, decision making, collaboration, and supervision throughout on-site
+
+43
+
+assembly processes of prefabricated construction.
+
+44
+45
+
+Keywords: Internet of things; BIM; on-site assembly services; prefabricated
+
+46
+
+construction; decision support system
+
+47
+
+1. Introduction
+
+48
+
+Prefabrication has been widely adopted by Hong Kong Housing Authority (HKHA),
+
+49
+
+who is the main provider of public housing in Hong Kong, for its public housing
+
+50
+
+projects, due to its more efficient, cleaner and safer working environment, and better
+
+51
+
+quality (Tam et al. 2007; Hong et al. 2016; Li et al. 2016). For example, the public
+
+52
+
+housing project at Tuen Mun Area 54 Site 2, Phases 1 & 2, makes use of 11 types of
+
+53
+
+precast elements, including precast façade, semi-precast slab, volumetric precast
+
+54
+
+bathroom, tie beam, staircase, parapet, refuse chute, half landing, water meter room, lift
+
+55
+
+machine room and main roof slab. Some of them are proposed by the general contractor.
+
+56
+
+As a ‘sweet point’ of balancing construction cost and labour requirement (Tam et al.,
+
+57
+
+2002), contractors adopt a 6-day cycle for the typical floor (usually 20 to 30 units) on-
+
+58
+
+site assembly in high-rise public housing projects since 1990s in Hong Kong. Among
+
+59
+
+the processes of on-site assembly, BIM serves as a useful platform for facilitating the
+
+60
+
+on-site assembly services (OAS) of prefabricated construction for its benefits of
+
+61
+
+providing collaborative working teams and decision makers with the physical and
+
+62
+
+functional representations of prefabricated components (Sacks et al. 2010; Frédéric et
+
+63
+
+al. 2014; Chen et al. 2015; Niu et al. 2016). For example, the status of prefabrication
+
+64
+
+components could be traced and visualized in BIM platform for supporting the progress
+
+65
+
+control (Ergen et al. 2007, Zhong et al. 2015).
+
+2
+
+66
+
+However, the well-formatted information of prefabricated component at the right time
+
+67
+
+in the right location is still insufficient to further raise the efficiency of collaborative
+
+68
+
+working and decision making in on-site assembly services when adopting BIM in
+
+69
+
+prefabricated construction projects (Yin et al. 2009). For example, the location
+
+70
+
+information of both outdoor and indoor resources through positioning technologies
+
+71
+
+such as RFID (radio frequency identification), UWB (ultra-wideband), and GPS (global
+
+72
+
+positioning systems) have been synchronized in BIM for safety management (Fang et
+
+73
+
+al., 2016), while few studies integrate the accurate location information of on-delivering
+
+74
+
+prefabricated components into BIM platform for monitoring the right components to be
+
+75
+
+assembled in the correct position in a safer manner (Zhong et al. 2017). Additionally,
+
+76
+
+the information of changes, cost and schedule are delivered from previous processes
+
+77
+
+(i.e., design, manufacturing, logistics) could be updated to a centralized BIM platform
+
+78
+
+for sharing the information among different stakeholders (Li et al. 2017; Niu et al. 2017;
+
+79
+
+Issa et al. 2017). However, this information is usually re-entered incompletely,
+
+80
+
+inaccurately and untimely into various isolated systems (i.e., enterprise resource
+
+81
+
+planning (ERP)) of the different stakeholders in most of the current project practices,
+
+82
+
+which could not efficiently support the decision making in the OAS (Pang et al. 2015).
+
+83
+
+These problems can be further deteriorated in Hong Kong particularly due to the
+
+84
+
+numerous constraints such as limited resources and space (Wong et al. 2003; Chun et
+
+85
+
+al. 2009; Alavi et al. 2016).The solution for such situation is still a void to be filled.
+
+86
+
+To handle these challenges, an Internet of Things (IoT) enabled platform is to be
+
+87
+
+developed in this research by deploying BIM as the basic infrastructure underlying in
+
+88
+
+its system structure. This research employed a typical design science research
+
+89
+
+methodology (Peffers et al. 2007), which consists of six steps of problem identification
+
+90
+
+and motivation, definition of the objectives for a solution, design and development,
+
+3
+
+91
+
+demonstration, evaluation, and communication, in the research and development.
+
+92
+
+Section 2 is the literature review which also identified the need of BIM and IoT-based
+
+93
+
+OAS management system. Section 3 describes the objectives of the BIM and IoT-based
+
+94
+
+OAS regarding field interviews, the design of SCOs, and the development of the OAS
+
+95
+
+decision support system. The demonstration of the system on a real project and the
+
+96
+
+evaluation are given in Section 4. Conclusions appear in Section 5. The specific
+
+97
+
+objectives of this research are: (1) To investigate and analyse business process and
+
+98
+
+requirement of on-site assembly of prefabricated construction; (2) To propose the
+
+99
+
+architecture design and develop the Internet of Things enabled platform; (3) to apply
+
+100
+
+the developed platform to practical project to test its performance and effectiveness.
+
+101
+
+This centralized BIM platform not only integrates the information delivered from the
+
+102
+
+previous stages but also synchronizes the location information of prefabricated
+
+103
+
+components for facilitating the real-time communication and coordination among the
+
+104
+
+different stakeholders for better decision making in the OAS. The innovativeness of
+
+105
+
+this platform, by looking at whole processes of the on-site assembly of prefabricated
+
+106
+
+construction, is to increase their connectedness by using BIM as an information hub to
+
+107
+
+connect information and communication technology (ICT) enhanced SCOs. The
+
+108
+
+architecture of the IoT-enabled platform has considered the business processes, the
+
+109
+
+stakeholders, the information flow, the visibility and traceability of the real-time data.
+
+110
+
+It uses the service-oriented open architecture as a key innovation to enable the platform
+
+111
+
+as a service. Given its potential to manage building information throughout processes
+
+112
+
+of OAS, the IoT-enabled platform is considered as a significant component of the
+
+113
+
+HKHA’s overall ICT architecture and systems, which aims to re-engineer the OAS of
+
+114
+
+prefabricated construction in Hong Kong for a better support of decision making.
+
+4
+
+115
+
+2. Literature review
+
+116
+
+The advanced OAS planning and control systems initiated from the Last Planner®
+
+117
+
+System (LPS®) which is a production management system that applies pull and look-
+
+118
+
+ahead planning to remove constraints and make downstream activities ready (Ballard,
+
+119
+
+2000). Weekly work planning is adopted to reduce uncertainty and find relevant causes
+
+120
+
+for variances. LPS also uses the percentage of the plan completed (PPC) to measure
+
+121
+
+and monitor the process (Ballard, 2000; Kim et al., 2014). However, LPS is difficult to
+
+122
+
+visualize the flow of work process (Sacks et al., 2009). Building Information Modelling
+
+123
+
+(BIM) can be utilized to simulate and visualize the construction process with 3D
+
+124
+
+geometric models and ample information to facilitate communication among
+
+125
+
+stakeholders (Sacks et al., 2009). In addition, LPS is the weekly work planning that may
+
+126
+
+lead to a long response time to address daily constraints. Sacks et al. (2010) developed
+
+127
+
+the KanBIM concept which can manage day-to-day status feedback and support human
+
+128
+
+decision making or negotiation among stakeholders. As prefabricated construction
+
+129
+
+contains multiple phases from manufacturing, logistics to site assembly, the direct use
+
+130
+
+of LPS and BIM in prefabricated construction has an apparent gap related to the
+
+131
+
+interoperability and real-time traceability of information. Dave et al. (2016) therefore
+
+132
+
+developed a communication framework by adopting IoT (Internet of Things) to
+
+133
+
+strengthen the use of Lean Construction management and tracking technologies such as
+
+134
+
+RFID and GPS, which are critical components of IoT, to track the status of workers,
+
+135
+
+materials, and equipment in the whole process. A conventional RFID system contains
+
+136
+
+an antenna, a transceiver (RFID reader) and a transponder (Radio Frequency tag). The
+
+137
+
+antenna sets up an electromagnetic area where the tag detects the activation signal and
+
+138
+
+responds by transmitting the stored data from its memory through radio frequency
+
+139
+
+waves (Wang et al., 2016). RFID can be applied to monitor unit status during
+5
+
+140
+
+manufacturing and site assembly stages while GPS can be adopted to locate the units
+
+141
+
+during logistics phase and calculate the remaining time to site. One RFID-enabled BIM
+
+142
+
+platform has been developed for prefabricated construction by researchers in Hong
+
+143
+
+Kong (Zhong et al., 2015; Li et al., 2016). The platform’s architecture has three
+
+144
+
+dimensions: infrastructure as a service (IaaS), platform as a service (PaaS) and software
+
+145
+
+as a service (SaaS). The IaaS level contains hardware and software layers. The hardware
+
+146
+
+layer consists of the SCOs (Niu et al., 2015) and the Gateway, while the software layer
+
+147
+
+involves a Gateway Operating System (GOS) to manage the SCOs. SCOs with
+
+148
+
+functional data and data collection devices are enabled by the RFID system and other
+
+149
+
+innovative technologies. RFID was firstly introduced as a sister technology to replace
+
+150
+
+barcode system for identifying items. By comparing it with barcode system and
+
+151
+
+magnetic strip system, RFID can store a relatively large number of data. This data can
+
+152
+
+be encrypted to increase data security. It is possible to read data from multiple tags in
+
+153
+
+one time thus increase the efficiency of data processing. In comparison with barcode or
+
+154
+
+magnetic system, no direct contact between a RFID reader and the tagged items is
+
+155
+
+needed as it uses radio wave for data transmission. In addition to reading data, it is
+
+156
+
+possible to write data back to the RFID tag, which greatly increases the interaction
+
+157
+
+between items, systems, and people. The GOS is developed to aggregate and pre-
+
+158
+
+process the massive real-time data such as Industry Foundation Classes (IFC) data
+
+159
+
+converted from BIM software (e.g. Revit), GPS data, RFID data (e.g. schedule, cost,
+
+160
+
+production attributions) and point cloud data. In addition, the PaaS level is related to
+
+161
+
+the data source management services (DSMS) which facilitate the heterogeneous
+
+162
+
+information and application systems by applying XML/JSON-based BIM model and
+
+163
+
+connecting the backend RFID system with BIM model. This enhances the initial BIM
+
+164
+
+platform to a multi-dimensional one. The SaaS level consists of three management
+
+6
+
+165
+
+services (manufacturing, logistics, and on-site assembly) to enhance the information
+
+166
+
+sharing and communication for stakeholders’ decision-making at different stages. This
+
+167
+
+study details the deployment and application of the on-site assembly services to try to
+
+168
+
+improve the dilemmas of current project practices in Hong Kong including: (1)
+
+169
+
+Construction sites in Hong Kong are often compacted, with only limited space for
+
+170
+
+storing large and cumbersome components (Jaillon and Poon 2009). Thus, site
+
+171
+
+management is often on the critical path for the success or failure of a construction
+
+172
+
+project. Under this circumstance, a Just-In-Time (JIT) delivery and assembly are
+
+173
+
+desired but currently in Hong Kong, normally a site manager should reserve
+
+174
+
+components/materials of 1.5 stores on site as a buffer. The JIT delivery of prefabrication
+
+175
+
+components is yet to be harvested; (2) Verification of the components is inefficient
+
+176
+
+(Demiralp, Guven et al. 2012), mainly due to the wide use of paper or paint labels.
+
+177
+
+Workers should pay attention to the verification process sequentially, which will lead
+
+178
+
+to extra labor and time cost. Yet, the accuracy of the verification process is not
+
+179
+
+guaranteed since the paper-based documents, or even handwriting and modified labels
+
+180
+
+are usually ambiguous; (3) Current practice may cause safety issues. Construction
+
+181
+
+workers on the sites are usually busying with their operations, some of which need
+
+182
+
+enough space e.g. for crane towers to hoist various components to proper positions
+
+183
+
+(Mao, Shen et al. 2015). If the required spaces are occupied, serious safety issues may
+
+184
+
+be occurred; (4) If too many components are placed on a construction site, workers may
+
+185
+
+have difficulties to find out proper components (from a large pile of similar components)
+
+186
+
+for a specific trade (Shin, Chin et al. 2011). This has been reported in casino projects in
+
+187
+
+Macau. To identify the proper components through effective real-time information
+
+188
+
+collection approach is highly desired. Currently, no such platform, like IKEA’s
+
+189
+
+“assembly instructions”, has been developed to guide on-site assembly to make it more
+
+7
+
+190
+
+efficient. This research is highly motivated to develop such platform that can inherit
+
+191
+
+information from prefabrication production and cross-border logistics and used it to
+
+192
+
+facilitate the on-site assembly process.
+
+193
+
+In order to delimit the bountry of application and process in this study, the scope of the
+
+194
+
+on-site assembly of prefabrication components phase, is described as follows: (1) this
+
+195
+
+phase beings when the prefabrication components arrive at the construction site and are
+
+196
+
+checked by the on-site foreman after being delivered by the third-party logistics
+
+197
+
+company; (2) the inputs are the delivery of prefabrication components and relevant
+
+198
+
+documentation; (3) this phase concludes when the delivered prefabrication components
+
+199
+
+are assembled and pass their respective inspections; and (4) the outputs are the
+
+200
+
+completion of the superstructure work. General steps for on-site assembly are as shown
+
+201
+
+in Figure 1.
+
+8
+
+b
+
+a. On-site storage
+
+a
+
+202
+203
+
+d
+
+b. Lifting
+
+c. Fixation
+
+d. Jointing
+
+c
+
+e. Casting
+
+e
+
+Figure 1 General steps for on-site assembly
+
+204
+205
+
+3. Architecture design and development of Internet of Things enabled platform
+
+206
+
+3.1 Analysis of business process and requirement
+
+207
+
+The purpose of this section is to analyse the business processes, identify business needs
+
+208
+
+and requirements regarding to on-site assembly. Through an interview with the
+
+209
+
+Qualified Engineer on 9th July 2014, this section summarizes the key information and
+
+210
+
+analysis results from the on-site assembly for solution design of the proposed platform.
+
+211
+
+The purpose of the business process analysis (BPA) is to map the processes of on-site
+
+212
+
+assembly of prefabricated construction and identify the requirements of major
+
+213
+
+stakeholders involved in these processes. These stakeholders include the client, the
+
+214
+
+main contractor and their sub-contractors. Relevant findings can provide useful
+
+215
+
+information for the system design of the IoT-enabled platform.
+
+9
+
+216
+
+The surveyed Tuen Mun project (Area 54) proposes to build five 34-38 story buildings,
+
+217
+
+providing about 5,000 units and with the expectation of holding more than 14,000
+
+218
+
+people. Detailed information regarding prefabrication components to be used can be
+
+219
+
+seen in the Table1. Figure 2 below provides a typical layout of the use of prefabrication
+
+220
+
+components.
+
+221
+222
+
+Table 1 Summary of the use of prefabrication components in the surveyed project
+
+223
+
+10
+
+224
+225
+
+Figure 2 Layout of the typical floor of a typical block in the surveyed project
+
+226
+227
+
+The related business processes are described in Figures 3. Figure 3 presents the major
+
+228
+
+on-site installation process of prefabrication components. All activities in the process
+
+229
+
+are (expected to be) carried out at Tuen Mun project site. The typical workflow of
+
+230
+
+erection of prefabricated elements onto a residential construction are also investigated.
+
+231
+
+Activities in Figure 3 are carried out within one typical floor (1/F or up).
+
+11
+
+Start
+Site Establishment
+Submissions before commencement of building works
+G/F, including precast water tanks
+
+Timber mock-up /
+study mock-up
+
+G/F–1/F slab, including transfer
+structure
+
+Escalating Tower
+Crane
+Typical
+erections of
+prefab. On one
+floor (Fig. 3)
+
+Y
+
+Floor No.= 12,17,
+22, 27, or 32?
+Architectural
+works
+
+N
+N
+
+Building
+services
+installations
+
+Temporary
+works
+
+All floors finished?
+Y
+
+RC Superstructure
+works
+
+MR/F, LMR/F, UR/F, & TR/F,
+including booster bump, emergency
+generator rooms, lift machine
+rooms, water tanks
+
+External
+Finishing
+Works
+
+Completion
+End
+
+232
+233
+234
+
+Figure 3 Work flow of a typical residential construction with prefabricated element
+
+12
+
+235
+
+As shown in Figure 3, the on-site assembly phase can generally be divided into five
+
+236
+
+main stages, namely site establishment, temporary works, superstructure works,
+
+237
+
+architectural works and building services installations. Stages 2 to 5 can be carried out
+
+238
+
+concurrently, which may not be on the same floor though, in the schedule.
+
+239
+
+Prefabrication assembly is most relevant in the third stage (i.e. superstructure works).
+
+240
+
+Stage 1 – Site Establishment: The objectives of site establishment are: (1) to provide
+
+241
+
+maximum security to the plant, materials and the installation works; (2) to protect the
+
+242
+
+public and the environment from the installation works; (3) to provide adequate
+
+243
+
+facilities to both the clients and the contractors’ staff; (4) to ensure that upon completion
+
+244
+
+of the project, the site is efficiently demobilized and reinstated to project stakeholders’
+
+245
+
+satisfaction. Procedures of site establishment include: protection to existing structures;
+
+246
+
+establish boundaries; remove materials and items; establish accommodation; and
+
+247
+
+establish services.
+
+248
+
+Stage 2 – Temporary works: Temporary works in the project mainly include (1) tower
+
+249
+
+crane erection; (2) material hoist erection and (3) passenger hoist erection.
+
+250
+
+Stage 3 – Superstructure works: This stage is the main focus for the BPA on
+
+251
+
+prefabrication on-site assembly. Superstructure works include (1) fabrication and
+
+252
+
+installation of precast water tank; (2) G/F - 1/F including transfer structures; (3) 1/F –
+
+253
+
+37/F slab, noted that tower crane is planned to be escalated once the slabs of 12nd, 17th,
+
+254
+
+22nd, 27th and 32nd floor are completed; (4) installation of booster pump, emergency
+
+255
+
+generator rooms, lift machine room and water tanks. The process for one floor (from
+
+256
+
+G/F to 5/F) is significantly longer than that for a floor above 5/F, e.g., 12-70 days for a
+
+257
+
+floor from G/F to 5/F while a 6-day cycle for an upper floor. This is because many
+
+258
+
+issues may be encountered during this period, based on experience.
+
+259
+
+Stage 4 – Architectural works: Architectural works mainly include finishing works at
+
+260
+
+flats, finishing works at common areas and external finishing work.
+
+261
+
+Stage 5 – Building Services Installations: After the completion of superstructure
+
+262
+
+works and architectural works, building services-related facilities will be installed,
+
+263
+
+including: (1) Plumbing and drainage installation; (2) Town Gas; (3) Electrical
+
+264
+
+installation; (4) Lift installation and fire services installation.
+13
+
+265
+
+Typical installation of prefabricated elements involved different participants and
+
+266
+
+locations. Two main locations are (a) the buffer, which is usually near the target
+
+267
+
+building/wing for the convenience of the tower crane, and (b) erection at construction
+
+268
+
+site. Usually the foremen will coordinate the scheduled actions. An operator at the
+
+269
+
+buffer will check the prefabricated elements after they have been unloaded. If there are
+
+270
+
+flaws or defects after delivery, the prefabrication manufacturer will be contacted for
+
+271
+
+further actions; and relevant information shall be recorded. Two groups of prefabricated
+
+272
+
+elements are delivered and erected in turn. One is the vertical components, which
+
+273
+
+include facades, toilets, partition walls, refuse chute, and water cabinets; the other is
+
+274
+
+the horizontal ones which include slabs and staircase. Thereafter, the prefabricated
+
+275
+
+elements are lifted for erection by tower cranes. In a typical erection, a prefabrication
+
+276
+
+element is adjusted horizontally then vertically. Reinforcement is carried out later,
+
+277
+
+followed by inspection. The time required to complete the installation for one typical
+
+278
+
+floor is six days, and this six-day cycle is widely adopted by contractors engaged in
+
+279
+
+public housing construction works. The findings from business process analysis
+
+280
+
+provide necessary information for the system design of the IoT-enabled platform in the
+
+281
+
+upcoming stages of this research. Based on the identified findings and observations on
+
+282
+
+the process flow of on-site assembly, the requirement analysis on this phase is listed in
+
+283
+
+Table 2.
+
+284
+
+Table 2 Requirements analysis of on-site assembly
+
+285
+
+NO
+
+Type
+
+Requirement
+
+Priority
+
+Functional Requirements
+System needs to keep a record of pending
+1
+
+Production
+
+prefabricated elements (with or without ID) for
+
+orders
+
+current working day, and next days for one floor
+
+Preferred
+
+(e.g., in a 6-day cycle)
+2
+
+Buffer
+
+Be aware of prefabrication are safely delivered
+14
+
+Must
+Have
+
+3
+
+4
+
+Erection
+inspection
+Buffer
+
+Buffer &
+5
+
+Erection
+inspection
+
+Be aware of prefabrication are erected successfully
+Be aware of place where prefabricated components
+are held
+
+Must
+Have
+Optional
+
+When RFID tag is missing or not working, the
+delivery and/ or erection can be input by alternative
+
+Must
+
+ways (e.g., querying tag ID from RFID service
+
+Have
+
+provider followed by a manual input)
+Automatic SMS or Android/iOS notifications on
+
+6
+
+Messaging
+
+prefabrication delivery/ erection/ unexpected issues
+
+Optional
+
+for stakeholders
+7
+
+8
+
+Erection
+
+Multiple scanners or floor partitioning for RFID
+
+inspection
+
+scanning
+
+Erection
+
+Random order RFID scanning within one floor after
+
+inspection
+
+inspection
+
+Erection
+9
+
+inspection &
+Buffer
+Erection
+
+10
+
+inspection &
+Buffer
+
+Batch upload of photos synchronized or
+synchronized with hand-held scan data upload
+
+Optional
+
+Optional
+
+Optional
+
+Able to record operators’ GPS locations of delivery
+& erection as EXIF in JPG images and
+automatically extractable as supplementary location
+
+Optional
+
+info
+
+Buffer,
+Erection
+11
+
+inspection, &
+General
+
+Electronic files (PDF) sharing of inspection reports
+and progress reports
+
+Preferred
+
+management
+Non-Functional Requirements
+1
+
+Performance
+
+Data and status are available at real-time
+15
+
+Preferred
+
+2
+
+Availability
+
+3
+
+Security
+
+4
+
+Availability
+
+5
+
+Security
+
+6
+
+Security
+
+Accessible through wireless/wired network out of
+
+Must
+
+office/ site
+
+Have
+
+One shared input account for one wing/building
+
+Preferred
+
+Accessible through iOS/Android smart devices
+(phones/tablets after Jan 2013)
+Binding PC/Phones’ IP/MAC addresses of
+stakeholders
+Digital/ vocal signature of inspector and/or buffer
+operator
+
+Preferred
+
+Optional
+
+Optional
+
+286
+287
+
+The BPA described the processes of on-site assembly of prefabricated construction in
+
+288
+
+details, by focusing on major installation stages and involved stakeholders. It also
+
+289
+
+identified and prioritizes the requirements of major stakeholders involved in the
+
+290
+
+assembly activities. The findings from BPA provide the basis for the design of system
+
+291
+
+architecture of the IoT-enabled platform in the upcoming stages of this research.
+
+292
+
+3.2 Functional requirement and UI design
+
+293
+
+After three rounds of site visits, discussions, and meetings with managers from client
+
+294
+
+and the contractor for construction site, the functional requirement and UI (User
+
+295
+
+Interface) design are raised based on the business processes and requirements analysis
+
+296
+
+which come from real-life pilot companies. The purposes of the functional requirement
+
+297
+
+and UI design of this research include: (1) To introduce the concepts of user and system
+
+298
+
+requirements; (2) To describe functional and non-functional requirements; (3) To
+
+299
+
+explain how software requirements may be organized; (4) To present how the GUIs
+
+300
+
+will be designed; (5) To identify the key components of the IoT-enabled platform; (6)
+
+301
+
+To illustrate the specific functions to the programmers how to carry out detailed design
+
+302
+
+and programming; (7) To descript how the modules could assist end-users for
+
+303
+
+facilitating their operations and decision-making. This section provides the specific
+
+304
+
+requirements of the on-site assembly service including external interface requirements,
+16
+
+305
+
+functional requirements, non-functional requirements, internal requirements, design
+
+306
+
+constraints, logical database requirements and other requirements.
+
+307
+
+3.2.1 Interface requirements
+
+308
+
+As shown in Table 3, there will be five groups of target human users and three groups
+
+309
+
+of external software users for OAS, each of which will have its own corresponding user
+
+310
+
+interfaces. All hardware interfaces will be those of the on-site assembly service on top
+
+311
+
+of which it will be running, with due attention should be paid to: (1) CPU usage; (2)
+
+312
+
+Memory usage; (3) Cache file creation; (4) Network communication. Besides, the
+
+313
+
+software interfaces include designated user Applications on Android and modern
+
+314
+
+browsers (e.g., Safari and Chrome) which are compatible with WebGL, HTML 5, and
+
+315
+
+Java Script on Windows/OS X/iOS/UNIX/Linux. Network protocols for systems to
+
+316
+
+communicate include HTTP (and HTTPS), SFTP (Secure File Transfer Protocol),
+
+317
+
+specified XML/JSON (Java Script Object Notation) data management services over
+
+318
+
+SSL (secure sockets layer).
+
+319
+320
+
+Table 3 The five sets of target human users and three sets of external software users
+
+321
+
+for OAS
+NO
+
+Target human users and external
+
+Security
+
+software users
+
+level
+
+busy;
+
+Management level (Senior manager,
+1
+
+Engineer): Setting up master plan and
+pattern of assembly cycle, monitor the
+
+easy and quick access;
+medium
+
+concerns more on
+overall/ abstract/
+
+overall progress and estimated spent.
+
+representation level;
+
+On-site coordinator (Foreman):
+2
+
+Characteristic
+
+busy;
+
+Confirm tasks for a flat from master
+plan with consideration of actual
+progress and existed exceptions, claim
+17
+
+medium
+
+easy access;
+building progress and
+quality centric;
+
+new and handled exceptions when
+necessary.
+Prefabrication receiver (assigned by
+3
+
+Foreman): confirm a component is
+
+low
+
+safely delivered to construction site.
+4
+
+5
+
+6
+
+7
+
+Erection worker: confirm a
+
+low
+
+component is correctly erected.
+Inspector: confirm the quality of final
+assembly in the whole structure.
+BIM system: providing structure and
+shape data.
+
+medium
+
+low-level certificate;
+hard work;
+low-level certificate;
+technical/qualified
+staff;
+professional standards;
+
+high
+
+specific software end
+(Revit);
+
+RFID system: providing status data of
+components.
+
+3rd-party solution;
+medium
+
+data may be slightly
+delayed (<1 day);
+
+Other services in the platform: the
+8
+
+part-time receiving;
+
+aforementioned ones and the services
+to be developed.
+
+high compatibility;
+medium
+
+small amount/ regular
+communication;
+
+322
+
+3.2.2 Functional requirements
+
+323
+
+Based on the analysis of business process and requirement, a total of four major services
+
+324
+
+are provided in the IoT-enable platform: (1) Assembly management (real-time
+
+325
+
+supervision) services: to provide a toolkit for contractor’s managers and engineers to
+
+326
+
+supervise the management of on-site assembly services, which include: visibility
+
+327
+
+service to integrate the project progress in charts and 3D BIM models, and components
+
+328
+
+in 3D BIM models; component tracing service to locate a missing component and return
+
+329
+
+the geolocation or place of storage; component tracking service to filter one or more
+
+330
+
+components in a given criterion, e.g., selecting all installed windows in a storey/floor;
+
+331
+
+(2) Assembly operations services: to provide a toolkit for managers and engineers who
+18
+
+332
+
+are involved in operations of assembly at construction site, which include: planning
+
+333
+
+service to break down a job plan (typically floor plan) into tasks in charts; components
+
+334
+
+order listing helper service: to provide an information list for site coordinators and
+
+335
+
+production services, partially depended on component tracking service; assembly
+
+336
+
+scheduling service to make floor plans and daily plans by associating personnel with
+
+337
+
+planned tasks; component tracing/ tracking service; duplicated component tracing and
+
+338
+
+tracking service; (3) Assembly exception handling services: to implement part of
+
+339
+
+preplans for some of the unexpected cases, which include: progress exception handling
+
+340
+
+service to provide follow-up tools for the cases where the progress is not carried out
+
+341
+
+on-time; component exception handling service to record when an important (e.g.,
+
+342
+
+RFID tagged) component encounters defects or replacement; (4) Assembly notification
+
+343
+
+services: for facilitating in reminding and notification for users, with different
+
+344
+
+reminders sent to subscribed users, such as progress summary, component list to be
+
+345
+
+delivered today, and summary of inspection result, which include Email notification
+
+346
+
+service to send Email alerts for managers and engineers who work in office, SMS
+
+347
+
+notification service, and mobile app notification service.
+
+348
+
+3.3.2.2 Functions of management tools
+
+349
+
+The functions of management tools for management level listed in Table 4 and Figure
+
+350
+
+4 below.
+Table 4 The functions of management tools for management level
+
+351
+
+Introduction
+Trigger
+Inputs
+
+Processing
+
+Toolkit for management level
+As specified in the Graphical User Interfaces (GUIs) in Figure 4.
+Pre-written graphic/text of introduction; or 3D WebGL/chart
+component-based graphics with selectable criteria
+Read the current progress, data via this software from the database;
+or editing the master plan of project
+
+Outputs
+
+Return and present the content on web or app
+
+Error
+
+Show information and hints on data input, user privilege, and
+19
+
+Handling
+
+software compatibility errors, or return to log in
+
+352
+
+b. Mockup UI for Gantt chart of progress with schedule
+
+a. Mockup UI for 3D graphics of project/building/floor progress
+
+c. Mockup UI for chart of estimated cost according to progress
+
+d. Mockup UI for stock and Geolocations of in-process prefabricated components
+
+353
+354
+
+Figure 4 Mockup GUIs for 3D graphics of project/building/floor progress
+
+355
+
+3.3.2.3 Functions of operation tools
+
+356
+
+The functions of management tools for on-site operation level listed in Table 5 and
+
+357
+
+Figure 5 below.
+
+358
+
+Table 5 The functions of management tools for on-site operation level
+Introduction
+
+Toolkit mainly for on-site operation level
+
+Trigger
+
+As specified in the GUIs in Figure 5.
+
+Inputs
+
+Pre-written graphic/text of introduction; or 3D WebGL/map
+component-based graphics with selectable criteria
+
+20
+
+Read/write the necessary information (detailed floor plans,
+Processing
+
+component shape ad status, etc.) and process with this software
+from/to the database
+
+Outputs
+
+Return and present the content on web or app
+
+Error
+
+Show information and hints on data input, user privilege, and
+
+Handling
+
+software compatibility errors, or return to log in
+
+359
+
+b. Mockup UI for stock and geolocations of in-process prefabricated
+components for foreman
+
+a. Mockup UI for floor plan review for foreman
+
+c. Mockup UI for receiving prefabricated components
+
+d. Mockup UI for confirmation of inspection of installation
+
+360
+361
+
+Figure 5 Mockup GUIs for floor plan review for a foreman
+
+362
+363
+
+3.3.2.4 Functions of exception handling and notification tools
+
+364
+
+The functions of management tools for managers, engineers and on-site coordinators o
+
+365
+
+track exceptions and receiving progress/exceptions updates are listed in Table 6 and
+
+366
+
+Figure 6 below.
+21
+
+367
+368
+
+Table 6 The functions of management tools for managers, engineers and on-site
+
+369
+
+coordinators
+Introduction
+Trigger
+Inputs
+
+Processing
+
+Toolkit to track exceptions and receiving progress/exceptions
+updates
+As specified in the GUIs in Figuge 6.
+Selectable list of events (exceptions and progress) to notify;
+exceptions tracking and updating
+Read/write the pre-defined event information via this software
+from/to the database
+
+Outputs
+
+Return and present the content on web or app
+
+Error
+
+Show information and hints on data input, user privilege, and
+
+Handling
+
+software compatibility errors, or return to log in
+
+370
+
+371
+
+a. Mockup UI of notifications and exceptions handling for foreman
+
+b. Mockup UI of notifications and exceptions handling for management
+
+372
+
+Figure 6 Mockup GUIs for notifications and exceptions handling for foremen and
+
+373
+
+managers
+
+374
+
+3.2.3 Non-functional requirements
+
+375
+
+Non-functional requirements may exist for the following attributes. Often these
+
+376
+
+requirements must be achieved at a system-wide level rather than at a unit level. The
+
+377
+
+requirements are stated in Table 7 in measurable terms. The deployment of the system
+
+378
+
+would was planned on cloud servers, thus many conventional system-level requiments
+22
+
+379
+
+(e.g., system downtime and mean time between failure) was easily met.
+
+380
+
+Table 7 Non-functional requirements
+
+381
+
+Response time
+The maximum response time for the submission of any
+Performance
+
+request will be 1 minute.
+Capacity
+The maximum number of recognizable items is limited to
+100,000 for each building.
+Maximum bug rate
+There will be a maximum of 1 bug in 1,000 lines of codes.
+Maximum time to repair
+In case of cloud outage, the site users (type 2-5 in Table 3)
+
+Reliability
+
+will store the data in the designated smartphone Application
+to be uploaded when the system is ready; while the service for
+the mangment user (type 1 in Table 3) will be down.
+
+A
+
+typical system reboot time takes 10 seconds, and a scheduled
+cloud maintainance can be a few hours.
+Back-end internal computers
+The system shall provide storage of all databases and cache
+files on a redundant computer and another cloud storage
+Availability
+
+located in a different continent.
+Operational availability
+The service shall provide users with a minimum operational
+availability of 99.9%.
+
+Security
+
+Security considerations
+
+23
+
+The on-site assembly service will ensure the privacy of user
+job status and ensure full control over job execution, so that
+alteration of scheduling criteria or actual resource allocation
+is not possible without administrator authority.
+Data transfer
+(1) The system shall use SSL in all transactions that may
+include confidential information.
+(2) The system shall automatically log out all users after a
+period of inactivity.
+(3) The system shall confirm all transactions with the user’s
+smartphone application or web browser.
+(4) The system shall not leave any cookies on the user’s
+computer after logging out.
+Data storage
+(1) The user’s web browser shall not display a user’s password
+except for user’s manual request (e.g., on a smart phone).
+
+It
+
+shall always be echoed with special characters representing
+typed characters.
+(2) The system’s back-end services shall store encrypted
+passwords of users instead of orignal ones.
+(3) The system’s back-end services shall only be accessible to
+authenticated administrators.
+(4) The system’s back-end databases shall be encrypted and
+accessible to authenticated administrators.
+Maintenance
+(1) The administration will not support job migration for the
+Maintainability purpose of decreasing resource fragmentation.
+(2) The on-site assembly service shall permit the upgrade of
+software without down time.
+24
+
+(3) The Mean Time To Fix shall not exceed one person day.
+
+Naming convention
+All codes prefer to the Hungarian notion.
+Portability
+
+Ease of moving to another system
+Can be used on all desktop computers and smart phones with
+modern borwsers
+
+382
+383
+
+3.2.4 Logical database requirements
+
+384
+
+The logical database of on-site assembly service consists of 4 sets of data tables,
+
+385
+
+including: (1) Project and tasks; (2) Imported Data from BIM and RFID systems; (3)
+
+386
+
+Exceptions and handling; (4) Users and notifications. The 4 sets of data tables are
+
+387
+
+supporting the 4 group of services, respectively. Figure 7 shows a detailed composition
+
+388
+
+of the 4 sets of tables. Set a) consists of tables “project”, “masterPlan”, “floorPlan”, and
+
+389
+
+“dailyTypePlan”;
+
+390
+
+“compType”; set c) include “exFPlan” and “exComp”; set d) include “users” and
+
+391
+
+“notifications”. The primary keys and foreign keys can also be found in the figure.
+
+set
+
+b)
+
+includes
+
+“BIM_component”,
+
+392
+
+25
+
+“RFID_record”,
+
+and
+
+masterPlan
+
+floorPlan
+
+dailyTypePlan
+
+PK
+
+id
+
+PK
+
+id
+
+PK
+
+id
+
+FK1
+
+parentId
+type
+SN
+name
+cname
+projId
+managerID
+estStartDate
+estEndDate
+
+FK1
+
+planId
+flat
+floor
+managerID
+estStartDate
+estEndDate
+
+FK1
+FK2
+
+fplanId
+compTypeId
+compNum
+plannedDate
+startDate
+endDate
+
+FK3
+FK2
+
+FK2
+
+BIM_component
+PK
+
+FK2
+FK1
+
+compType
+PK
+
+id
+
+project
+PK
+
+name
+refBimId
+shapeData
+sycDate
+comment
+
+id
+name
+client
+designer
+manufacturer
+logService
+contractor
+estStartDate
+estEndDate
+
+users
+PK
+
+id
+
+FK1
+
+title
+name
+level
+password
+projId
+
+notifications
+
+393
+
+PK
+
+id
+
+FK1
+
+userId
+eventType
+internalNoti
+emailNoti
+smsNoti
+appNoti
+
+id
+bimId
+bimSN
+bimGUID
+bimTypeId
+isPrefab
+dplanId
+flat
+floor
+block
+wing
+shapeData
+version
+sycDate
+comment
+
+exComp
+
+exFPlan
+PK
+
+id
+
+FK1
+
+fpId
+title
+content
+status
+eventDate
+createrId
+trackerId
+revHistory
+latestRev
+latestRevDate
+
+FK2
+FK3
+
+PK
+
+id
+
+FK1
+
+compId
+title
+content
+status
+eventDate
+createrId
+trackerId
+revHistory
+latestRev
+latestRevDate
+
+FK2
+FK3
+
+RFID_record
+PK
+
+FK1
+
+id
+rfidId
+rfidTagSN
+rfidTagGUID
+bimSN
+flat
+floor
+block
+wing
+qcGrage
+taggingTime
+qcTime
+manuTime
+delivTime
+recvTime
+assemTime
+inspTime
+comment
+
+394
+395
+
+Figure 7 Database model diagram of the logical database of OAS information system.
+
+396
+397
+
+The highest amount of data, which is not exceeding 10⁵ records (usually <10⁴ for a
+
+398
+
+building) for a project, is expected to be found in table “BIM_component” and
+
+399
+
+“RFID_record”. However, the attribute “shapeData” in table “BIM_component” can be
+
+400
+
+as large as 10⁴~10⁵ bytes. So the total physical size of the database can be up to 10¹⁰
+
+401
+
+bytes (10GB) in assumed projects. The number of simultaneous users is expected to be
+
+402
+
+less than 10.
+
+403
+
+3.3 Smart construction object and smart gateway
+
+404
+
+SCOs are typical construction resources such as tools, machinery, materials, which are
+
+405
+
+converted into smart objects through binding them with different RFID devices, as
+
+406
+
+shown in the Figure 8. The purpose of SCOs is to create an intelligent construction
+
+407
+
+environment within the typical prefabrication production sites such as shop-floors,
+26
+
+408
+
+warehouse, logistic and supply chain, and construction sites. SCOs are building blocks
+
+409
+
+for such intelligent environment, within which they can sense and interact with each
+
+410
+
+other. Thus, the processes of on-site assembly could be carried out smoothly.
+
+411
+
+Smart Construction Objects
+
+a. TSL 1128 Bluetooth UHF RFID Reader
+
+b. SAMSUNG Note 3 (SM-N900)
+
+c. UHF RFID Tag
+
+Platform Gateway
+
+a. Connection
+
+c. Write function
+
+b. Read function
+
+412
+413
+
+Figure 8 smart construction objects and gateway
+
+414
+415
+
+Typical construction resources are converted into SCOs through various tagging
+
+416
+
+schemes. Firstly, critical prefabrication components such as volumetric kitchens, toilets,
+
+417
+
+precast facades, will be tagged individually. That means item-level tagging scheme is
+
+418
+
+adopted because they easily influence the progress in prefabrication housing
+
+419
+
+construction. For non-critical materials, such as dry walls, and building blocks, tray-
+
+420
+
+level or batch-based tagging scheme is adopted. That means tags are attached to the
+
+421
+
+trays which carry multiple minor prefabrication components. In the pilot study, the
+
+422
+
+RFID tags, as shown in Figure 8, are Ultra High Frequency (UHF) tags protected in
+
+423
+
+strong Acrylonitrile Butadiene Styrene (ABS) plastic cases and validated individually
+
+424
+
+before planting. Each tag supported up to about 30 cm when embedding on the steel
+27
+
+425
+
+ribbons inside concrete. A data operability of each was validated before planting. For
+
+426
+
+various workers, such as machine operators, vehicle drivers, logistics operators, and
+
+427
+
+on-site assembly workers, they are tagged with smart staff cards. These construction
+
+428
+
+resources attached with tags are passive SCOs. The deployment of RFID readers
+
+429
+
+follows a systematic approach. Once bound by RFID readers, they become active SCOs
+
+430
+
+that can sense and detect the passive SCOs. Both active and passive SCOs can sense
+
+431
+
+and interact with each other to create an intelligent construction environment. They
+
+432
+
+carry critical information that will be updated at different locations.
+
+433
+
+Gateway performs several key functions in the research. Firstly, it connects and hosts a
+
+434
+
+set of SCOs through wired or wireless communication standards. It not only allows
+
+435
+
+workers/operators to access information such as prefabrication production status, but
+
+436
+
+also defines, configures, and executes the corresponding prefabrication construction
+
+437
+
+agents through various services. Secondly, it communicates and interacts with upper-
+
+438
+
+level decision-making systems through providing useful and real-time information on
+
+439
+
+standardized format. It acts as a bridge between the frontline SCOs and upper-level
+
+440
+
+decision-making systems. For example, the gateway can connect and control RFID
+
+441
+
+readers through Bluetooth, and send data to cloud servers via 4G or WiFi. Bluetooth
+
+442
+
+data transfer can be carried out between the main device and other devices at any time,
+
+443
+
+the main device can select the slave device to access. Especially, it can be in the way to
+
+444
+
+change equipment between fast conversion. This greatly improves the stability of
+
+445
+
+Bluetooth connectivity. Thus, decisions and their executions could be seamlessly
+
+446
+
+synchronized in prefabrication housing production. Thirdly, it processes, caches, and
+
+447
+
+exchanges real-time data and events locally and temporally. To this end, complex event
+
+448
+
+processing technology is used to integrate the construction information into a
+
+449
+
+standardized scheme, which could be understood, shared and used among different EISs
+
+450
+
+in the construction industry. Finally, it provides a rich set of facilities for service
+
+451
+
+definition, configuration and execution. The concept of service-oriented agents is
+
+452
+
+adopted to represent the SCOs through a plug-and-play fashion.
+
+453
+
+The Gateway uses an operating system named GOS to achieve a flexible, modularized
+
+454
+
+and re-configurable framework, where applications and solutions are designed and
+28
+
+455
+
+developed as web services. GOS aims to provide an easy-to- deploy, simple-to-use and
+
+456
+
+flexible-to-access solution for the construction industry. Within the GOS, multi-agent
+
+457
+
+based models are used to ensure the versatility and scalability of Gateway. Therefore,
+
+458
+
+communication and interactions between SCOs and other services is facilitated by
+
+459
+
+using an XML/JSON-based message exchanging protocol.
+
+460
+
+SCOs and Gateway can capture the real-time construction data to support the decision-
+
+461
+
+making in client’s enterprise information system. SCOs and Gateway can enhance the
+
+462
+
+data sharing within the high level decision-making entities and front-line construction
+
+463
+
+sites. The advanced decision-makings could real-timely be reflected in the construction
+
+464
+
+site, while, the real-time data such as prefabrication manufacturing progresses,
+
+465
+
+prefabrication transportation statuses could be fed back to stakeholders on real-time
+
+466
+
+basis. SCOs and Gateway can form a closed-loop information interaction throughout
+
+467
+
+the prefabrication housing construction.
+
+468
+
+3.4 Overall architecture design
+
+469
+
+The IoT-enabled platform of on-site assembly services comprises four key components,
+
+470
+
+as shown in Figure 9. They are smart construction objects, platform Gateway, decision
+
+471
+
+support system, and data source services. As shown in Figure 9, from the right to left,
+
+472
+
+SCOs are passive and active construction objects equipped with RFID devices.
+
+473
+
+Gateway connects, manages, and controls the SCOs through defining, configuring, and
+
+474
+
+executing the construction logics. Decision support system is to suit the on-site
+
+475
+
+assembly services in Hong Kong. To enhance the data sharing and interoperability
+
+476
+
+among BIM, stakeholders’ information systems, and the IoT-enabled platform, data
+
+477
+
+source services are designed to use XML/JSON-based data sharing mechanism for this
+
+478
+
+purpose. Under the architecture, the decision-making systems can use the real-time data
+
+479
+
+for advanced decision-makings.
+
+29
+
+SOA-based Data
+Access Service
+Agent-based
+Application
+Information Service
+
+Iots-enabled Platform for On-Site
+Assembly Services
+
+DM
+
+AIS UDDI Service
+
+Date Source Services
+
+MM
+
+Management Tools
+
+Database
+
+Operation tools
+Smart
+Construction
+Objects
+
+Exception handling
+
+…
+
+Decision Support System
+
+HOMES
+Definition
+
+Configuration
+
+BIM-centered
+System
+
+Execution
+
+Platform Gateway
+
+480
+481
+
+Figure 9 Overall architecture design of the platform
+
+482
+
+4. Practical application of the on-site assembly platform
+
+483
+
+4.1 Description of case study
+
+484
+
+The Tuen Mun project (Area 54, TM54), initially designed by HKHA, proposes to build
+
+485
+
+five 34-38 storey buildings, providing about 5,000 units and with the expectation of
+
+486
+
+holding more than 14,000 people. The construction practice of the 8th-35th storeys of
+
+487
+
+Block 5 of the Tuen Mun project were provided as case study by our partners, due to
+
+488
+
+project period well meet our study. The period of the pilot study was initially set as 5
+
+489
+
+storeys of Block 5, roughly from early October 2015 to November 2015. The period
+
+490
+
+had later been extended to much more storeys (whole building) of Block 5 till the end
+
+491
+
+of this research. To collect required data, a series of on-site visits and interviews are
+
+492
+
+arranged and conducted toward concerned major stakeholders, including HKHA (Hong
+
+493
+
+Kong Housing Authority) staff members responsible for housing production in the
+
+494
+
+region, managers from precast manufacturers and logistics companies, engineers, and
+
+495
+
+on-site managers of contractors. Besides, engineers who are familiar with the processes
+30
+
+496
+
+of on-site assembly activities are trained to operate the developed devices to run the
+
+497
+
+platform for improving the productivity of OAS, and the management data are
+
+498
+
+automatically collected and uploaded to the platform in real time manner.
+
+499
+
+4.2 Operational flow of the platform
+
+500
+
+The developed on-site assembly service facilitates various assembly operations,
+
+501
+
+supervisions and quality checking in the construction site. BIM is integrated into the
+
+502
+
+development of the service to visualize and monitor assembly progress. Several major
+
+503
+
+sub-services, such as on-site assets management service, real-time supervision service,
+
+504
+
+data capturing service and real-time feedback service are exploited to facilitate
+
+505
+
+assembly of precast components. The operational flow of the developed service is
+
+506
+
+shown in Figure 10.
+
+507
+Staff Registration
+
+Error Alert
+
+Order Management
+
+Assembly Confirmation and Quality Checking
+
+Progress Visualization
+
+Real Time Progress Monitoring
+
+\
+
+508
+
+Figure 10 Working Logic of OAS
+
+509
+510
+511
+
+(1) Staff registration
+
+512
+
+The staff registration function offers on-site workers an efficient way of logging into
+31
+
+513
+
+the system – by tap their staff cards instead of wasting time in typing passwords. This
+
+514
+
+service uses NFC (near field communication) technology (and their existing staff cards)
+
+515
+
+to identify corresponding workers, foremen, and on-site managers. Moreover, possible
+
+516
+
+violations of site safety regulations, and risks and dangerous activities, can be mitigated
+
+517
+
+for the operators on site.
+
+518
+
+(2) Order management
+
+519
+
+This module can be used by on-site workers and foremen responsible for the assembly
+
+520
+
+of precast elements and by managers who want to check detailed information on an
+
+521
+
+scheduled order and make necessary distributions, confirmations, and modifications.
+
+522
+
+This function communicates with the order databases at manufacturer and logistics
+
+523
+
+companies. The “Orders” module also includes two sub-modules similar to the
+
+524
+
+manufacturer: “Current Orders” and “Import Orders.” The “Current Orders” module
+
+525
+
+provides the orders overview. Users could check the general information of all imported
+
+526
+
+orders and monitor their real-time status using this module. They could also check order
+
+527
+
+details as well as remove and edit orders using this module.
+
+528
+
+(3) Assembly confirmation and quality checking
+
+529
+
+This function captures the real-time data of the precast element assembly upon site
+
+530
+
+installation in such a manner that allows meaningful and useful information to be
+
+531
+
+extracted. Once the required precast elements arrive at the site, these are assembled
+
+532
+
+onto the floor and are quality checked. Real-time data regarding current status is
+
+533
+
+captured through RFID reader by on-site foremen. This real-time information is then
+
+534
+
+transferred to the server for processing to facilitate and coordinate various stakeholders
+
+535
+
+and support their decision-making on the project, specifically when the project still has
+
+536
+
+some issues, such as delivery delay of precast components, assembly interruption and
+
+537
+
+other quality problems.
+
+538
+
+(4) Real-time progress monitoring
+
+539
+
+The cumulative quantity of precast elements erected based on real-time data collected
+
+540
+
+and the contractor’s master program can be compared using a line chart to identify any
+
+541
+
+delay in site construction progress, as shown in the Figure 11. This service provides a
+
+542
+
+Gantt chart or a 3D virtual reality presentation that uses RFID assembly data to reflect
+32
+
+543
+
+the construction progresses in real-time in terms of prefabrication assembly status,
+
+544
+
+material consumptions and workers’ assignments. The main users are HKHA and on-
+
+545
+
+site supervisors responsible for controlling the construction objects and reporting to
+
+546
+
+various stakeholders on the progress, current challenges or barriers.
+
+547
+
+548
+549
+
+Figure 11 Function for real-time progress monitoring
+
+550
+551
+
+(5) Progress visualization
+
+552
+
+Real-time precast construction progress is visualized using an imported BIM Model in
+
+553
+
+a web-based operating platform for monitoring produced elements, under transportation,
+
+554
+
+on-site arrival and erection, which are shown in different colors to indicate the status of
+
+555
+
+precast elements, as shown in the Figure 12. Easy real-time visualization is applied to
+
+556
+
+check against domestic floor actual site construction progress and identify any delay in
+
+557
+
+precast fabrication and delivery. Therefore, all involved project stakeholders could be
+
+558
+
+aware of the current situations and make associated decisions collaboratively.
+
+559
+
+33
+
+560
+
+Figure 12 Function for Progress visualization
+
+561
+562
+563
+
+(6) Error alert
+
+564
+
+This function is developed to detect the rightness of the assembly of precast elements.
+
+565
+
+Every precast component has a unique serial number that binds with a specific RFID
+
+566
+
+tag and is assembled at a specific location. Coordinates of the location where the RFID
+
+567
+
+tag of precast element installed read with a mobile phone based on GPS can be
+
+568
+
+compared to the design coordinates based on the BIM model, as shown in the Figure
+
+569
+
+13. The deviation in position can be shown in meters. Any deviation larger than the
+
+570
+
+reasonable tolerance in GPS can be identified manually as an error in precast element
+
+571
+
+installation. Please be noted that because the layout of one typical floor of the studied
+
+572
+
+building is quite large, with about 5,000 m² per floor, the minor deviation of GPS
+
+573
+
+position data will not affect the error alert analysis of precast facades and the real-time
+
+574
+
+data collection.
+
+575
+
+34
+
+576
+577
+
+Figure 13 Function for precast component tracing and error alert
+
+578
+579
+
+After testing, the main advantages of on-site assembly service can be summarized as
+
+580
+
+(1) Time-saving or man-hour saving, where a typical RFID reading of 23 facades for
+
+581
+
+two wings of typical floor takes about 16 mins. However, the current solution spends
+
+582
+
+more than 30 minutes, that is, about ten man-hours per month. The time can be
+
+583
+
+improved further if the factory performs tag checks before every delivery. Time can be
+
+584
+
+improved even further with an offline item cache. (2) Easy access and timely
+
+585
+
+communication, with real-time feedback from assembly sites, real-time tracing of the
+
+586
+
+construction objects, such as precast components, on-site workers and site equipment,
+
+587
+
+are achieved. Real-time data are also used for forming statistical reports and analysis
+
+588
+
+for the decision making of various involved stakeholders.
+
+589
+
+4.3 Facts on mobile apps and OAS web application
+
+590
+
+4.3.1 OAS RFID data gathering APP
+
+591
+
+The OAS RFID Data Gathering APP reads RFID EPC code via the SCO gateway and
+
+592
+
+uploads the time and location to the server accordingly. Example screenshots of the
+35
+
+593
+
+SCO gateway can be found in Figure 8. During the pilot tests, many challenges were
+
+594
+
+engaged and resolved as follows:
+
+595
+
+
+
+Using multi-level menu to reduce ambiguity on the system UI.
+
+596
+
+
+
+A “waterproof” function was developed to make the smart gateway possible to
+operate in rains.
+
+597
+598
+
+
+
+English/Chinese versions are switchable from the configuration panel.
+
+599
+
+
+
+Visual clues for scanning targets, including a list of items to read and their designed
+locations on a mini map.
+
+600
+601
+
+
+
+brief introduction of each category of SCO.
+
+602
+603
+
+Visual clues for tag position for inexperienced user, including typical locations and
+
+
+
+An alternative confirmation function by taking photo is designed for handling
+
+604
+
+about 3% incorrect tags (missing or wrong) and less than 1% failed tags (unknown
+
+605
+
+reason).
+
+606
+
+Also, some challenges not addressed yet:
+
+607
+
+
+
+The system relies on manual collection (reading) of the data.
+
+608
+
+
+
+The location data (GPS) of SCOs is only available in 5 days (before setting up
+semi-precast slabs overhead).
+
+609
+610
+611
+
+
+
+The location data (GPS) becomes stable after 1 to 2 minutes when an operator
+climbs to the working roof.
+
+612
+
+4.3.2 WeChat OAS add-in
+
+613
+
+In order to extend the functions of OAS to mobile phones and tablets, a WeChat add-
+
+614
+
+in, or Official Account, was developed as a supplementary APP. The main features of
+
+615
+
+the add-in are: The four most valuable functions, including overall progress and a real-
+
+616
+
+time nD BIM model, production status, just-in-time logistic information, location test
+
+617
+
+of installation, were deployed on WeChat.
+
+618
+
+4.3.3 OAS web application
+
+619
+
+The OAS web application is the main media of use the functions of OAS. It is designed
+36
+
+620
+
+on HTML5 for modern browsers, so the technical issues listed below are about using
+
+621
+
+on PC browsers.
+
+622
+
+
+
+The nD-BIM model related: (1) At the beginning stage, only façades were
+
+623
+
+displayed on the nD model: Later, the full precast model of Block 5 was provided,
+
+624
+
+and all reinforced concrete items were imported; (2) Model size too large (about
+
+625
+
+8MB for real-time frame). The size caused the slow loading: The WebGL data file
+
+626
+
+was redefined. Concrete belongs to the same family was referred to a data class.
+
+627
+
+The heavy class data file was cached as local storage of browser. In this way, the
+
+628
+
+model size was reduced to about 80KB; (3) 4D play-mode still too large (about
+
+629
+
+9MB) redefined “storey” classes (about 1MB).
+
+630
+
+
+
+added in the later versions; (2) Menu items were regrouped by objects or functions.
+
+631
+632
+
+Menu: (1) The first version of menu appearance is plain style, CSS animation was
+
+
+
+Progress curve: (1) The (Adobe Flash-based) chart is not working on iOS. It was
+
+633
+
+later changed to a Java script version; (2) Clues for days of delays were added. The
+
+634
+
+tip texts were converted from manual comments of master plan.
+
+635
+
+
+
+toolbar for history data and full-screen / windowed form.
+
+636
+637
+
+
+
+
+
+
+
+A GPS data based location test was implemented for a coarse but automatic ways
+of location checking.
+
+642
+643
+
+A calendar based setup GUI was developed for delivery orders (administration)
+management.
+
+640
+641
+
+RC volumes, important dates and plan revisions of each storey were included in
+master programs (administration) management.
+
+638
+639
+
+2D floor map / nD BIM only display latest frame: Filters were added on to the
+
+
+
+Hong Kong holidays and special non-working days such as black rain signal were
+implemented for an automatic delay summary (administration) comments.
+
+644
+645
+
+
+
+Factory supply status is now available in both chart and text summary.
+
+646
+
+
+
+Google Maps® was used for display of positioning and GPS.
+
+37
+
+647
+
+4.4 Summary of the application
+
+648
+
+By the end of January 2016, the OAS recorded 667 prefabricated items (all facades),
+
+649
+
+from the 8th floor to the 22nd floor (14.5 storeys, 58 wings). Each item has four
+
+650
+
+important time and corresponding geolocations of manufacturing, delivery start, arrival
+
+651
+
+at site, and erection. According the data, a day of “factory supply shortage” was
+
+652
+
+discovered and was verified by Gammon’s independent system. Another unusual
+
+653
+
+installation was detected by GPS location test. The main advantages can be summarized
+
+654
+
+in three categories:
+
+655
+
+
+
+Time-saving or man-hour saving: (1) A typical RFID reading of 23 facades (2
+
+656
+
+wings) cost about 16 mins. In contrast, in the current practice a worker spends more
+
+657
+
+than 30 minutes. That is about ten man-hours per month;
+
+658
+
+
+
+Easy access and presentation: (1) nD model on many devices, including PC, tablet,
+mobile, etc; (2) Main functions are accessible on WeChat for drivers and workers
+
+659
+660
+
+
+
+661
+
+4.5 Scalability testing of the platfrom
+
+662
+
+The purpose of section is to provide information about scalability testing results coming
+
+663
+
+from several tests on the IoT-enabled platform for on-site assembly services of
+
+664
+
+prefabricated construction. Tests have been performed to evaluate software
+
+665
+
+performance scalability and the compatibility to extend to different projects. The results
+
+666
+
+in this document are then the merge of several tests which are carried out in different
+
+667
+
+parts of the platform representing critical phases in the prefabricated housing supply
+
+668
+
+chain. The purpose of this testing was to simulate predetermined scenarios that
+
+669
+
+represent real-world hosting: (1) Determine the impact of server configuration on
+
+670
+
+software performance; (2) Validate the test case scenarios and overall proposed scale
+
+671
+
+environment; (3) Validate extensibility of hosting different construction projects.
+
+672
+
+4.5.1 Overview
+
+673
+
+In a real construction project, the active accounts and their activities are quite limited.
+
+Coarse assembly location checking: GPS data can help detect some unusual data
+
+38
+
+674
+
+But in the setting of test, we have assumed ten to twenty times of both users and
+
+675
+
+activities per user more than what we have measured during a 7-month pilot study. To
+
+676
+
+replicate a typical large scale service implementation of our platform system, a series
+
+677
+
+of auto tests were built as shown in Table 8.
+
+678
+
+Table 8 Scalability test deployment
+
+679
+
+Typical Enterprise
+
+Scalability Test
+
+Customer
+
+Deployment
+
+Active organizational units account
+
+1-3
+
+25
+
+Activities per active account per minute
+
+1-3
+
+60
+
+Client address lists
+
+1
+
+10
+
+Indicators
+
+680
+681
+
+The Test scenarios include: (1) Deploying on a shared web server hosted by university,
+
+682
+
+at maximal level of preset load; (2) Deploying on a dedicated web server hosted by
+
+683
+
+university, at maximal level of preset load; (3) Deploying on a renowned cloud server
+
+684
+
+hosted, at maximal level of preset load; (4) Deploying with 7 active projects. The test
+
+685
+
+environment is as shown in the Table 9.
+
+686
+
+Table 9 Test environment
+
+687
+
+Operating
+
+Server
+
+Nature
+
+Location
+
+www.ad.arch.hku.hk
+
+Shared server
+
+HK
+
+Linux
+
+147.8.92.79
+
+Dedicated server
+
+HK
+
+Linux
+
+openshift.com
+
+Cloud server
+
+USA
+
+Linux
+
+Client
+
+Nature
+
+Location
+
+Profile
+
+39
+
+System
+
+Client 1
+
+Auto test software
+(By loadimpact.com)
+
+25 users, 60
+Brazil
+
+activities per
+user per minute
+
+Client 2
+
+Auto test software
+
+Singapore
+
+ditto
+
+Client 3
+
+Auto test software
+
+USA
+
+ditto
+
+688
+689
+
+4.5.2 Scale testing for different scenarios
+
+690
+
+The 25 virtual users (VUs) were added incrementally in 5 minutes, i.e., 1 new active
+
+691
+
+user in 12 seconds. The activities increased from 1. During the 5-minute test, thousands
+
+692
+
+of URLs will be requested by the client and 200M to 1G data will be transferred as
+
+693
+
+well. The response time (fully load of a requested page by an activity) was measured.
+
+694
+
+（1）Scenario 1 - Client 1 + shared server
+
+695
+
+As shown in Figure 14, the load time was not stable and the data transmission was not
+
+696
+
+acceptable for intentional users. Though we found it was acceptable when using in HK
+
+697
+
+locally.
+
+698
+699
+
+Figure 14 Scale testing result from scenario 1
+
+700
+701
+
+（2）Scenario 2 - Client 1 + shared server
+
+702
+
+In this scenario, the load time was much fluent and stable as shown in the Figure 15.
+40
+
+703
+704
+
+Figure 15 Scale testing result from scenario 2
+
+705
+
+（3）Scenario 3 - client3 + cloud server (openshift.com)
+
+706
+
+In this scenario, the load time was quite high at the beginning, but soon reduced to very
+
+707
+
+low level about 100ms, as shown in Figure 16. This was because of the cloud server
+
+708
+
+unloads the system when it is idle and loads and initializes the system when there are
+
+709
+
+requests. In general, the cloud server is the best way of deployment of the system. And
+
+710
+
+once being deployed on cloud, the performance will not be a problem any more.
+
+711
+712
+
+Figure 16 Scale testing result from scenario 3
+
+713
+
+（4）Scenario 4 - 7 active projects
+
+714
+
+7 active projects that have used the platform to manage prefabrication construction are
+
+715
+
+hosted to check the stability of platform. The system can work smoothly in all the 7
+
+716
+
+active projects, and the cloud server deployment showed the best performance in terms
+
+717
+
+of average response time.
+
+718
+41
+
+719
+
+4.6 Technology integrity and scalability
+
+720
+
+The proposed platform is designed and developed under service-oriented open
+
+721
+
+architecture to ensure seamless integration with existing systems (HKHA’s BIM and
+
+722
+
+Housing Construction Management Enterprise System (HOMES)), so that the
+
+723
+
+information among them could be shared and synchronized. The integrity and
+
+724
+
+scalability has been carried out through the following aspect: (1) IoT-enabled platform
+
+725
+
+can be easily deployed through existing commercial cloud space, such as Ali Cloud and
+
+726
+
+Amazon Cloud. High performance servers, smart computing resources sharing and
+
+727
+
+virtualization for integrity and scalability can be easily maintained through the provided
+
+728
+
+infrastructure. Specific options, such as public cloud or private cloud, can also be
+
+729
+
+chosen for special security considerations; (2) IoT-enabled platform considers standard
+
+730
+
+data requirement and supports formats of popular BIM systems (such as Revit). Apart
+
+731
+
+from the pilot research, IoT-enabled platform can therefore be conveniently applied to
+
+732
+
+other construction projects; (3) With the developed SCO, Gateway and GOS, IoT-
+
+733
+
+enabled platform supports heterogeneous smart Auto-ID devices and able to handle
+
+734
+
+different RFID tags (such as NFC and UHF tags); (4) Due to the policy of HKHA for
+
+735
+
+change request of HOMES, the interface to integrate IoT-enabled platform with
+
+736
+
+HOMES is not possible to be made until year 2018. However, the data source
+
+737
+
+interoperability services provided in the platform is initially implemented and tested to
+
+738
+
+create adaptive data exchanging interfaces for HOMES and other related systems.
+
+739
+
+Instead of direct integration with HOMES, the platform also provides set of visibility
+
+740
+
+and traceability tools for monitoring the project progress and cost for HKHA and other
+
+741
+
+stakeholders at this stage.
+
+742
+
+5. Conclusions
+
+743
+
+Over the years, HKHA has taken a leading role in developing and promoting the
+
+744
+
+application of ICT in general and BIM/ERP/RFID among construction stakeholders.
+
+745
+
+The architecture of the IoT-enabled platform has considered the business processes, the
+
+746
+
+stakeholders, the information flow, and the real-time information visibility and
+42
+
+747
+
+traceability. It uses the service-oriented open architecture as a key innovation to enable
+
+748
+
+the platform as a service. Given its potential to manage building information throughout
+
+749
+
+processes of OAS, IoT-enabled platform is considered as significant part of the
+
+750
+
+HKHA’s overall ICT architecture, which aims to reengineering the OAS of
+
+751
+
+prefabricated construction in Hong Kong.
+
+752
+
+All the collected real-time information from RFID and GPS can be connected with BIM
+
+753
+
+in the developed IoT-enabled platform. Traceability and visibility of the physical
+
+754
+
+building information, progress, and cost are available for the stakeholder to monitor the
+
+755
+
+whole process and make decisions where necessary. The paper-based records can be
+
+756
+
+subsequently freed for many processes and only reserved for verification in key
+
+757
+
+processes. The usage of BIM technique can also be henceforth extended to construction
+
+758
+
+phase. With the developed platform, the main contractor can be benefitted from
+
+759
+
+knowing the real-time information of prefabrication components. The data collection
+
+760
+
+on site becomes effective, reliable and more value-added. Therefore, the whole on-site
+
+761
+
+team of the main contractor can be more resilient when facing changes, such as design
+
+762
+
+changes, order changes, changes due to repairing defective components, etc. The client,
+
+763
+
+HKHA, can be benefited from obtaining real-time information from the prefabrication
+
+764
+
+production to the on-site assembly. The visibility and traceability tools provide useful
+
+765
+
+tools for monitoring and checking the status and quality problems. The multi-
+
+766
+
+dimensional information of cost and progress provided by IoT-enabled platform, can
+
+767
+
+help the client to manage the progress and arrange payment accordingly. Historical
+
+768
+
+information of the stakeholder’s performance stored in the IoT-enabled platform can
+
+769
+
+even be used for facilitating contractor and sub-contractor selection.
+
+770
+
+Despite the various benefits, the limitations of the developed platform in the research
+
+771
+
+should be also outlined for its further development and broader application. Due to the
+
+772
+
+limitations of resource, this research only applies the developed platform to only one
+
+773
+
+practical project for testing its effectiveness. Besides, this research focus more on the
+
+774
+
+development of the functions related to schedule and cost management, while
+
+775
+
+management of safety, quality and construction environment are also important for
+
+776
+
+prefabricated construction project. Despite of the above limitations, the research not
+43
+
+777
+
+only pioneers on developing a platform for on-site assembly services of prefabricated
+
+778
+
+construction with integration of Internet of Things and BIM from a new perspective,
+
+779
+
+but also serving as a solid basis for further research, which may include: improving and
+
+780
+
+extending the applicability of the platform to more practical project to enhance its
+
+781
+
+effectiveness; improving the platform by incorporating more functions related to the
+
+782
+
+management of safety, quality and construction environment.
+
+783
+
+Acknowledgments
+
+784
+
+The authors would like to thank the HKSAR ITC/LSCM R&D Centre for funding this
+
+785
+
+research through the Innovation and Technology Support Programme (Project
+
+786
+
+Reference: ITP/045/13LP). The Research Team is also grateful to the Hong Kong
+
+787
+
+Housing Authority and its contractors for supporting and participating in this research
+
+788
+
+via real project applications.
+
+789
+790
+
+Reference:
+
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+803
+804
+805
+806
+807
+808
+809
+810
+
+Alavi, A. H., H. Hasni, N. Lajnef and K. Chatti (2016). "Continuous health monitoring
+of pavement systems using smart sensing technology." Construction and Building
+Materials 114: 719-736.
+Chen, K., W. S. Lu, Y. Peng, S. Rowlinson and G. Q. Huang (2015). "Bridging BIM
+and building: From a literature review to an integrated conceptual framework."
+International Journal of Project Management 33(6): 1405-1416.
+Chung, J. K., M. M. Kumaraswamy and E. Palaneeswaran (2009). "Improving
+megaproject briefing through enhanced collaboration with ICT." Automation in
+construction 18(7): 966-974.
+Demiralp, G., G. Guven and E. Ergen (2012). "Analyzing the benefits of RFID
+technology for cost sharing in construction supply chains: A case study on prefabricated
+precast components." Automation in Construction 24: 120-129.
+Ergen, E., B. Akinci and R. Sacks (2007). "Tracking and locating components in a
+precast storage yard utilizing radio frequency identification technology and GPS."
+Automation in construction 16(3): 354-367.
+Hong, J., G. Q. Shen, C. Mao, Z. Li and K. Li (2016). "Life-cycle energy analysis of
+prefabricated building components: an input–output-based hybrid model." Journal of
+Cleaner Production 112: 2198-2207.
+Hossein Alavi, A. and A. Hossein Gandomi (2011). "A robust data mining approach
+for formulation of geotechnical engineering systems." Engineering Computations 28(3):
+44
+
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848
+849
+850
+851
+852
+853
+854
+
+242-274.
+Jaillon, L. and C. S. Poon (2009). "The evolution of prefabricated residential building
+systems in Hong Kong: A review of the public and the private sector." Automation in
+Construction 18(3): 239-248.
+Leu, S.-S. and S.-T. Hwang (2002). "GA-based resource-constrained flow-shop
+scheduling model for mixed precast production." Automation in Construction 11(4):
+439-452.
+Li, C. Z., J. Hong, F. Xue, G. Q. Shen, X. Xu and M. K. Mok (2016). "Schedule risks
+in prefabrication housing production in Hong Kong: a social network analysis." Journal
+of Cleaner Production 134, Part B: 482-494.
+Mao, C., L. Shen, L. Luo and Z. Li (2015). Identification of Risk Factors Influencing
+the Implementation of Industrialized Building System in China. Proceedings of the 19th
+International Symposium on Advancement of Construction Management and Real
+Estate, Springer.
+Pang, L. Y., R. Y. Zhong, J. Fang and G. Q. Huang (2015). "Data-source
+interoperability service for heterogeneous information integration in ubiquitous
+enterprises." Advanced Engineering Informatics 29(3): 549-561.
+Peffers, Ken, Tuure Tuunanen, Marcus A. Rothenberger, and Samir Chatterjee. "A
+design science research methodology for information systems research." Journal of
+management information systems 24, no. 3 (2007): 45-77.
+Sacks, R., C. M. Eastman and G. Lee (2004). "Parametric 3D modeling in building
+construction with examples from precast concrete." Automation in Construction 13(3):
+291-312.
+Shin, T.-H., S. Chin, S.-W. Yoon and S.-W. Kwon (2011). "A service-oriented
+integrated information framework for RFID/WSN-based intelligent construction
+supply chain management." Automation in Construction 20(6): 706-715.
+Tam, C. M., Deng, Z. M., & Zeng, S. X. (2002). Evaluation of construction methods
+and performance for high rise public housing construction in Hong Kong. Building and
+Environment, 37(10), 983-991.
+Tam, V. W., C. Tam, S. Zeng and W. C. Ng (2007). "Towards adoption of
+prefabrication in construction." Building and Environment 42(10): 3642-3654.
+Wong, R. W., J. Hao and C. M. Ho (2003). Prefabricated building construction systems
+adopted in Hong Kong. Proc. of the International Association for Housing Science on
+Word Congress of Housing: Process and Product, Montreal, Canada.
+Yin, S. Y., H. P. Tserng, J. Wang and S. Tsai (2009). "Developing a precast production
+management system using RFID technology." Automation in Construction 18(5): 677691.
+Zhong, R. Y., Y. Peng, J. Fang, G. Xu, F. Xue, W. Zou and G. Q. Huang (2015).
+"Towards Physical Internet-enabled Prefabricated Housing Construction in Hong
+Kong." IFAC PapersOnLine 48(3): 1079-1086.
+Zhong, R. Y., Y. Peng, F. Xue, J. Fang, W. Zou, H. Luo, S. Thomas Ng, W. Lu, G. Q.
+P. Shen and G. Q. Huang (2017). "Prefabricated construction enabled by the Internetof-Things." Automation in Construction 76: 59-70.
+Fang, Y., Cho, Y. K., Zhang, S., & Perez, E. (2016). Case Study of BIM and Cloud–
+45
+
+855
+856
+857
+
+Enabled Real-Time RFID Indoor Localization for Construction Management
+Applications. Journal of Construction Engineering and Management, 142(7),
+05016003.
+
+46
+
+

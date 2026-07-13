@@ -1,0 +1,908 @@
+A Blockchain 3.0 paradigm for digital twins in construction project management
+Rui Zhao1, Zhe Chen2, and Fan Xue3*
+This is the peer-reviewed post-print version of the paper:
+Zhao, R., Chen, Z., & Xue, F. (2023). A blockchain 3.0 paradigm for digital twins in
+construction project management. Automation in Construction, 145, 104645. Doi:
+10.1016/j.autcon.2022.104645
+The final version of this paper is available at: https://doi.org/10.1016/j.autcon.2022.104645.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+
+Abstract
+Construction project management (CPM) is inherently complex and distributed, while digital
+twin and blockchain are recognized as promising solutions for information-reliant CPM. By
+learning from the lessons of Blockchain 1.0 and 2.0 paradigms in the literature, such as slow
+synchronization and failed offline functions, this paper proposes ChainPM as a Blockchain
+3.0 paradigm. ChainPM extends Blockchain 2.0 with innovative indexing, query, and analysis
+function sets for key CPM data. Experimental results from a pilot study of a modular
+construction project showed that the information synchronization latency was reduced by
+99.2% to 99.8%, and query and analytical functions worked equally well without network
+connections. ChainPM contributes to a novel trend of Blockchain 3.0 paradigms for CPM
+digital twins, emphasizing indexing key CPM data, combinatorial query, digital authorship,
+and fast response without downgrading the ‘single source of truth.’ For practitioners,
+ChainPM addresses key barriers of Internet reliance and information delay to CPM digital
+twins.
+
+Rui ZHAO, MPhil Student
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong SAR, China
+Email: jeremyrui.zhao@connect.hku.hk, ORCiD : https://orcid.org/0000-0003-1993-3129
+1
+
+Zhe CHEN, PhD Student
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong SAR, China
+Email: cz77@connect.hku.hk ORCiD : https://orcid.org/0000-0002-8720-2638
+
+2
+
+Fan XUE, Assistant Professor, Ph.D.
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong SAR, China
+Email: xuef@hku.hk, ORCiD : https://orcid.org/0000-0003-2217-3693
+3
+
+*: Corresponding author, Tel: +852 3917 4174, Fax: +852 2559 9457, Email: xuef@hku.hk
+
+1
+
+Keywords
+Blockchain 3.0; Construction project management; Digital twins; Smart contracts; Modular
+construction
+
+Highlights
+⋅
+
+Blockchains 1.0 and 2.0 fail to meet the demands of CPM due to high latency and
+Internet reliance.
+
+⋅
+
+A Blockchain 3.0 paradigm ChainPM is proposed for CPM digital twins.
+
+⋅
+
+ChainPM has unique two-step workflow: a fast response by local Cached Twin before
+Blockchain.
+
+⋅
+
+Three decentralized CPM applications are designed for contractors, manufacturers,
+and regulators.
+
+⋅
+
+Experiments showed ChainPM saved 99.2– 99.8% time and worked offline as a
+Blockchain 3.0.
+
+2
+
+1 Introduction
+Construction project management (CPM) is inherently complex (Bryde et al. 2013; Oraee et
+al. 2017). Large quantities of construction information are often susceptible to a variety of
+interrelated factors, such as multiple stakeholders with conflicts of interest (Taylan et al.
+2014), complex roles of participants (Vrchota et al. 2021), uncertainties in a changeable
+environment (Stanitsas et al. 2021), and out-of-date models and schedules (Xue et al. 2018).
+Ballard and Howell (1994) claimed that 50% to 80% of construction site problems occur due
+to a delayed receipt or lack of available information. Therefore, CPM has been questioned for
+construction projects’ unsatisfactory efficiency and productivity. In comparison with the
+projects in other industries, construction projects have been deemed to achieve inadequate
+efficiency gains in the past 50 years (Daboun et al. 2022).
+Several reasons lie behind the phenomenon of low efficiency. The first and foremost reason is
+that construction is becoming increasingly complicated as technology advances, with
+significant structural and building projects of unprecedented complexity (Wang et al. 2020).
+Meanwhile, the intricacy of the designs has necessitated a higher level of project management
+that had not been required earlier. Furthermore, project partners often have highly specialized
+expertise and collaborations in modern construction projects (Liu et al. 2019). Finally, the
+execution of such a project challenges prevalent practices in teamwork, trust, transparency,
+and regulation (Owusu et al. 2019). Thus, the innovative CPM must learn to adapt to the
+changing environment.
+The recent key trend is the digital twin (DT) (PwC 2020) for information sharing, simulations
+(Xue et al. 2020b), and collaborative decision-making (Wollschlaeger et al. 2017) to meet the
+new management demands of the sector. Construction is an increasingly information-reliant
+industry, where modern CPM depends heavily on the data shared between contracting
+organizations during the life cycle of a project (Bryde et al. 2013). Secured, authentic, up-todate, and complete information in DTs enables computational simulations of the components
+and systems and, thus, enhances managers’ decision-making and management with the latest
+information for evidence-based decisions at any location (Kochovski & Stankovski 2018).
+Successful examples include a random forest–based predictive model for the projects’ carbon
+emissions at the early design stage (Fang et al. 2021), a DT of construction sites at the
+disaster preparedness stage (Kamari & Ham 2022), and a fire risk assessment for the building
+
+3
+
+at the operation and maintenance stage (Wang et al. 2021). However, there exists a dilemma
+between the centralized CPM DT and the distributed and dynamic nature of CPM.
+Consequently, the industry requires systematic and fundamental changes to respond to the
+dilemma.
+Blockchain is an influential emerging distributed ledger technology that provides many
+benefits of data security, autonomy, transparency, audit ability, privacy, immutability, and
+efficiency (Scott et al. 2021). Blockchain can thus lay a foundation for distributed
+administration and the creation of an irreversible ledger to facilitate collaborations. Moreover,
+an identical ledger exists for all nodes participating in the blockchain network (Lu 2018). The
+distributed data storage mechanism can effectively reduce the risk of data corruption, loss,
+and tampering (Elli et al. 2018). The evolution of blockchains leads to four maturity levels
+(i.e., Blockchain 1.0, 2.0, 3.0, and 4.0), whereas the existing blockchain applications in CPM
+are confined to levels 1.0 and 2.0, as far as we are concerned (Elghaish et al. 2021). Briefly,
+the focal point of Blockchain 1.0 is finance, which is often referred to as cryptocurrency
+(Figueiredo et al. 2022). In Blockchain 2.0, smart contracts execute many agreement terms
+automatically (Li et al. 2021b). Blockchain 3.0 emphasizes the decentralized nature of
+blockchain for functions such as web user interfaces of Decentralized Applications (DApps)
+(Hunhevicz & Hall 2020). Finally, in Blockchain 4.0, blockchain becomes intelligent and is
+applied together with artificial intelligence, other data analytics, and Industry 4.0’s
+technologies.
+However, the currently adopted blockchain levels (i.e., 1.0, 2.0, and web DApps) in the
+literature cannot meet the requirements for CPM DTs. The most notable drawbacks are high
+latency and performance loss (Sanka & Cheung 2021). In the same blockchain network, the
+nodes participating in the network have a complete ledger that records every record
+completely for traceability. Therefore, as time advances, the large amount of transaction data
+will make the blockchain lengthy, leading to performance loss. Furthermore, in Blockchain
+2.0, the network transactions are run in a smart contract, automatically processed and
+executed by the blockchain (Lu 2018). The common web DApps, though they are Blockchain
+3.0, rely heavily on the Internet as well. Thus, a stable network environment is required for
+every data transaction and query in Blockchain 2.0 and web DApps. However, the complex
+physical environment on construction sites challenges Internet connection stability (Jin et al.
+2020) and hinders the adoption of any blockchains at the levels of 1.0, 2.0, and web DApps
+
+4
+
+(Zhong et al. 2022).
+This paper aims to present ChainPM, a Blockchain 3.0 paradigm with fast synchronization
+and offline functions for CPM DTs. The key innovative mechanism in ChainPM is CPM data
+transaction schema-based functions, including indexing, query, and analytics, specified for
+CPM. The major contribution of this paper is twofold. First, ChainPM extends existing
+Blockchain 2.0 technology to 3.0 by introducing indexing for CPM data transactions, digital
+authorship, combinatorial query, and expeditious response. Second, ChainPM is an effective
+management method enabling offline decision-making functions to streamline distributed
+CPM collaboration rather than a ‘single source of truth’ on the Internet, addressing the
+barriers of Internet reliance and information delay. The proposed ChainPM framework was
+demonstrated via a case of modular construction.
+The rest of the paper is organized as follows: The systematic review of CPM and blockchain
+is given in Section 2, and Section 3 proposes the ChainPM framework for distributed CPM.
+Section 4 presents a case study of a modular construction project, followed by experimental
+results and analyses in Section 5. Discussions appear in Section 6, and the conclusion is
+drawn in Section 7.
+
+2 Literature review
+2.1 Construction project management as distributed activities
+A construction project, a series of long-term but closely linked organized processes, is
+regarded as complex traditional activity (Walker 2015). The basic procedure of a construction
+project starts with investment and bidding, then goes through the life cycle stages of design,
+survey, construction, transportation, and transfer to use (Li et al. 2021a). As a result, it
+inherently leads to heavy reliance on extensive data exchange (Bryde et al. 2013).
+CPM is the systematic management of physically and temporally distributed activities
+(Martínez-Rojas et al. 2016). In particular, many construction projects involve multiple—
+sometimes global—stakeholders (e.g., architects, engineers, surveyors, and clients) with
+diverse professions, in full-time or momentary employment, who are engaged in the
+processes (Walker 2015). Meanwhile, stakeholders are responsible for different stages during
+off-site or on-site work. As a result, various barriers impeded the recording and sharing of an
+
+5
+
+abundance of data, such as inaccurate and belated recording, inadequate information sharing,
+ineffective communication, and inconvenient query (Daboun et al. 2022). Notably, the pains
+in information sharing were magnified by the reduced face-to-face collaboration due to the
+2019 coronavirus disease (Covid-19) outbreak.
+The recent development of DT (Opoku et al. 2021; Lee et al. 2021; Xue et al. 2020b),
+sometimes synchronized by the Internet of Things (IoT), has brought new opportunities for
+real-time information gathering, timely data accessing, and efficient collaboration and
+coordination among shareholders. IoT can provide accurate and timely information
+collection, such as using radio frequency identification (RFID) tags in prefabricated
+construction logistics (Li et al. 2022b) and real-time kinematic positioning for bridge
+maintenance (Elnabwy et al. 2013). However, project data used to be stored in a centralized
+database in traditional ways, where the data accessibility and security do not meet the
+requirements of DT (Xue & Lu 2020a). For instance, one user may find it exhausting to
+synchronize a 0.5 GB Building Information Modeling (BIM) file daily. Popular cloud
+services can partly resolve the security issue but endangers the accessibility issue
+simultaneously—assuming that Internet speed is slower than a project’s intranet (Kochovski
+& Stankovski 2018). However, construction projects have a dynamic nature that is affected
+by unstable environments and changing situations (Xue & Lu 2020a). Therefore, there exists
+a dilemma between the centralized CPM DT and the distributed and dynamic nature of CPM.
+2.2 Blockchain as a new distributed technology
+Blockchain is an emerging technology for distributed applications (Elli et al. 2018). Three
+key elements contribute to its innovative practice. First, distributed ledgers represent a shared
+approach to recording transactions launched by peer nodes, through the shared approach
+datasets with interacting data blocks could be recognized (Scott et al. 2021). Second,
+consensus mechanisms ensure that added transaction data can join the blockchain only after
+meeting a series of previously defined protocols and formulating a consensus (Anjum et al.
+2020). Therefore, every new block is verified by preset conditions and its ability to meet
+specific rules, such as Proof of Work (PoW) (Sanka & Cheung 2021). The third element is
+cryptography, where the hash algorithm is a typical representative (Xue & Lu 2020a).
+Therefore, it serves as an eligible gatekeeper for assuring data in the blockchain are
+information-encrypted, modification-detected, and content-authorized, thus making the data
+
+6
+
+unable to be tampered with or hacked maliciously at the slightest chance.
+Table 1 The evolution of blockchain (Figueiredo et al. 2022; Zhao et al. 2019)
+Time
+
+Maturity (gen.)
+
+Example
+
+Enabler
+
+2008
+
+Blockchain 1.0
+
+Bitcoin
+
+Distributed consensus
+
+Transaction cost
+
+2013
+
+Blockchain 2.0
+
+Ethereum
+
+Smart contracts
+
+Added services
+
+2015
+
+Blockchain 3.0
+
+Decentralized
+application (DApp)
+
+Organizational boundaries
+
+2018
+
+Blockchain 4.0
+
+Blockchain
+database
+Blockchain for
+Industry 4.0
+
+Decentralized AI
+
+Value driver
+
+Automatic AI decisionmaking
+
+As shown in Table 1, the past few years witnessed blockchain development at an increasing
+pace. Blockchain 1.0, a prominent example, is used for cryptocurrencies (e.g., Bitcoin). It is
+the first symbolic component in blockchain through which financial applications realize
+secure, anonymized, peer-to-peer transactions (Scott et al. 2021). Heralded by the rise of
+Ethereum, blockchain embraced its 2.0 stage wherein smart contracts ‘live’ in the blockchain
+in the manner of smart computer programs (Wang et al. 2020). Its decentralized structure
+reduced dependency on third parties in executing and monitoring contract terms. Meanwhile,
+the smart contract, such as automated protocol in construction payment
+(Ahmadisheykhsarmast & Sonmez 2020), reaches the lower cost of verification, execution,
+and arbitration, allowing transparent contract definition that prevents moral hazard problems.
+In the Blockchain 3.0 age, decentralized storage and communication are integrated as a selfenforced blockchain platform (Maesa & Mori 2020), referred to as DApp (usually webbased). For example, secure personal health record sharing (Wang et al. 2021b), food supply
+chain management (Zhao et al. 2019), and regulation compliance (Zhong et al. 2022). DApps
+can digitize and customize blockchain-based solutions for business processes; the
+development of Blockchain 4.0 is expected to involve automatic AI decision-making.
+The conventional CPM includes paper-based or electronic management methods, which
+constantly suffer from the lack of approaches supporting sufficient information integration
+and security (Das et al. 2022). For instance, Sun (2020) proposed a file management system
+to eliminate CPM’s ambiguity and loss of information; however, traditional file-based CPM
+is neither efficient (e.g., less cost in time and space) nor effective (e.g., better accuracy) in
+exchanging and validating projects’ real-time changes. Cloud-based CPM was then
+developed with Autodesk BIM 360, Google Drive, and Oracle Aconex for construction data
+
+7
+
+storage and distribution. However, it is also unsatisfactory for data handling due to
+construction projects’ temporary and fragmented nature. Meanwhile, timely accessing and
+accurate data queries are still not full-blown applications in existing CPM practice, let alone
+automatically grouping and searching construction information in such datasets.
+Blockchain is a promising solution for the next upgrade across the CPM (Stanitsas et al.
+2021). As a trending technology, blockchain has been explored and applied to several
+pioneering industrial and academic studies, though the implementation in CPM practice is
+still in the initial stages. For instance, Xue and Lu (2020a) proposed a semantic differential
+transaction (SDT) approach to minimizing information redundancy in BIM development. Li
+(2021b) developed a blockchain-enabled model for supervising spatial-temporal operations in
+construction while the latency level is currently problematic. Smart contracts also have
+significant value in automating construction processes, such as updating variations
+(Hamledari & Fischer 2021), automatic payments (Wu et al. 2021), and documentation
+approval (Das et al. 2022). It intrinsically relied on various interactions and the participation
+of project shareholders in decision-making.
+2.3 A dilemma identified
+There exists a dilemma between the centralized CPM DT in the literature and the distributed
+and dynamic nature of CPM. The recent advancement in DT has brought potential
+opportunities for the digital transformation of CPM. However, three application gaps noted
+can be summarized as follows: 1) The DT can be used to serve as ‘a single source of truth’ in
+a centralized manner, which fails to meet the distributed applications in CPM; 2) access to
+centralized DTs relies heavily on stable Internet, which cannot be guaranteed on construction
+sites with complex physical environments and various certainty (Jin et al. 2020); 3)
+centralized DTs are sometimes prone to security issues such as data tampering and hacking,
+which undermines the information trustworthiness and accuracy.
+Blockchain, as a distributed technology, has the potential to resolve the dilemma. However,
+most research reported in the literature, as explorative studies, concentrated on formulating
+Blockchain 1.0 or 2.0 frameworks to store CPM data, leaving the critical point of practical
+utilizations for distributed CPM activities. Two application gaps of Blockchain 1.0 and 2.0
+are summarized: 1) a blockchain holding a large amount of data becomes lengthy, associated
+
+8
+
+with performance loss and slow synchronization; 2) stable Internet is required for data
+transactions and queries, leading to failed offline functions.
+Thus, this research aims to develop a Blockchain 3.0 paradigm for fast synchronization and
+offline functions, including efficient communication, indexing for combinatorial query,
+remote analytics, and digital authorship, for localizing distributed blockchain for distributed
+and dynamic CPM activities.
+
+3 ChainPM for CPM digital twins
+The research methodology of the study is shown in Figure 1. The first step aims to analyze
+the existing dilemma in CPM DT by reading the literature and supplementing it with handson experiences. Then, in the next step, the study presents ChainPM as a Blockchain 3.0
+paradigm that extends Blockchain 2.0 with innovative indexing, querying, and analysis
+feature sets for key CPM data to address the dilemma. Then, ChainPM is implemented in a
+case study of modular construction with a CPM DT of 952 volumetric modules. Finally,
+experimental results gauge the performances of the proposed ChainPM in contrast with the
+traditional Blockchain 2.0.
+
+Figure 1. Research methodology in this study
+
+9
+
+3.1 A schema of CPM transaction data
+First, a general schema of CPM transaction data is designed, as shown in Table 2. Regardless
+of the various CPM activities, four common keys are defined:
+⋅
+
+DT channel: a private channel dedicated to a particular DT involving two or more
+stakeholders,
+
+⋅
+
+component ID: the unique ID of a construction component,
+
+⋅
+
+transaction time, and
+
+⋅
+
+user ID: the user who submitted the transaction.
+
+Besides that, other transaction data are organized as general data in a semi-structured format,
+such as JSON format. Different types of data, such as numbers, texts, and images, are
+compatible with the semi-structured format.
+Table 2 Example of the CPM data transaction schema in this study
+DT channel
+
+Component ID
+
+Transaction time
+
+User ID
+
+Channel A
+
+ID001
+
+2022-02-28 14:21
+
+User A
+
+Channel B
+
+ID002
+
+2022-03-02 16:37
+
+User B
+
+General data (semi-structured)
+{“taskID”: 1, “task”: “Inspection”,
+“deviceID”: 53, “photo”: [BLOB], …}
+{“taskID”: 2, “task”: “Transportation”,
+“vehicleID”: 994, …}
+
+3.2 The ChainPM architecture
+Figure 2 shows the ChainPM architecture. ChainPM has three layers: application, smart
+contract, and Blockchain 3.0. The design of the three layers is compatible with existing
+Blockchain 2.0 paradigms. However, what makes ChainPM unique is the sublayer Cached
+Twin, designed to bridge the conventional Blockchain 2.0 framework and the smart contract
+layer.
+
+10
+
+Figure 2. Blockchain 3.0 architecture of ChainPM
+Application layer. This layer offers practical CPM functions for users in terms of
+smartphone (or web page) graphical applications. When the Internet is unavailable, Internetreliant actions, such as saving data on the chain, will be queued and executed in the temporal
+order once the Internet resumes. After a short time of enqueuing the action, users can proceed
+with their other offline operations without worrying about loss of requests and data. Each
+user is required to have a unique ID associated with a certificate and a private key issued
+from the certification authority to access the application layer’s functions in ChainPM.
+Smart contract layer. This layer realizes smart contracts, consisting of algorithms, statistics,
+
+11
+
+scripts, and pre-processing, for CPM DTs. The smart contract layer aims to build a bridge
+between the application layer and the Blockchain 3.0 layer for data transfer and analysis.
+Multiple algorithms are included in the smart contract to implement the different functions of
+CPM, such as adding records and querying records. CPM statistics (e.g., volumes,
+ownerships, and progress) depict the CPM DT in general based on multi-source data without
+unfolding all the blockchain transactions and cryptographic hashes. Scripts can help users
+more easily update and deploy smart contracts for possible security hazards. Based on the
+features of smart contracts, CPM information can be pre-processed and analyzed
+automatically. The algorithms, statistics, scripts, and pre-processing together also ensure data
+integrity, eliminate duplication, and improve data security for CPM.
+Blockchain 3.0 layer. Three sublayers are integrated into this layer:
+1) Blockchain 2.0: ChainPM includes and extends the Blockchain 2.0 sublayer. For
+example, Hyperledger Fabric is a matured Blockchain 2.0 with a versatile design and
+many functional modules. For CPM DT, the Blockchain 2.0 sublayer can reuse the
+off-the-peg consensus mechanism for data security and membership services for
+multiple stakeholders.
+2) Cached Twin: The Cached Twin sublayer aims to improve the indexing and analytics
+functions, particularly for fast synchronization and offline functions. Indexing and
+analytics are vital to Blockchain 3.0 in ChainPM. Usually, a query to a three-node
+blockchain network consumes a few seconds, which is much higher than most users’
+expectations for productivity and response (Nah 2004).
+3) Data adaptor: The role of the data adaptor sublayer is to exchange transactions
+between Blockchain 2.0 and the Cached Twin. The data adaptor regularly handles the
+synchronization between the on-chain and off-chain data against different scenarios
+(e.g., two synchronization requests every second). The success of the synchronization
+depends on the availability and speed of the Internet connection.
+ChainPM is designed for utilizing DTs for distributed CPM. Stakeholders are authorized to
+join the ChainPM as nodes. Smart contracts provide stakeholders with trusted transactions
+without a third party. A ChainPM node determines the authenticity of each transaction
+according to predefined rules and the consensus protocol, while certain rules are designed as
+well for offline mode. Integrating the transparency and immutability features of Blockchain
+2.0 and the low latency and rich analytics from the new sublayer, the proposed ChainPM can
+
+12
+
+ensure timely access and analysis of CPM DTs. Last but not least, the information in the
+Blockchain 3.0 Layer in ChainPM is as equally accurate and secured as the employed
+Blockchain 2.0 backbone.
+3.3 Two-step workflows in ChainPM
+ChainPM has unique two-step workflows that return results twice. In existing Blockchain 2.0
+frameworks, smart contracts follow a sequential execution order based on a consensus
+protocol setup, where the data connection between the application layer and smart contract
+closes when the response is received. The two-step workflows in ChainPM return an
+immediate response from the Cached Twin before the blockchain’s final response, as shown
+in Figure 3, which are different from those in Blockchain 2.0.
+
+Figure 3. Message sequence charts of two-step workflows in ChainPM. (a) Upload records;
+and (b) queries and analytics
+Figure 3(a) shows the message sequence chart of the two-step workflow of uploading
+records. The smart contract verifies the function and pre-processes data first according to the
+predefined contract before sending pre-processed data to Cached Twin. Cached Twin
+acknowledges the request promptly and then communicates with the data adaptor for
+
+13
+
+synchronization with the Blockchain 2.0 network. After the impacts on the blockchain, the
+blockchain’s result is returned as the second response. In the meantime, the new data are
+indexed asynchronously. The time-consuming executions of block packaging and key data
+indexing do not block the application layer because the application layer receives the
+acknowledgment of the request; therefore, the unnecessary waiting time for blockchain
+packaging in conventional Blockchain 2.0 is avoided.
+Figure 3(b) shows queries and analytics are handled by the smart contract in two steps. First,
+the Cached Twin in ChainPM immediately returns the indexed data for the smart contract.
+Then, it confirms the slow-but-trustworthy results from the blockchain network using the
+indexed hash value. If no results are found in the cache, the query request is forwarded to the
+blockchain for a full-chain query. In the offline situation, the data will be temporarily stored
+in Cached Twin. When the network is recovered, the data adapter will synchronize with the
+blockchain network at regular intervals. In CPM DT, synchronization and data querying are
+particularly important (Martínez-Rojas et al. 2016).
+
+4 A case of modular construction
+4.1 Three application functions
+A modular construction project was selected in Hong Kong, focusing on quality and safety
+inspections to validate the proposed ChainPM. The project was a student residence at the
+Wong Chuk Hang site for the University of Hong Kong with two 17-story towers, including
+952 prefabricated dormitory rooms and support facilities, such as prefabricated restrooms and
+common areas. First, a manufacturer, Yahgee Modular House Company Limited, produced
+modular components in Zhuhai, China. Then, the components were shipped and preassembled into a volumetric module plant in Tuen Mun, Kowloon. Later, the assembled
+modules would be delivered in batches to the construction site in Wong Chuk Hang District
+on Hong Kong Island. Thus, the DT, in this case, involved spatially and temporally
+distributed CPM activities.
+Three typical CPM functions were included for validating the functionality for different
+stakeholders without loss of generality. Figure 4 shows the screenshots of the DApp of
+ChainPM. The first function was designed for manufacturer users to upload inspection
+records of new modules to the CPM DT. The records involved a variety (consisting of facts,
+
+14
+
+signatures, and photos) and a big volume (> 500 MB) of inspection data. Each upload
+operation, therefore, took roughly 5 to 10 minutes to store on a Blockchain 2.0 framework. It
+was a painful practice in that the average number of uploads was about 40 per day. Figure
+4(a) shows that ChainPM works well with various data types for CPM DT for manufacturer
+users.
+
+Figure 4. Screenshots of demanded CPM functions of ChainPM. (a) For manufacturer users;
+(b) for main contractor users; and (c) for government regulator users
+The second function was project statistics for main contractor users, as shown in Figure 4(b).
+The main contractor demanded to check the modules’ production, delivery, pre-assembly, and
+installation information on the chain for transparent and traceable project progress. Figure
+4(b) shows the statistical overview of the work-in-progress modules at different stages. For
+example, Figure 4(b) shows that 733 prefabricated components have been produced, 18 of
+them are in shipping, and no components have been installed. The weekly statistics are
+represented in a wave chart, while the project’s overall progress is shown in a gauge chart.
+The third function was the approval of records for government regulator users, as shown in
+Figure 4(c). The regulatory authority is expected to review and approve the documents
+
+15
+
+submitted by stakeholders, including the quality inspection records and assembly records.
+Figure 4(c) shows daily inspection records pending approval on the DApp interface of
+ChainPM. Records’ details, such as signatures of endorsers and inspection photos, are
+available from the blockchain network as well.
+4.2 Implementation of ChainPM
+ChainPM was implemented with several software environments, including Node.js (version
+16.15.1) for smart contracts, SQLite (version 3.31.1) for indexing in the Cached Twin, and
+Hyperledger Fabric (version 2.2) for the Blockchain 2.0 framework, which consisted of three
+organizations (i.e., a manufacturer, the main contractor, and regulatory authority), as shown
+in Figure 5(a). The cryptogenic of Hyperledger Fabric is shown in Figure 5(b). At the same
+time, channel configuration includes organization and profile configuration, as shown in
+Figure 5(c). The default asymmetric encryption was employed for safety and effectiveness.
+
+Figure 5. Blockchain 2.0 network configuration in ChainPM. (a) Organizations; (b) host; and
+(c) channel configuration
+The Cached Twin sublayer adopted a relational data structure for indexing the CPM DT, as
+shown in Figure 6. Figure 6(a) shows that two more keys, i.e., taskID and taskType, were
+indexed for the case study. Besides, tranID was the unique code referring to a transaction ID,
+as shown in Figure 6(c). Figure 6(b) shows a set of examples of indexed data. Then, Cached
+Twin utilizes a lightweight SQL service, SQLite, to index all the selected CPM on-chain data.
+
+16
+
+Figure 6. Example of indexing tables in ChainPM. (a) Keys to index for on-chain data
+transaction; (b) data in Cached Twin; and (c) transactions in the blockchain network
+With the Cached Twin sublayer and supporting data adaptor, ChainPM elevates the
+conventional Blockchain 2.0 to a 3.0 paradigm, emphasizing synchronous data indexing and
+advanced queries for DApps. First, the smart contract layer automatically synchronizes the
+CPM transactions with the Cached Twin sublayer without user interventions for data sorting
+or block packaging. Advanced queries, such as ‘selecting all the records uploaded by User 55
+on 25 June 2022,’ are therefore enabled by the Cached Twin. The combinatorial conditions
+can be applied to all the columns in Figure 6(b). Furthermore, the DT’s digital authorship is
+cached as an enormous network of component-time-author nexus, using componentID,
+tranTime, and usrID. Consequently, multiple analyses can be realized based on the
+transactions and data sources, such as monitoring project schedules, worker productivity, and
+digital authorship.
+ChainPM safeguards data authenticity in the Cached Twin using a data adaptor module, as
+shown in Figure 7. Figure 7(a) shows the indexed keys, which extended the general schema
+defined in Sect. 3.1. A block in the Blockchain 2.0 framework comprises three parts,
+specifically a block header, block data, and block metadata, as shown in Figure 7(b). The list
+of ordered transactions of the current block is contained in block data. The data adaptor in
+ChainPM synchronizes the transactions in block data to Cached Twin. Figure 7(b) shows the
+attributes of an example transaction, including all the key columns in Table 2 and privacy
+data like signImg, which is the user’s signature photo encoded in Base64 format. Such
+privacy data were waived from indexing in Cached Twin and can only be verified for
+authorized persons (e.g., government regulators) via the tranID. Moreover, the semistructured formValue is a JSON dictionary comprising the submitted transaction details.
+
+17
+
+Figure 7. Example data for blockchain data adaptor. (a) Target structured CPM data to index;
+and (b) source blockchain data
+
+5 Experimental results
+5.1 Experimental settings
+All experiments were conducted on a Docker engine (version 19.03.13) with an Intel i712770KF CPU (3.6 GHz, 8-thread), 16 GB memory, and Ubuntu 18.04.1 LTS (Linux version
+5.4.0-58) operation system. For gauging the efficiency of synchronization and offline
+functions, the performance metrics in this study included storage cost and response time,
+which were adopted from Blockchain 2.0 applications in the literature, such as Kuzlu et al.
+(2019) and Li et al. (2021b).
+Storage was calculated by measuring the space changes in the operating system hard disk.
+The configuration of Hyperledger Fabric was set to default, where the maximum block
+interval was 2 s, the maximum number of block transactions was 500, the maximum capacity
+of each block was 2 MB, and if the size of a transaction exceeded 10 MB, the transaction
+
+18
+
+would not be packaged (Elli et al. 2018). Experiments on storage costs were conducted with
+100,000 same data transactions recorded independently for Blockchain 2.0 and ChainPM,
+where 100,000 was the approximate ceiling number of all project tasks for all the 952
+modules.
+Response time refers to the smart contract API’s waiting execution time in milliseconds for a
+transaction, which is a key performance measure of the project management system.
+Response time was measured through the system Unix timestamp. The first response time of
+ChainPM indicates the time the user needs to get feedback from Cached Twin, while the
+second response time indicates the time the blockchain needs to finish data storage. The
+metric offline response time, which is new to the existing studies, aimed to gauge the
+performance of the proposed ChainPM without Internet connections. The expiration time for
+the smart contract to identify the offline mode was set to 5,000 ms. The experiments on the
+response time were conducted with 100 independent requests of (i) uploading new inspection
+reports, (ii) listing the records of all modules, and (iii) listing specific records of a given new
+module for gauging the performances.
+5.2 Experimental results
+5.2.1 Storage cost
+The results showed that ChainPM consumed more disk space than conventional Blockchain
+2.0. In the experiments, the conventional Blockchain 2.0 took 297.0 MB of extra space to
+store the 100,000 data transactions. In comparison, ChainPM occupied 505.2 MB of extra
+disk space, which was about 1.7 times the size of conventional Blockchain 2.0. Modern
+smartphones and DApps can handle both sizes effectively and efficiently.
+5.2.2 Response time
+Figure 8 shows the box chart of the response time of uploading inspection records of new
+modules (100 independent requests). The first response time of ChainPM was 3.53 ms on
+average, while the average second response time was 2,258.4 ms. For Blockchain 2.0, the
+online response time was 2,212.2 ms on average and relatively stable, whereas the offline
+response time was over 5,000 ms, according to the settings. On average, ChainPM saved >
+99.8% response time against conventional Blockchain 2.0, while the second response time
+
+19
+
+was almost the same as that of Blockchain 2.0.
+
+Figure 8. Box chart of the response time of uploading inspection records of new modules
+(100 requests per test)
+Figure 9 shows the box chart of the response time of querying the records of new modules.
+Figure 9(a) illustrates that Blockchain 2.0’s native query function was about 150.1 ms on
+average for listing the records of all modules; Figure 9(b) shows that querying the records of
+a specific new module was, on average, 157.9 ms, slower than listing all modules. In contrast,
+ChainPM took merely 1.1 ms for both tasks, in which the time cost saved was > 99.2%.
+Furthermore, ChainPM’s 1.10 ms for a specified module was faster than listing all data (1.13
+ms) due to the efficiency of SQLite indexing for the 100-run experiments. The significant
+(99.2%–99.8%) time-saving confirmed the fast synchronization of the proposed ChainPM
+framework as a Blockchain 3.0 paradigm.
+
+20
+
+Figure 9. Experimental results for data query. (a) Listing the records of all modules and (b)
+regulator’s specific record query of a new module (100 requests per test)
+Regarding the offline settings, ChainPM returned the same results in the same computational
+time, whereas Blockchain 2.0 failed to work. As shown in Figure 10, the average time cost of
+Blockchain 2.0 for the offline cases was slightly over 5,000 ms, which indicated the user had
+to wait more than 5 seconds for a ‘no Internet’ message. Figure 10(a) shows the offline mode
+identified by ChainPM through a long tunnel; Figure 10(b) displays the offline mode
+simulated on a smartphone emulator.
+
+21
+
+Figure 10. Example screenshots of offline ChainPM. (a) Offline mode identified through a
+long tunnel; (b) offline mode simulated on a smartphone emulator
+Overall, experimental results confirmed that ChainPM is efficient and stable for bridging the
+emerging blockchain technology and DTs for distributed stakeholders and CPM activities.
+Thus, ChainPM can facilitate project stakeholders in terms of communication and
+collaboration, particularly where the Internet connection is unstable. The proposed ChainPM
+framework and the case DApp realized a Blockchain 3.0 paradigm for CPM DTs.
+
+6 Discussion
+In contrast with the existing Blockchain 2.0 frameworks in the literature, ChainPM has three
+advantages. Firstly, experimental results demonstrated that ChainPM has high-level
+flexibility for variant types of DT information and meets the demands of distributed CPM.
+Secondly, existing Blockchain 2.0 frameworks rely heavily on the Internet, though the
+Internet connections are unstable on real construction plants and sites. In contrast, the
+proposed ChainPM synchronizes the key index data with Cached Twin for online and offline
+settings, while the subsequent data synchronization operation can be performed immediately
+
+22
+
+when the network is available. Thirdly, the DApp realizing ChainPM confirms that the
+Blockchain 3.0 paradigm is feasible and adequate for CPM—for example, in building
+component quality inspection, project progress monitoring, and government regulation.
+Therefore, CPM researchers and practitioners can refer to the ChainPM to adopt DTs and
+tackle the advent of the blockchain era.
+However, ChainPM also has several limitations. Firstly, as an exploratory study, the ChainPM
+system lacks large-scale experiments. Therefore, unexpected situations were not considered
+thoroughly, necessitating further explorations in future research. Secondly, the indexed keys
+in the Cached Twin sublayer were a subset of structured data selected from the CPM data
+transactions. Due to the encryption mechanism of Blockchain 2.0, the full data transactions
+were not accessible even though their briefs (as the indexed keys) were listed in offline mode.
+Thus, another tractions cache can be designed for hosting the recent or highly likely 100
+transactions. Thirdly, ChainPM does not fully utilize multidimensional BIM; subsequent
+research thus is suggested on integrating semantically rich BIM and city information
+modeling (Xue et al. 2021). Fourthly, the proposed ChainPM introduces the public smart
+contract design in Hyperledger and a single-chain multi-node blockchain network. A future
+direction is thus recommended on extra privacy protection and cross-chain and multi-chain
+methods to ensure the blockchain’s security, scalability, and performance. Lastly, the Cached
+Twin in the case study involved two additional structured data columns, i.e., taskType and
+formValue, which led to manual SQL database alternation by an expert. A user-friendly
+Cached Twin ‘remote controller’ will be developed in the future.
+
+7 Conclusion
+Traditional CPM is challenged by inadequate integration, laborious data accessibility, and
+unsatisfactory information security. The current adoption of ICTs and DTs has brought
+opportunities for upgraded information digitization and data integrity. Harnessing blockchain
+technology is a potential solution to fill the gaps. The explorative applications (i.e.,
+Blockchain 1.0 and 2.0) can theoretically solve the problems regarding proof of nonrepudiation and traceability for distributed CPM. However, Blockchain 2.0 also relies on a
+smooth network. Yet, unstable Internet connections, especially in complex physical
+environments in construction sites, can jeopardize DTs and blockchains of serviceable uses.
+Therefore, this paper proposes a ChainPM framework for CPM DT. ChainPM incorporates
+
+23
+
+three innovative layers: (i) a smart contract layer for handling DTs with Blockchain 3.0 using
+two-step workflows, (ii) a distributed Cached Twin sublayer with CPM indices and analytics,
+and (iii) a blockchain data adapter layer optimized for an unstable Internet environment.
+Through the unique two-step workflows in ChainPM, on-chain CPM data transactions can be
+efficiently indexed and analyzed with Cached Twin services for the first response for
+stakeholders’ access while not losing the authenticity and trust backed by the blockchain
+network (via the second response). ChainPM explores an uncharted domain of designing and
+applying Blockchain 3.0 for CPM DTs, which is vital to the practical adoption of blockchain
+in the construction industry and, in turn, contributes to the scalability and extension of
+blockchain theory studies in the literature.
+Experimental results showed that ChainPM saved > 99.8% response time in uploading new
+records and > 99.2% time in querying CPM data, respectively, where the baseline was the
+well-known Blockchain 2.0 system on Hyperledger Fabric, while ChainPM used 70% more
+disk space. In summary, ChainPM drastically improved the time performance of Blockchain
+2.0 at a tolerable cost in disk size. Future research can be directed to (i) larger-scale
+experiments with real projects, (ii) building another tool for hosting the most recent
+transactions, and (iii) multidimensional data sources such as OpenBIM and city information
+modeling (Li et al. 2022a), and (iv) more privacy preservation means other than data channels
+in consortium blockchains.
+
+Acknowledgment
+The work presented in this paper was supported by Hong Kong Research Grants Council
+(RGC) (No. 17200221) and in part by Hong Kong Innovation and Technology Fund (ITF)
+(No. ITP/029/20LP). A generalized version of the Cached Twin sublayer of ChainPM is opensourced at: https://github.com/jeremyRZ/ChainPM.
+
+References
+Ahmadisheykhsarmast, S. & Sonmez, R. (2020). A smart contract system for security of
+payment of construction contracts. Automation in Construction, 120, 103401.
+doi:10.1016/j.autcon.2020.103401
+Anjum, H. F., Rasid, S. Z., Khalid, H., Alam, M. M., Daud, S. M., Abas, H., Sam, S. M. &
+
+24
+
+Yusof, M. F. (2020). Mapping research trends of blockchain technology in healthcare.
+IEEE Access, 8, 174244-174254. doi:10.1109/ACCESS.2020.3025011
+Ballard, G. & Howell, G. (1994). Implementing lean construction: stabilizing work flow. In
+Lean Construction (pp. 105-114). Rotterdam: A.A.Balkema.
+Bryde, D., Broquetas, M. & Volm, J. M. (2013). The project benefits of Building Information
+Modelling (BIM). International Journal of Project Management, 31(7), 971-980.
+doi:10.1016/j.ijproman.2012.12.001
+Daboun, O., Yusof, A. M. & Khoso, A. R. (2022). Relationship management in construction
+projects: Systematic literature review. Engineering Management Journal, in press.
+doi:10.1080/10429247.2022.2041962
+Das, M., Tao, X., Liu, Y. & Cheng, J. C. (2022). A blockchain-based integrated document
+management framework for construction applications. Automation in Construction,
+133, 104001. doi:10.1016/j.autcon.2021.104001
+Elghaish, F., Hosseini, M. R., Matarneh, S., Talebi, S., Wu, S., Martek, I., Poshdar, M. &
+Ghodrati, N. (2021). Blockchain and the ‘Internet of Things' for the construction
+industry: research trends and opportunities. Automation in Construction, 132, 103942.
+doi:10.1016/j.autcon.2021.103942
+Elli, A., Artem, B., Vita, B., Christian, C., Konstantinos, C., Angelo, D. C., David, E.,
+Christopher, F., Gennady, L., Yacov, M., Muralidharan, S., Murthy, C., Nguyen, B.,
+Sethi, M., Singh, G., Smith, K., Sorniotti, A., Stathakopoulou, C., Vukolić, M., Cocco,
+S. & Yellick, J. (2018). Hyperledger fabric: a distributed operating system for
+permissioned blockchains. Proceedings of the Thirteenth EuroSys Conference (p. 30).
+New York, NY, USA: Association for Computing Machinery.
+doi:10.1145/3190508.3190538
+Elnabwy, M. T., Kaloop, M. R. & Elbeltagi, E. (2013). Talkha steel highway bridge
+monitoring and movement identification using RTK-GPS technique. Measurement,
+46(10), 4282-4292. doi:10.1016/j.measurement.2013.08.014
+Fang, Y., Lu, X. & Li, H. (2021). A random forest-based model for the prediction of
+construction-stage carbon emissions at the early design stage. Journal of Cleaner
+Production, 328, 129657. doi:10.1016/j.jclepro.2021.129657
+Figueiredo, K., Hammad, A. W., Haddad, A. & Tam, V. W. (2022). Assessing the usability of
+blockchain for sustainability: Extending key themes to the construction industry.
+Journal of Cleaner Production, 343, 131047. doi:10.1016/j.jclepro.2022.131047
+Hamledari, H. & Fischer, M. (2021). Measuring the impact of blockchain and smart contracts
+
+25
+
+on construction supply chain visibility. Advanced Engineering Informatics, 50,
+101444. doi:10.1016/j.aei.2021.101444
+Hunhevicz, J. J. & Hall, D. M. (2020). Do you need a blockchain in construction? Use case
+categories and decision framework for DLT design options. Advanced Engineering
+Informatics, 45, 101094. doi:10.1016/j.aei.2020.101094
+Jin, R., Zhang, H., Liu, D. & Yan, X. (2020). IoT-based detecting, locating and alarming of
+unauthorized intrusion on construction sites. Automation in Construction, 118,
+103278. doi:10.1016/j.autcon.2020.103278
+Kamari, M. & Ham, Y. (2022). AI-based risk assessment for construction site disaster
+preparedness through deep learning-based digital twinning. Automation in
+Construction, 134, 104091. doi:10.1016/j.autcon.2021.104091
+Kochovski, P. & Stankovski, V. (2018). Supporting smart construction with dependable edge
+computing infrastructures and applications. Automation in Construction, 85, 182-192.
+doi:10.1016/j.autcon.2017.10.008
+Kochovski, P. & Stankovski, V. (2018). Supporting smart construction with dependable edge
+computing infrastructures and applications. Automation in Construction, 85, 182-192.
+doi:10.1016/j.autcon.2017.10.008
+Kuzlu, M., Pipattanasomporn, M., Gurses, L. & Rahman, S. (2019). Performance analysis of
+a hyperledger fabric blockchain framework: throughput, latency and scalability. 2019
+IEEE International Conference on Blockchain (pp. 536-540). IEEE.
+doi:10.1109/Blockchain.2019.00003
+Lee, D., Lee, S. H., Masoud, N., Krishnan, M. S. & Li, V. C. (2021). Integrated digital twin
+and blockchain framework to support accountable information sharing in construction
+projects. Automation in Construction, 127, 103688.
+doi:10.1016/j.autcon.2021.103688
+Li, M., Xue, F. & Wu, Y. &. (2022a). A room with a view: Automatic assessment of window
+views for high-rise high-density areas using City Information Models and deep
+transfer learning. Landscape and Urban Planning, 226, 104505.
+doi:10.1016/j.landurbplan.2022.104505
+Li, X., Chi, H. L., Lu, W., Xue, F., Zeng, J. & Li, C. Z. (2021a). Federated transfer learning
+enabled smart work packaging for preserving personal image information of
+construction worker. Automation in Construction, 128, 103738.
+doi:10.1016/j.autcon.2021.103738
+Li, X., Lu, W., Xue, F., Wu, L., Zhao, R., Lou, J. & Xu, J. (2022b). Blockchain-enabled IoT-
+
+26
+
+BIM platform for supply chain management in modular construction. Journal of
+Construction Engineering and Management, 148(2), 04021195.
+doi:10.1061/(ASCE)CO.1943-7862.0002229
+Li, X., Wu, L., Zhao, R., Lu, W. & Xue, F. (2021b). Two-layer Adaptive Blockchain-based
+Supervision model for off-site modular housing production. Computers in Industry,
+128, 103437. doi:10.1016/j.compind.2021.103437
+Liu, M., Le, Y., Hu, Y., Xia, B., Skitmore, M. & Gao, X. (2019). System dynamics modeling
+for construction management research: critical review and future trends. Journal of
+Civil Engineering and Management, 25(8), 730-741. doi:10.3846/jcem.2019.10518
+Lu, Y. (2018). Blockchain: A survey on functions, applications and open issues. Journal of
+Industrial Integration and Management, 3(4), 1850015.
+doi:10.1142/S242486221850015X
+Maesa, D. D. & Mori, P. (2020). Blockchain 3.0 applications survey. Journal of Parallel and
+Distributed Computing, 138, 99-114. doi:10.1016/j.jpdc.2019.12.019
+Martínez-Rojas, M., Marín, N. & Vila, M. (2016). The role of information technologies to
+address data handling in construction project management. Journal of Computing in
+Civil Engineering, 4(30), 04015064. doi:10.1061/(ASCE)CP.1943-5487.0000538
+Nah, F. F.-H. (2004). A study on tolerable waiting time: how long are web users willing to
+wait? Behaviour & Information Technology, 23(3), 153-163.
+doi:10.1080/01449290410001669914
+Opoku, D.-G. J., Perera, S., Osei-Kyei, R. & Rashidi, M. (2021). Digital twin application in
+the construction industry: A literature review. Journal of Building Engineering, 40,
+102726. doi:10.1016/j.jobe.2021.102726
+Oraee, M., Hosseini, M. R., Papadonikolaki, E., Palliyaguru, R. & Arashpour, M. (2017).
+Collaboration in BIM-based construction networks: A bibliometric-qualitative
+literature review. International Journal of Project Management, 35(7), 1288-1301.
+doi:10.1016/j.ijproman.2017.07.001
+Owusu, E. K., Chan, A. P., DeGraft, O. M., Ameyaw, E. E. & Robert, O. K. (2019).
+Contemporary Review of Anti-Corruption Measures in Construction Project
+Management. Project Management Journal, 50(1), 40-56.
+doi:10.1177/8756972818808983
+PwC. (2020). Digital twins in smart city. Hong Kong: PricewaterhouseCoopers. Retrieved
+from https://www.pwccn.com/en/research-and-insights/publications/digital-twins-insmart-city.pdf
+
+27
+
+Sanka, A. I. & Cheung, R. C. (2021). A systematic review of blockchain scalability: Issues,
+solutions, analysis and future research. Journal of Network and Computer
+Applications, 195, 103232. doi:10.1016/j.jnca.2021.103232
+Scott, D. J., Broyd, T. & Ma, L. (2021). Exploratory literature review of blockchain in the
+construction industry. Automation in Construction, 132, 103914.
+doi:10.1016/j.autcon.2021.103914
+Stanitsas, M., Kirytopoulos, K. & Leopoulos, V. (2021). Integrating sustainability indicators
+into project management: The case of construction industry. Journal of Cleaner
+Production, 279, 123774. doi:10.1016/j.jclepro.2020.123774
+Sun, J., Lei, K., Cao, L., Zhong, B., Wei, Y., Li, J. & Yang, Z. (2020). Text visualization for
+construction document information management. Automation in Construction, 111,
+103048. doi:10.1016/j.autcon.2019.103048
+Taylan, O., Bafail, A. O., Abdulaal, R. M. & Kabli, M. R. (2014). Construction projects
+selection and risk assessment by fuzzy AHP and fuzzy TOPSIS methodologies.
+Applied Soft Computing, 17, 105-116. doi:10.1016/j.asoc.2014.01.003
+Vrchota, J., Řehoř, P., Maříková, M. & Pech, M. (2021). Critical Success Factors of the
+project management in relation to Industry 4.0 for sustainability of projects.
+Sustainability, 13(1), 281. doi:10.3390/su13010281
+Walker, A. (2015). Project Management in Construction (6th ed.). John Wiley & Sons.
+Wang, L., Li, W., Feng, W. & Yang, R. (2021). Fire risk assessment for building operation
+and maintenance based on BIM technology. Building and Environment, 205, 108188.
+doi:10.1016/j.buildenv.2021.108188
+Wang, Y., Zhang, A., Zhang, P., Qu, Y. & Yu, S. (2021b). Security-aware and privacypreserving personal health record sharing using consortium blockchain. IEEE Internet
+of Things Journal, 9(14), 12014-12028. doi:10.1109/JIOT.2021.3132780
+Wang, Z., Wang, T., Hu, H., Gong, J., Ren, X. & Xiao, Q. (2020). Blockchain-based
+framework for improving supply chain traceability and information sharing in precast
+construction. Automation in Construction, 111, 103063.
+doi:10.1016/j.autcon.2019.103063
+Wollschlaeger, M., Sauter, T. & Jasperneite, J. (2017). The future of industrial
+communication: Automation networks in the era of the internet of things and industry
+4.0. IEEE Industrial Electronics Magazine, 11(1), 17-27.
+doi:10.1109/MIE.2017.2649104
+Wu, W., He, H., Chu, Z., Liu, Y., Shi, L., Gu, M., Zhang, T., Lin, Z. & Yang, L. (2021).
+
+28
+
+Blockchain-based smart payment scheme of power infrastructure funds. Energy
+Reports, 7(S7), 725-733. doi:10.1016/j.egyr.2021.09.199
+Xue, F. & Lu, W. (2020a). A semantic differential transaction approach to minimizing
+information redundancy for BIM and blockchain integration. Automation in
+Construction, 118, 103270. doi:10.1016/j.autcon.2020.103270
+Xue, F., Chen, K., Lu, W., Niu, Y. & Huang, G. Q. (2018). Linking radio-frequency
+identification to Building Information Modeling: Status quo, development trajectory
+and guidelines for practitioners. Automation in Construction, 93, 241-251.
+doi:10.1016/j.autcon.2018.05.023
+Xue, F., Lu, W., Chen, Z. & Webster, C. J. (2020b). From LiDAR point cloud towards digital
+twin city: Clustering city objects based on Gestalt principles. ISPRS Journal of
+Photogrammetry and Remote Sensing, 167, 418-431.
+doi:10.1016/j.isprsjprs.2020.07.020
+Xue, F., Wu, L. & Lu, W. (2021). Semantic enrichment of building and city information
+models: A ten-year review. Advanced Engineering Informatics, 47, 101245.
+doi:10.1016/j.aei.2020.101245
+Zhao, G., Liu, S., Lopez, C., Lu, H., Elgueta, S., Chen, H. & Boshkoska, B. M. (2019).
+Blockchain technology in agri-food value chain management: A synthesis of
+applications, challenges and future research directions. Computers in Industry, 109,
+83-99. doi:10.1016/j.compind.2019.04.002
+Zhong, B., Guo, J., Zhang, L., Wu, H., Li, H. & Wang, Y. (2022). A blockchain-based
+framework for on-site construction environmental monitoring: Proof of concept.
+Building and Environment, 217, 109064. doi:10.1016/j.buildenv.2022.109064
+
+29
+
+

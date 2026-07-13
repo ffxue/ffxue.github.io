@@ -1,0 +1,1485 @@
+A domain knowledge-augmented satellite image segmentation approach for
+global landfill detection
+Liang YUAN 1a; Maosu LI 1b; Weisheng LU 2*; Fan XUE 2
+1a
+
+Department of Engineering, University of Cambridge, Trumpington Street, Cambridge, CB2 1PZ, United Kingdom.
+
+1b
+
+Thrust of Urban Governance and Design, Society Hub, The Hong Kong University of Science and Technology
+
+(Guangzhou), Nansha, Guangzhou, China
+2
+
+Department of Real Estate and Construction, Faculty of Architecture, The University of Hong Kong, Hong Kong.
+
+* Corresponding email: wilsonlu@hku.hk
+1a & 1b
+
+The authors have equivalent contributions.
+
+This is the peer-reviewed post-print version of the paper:
+Yuan, L., Li, M., Lu, W. & Xue, F. (2026). A domain knowledge-augmented satellite
+image segmentation approach for global landfill detection. Engineering Applications of
+Artificial Intelligence, 176 (2), 114721. Doi: 10.1016/j.engappai.2026.114721
+The final version of this paper is available at: https://doi.org/10.1016/j.engappai.2026.114721.
+The use of this file must follow the Creative Commons Attribution NonCommercial No Derivatives License, as required by Elsevier’s policy.
+Abstract
+Landfills are the global primary solution for waste management but pose significant environmental
+and social challenges. Automated landfill detection is essential for cost-effective environmental
+management. However, existing methods typically focus on landfill presence detection within
+limited areas. This study developed a domain knowledge-augmented satellite image segmentation
+approach to recognize landfills’ presence and areal extent globally. We harnessed satellite images
+of 1,380 representative landfills from various global regions to fine-tune a deep learning
+segmentation model; while five domain knowledge-informed features were defined and used to
+calibrate segmentation results. Our approach achieved a recall of 99.51% for landfill presence
+detection, an overall accuracy of 98.97%, a mean accuracy of 91.95%, and a mean intersection
+over union of 88.08% for landfill segmentation. This research surpasses existing studies by
+identifying landfill locations and areas worldwide and improving segmentation accuracy through
+domain knowledge. The approach can support global landfill mapping and illegal landfill detection.
+Keywords: Waste Management; Landfill Detection; Satellite Image Segmentation; Deep
+Learning; Domain Knowledge
+
+1
+
+1. Introduction
+Landfills are engineered sites designed for waste disposal, where various solid waste (e.g.,
+municipal solid waste, construction waste, or commercial waste) is buried and isolated to limit
+environmental contamination of soil, water, and air, by using systems like liners, leachate
+collectors, and gas management infrastructure (Nanda & Berruti, 2021; Warith, 2003). Within the
+‘3R’ hierarchy (i.e., Reduce, Reuse, Recycle) for waste management, landfill ranks as the least
+favoured option, employed only when waste minimization, reuse, and recycling are unfeasible
+(World Bank, 2016; Yuan et al., 2024). However, landfills offer practical advantages, such as
+managing large waste volumes cost-effectively and, in advanced facilities, generating energy via
+methane capture (Frändegård et al., 2013; Mahmood et al., 2016). Therefore, despite its low
+priority, landfilling still dominates waste management, handling 69.6% of solid waste in 2016
+compared to 13.5% recycled, 11.1% incinerated, and 5.5% composted (World Bank, 2016).
+Nevertheless, landfilling causes numerous drawbacks. For example, they demand significant land,
+emit greenhouse gases like methane and carbon dioxide if mismanaged, risk groundwater pollution
+from leachate containing heavy metals, and produce odours and health hazards for nearby
+populations (Graupman et al., 2023; Limoli et al., 2019). These issues, compounded by their linear
+“end-of-life” nature, clash with circular economy goals (Dong et al., 2025; MacArthur, 2013),
+necessitating accurate detection of the landfill and stringent, long-term monitoring of air, soil, and
+water. Landfill detection and monitoring are thus well mandated by regulations in many regions,
+like the EU (European Union, 2018), US (USEPA, 2023), and Australia (EPA of Victoria, 2020).
+Remote sensing data holds a great promise for automating landfill detection, as its increasing
+availability, spatial scalability, and relatively low data collection costs; consequently, current
+studies on landfill site detection increasingly develop and employ remote sensing-based methods
+to detect these sites. The data source of these methods includes airborne thematic maps (Jones &
+Elgy, 1994), LiDAR point cloud (Valjavec, 2014), land surface temperature images (Yan et al.,
+2014), satellite images (Manzo et al., 2017), unmanned aerial vehicle photographs (Wyard et al.,
+2021), and night-time light images (Karimi et al., 2022). Meanwhile, advanced artificial
+intelligence technologies, e.g., machine learning and deep learning, have been widely utilized to
+
+2
+
+develop appropriate models for underpinning remote sensing-based automated landfill detection.
+These studies made significant contributions to automating landfill detection and monitoring.
+However, weaknesses persist: Firstly, existing approaches were generally developed based on the
+sample data of a small case area, e.g., a region (Azmi et al., 2022; Karimi et al., 2022), city
+(Mahmood et al., 2016; Yan et al., 2014), or even a neighbourhood (Azmi et al., 2022; Wyard et
+al., 2021). Hence, the generalizability of these approaches is questionable, because the intrinsic
+regional heterogeneity unavoidably incurs differences in landfills’ visual features (Manzo et al.,
+2017; Yalana et al., 2008). Secondly, almost all existing approaches focus only on detecting the
+presence of landfills, which transforms landfill detection to be a binary remote sensing data
+classification problem; while little research has probed into recognizing the areal extent of landfills,
+which means object segmentation in remote sensing data, differing from the classification problem.
+The landfill area is also an essential attribute for subsequent monitoring and management practice.
+The primary aim of this study is to develop a domain knowledge-enhanced satellite image
+segmentation approach for recognizing global landfills, including presence detection and area
+extraction. High-resolution satellite images are selected as the input because they provide rich
+feature information and are easy to access. A proper image segmentation model will be trained to
+extract landfill objects from images. Moreover, landfill-related domain knowledge will be
+integrated to reinforce image segmentation, thereby improving the approach’s performance. The
+paper is organized as follows: Section 2 provides a critical review of existing studies on landfill
+detection; Section 3 elaborates on the methodology, integrating the segmentation model with
+domain-specific knowledge derived from the literature; Section 4 presents the approach
+development and validation procedures, based on 1,380 landfills across diverse global regions;
+Section 5 offers a deeper discussion on the approach’s strengths and limitations; and Section 6
+concludes the study.
+2. Literature review
+Remote sensing data-based landfill detection has been a hot research topic for years. This research
+conducted a critical review of existing approaches, with a special focus on data inputs, outputs,
+spatial scale, and the use of domain knowledge. Table 1 summarizes the literature review results.
+3
+
+Table 1. A summary of existing remote sensing-based landfill recognition approaches
+Use of domain
+
+Reference
+
+Approach input
+
+Approach output
+
+Spatial scale
+
+(Salleh &
+
+Airborne image
+
+Presence of landfill
+
+Province
+
+No
+
+(Silvestri &
+
+Vegetation spectrum image and GIS
+
+Presence of landfill
+
+Neighbourhood
+
+Yes
+
+Omri, 2008)
+
+data
+
+(Yalana et al.,
+
+Satellite image
+
+Presence of landfill
+
+Region
+
+No
+
+(Valjavec, 2014)
+
+LiDAR point cloud
+
+Presence of landfill
+
+Neighbourhood
+
+No
+
+(Gill et al., 2019)
+
+Land surface temperature image
+
+Presence of landfill
+
+Neighbourhood
+
+Yes
+
+(Incekara et al.,
+
+LiDAR point cloud
+
+Areal extent of landfill
+
+Single landfill
+
+No
+
+Satellite image and GIS data
+
+Areal extent of landfill
+
+Neighbourhood
+
+No
+
+(Azmi et al.,
+
+Satellite image and drone full-
+
+Presence of landfill
+
+Neighbourhood
+
+No
+
+2022)
+
+motion video
+
+(Gao et al.,
+
+Unmanned aerial vehicle images
+
+Areal extent of landfill
+
+Neighbourhood
+
+No
+
+Night-time light image
+
+Probability of landfill
+
+Region
+
+No
+
+Region
+
+No
+
+knowledge
+
+Tsudagawa,
+2002)
+
+2008)
+
+2019)
+(Vambol et al.,
+2019)
+
+2022)
+(Karimi et al.,
+2022)
+
+occurrence
+
+(Quesada-Ruiz
+
+Satellite image, socioeconomic
+
+Probability of landfill
+
+et al., 2022)
+
+statistics, and GIS data
+
+occurrence
+
+(Zhang et al.,
+
+Satellite image
+
+Areal extent of landfill
+
+City
+
+No
+
+Satellite image
+
+Areal extent of landfill
+
+City
+
+No
+
+(Sun et al., 2023)
+
+Satellite image
+
+Presence of landfill
+
+Globe
+
+No
+
+(Lin et al., 2024)
+
+Satellite image
+
+Areal extent of landfill
+
+District
+
+No
+
+2022)
+(Yong et al.,
+2023)
+
+According to Table 1, the prevailing input of existing approaches is remote sensing data, including
+satellite images, airborne images, LiDAR point clouds, land surface temperature images, nighttime light images, and so on. A few studies also combined Geographical Information System (GIS)
+data and socioeconomic statistics to enhance landfill identification (Quesada-Ruiz et al., 2022;
+Vambol et al., 2019). Basically, satellite images are most commonly utilized to map landfills in
+existing studies.
+4
+
+The dominant output is the presence of landfills, while little research engages in extracting landfill
+areas. Detecting the existence of landfills based on remote sensing images is equivalent to image
+classification. Benefitting from deep learning technologies, existing approaches have achieved
+high accuracy in identifying whether an image contains landfills (Yalana et al., 2008). Recognizing
+the areal extent of landfills, meanwhile, involves image segmentation, namely, partitioning the
+pixel region within a remote sensing image into landfill and non-landfill groups, which is a more
+complex and challenging task than image classification but provides essential areal information
+for landfill monitoring and management. The pre-trained models frequently selected by previous
+studies for landfill image segmentation include Pspnet, U-Net, DeepLab, and DeepLab V3+ (Gao
+et al., 2022; Yong et al., 2023), as they are relatively more robust and accurate in most cases. Also,
+a few studies proposed new deep learning models specified for certain landfill image segmentation
+contexts. For example, Zhang et al. (2022) established a trainable cross-channel multi-scale gated
+fusion network (termed “CCMGNet”), which can effectively fuse the RGB and NIR bands of highresolution satellite images to obtain cross-channel information complementarity, thereby
+improving segmentation accuracy. Currently, the first and second highest landfill image
+segmentation accuracies were achieved by Lin et al. (2024) (IoU=82.08%) and Yong et al. (2023)
+(IoU=74.60%), based on the pre-trained DeepLab V3+ model.
+Furthermore, previous studies focus primarily on neighbourhood-scale case regions. This can
+reduce data collection costs but may limit the generalizability of the developed methods, as the
+visual features of landfills often vary from region to region (Sun et al., 2023). A recent publication
+by (Sun et al., 2023) expands the spatial scale to a global scope by sampling landfill images from
+28 cities around the world, establishing a highly generalizable approach. However, their research
+focuses only on identifying the presence of landfills, not segmenting landfill areas from images.
+In addition, previous methods generally achieve landfill recognition based only on the visual
+features extracted from remote sensing data. Little research harnesses landfill-related domain
+knowledge to enhance landfill recognition. Gill et al. (2019) harnessed the land surface
+temperature differences between landfilling areas and non-landfilling areas as input features to
+detect the presence of landfills, based on domain knowledge that the decomposition of organic
+5
+
+matter releases heat. This study exemplifies the potential of domain knowledge for landfill
+recognition, and indicates one of the common methods for integrating domain knowledge, i.e.,
+utilizing domain knowledge for the post-processing of model segmentation.
+3. Methodology
+3.1 Research methods
+To develop the model for recognizing global landfill presence and areal extent, this study adopted
+experimentation as the research method. The general procedure is to use the stratified sampling
+technique to collect satellite images of landfills from different regions around the world. Stratified
+sampling balances the sample’s acquisition cost and representativeness (Lohr, 2021). Then, sample
+images are input into appropriate deep learning algorithms to train semantic segmentation models,
+which are applied to detect the presence and area of landfill instances in newly input images.
+Finally, landfill image segmentation results are calibrated using domain knowledge-based features
+defined based on a literature review.
+The rationale behind the proposed approach is that waste landfills generally present some visual
+features (e.g., color, shape, texture) distinct from their surroundings (Chen et al., 2003). Deep
+learning algorithms are capable of quantifying and learning these features to produce task-specific
+models, which can then be applied to recognize landfill sites from new image inputs. Also, in the
+computer science community, incorporating domain knowledge, which refers to prior or tacit
+knowledge of a specific subject, is an increasingly used solution for enhancing deep learning-based
+image recognition performance (Dash et al., 2022; Xie et al., 2021), because deep learning-based
+object recognition still faces many challenges when training datasets are small or the object
+boundary is not clear (Dash et al., 2022; Xie et al., 2021). Moreover, the site selection, design,
+and construction of landfills are generally based on certain codes and principles, which contain
+prior knowledge that can produce informative features to support landfill instance segmentation.
+3.2 Data sources
+This research acquired the precise spatial locations (longitude and latitude) of landfill samples
+from four sources: (1) map platforms including Google Maps and Baidu Maps, which record a few
+landfills located near urban areas; (2) landfill catalogues published by governments, e.g., the
+6
+
+Landfill Methane Outreach Program (LMOP) of the United States Environmental Protection
+Agency (USEPA, 2024) and Permitted Waste Sites–Authorised Landfill Boundaries (PWS-ALB)
+data set issued by the Environment Agency (2023) of the United Kingdom, which record legally
+registered landfill information; (3) public environmental reports (Auckland Council, 2024;
+Muwaieh, 2015), which indicate the location of landfills uncatalogued in governments’ databases;
+and (4) social media platforms, where the public post the photo and address of landfills affecting
+their lives and travel. In addition, high-resolution satellite images of landfill samples can be
+collected from multiple satellite optical imageries, e.g., Pléiades, WorldView Series and GeoEye.
+4. Landfill detection approach development
+4.1 Approach architecture
+Figure 1 visualizes the architecture of the proposed landfill detection approach. Its input is highresolution satellite images, and its output is the semantic segmentation result, which informs the
+pixel area of landfill and non-landfill objects in an image. When feeding a satellite image into the
+approach architecture, the deep learning-based image segmentation model will output the
+segmentation result, which will then be fed into the calibration procedure based on domain
+knowledge-enabled features. Finally, the calibrated landfill instance segmentation will be output
+as the ultimate recognition result. Detailed methods are presented in the subsequent sections.
+
+Figure 1. The architecture of domain knowledge-augmented landfill recognition approach
+7
+
+4.2 Stratified sampling of landfills
+Ensuring that training samples represent global landfills is crucial for the model’s global mapping
+capability. We identified the major factors influencing landfill visual feature diversity to determine
+the strata for stratified sampling, ensuring comprehensive sample coverage. Our review of existing
+publications identified five key factors affecting landfill visual features:
+1) landfilling methods, including sanitary landfills and open-air dumpsites (Chen et al., 2003);
+2) land cover type, which influences landfill surroundings (Mahmood et al., 2017);
+3) terrain, including valley, step, slope, and flat landfills (Yalana et al., 2008; Yong et al.,
+2023);
+4) waste composition, such as agricultural, construction, and domestic waste, with distinct
+material types and contents (Sun et al., 2023); and
+5) economic level, affecting site selection (Sun et al., 2023).
+In addition, seasonal change also affects visual features but can be mitigated by controlling image
+capture dates when conducting the landfill detection (Manzo et al., 2017); meanwhile, the seasonal
+difference between regions with different latitudes can also enhance the temporal diversity of
+samples for the model training in Section 4.3. We combined these factors to stratify the global
+landfill samples.
+The stratified sampling procedure involved three main steps: (1) collecting geographic coordinates
+of in-use landfills from various sources; (2) cropping and extracting satellite images from Google
+Web Map Tile Service (WMTS); and (3) reviewing whether the samples cover all situations of
+each stratum, e.g., both sanitary and open-air landfills. We repeated these steps until the samples
+adequately represented each stratum. Notably, we only collected satellite images containing at
+least one landfill, resulting in a one-class dataset. The reason behind this decision is that
+constructing a globally representative dataset consisting of images without landfills is far more
+challenging, given the immense diversity of the sample population. Finally, 1,380 landfill samples
+were collected for model development.
+This research acquired the satellite image of the 1,380 landfill samples from the mosaic optical
+imagery platform Google WMTS geocoded with the World Geodetic System 84/Pseudo-Mercator
+8
+
+system (EPSG: 3857). The multi-source images of Google WMTS were cleansed (e.g., cloud
+removal), calibrated (e.g., the radiometric, atmospheric, and geometric), mosaiced, and updated
+since 2016. To appropriately represent global landfills of multifarious areal sizes, we determined
+each image covering 4,000 × 4,000 = 16 km2 based on a balance of multiple factors (including the
+size range of global landfills, recognizability of objects in images, and computation load) and
+referring to (Đidelija et al., 2022). We saved the image at a size of 2,000 × 2,000 pixels, with a
+spatial resolution of 2 meters in the projected geospatial coordinate system. Benefiting from the
+high data quality of Google WMTS, apart from cropping satellite images to a size of 2000 × 2000
+pixels, no other preprocessing procedure is required.
+Figure 2 shows the characteristics of the gathered landfill samples. These samples come from 118
+countries and regions across six continents. As shown in Figure 2a, the landfill samples are
+distributed in lands of 12 latitudinal zones (46° S to 65° N) and 34 longitudinal zones (157° W to
+176° E), covering 85.71% of climate zones according to the the Köppen-Geiger Classification
+(Rubel et al., 2017). The other climate zones, e.g., polar frost, polar tundra, snow, and extremely
+continental, do not have conventional landfills due to less waste generation and environmental
+protection.
+Figure 2(b) indicates that 755 samples are sanitary landfills, and 625 are open-air landfills. Figure
+22(c) shows 659 landfills in forests, 242 in grasslands, 104 in barren lands, 138 in shrublands, 207
+in croplands, and 30 in built-up areas. Figure 2(d) classifies the terrain as 276 valley landfills, 158
+step landfills, 197 slope landfills, and 749 flat landfills. Although it was challenging to identify the
+waste composition for all samples, available official documents confirm at least 24 agricultural,
+45 construction, and 128 domestic waste landfills, as shown in Figure 2(e). Figure 2(f) presents
+six examples of collected satellite images with different types of landfilling methods, land cover,
+terrain, and major waste composition.
+
+9
+
+Figure 2. Characterization of the global landfill samples by (a) locations, (b) landfilling methods,
+(c) land cover types, (d) terrain categories, (e) major waste compositions, and (f) case images
+Stratified sampling fully considered multiple factors (i.e., multiple strata) that have significant
+impacts on landfill recognition, while the 1,380 landfills cover all situations of each stratum;
+furthermore, we referred to the global sampling procedure used by Sun et al. (2023), who
+developed a model to identify the presence of open-air dumpsites at the global scale. On this basis,
+it is reasonable to justify that the sample dataset is a representative sample of global landfills.
+4.3 Developing landfill segmentation models
+Developing the proposed model involved four main stages. The first stage is image annotation.
+We annotated landfill images by using the LabelMe platform (CSAIL, 2023). Image annotation
+means labelling all pixel regions that belong to landfilling areas. When a satellite image contains
+10
+
+more than one landfilling site, all sites are given the label “landfill” (namely, semantic
+segmentation label). Note that this study annotates only the in-use landfilling area, while regions
+that were originally landfill space but have been recovered as grassland or the like are not
+considered to be landfill objects. For consistency in annotation, one of the authors initially
+annotated all of the image samples. Subsequently, the other author reviewed each image and its
+corresponding annotation for double-checking. If any incorrect annotations were identified, the
+annotation masks were returned for correction. This process was repeated until all annotation
+results were validated, achieving a validation accuracy of 100%. Last, each annotated image will
+be an individual input in model training and validation.
+The second stage is to select appropriate pre-trained models. Segment Anything Model (SAM) is
+an open-source pre-trained model proposed by Meta AI in 2023 and has made significant progress
+in breaking boundary segmentation (Zhang et al., 2023). A more detailed explanation about SAM’s
+structure and principles can refer to (Kirillov et al., 2023). Previous comparative experiments have
+demonstrated that SAM performs better in image segmentation than earlier popular models like
+FCN (Kirillov et al., 2023) and DeepLab V3 (Chen et al., 2018). Hence, this research selected it
+for landfill segmentation model development. Besides, DeepLab V3+ was also selected for
+comparative analysis, as the current first and second highest landfill image segmentation accuracy
+are achieved based on it (Lin et al., 2024; Yong et al., 2023).
+The third stage is to determine proper metrics for measuring the model’s performance. IoU
+(intersection over union) and mIoU (mean intersection over union) were adopted, as they are the
+most widely adopted indicators for segmentation accuracy measurement. IoU measures the overlap
+between the predicted region and the ground-truth region (also called “Per-class IoU”); while
+mIoU represents the mean IoU computed across multiple instances (Rahman & Wang, 2016).
+Generally, an IoU and mIoU of ≥ 0.5 represent an acceptable segmentation accuracy (Zhou et al.,
+
+2019). To comprehensively assess the model’s segmentation performance, another two metrics,
+i.e., overall accuracy (OA) and mean accuracy (mAcc), were also adopted. OA measures the
+proportion of correctly classified pixels over the total number of pixels and presents a general
+sense of performance. mAcc characterizes the average accuracy across all classes, and provides a
+balanced view which is useful when classes are imbalanced. Additionally, for a more
+11
+
+comprehensive approach comparison, this study also combined the metric “Recall” to measure the
+image classification performance of the new approach. Recall evaluates the ability of a model to
+correctly identify instances from all the samples.
+The fourth stage is model training, validation, and testing. This research randomly splits the 1,380
+satellite images into training, validation, and test datasets, with a proportion of 70%, 15%, and
+15%. Specifically, we first classify the image samples into categories by spatial and climate zones.
+Then, in each category, the image samples are randomly selected into training, validation, and test
+sets according to the proportions of 70% : 15% : 15%. Last, we merge the subsets of training,
+validation, and test in each category for model training. Three SAM model variants and four
+DeepLab V3+ model variants were respectively fine-tuned for the model performance comparison.
+SAM variants are differentiated by the complexity level of the image encoder Vision Transfomer
+(ViT), including ViT-Base, ViT-Large, and ViT-Huge. The ViT-Base with 12 layers of the neural
+layers renders the SAM small for landfill detection through limited computation resources, while
+the SAM with the ViT-Large (24 layers) controls the balance of the detection speed and accuracy
+and the SAM with the ViT-Huge (36 layers) is often the most high-performance but resourceintensive. The three model variants were pre-trained on the Segment Anything 1 Billion (SA-1B)
+dataset (Kirillov et al., 2023).
+We then fine-tuned them based on landfill satellite images. The fine-tuning process applied the
+low-rank-based (LoRA) strategy, which can reduce the number of trainable parameters and
+optimize the storage of large models for a satisfactory segmentation performance. The dice (Sudre
+et al., 2017) and focal losses (Lin et al., 2017) with the weight at 50% : 50% were applied for the
+three SAMs regarding the imbalanced area ratios of landfills and surrounding environments.
+Meanwhile, we fine-tuned the four DeepLab V3+ model variants differentiated by the backbone
+(Xception and MobileNet) and the output stride (8 and 16) based on the satellite image of sampled
+landfills. The cross-entropy loss was applied in fine-tuning the four variants. The entire fine-tuning
+process of both SAM and DeepLab V3+ was conducted in the same development environment of
+PyTorch (ver. 1.10) and Python (ver. 3.7). Specifically, we implemented the experiments on a
+high-performance computing cluster with 7 servers, each of which owns dual Intel Xeon 6226R
+(16 core) CPUs, 384GB RAM, 4 × NVIDIA V100 (32GB) SXM2 GPUs, and a CentOS 8 system.
+12
+
+We assigned each variant of SAM and DeepLab V3+ 24 core CPUs, 64GB RAM, and 4 NVIDIA
+V100 (32GB) SXM2 GPUs. Six key hyperparameters, i.e., the batch size, the combination of loss
+functions and their values, learning rate, momentum factor, and weight decay, were finetuned to
+achieve the optimal model performances. Detailed values of settings can be accessed through the
+mentioned the repository. The early-stop method was used to avoid overfitting, and we saved the
+checkpoint of each model with minimal validation loss for comparison.
+4.4 Extracting and incorporating domain knowledge
+We systematically reviewed many publications to gather landfill-related domain knowledge, and
+then analysed their universality in practice. Finally, five universally applicable features were
+defined based on domain knowledge to augment satellite image-based landfill recognition, as
+summarized in Table 2. Notably, several other domain knowledge-based features, e.g., soil type,
+pipeline network density, land cost, and flood vulnerability (Aslam et al., 2022; Rezaeisabzevar et
+al., 2020), were not included due to the availability limitation of the global-scale dataset.
+Table 2. The domain knowledge-informed features for augmenting satellite image segmentationbased landfill recognition
+No.
+
+Feature name
+
+Domain knowledge behind the feature
+
+Threshold
+
+Feature utilization
+
+1.
+
+Minimum
+
+A universally applicable rule is that landfills should be
+
+Distance
+
+Removing segmented
+
+distance to
+
+far away from large inland water bodies (natural lakes,
+
+<0.4 km
+
+instances with a value of
+
+inland water
+
+manmade reservoirs, wetlands, and rivers) to prevent
+
+body
+
+water pollution by landfill leachate (Karimi et al., 2020;
+
+<0.4 km
+
+Ya et al., 2019). This rule can be harnessed to exclude
+the detected landfill objects very close to inland water
+bodies. Notably, landfills may be adjacent to the ocean
+when it comes to coastal regions. Examples can be seen
+in Singapore’s landfills.
+2.
+
+Completeness
+
+In practice, it is almost impossible that an in-use landfill
+
+N.A.
+
+Filling the hole in
+
+of in-use
+
+contains an inner non-landfilling area. Hence, we can fill
+
+segmented landfill
+
+landfill area
+
+the hole (unrecognized pixel region) inside a detected
+
+instances
+
+landfill pixel region.
+3.
+
+Upper limit of
+
+To control construction costs and improve operation
+
+the landfill’s
+
+convenience, the edges of landfills are generally
+
+(MathWorks, 2024) with a
+
+perimeter and
+
+designed to be as regularly shaped as possible (Crawford
+
+scaling coefficient of 4 to
+
+area ratio
+
+<0.1
+
+Using Structuring Element
+
+dilate the segmented object
+
+13
+
+No.
+
+Feature name
+
+Domain knowledge behind the feature
+
+Threshold
+
+Feature utilization
+
+& Smith, 2016). Hence, the ratio of the landfill perimeter
+
+in an image with
+
+to area should have an upper limit.
+
+2000*2000 pixels, so as to
+reduce the perimeter-area
+ratio (akin to antialiasing)
+
+4.
+
+Upper limit of
+
+The long and short axes refer to the two axes of the
+
+<5.5
+
+Removing segmented
+
+the length ratio
+
+ellipse that have the same normalized second-order
+
+instances with a value
+
+of long and
+
+central moment as the segmented object. In practice,
+
+of >4.2
+
+short axes
+
+designing landfills in an elongated shape is generally not
+recommended, as it is not convenient for landfill
+construction and operation (Meegoda et al., 2016).
+
+5.
+
+Upper limit of
+
+Combining multiple small landfilling areas into one
+
+normalized
+
+large site is the prioritized practice. Even for illegal
+
+<0.40
+
+Removing the smallest
+segmented instances until
+
+landfill area
+
+dumping sites, offenders prefer existing sites over new
+
+the value becomes less
+
+variation
+
+ones to minimize risks, which could be explained by the
+
+than 0.60
+
+coefficient
+
+Broken Windows Theory (Massa et al., 2023).
+Consequently, it is reasonable to believe that the
+normalized areal variation coefficient of multiple
+landfills within one image should be less than a certain
+threshold.
+
+The specific methods for integrating domain knowledge are multifarious, as reviewed by (Dash et
+al., 2022) and (Xie et al., 2021). This study adopted post-processing (sometimes called “post hoc
+evaluation”) as the integration method. Specifically, the domain knowledge-informed features are
+incorporated to calibrate the image segmentation results of the developed deep learning models in
+Section 4.3, thereby improving the final landfill segmentation accuracy. The quantitative threshold
+of each feature was from conservative estimation based on values given in existing literature
+(Djokanović et al., 2016; Karimi et al., 2020; Rezaeisabzevar et al., 2020) and statistical analysis
+of the collected landfill image samples. Meanwhile, sensitivity analyses (calibration performance
+difference when changing the feature threshold) were conducted to demonstrate the optimality of
+threshold selections. Notably, the global inland water body datasets used for Feature 1 are from
+(Yamazaki et al., 2015), (Feng et al., 2016), and (Klein et al., 2017), which provided the
+segmentation result of inland water bodies (including areal extent and location). The five domain
+knowledge-informed features are respectively encoded and then connected in a certain sequence
+as a whole. Its computational complexity is low as it involves the numerical calculation of the
+pixel matrix (2000×2000 pixels for each image input).
+14
+
+5. Result analysis and comparison
+5.1 SAM model segmentation and domain knowledge-based calibration
+Table 3 compares the model performance with and without the five domain knowledge-based
+features. Several findings were derived from the experiments:
+•
+
+Firstly, it can be observed that the model shows the best performance in both detecting the
+presence of landfills and segmenting landfill instances when selecting the complexity level
+of the image encoder ViT-Huge, which uses a larger number of parameters than ViT-Base
+and ViT-Large to capture visual features for image segmentation.
+
+•
+
+Secondly, comparing Row 1 of Table 3 to Rows 4~8, it can be found that with Feature 1,
+2, 3, 4, or 5, the model’s IoU respectively increased from 70.72% to 71.95%, 75.82%,
+74.99%, 74.57%, or 74.59%, demonstrating that each of the five domain knowledge-based
+features can effectively calibrate the segmentation result by SAM.
+
+•
+
+Thirdly, the last three rows of Table 3 indicate that combining the five features can further
+improve the SAM model’s performance. With the ViT-Huge image encoder and calibration
+by the five features, the SAM can achieve a recall of 99.51% in detecting the presence of
+landfills, as well as an OA of 98.97%, mAcc of 91.95%, mIoU of 88.08%, and IoU of
+77.21% in segmenting global landfill instances from satellite images.
+
+•
+
+Fourthly, in comparison, combining the five features contributes to improving the OA from
+98.90% to 98.97%, the mAcc from 91.86% to 91.95%, the mIoU from 86.33% to 88.08%,
+and the landfill segmentation IoU from 73.82% to 77.21%.
+
+•
+
+Lastly, the experiments indicated that the optimal sequence of applying the five features is
+to calibrate segmentation results by “minimum distance to inland water body” firstly, then
+by “completeness of in-use landfill area”, following by “ratio of landfill’s perimeter and
+area”; next by “upper limit of the length ratio of long and short axes”, and finally, “upper
+limit of normalized landfill area variation coefficient”.
+
+Table 3. Performance comparison of SAM models with and without segmentation calibration by
+domain knowledge-based features
+
+15
+
+Presence detection
+
+Model and domain
+
+Vit
+
+Pretrained
+
+knowledge-based feature
+
+Type
+
+dataset
+
+Recall (%)
+
+SAM
+
+Base
+
+SA-1B
+
+SAM
+
+Large
+
+SAM
+
+Huge
+
+SAM with Feature 1
+
+Segmentation of landfill’s areal extent
+OA
+
+mAcc
+
+mIoU
+
+Per-class IoU (%)
+
+(%)
+
+(%)
+
+(%)
+
+Landfill
+
+Others
+
+98.06
+
+98.94
+
+89.85
+
+84.81
+
+70.72
+
+98.89
+
+SA-1B
+
+99.03
+
+98.89
+
+90.64
+
+85.59
+
+72.34
+
+98.83
+
+SA-1B
+
+99.51
+
+98.90
+
+91.86
+
+86.33
+
+73.82
+
+98.84
+
+Base
+
+SA-1B
+
+98.06
+
+98.92
+
+91.88
+
+86.34
+
+71.95
+
+98.87
+
+SAM with Feature 2
+
+Base
+
+SA-1B
+
+98.06
+
+98.94
+
+90.71
+
+87.36
+
+75.82
+
+98.90
+
+SAM with Feature 3
+
+Base
+
+SA-1B
+
+98.06
+
+98.94
+
+90.90
+
+86.95
+
+74.99
+
+98.90
+
+SAM with Feature 4
+
+Base
+
+SA-1B
+
+98.06
+
+98.95
+
+89.84
+
+86.74
+
+74.57
+
+98.91
+
+SAM with Feature 5
+
+Base
+
+SA-1B
+
+98.06
+
+98.88
+
+90.28
+
+86.72
+
+74.59
+
+98.84
+
+SAM with the five features
+
+Base
+
+SA-1B
+
+98.06
+
+98.96
+
+91.44
+
+87.62
+
+76.32
+
+98.91
+
+SAM with the five features
+
+Large
+
+SA-1B
+
+99.03
+
+98.96
+
+91.91
+
+88.06
+
+77.18
+
+98.93
+
+SAM with the five features
+
+Huge
+
+SA-1B
+
+99.51
+
+98.97
+
+91.95
+
+88.08
+
+77.21
+
+98.94
+
+Notes: Referring to Table 2 for the feature number explanation.
+Figure 3 illustrates the results of ablation experiments that aim to reveal how the three SAM model
+types and the five domain knowledge features respectively contribute to calibrating landfill
+segmentation results. As observed in Lines 2~4 of Figure 3, when employing the ViT-Larger image
+encoder or ViT-Huge image encoder, wrong segmentation instances can be reduced, improving
+the overall segmentation accuracy. But this improvement is limited. Further improvement is
+observed when introducing domain knowledge features, as presented in Line 5 of Figure 3. For
+satellite image-based landfill segmentation, the false positive instance may stem from polluted
+inland water bodies, empty construction sites, and the like. Integrating the domain knowledgeinformed Features 1, 4, and 5 can significantly reduce false positive instances. While the false
+negative instance mostly originates from blurred landfill boundaries and significant differences in
+surface waste compositions. Features 2 and 3 can largely correct this kind of instance.
+
+16
+
+Figure 3. Ablation experiments of using distinct domain knowledge features and SAM
+segmentation models with different ViT types to calibrate SAM segmentation results
+In addition, previous studies indicated that land cover type has a more significant impact on
+satellite image-based landfill recognition than other factors, e.g., terrain type and waste
+composition type (Sun et al., 2023; Yong et al., 2023). A segmentation accuracy comparison
+between different land cover types was conducted to further understand the proposed approach’s
+performance, based on the test dataset. Finally, comparison analysis results indicated that the
+highest accuracy measured by mIoU occurs in forest land, while the lowest occurs in barren land;
+17
+
+nonetheless, their average accuracy gap is small (4.21%). This further reflects the superior
+generalizability of the proposed approach. Figure 4 exemplifies landfill detection results under
+different land cover types(areal extent is converted from the number of pixels).
+
+Figure 4. Example of landfill detection under different land cover types by the developed approach
+5.2 DeepLab V3+ model segmentation performance
+As shown in Table 4, this research also conducted experiments to investigate landfill recognition
+performance using DeepLab V3+ model variants, in order to compare with the latest study by
+Yong et al. (2023) and Lin et al. (2024), who achieved a high accuracy in recognizing landfill areas
+based on DeepLab V3+ models. Connecting to Table 3, it can be found that the recall of DeepLab
+V3+ (95.63% to 98.54%) is basically lower than that of SAM (98.06% to 99.51%). This means
+that SAM has a better performance in detecting the presence of landfills. Similarly, according to
+Tables 3 and 4, the OA, mAcc, IoU, and mIoU of DeepLab V3+ also tend to be lower than the
+counterparts of SAM, meaning that SAM performs better in segmenting landfill instances from
+satellite images. Such results further demonstrate that SAM is a better pre-trained model choice
+for developing our global landfill recognition approach.
+
+18
+
+Table 4. Performance of the four DeepLab V3+ model variants in recognizing landfills
+Model
+
+Backbone
+
+Presence detection
+
+Pretrained
+
+Output
+
+dataset
+
+stride
+
+Recall (%)
+
+Segmentation for landfill extent
+OA
+
+mAcc
+
+mIoU
+
+Per-class IoU (%)
+
+(%)
+
+(%)
+
+(%)
+
+Landfill
+
+Others
+
+DeepLab V3+
+
+Xception
+
+PASCAL VOC
+
+8
+
+95.63
+
+98.09
+
+86.45
+
+78.22
+
+58.39
+
+98.05
+
+DeepLab V3+
+
+Xception
+
+PASCAL VOC
+
+16
+
+98.06
+
+97.60
+
+89.12
+
+76.06
+
+54.59
+
+97.52
+
+DeepLab V3+
+
+MobileNet
+
+PASCAL VOC
+
+8
+
+98.54
+
+97.82
+
+89.20
+
+77.40
+
+57.05
+
+97.76
+
+DeepLab V3+
+
+MobileNet
+
+PASCAL VOC
+
+16
+
+98.06
+
+98.17
+
+83.73
+
+77.75
+
+57.37
+
+98.12
+
+5.3 Comparison analysis
+Compared to existing methods, the new approach shows multiple strengths. In terms of identifying
+the existence of landfill sites, Sun et al. (2023) achieved a recall of 98.0% at the global scale, which
+represents the highest recall performance among existing landfill identification methods. The
+second-highest recall is 85.6%, achieved by Yong et al. (2023) at the urban scale. In comparison,
+our approach reaches a recall of 99.51% at the global scale, a little higher than Sun’s approach,
+demonstrating that in terms of detecting the presence of landfills, our approach performs better
+than existing approaches.
+As for landfill object segmentation, the method developed by Gao et al. (2022) achieved a mIoU
+of 93.8% on the neighbouring scale, which is the highest mIoU among existing studies. The mIoU
+of our approach is 88.08%, which is high if compared with most existing studies (See Table 1).
+Despite a lower mIoU than Gao’s method, our approach focuses on a far larger spatial scale, i.e.,
+the global scale. Achieving a high segmentation accuracy at the global scale is far more challenging
+than at the neighboring scale, and in general, expanding the spatial scale will unavoidably reduce
+segmentation accuracy. A piece of indirect evidence is that Gao et al. achieved a mIoU of 85.24%
+and 79.12% by using DeepLab V3+, with an output stride of 16 and MobileNet and Xception as
+the backbone, respectively; however, according to Table 4, the corresponding mIoU decreases to
+77.75% and 76.06% respectively, when the spatial scale increases to the globe.
+Furthermore, Yong et al. (2023) reached a landfill image segmentation IoU of 74.6% at the city
+scale. By comparison, the newly proposed approach has a higher IoU (77.21%), meaning that the
+new approach is more accurate than Yong’s method in segmenting landfill instances from remote
+sensing images. Lin et al. (2024) achieved a higher IoU (82.08%) than our study; however, their
+19
+
+work focused only on the district scale. The IoU might largely decrease when expanding the
+application scope from the district level to the global level, as indicated in Table 4.
+6. Discussions
+6.1 Applicability of the developed approach
+In the experiment, the trained model did not show a significant segmentation accuracy difference
+between distinct countries, demonstrating that the developed approach has a superior global
+applicability. The newly developed approach has multiple application scenarios. For example, it
+provides an efficient and cost-saving solution to trace uncatalogued landfills, supporting
+urban/regional/national landfill database creation. This is particularly important for landfill-related
+environmental management (Gill et al., 2019). Also, given that the approach was developed based
+on a diversified landfill sample dataset, it has the potential to automatically detect
+illegal/unauthorized landfills around the world. Such a detection task has been recognized as a
+major concern by the environmental protection departments of many governments (Quesada-Ruiz
+et al., 2019). According to the report by Watkins (2015), most European countries are affected by
+the presence of illegal landfills within their territory, and the total number of illegal landfilling and
+dumping events in the European Union reached 12,628 at the end of December 2014, involving
+around 2,871,186 tonnes of waste. The approach can also be used for global landfill mapping,
+which contributes fundamental data to further investigation, such as health risk assessment of
+residents near landfills, analysis of land occupation by waste landfilling, and landfill evolutionbased waste recycling level inversion.
+The proposed approach enables practitioners from environmental protection agencies and other
+institutions to automatically conduct large-scale landfill detection. The full automation of the
+detection process and the increasing availability of high-resolution satellite images facilitate the
+integration the approach into existing environmental monitoring systems. Compared to traditional
+methods for landfill detection in local areas, the scalable and accurate approach is cost-effective
+through global stratified sampling and domain knowledge integration. Using a workstation
+equipped with two Intel Xeon Gold 6226R (16-core) CPUs, 192 GB RAM, and an NVIDIA
+RTX6000 GPU (24 GB memory), the approach—based on SAM with the ViT-Base model—
+processes each image sample for segmentation in every 1.84 seconds. Nevertheless, when applied
+20
+
+to global landfill mapping with over 8.4 million satellite images (each covering 16 km²), the
+method remains relatively inefficient. To reduce processing time, parallel computing across
+multiple supercomputers can be applied in the future.
+6.2 Research contributions
+The major theoretical contribution of this research is in going beyond existing landfill recognition
+studies from three perspectives. Firstly, unlike previous studies concentrating mainly on
+neighbourhood and city scales, this work expands the spatial scale of landfill recognition to the
+globe, ensuring that the developed approach is more generalizable to different regions than existing
+approaches. Secondly, previous studies focused mainly on detecting the presence of landfills,
+which was treated as a binary classification problem. In contrast, this research delves further into
+extracting the areal extent of in-use landfills. This can not only inform us of the existence of
+landfills, but also provide more comprehensive information by giving the area information of inuse landfills. Thirdly, differing from existing studies that only harness the features extracted from
+remote sensing data to identify and segment landfill objects, this study innovatively integrates
+domain knowledge into the deep image learning process to enhance landfill recognition.
+Experimental results demonstrate that this strategy improves global landfill recognition accuracy
+and efficiency.
+There are three main aspects to the practical significance of this study. First, the approach can be
+used to recognize landfills in various regions, assisting the public sector in automatic landfill
+inventory and monitoring. Second, with superior generalizability, the approach can be applied to
+the automatic detection of illegal landfills, thereby providing data support for illegal dumping
+governance. Like the data availability challenge faced by most computer vision application
+research (Khan et al., 2024; Li et al., 2024), illegal landfill detection is also limited by the
+availability of sufficient samples. Last, the approach can be utilized to map global landfills,
+producing the first comprehensive and reliable global landfill database to support further research
+and practice.
+
+21
+
+6.3 Shortcomings and recommendations
+The major limitation of this research is that the domain knowledge-enhanced satellite image
+segmentation approach may be incapable of recognizing small waste dumpsites. As shown in
+Figure 2, the approach input is the satellite image with a size of 2000×2000 pixels (covering
+around 16 km2 in reality), and the image size selection was based on the balance of multiple factors.
+Within such a satellite image, open-air landfills with a size of hundreds of square meters (generally
+termed “waste dumpsites”) will not be very clear, reducing the approach’s effectiveness in real
+world; moreover, these small dumpsite might be camouflaged or covered intentionally, further
+increasing recognition difficulty. Nonetheless, this kind of dumpsite accounts for only a small
+share of the global landfill community. Meanwhile, if necessary, the methodological architecture
+of the domain knowledge-enhanced satellite image segmentation approach can be easily
+generalized to address this issue, based on proper model retraining using a certain number of
+dumpsite images.
+7. Conclusions
+Focusing on the landfill detection and monitoring challenge faced by the public sector, this
+research proposed a domain knowledge-augmented satellite image segmentation approach to
+accurately recognize the presence and areal extent of landfill sites around the world. To this end,
+1,380 landfills with distinct societal, geographical, topographical, and morphological
+characteristics were sampled from different countries around the world; then, their satellite images
+with a resolution of 2m were extracted and annotated to establish a landfill image dataset, which
+was utilized to fine-tune deep image learning models for accurately segmenting landfill instances
+from images. Three variants of the pre-trained SAM model and four variants of the pre-trained
+DeepLab V3+ model were selected as the backbone model and cross-compared in experiments,
+while five features defined based on landfill-related domain knowledge was incorporated to
+calibrate model segmentation results, thereby improving the recognition accuracy of global
+landfills.
+Experimental results indicated that the five domain knowledge-informed features have a
+significant contribution to improve deep learning model-based landfill segmentation. Basically,
+the developed approach, based on the SAM model with ViT-Huge image encoder and augmenting
+22
+
+by domain knowledge, reaches a recall of 99.51% in detecting the presence of landfills, while
+achieving an OA of 98.97%, mAcc of 91.95%, mIoU of 88.08%, and IoU of 77.21% in segmenting
+landfill instances from satellite images. This approach goes beyond existing landfill detection
+methods by expanding the spatial scale to the globe, focusing on both landfill presence detection
+and area extraction, and incorporating domain knowledge to achieve higher accurate landfill
+recognition. The developed approach can be applied to automate landfill cataloguing, detect illegal
+and uncatalogued landfills, and map global landfills. Future research is recommended to apply the
+approach for extracting landfills in different regions and to develop global landfill map databases
+for supporting further landfill management research.
+Acknowledgement
+This research is supported by the Research Grants Council (RGC) General Research Fund (GRF)
+2024-25 (Project No.: 17202224) of the Hong Kong government.
+Data availability
+Data and codes will be made available on request. The code can be found in the GitHub repository
+(https://github.com/Lanny107/Global-Landfill-Recognition.git).
+References
+Aslam, B., Maqsoom, A., Tahir, M. D., Ullah, F., Rehman, M. S. U., & Albattah, M. (2022).
+Identifying and ranking landfill sites for municipal solid waste management: An integrated
+remote sensing and GIS approach. Buildings, 12(5), 605.
+Auckland Council. (2024). Consented Cleanfill or Non Cleanfill Sites in New Zealand. Retrieved
+11
+March
+2024
+from
+https://www.aucklandcouncil.govt.nz/building-andconsents/resource-consents/types-resource-consents/earthworks/Documents/consentedlandfills.pdf
+Azmi, M. Z. M., Sharom, M., Numpang, W., Jamil, M., Yahaya, K., Muazah, S., Zin, M., Abd, C.,
+& Sipit, R. (2022). Landfill Identification Through High-Resolution Satellite Images and
+Verification Using Drone Full Motion Video (FMV). ASM Sci. J, 17(7), 1-7.
+Chen, L.-C., Zhu, Y., Papandreou, G., Schroff, F., & Adam, H. (2018). Encoder-decoder with
+atrous separable convolution for semantic image segmentation. Proceedings of the
+European conference on computer vision (ECCV 2018), Munich, Germany.
+Chen, Y.-C., Chen, K.-S., & Wu, C.-H. (2003). Numerical simulation of gas flow around a passive
+vent in a sanitary landfill. Journal of Hazardous Materials, 100(1-3), 39-52.
+Crawford, J. F., & Smith, P. G. (2016). Landfill technology (3rd ed.). Elsevier.
+CSAIL. (2023). LabelMe--The open annotation tool. Retrieved 12 December 2023 from
+http://labelme2.csail.mit.edu/Release3.0/index.php?message=1
+23
+
+Dash, T., Chitlangia, S., Ahuja, A., & Srinivasan, A. (2022). A review of some techniques for
+inclusion of domain-knowledge into deep neural networks. Scientific reports, 12(1), 1040.
+Đidelija, M., Kulo, N., Mulahusić, A., Tuno, N., & Topoljak, J. (2022). Segmentation scale
+parameter influence on the accuracy of detecting illegal landfills on satellite imagery. A
+case study for Novo Sarajevo. Ecological Informatics, 70, 101755.
+Djokanović, S., Abolmasov, B., & Jevremović, D. (2016). GIS application for landfill site
+selection: a case study in Pančevo, Serbia. Bulletin of Engineering Geology and the
+Environment, 75, 1273-1299.
+Dong, L., Yuan, L., Guo, H., & Lau, S. S.-Y. (2025). Calibration of building material intensities
+by bill of quantity (BoQ): A China study. Resources, conservation and recycling, 219,
+108316.
+EPA of Victoria. (2020). Landfill monitoring and audits. Retrieved 10 March 2024 from
+https://www.epa.vic.gov.au/for-business/find-a-topic/landfill-guidance/landfillmonitoring-and-audits
+European Union, E. U. (2018). Council Directive 1999/31/EC on the landfill of waste. Retrieved
+10
+December
+2023
+from
+https://eur-lex.europa.eu/legalcontent/EN/TXT/?uri=CELEX%3A01999L0031-20240804
+Feng, M., Sexton, J. O., Channan, S., & Townshend, J. R. (2016). A global, high-resolution (30m) inland water body dataset for 2000: First results of a topographic–spectral classification
+algorithm. International Journal of Digital Earth, 9(2), 113-133.
+Frändegård, P., Krook, J., Svensson, N., & Eklund, M. (2013). A novel approach for environmental
+evaluation of landfill mining. Journal of Cleaner Production, 55, 24-34.
+Gao, S., Liu, Y., Cao, S., Chen, Q., Du, M., Zhang, D., Jia, J., & Zou, W. (2022). IUNet-IF:
+identification of construction waste using unmanned aerial vehicle remote sensing and
+multi-layer deep learning methods. International Journal of Remote Sensing, 43(19-24),
+7181-7212.
+Gill, J., Faisal, K., Shaker, A., & Yan, W. Y. (2019). Detection of waste dumping locations in
+landfill using multi-temporal Landsat thermal images. Waste Management & Research,
+37(4), 386-393.
+Graupman, M., Vikesland, P. J., Bolyard, S. C., Brazil, B., Mondal, P. P., Bezbaruah, A. N., Rusch,
+K. A., Caro, D., & Iskander, S. M. (2023). Evaluating the Ecological Footprint of Landfills:
+A Framework and Case Study of Fargo, North Dakota. Environmental science &
+technology, 57(50), 21113-21123.
+Incekara, A. H., Delen, A., Seker, D. Z., & Goksel, C. (2019). Investigating the utility potential of
+low-cost unmanned aerial vehicles in the temporal monitoring of a landfill. ISPRS
+international journal of geo-information, 8(1), 22.
+Jones, H. K., & Elgy, J. (1994). Remote sensing to assess landfill gas migration. Waste
+Management & Research, 12(4), 327-337.
+Karimi, N., Ng, K. T. W., & Richter, A. (2022). Development and application of an analytical
+framework for mapping probable illegal dumping sites using nighttime light imagery and
+various remote sensing indices. Waste management, 143, 195-205.
+Karimi, N., Richter, A., & Ng, K. T. W. (2020). Siting and ranking municipal landfill sites in
+regional scale using nighttime satellite imagery. Journal of environmental management,
+256, 109942.
+
+24
+
+Khan, H., Ullah, I., Shabaz, M., Omer, M. F., Usman, M. T., Guellil, M. S., & Koo, J. (2024).
+Visionary vigilance: Optimized YOLOV8 for fallen person detection with large-scale
+benchmark dataset. Image and Vision Computing, 149, 105195.
+Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S.,
+Berg, A. C., & Lo, W.-Y. (2023). Segment anything. Proceedings of the IEEE/CVF
+International Conference on Computer Vision, Paris, France.
+Klein, I., Gessner, U., Dietz, A. J., & Kuenzer, C. (2017). Global WaterPack–A 250 m resolution
+dataset revealing the daily dynamics of global inland water bodies. Remote Sensing of
+Environment, 198, 345-362.
+Li, M., Yeh, A. G., & Xue, F. (2024). CIM-WV: A 2D semantic segmentation dataset of rich
+window view contents in high-rise, high-density Hong Kong based on photorealistic city
+information models. Urban Informatics, 3(1), 12.
+Limoli, A., Garzia, E., De Pretto, A., & De Muri, C. (2019). Illegal landfill in Italy (EU)—a
+multidisciplinary approach. Environmental Forensics, 20(1), 26-38.
+Lin, S., Huang, L., Liu, X., Chen, G., & Fu, Z. (2024). A construction waste landfill dataset of two
+districts in Beijing, China from high resolution satellite images. Scientific data, 11(1), 388.
+Lin, T.-Y., Goyal, P., Girshick, R., He, K., & Dollár, P. (2017). Focal loss for dense object
+detection. Proceedings of the IEEE international conference on computer vision,
+Lohr, S. L. (2021). Sampling: design and analysis (3rd ed.). Chapman and Hall/CRC.
+MacArthur, E. (2013). Towards the circular economy. Journal of Industrial Ecology, 2(1), 23-44.
+Mahmood, K., Batool, A., Faizi, F., Chaudhry, M. N., Ul-Haq, Z., Rana, A. D., & Tariq, S. (2017).
+Bio-thermal effects of open dumps on surroundings detected by remote sensing—Influence
+of geographical conditions. Ecological Indicators, 82, 131-142.
+Mahmood, K., Batool, S. A., & Chaudhry, M. N. (2016). Studying bio-thermal effects at and
+around MSW dumps using Satellite Remote Sensing and GIS. Waste management, 55,
+118-128.
+Manzo, C., Mei, A., Zampetti, E., Bassani, C., Paciucci, L., & Manetti, P. (2017). Top-down
+approach from satellite to terrestrial rover application for environmental monitoring of
+landfills. Science of The Total Environment, 584, 1333-1348.
+Massa, R., Fondevila, G., Gutiérrez-Meave, R., & Bonilla Alguera, G. (2023). Clandestine
+Dumpsites and Crime in Mexico City: Revisiting the Broken Windows Theory. Crime &
+Delinquency, 00111287231186083.
+MathWorks. (2024). Strel: Morphological structuring element. Retrieved 22 December 2024 from
+https://uk.mathworks.com/help/images/ref/strel.html
+Meegoda, J. N., Hettiarachchi, H., & Hettiaratchi, P. (2016). Landfill design and operation.
+Sustainable Solid Waste Management, 577-604.
+Muwaieh, A.-R. (2015). Jordan's Fourth National Communication to the United Nations
+Framework Convention on Climate Change. Retrieved 10 March 2024 from
+https://www.moenv.gov.jo/ebv4.0/root_storage/ar/eb_list_page/jordans_4th_national_co
+mmunication_report.pdf
+Nanda, S., & Berruti, F. (2021). Municipal solid waste management and landfilling technologies:
+a review. Environmental chemistry letters, 19(2), 1433-1456.
+Quesada-Ruiz, L. C., Rodriguez-Galiano, V., & Jordá-Borrell, R. (2019). Characterization and
+mapping of illegal landfill potential occurrence in the Canary Islands. Waste management,
+85, 506-518.
+
+25
+
+Quesada-Ruiz, L. C., Rodriguez-Galiano, V. F., Zurita-Milla, R., & Izquierdo-Verdiguier, E.
+(2022). Area and Feature Guided Regularised Random Forest: a novel method for
+predictive modelling of binary phenomena. The case of illegal landfill in Canary Island.
+International Journal of Geographical Information Science, 36(12), 2473-2495.
+Rahman, M. A., & Wang, Y. (2016). Optimizing intersection-over-union in deep neural networks
+for image segmentation. International symposium on visual computing, Las Vegas.
+Rezaeisabzevar, Y., Bazargan, A., & Zohourian, B. (2020). Landfill site selection using multi
+criteria decision making: Influential factors for comparing locations. Journal of
+Environmental Sciences, 93, 170-184.
+Rubel, F., Brugger, K., Haslinger, K., & Auer, I. (2017). The climate of the European Alps: Shift
+of very high resolution Köppen-Geiger climate zones 1800–2100. Meteorologische
+Zeitschrift, 26(2), 115-125.
+Salleh, J. B., & Tsudagawa, M. (2002). Classification of industrial disposal illegal dumping site
+images by using spatial and spectral information together. IMTC/2002. Proceedings of the
+19th IEEE Instrumentation and Measurement Technology Conference (IEEE Cat. No.
+00CH37276),
+Silvestri, S., & Omri, M. (2008). A method for the remote sensing identification of uncontrolled
+landfills: formulation and validation. International Journal of Remote Sensing, 29(4), 975989.
+Sudre, C. H., Li, W., Vercauteren, T., Ourselin, S., & Jorge Cardoso, M. (2017). Generalised dice
+overlap as a deep learning loss function for highly unbalanced segmentations. International
+Workshop on Deep Learning in Medical Image Analysis,
+Sun, X., Yin, D., Qin, F., Yu, H., Lu, W., Yao, F., He, Q., Huang, X., Yan, Z., & Wang, P. (2023).
+Revealing influencing factors on global waste distribution via deep-learning based
+dumpsite detection from satellite imagery. Nature Communications, 14(1), 1444.
+USEPA. (2023). Requirements for Municipal Solid Waste Landfills. Retrieved 10 March 2024
+from https://www.epa.gov/landfills/requirements-municipal-solid-waste-landfills-mswlfs
+USEPA. (2024). LMOP Landfill and Project Database. Retrieved 10 March 2024 from
+https://www.epa.gov/lmop/lmop-landfill-and-project-database
+Valjavec, M. B. (2014). Detection of former landfills in gravel plain using geomorphometric
+analysis and High-Resolution LiDAR DTM. Acta geographica Slovenica, 54(1), 21–4021–40.
+Vambol, S., Vambol, V., Sundararajan, M., & Ansari, I. (2019). The nature and detection of
+unauthorized waste dump sites using remote sensing. Ecological Questions, 30(3), 43-55.
+Warith, M. (2003). Solid waste management: new trends in landfill design. Emirates Journal for
+Engineering Research, 8(1), 61-70.
+Watkins, E. (2015). A case study on illegal localized pollution incidents in the EU: A study
+compiled as part of the EFFACE project. Retrieved 10 September 2024 from
+https://efface.eu/sites/default/files/EFFACE_Illegal%20localised%20pollution%20incide
+nts%20in%20the%20EU/index.pdf
+World Bank. (2016). Trends in Solid Waste Management. Retrieved August 20, 2023 from
+https://datatopics.worldbank.org/what-a-waste/trends_in_solid_waste_management.html
+Wyard, C., Beaumont, B., Grippa, T., Georganos, S., & Hallot, E. (2021). UAVs for Fine-Scale
+Open-Source Landfill Mapping. 2021 IEEE International Geoscience and Remote Sensing
+Symposium IGARSS,
+
+26
+
+Xie, X., Niu, J., Liu, X., Chen, Z., Tang, S., & Yu, S. (2021). A survey on incorporating domain
+knowledge into deep learning for medical image analysis. Medical Image Analysis, 69,
+101985.
+Ya, X., Jingcai, L., Lu, D., Yuqiang, L., Weishi, L., Changxing, N., & Qifei, H. (2019). Buffering
+distance between hazardous waste landfill and water supply wells in a shallow aquifer.
+Journal of Cleaner Production, 211, 1180-1189.
+Yalana, L., Yuhuana, R., Aihua, W., & Huizhen, Z. (2008). Identifying the location and
+distribution of the open-air dumps of solid wastes using remote sensing technique. Red,
+630(690), 32.
+Yamazaki, D., Trigg, M. A., & Ikeshima, D. (2015). Development of a global~ 90 m water body
+map using multi-temporal Landsat images. Remote Sensing of Environment, 171, 337-351.
+Yan, W. Y., Mahendrarajah, P., Shaker, A., Faisal, K., Luong, R., & Al-Ahmad, M. (2014).
+Analysis of multi-temporal landsat satellite images for monitoring land surface temperature
+of municipal solid waste disposal sites. Environmental monitoring and assessment, 186,
+8161-8173.
+Yong, Q., Wu, H., Wang, J., Chen, R., Yu, B., Zuo, J., & Du, L. (2023). Automatic identification
+of illegal construction and demolition waste landfills: A computer vision approach. Waste
+management, 172, 267-277.
+Yuan, L., Yang, B., Lu, W., & Peng, Z. (2024). Carbon footprint accounting across the
+construction waste lifecycle: A critical review of research. Environmental Impact
+Assessment Review, 107, 107551.
+Zhang, C., Liu, L., Cui, Y., Huang, G., Lin, W., Yang, Y., & Hu, Y. (2023). A comprehensive
+survey on segment anything model for vision and beyond. arXiv preprint
+arXiv:2305.08196.
+Zhang, C., Zhou, L., Du, M., Yang, K., & Luo, T. (2022). A cross-channel multi-scale gated fusion
+network for recognizing construction and demolition waste from high-resolution remote
+sensing images. International Journal of Remote Sensing, 43(12), 4541-4568.
+Zhou, D., Fang, J., Song, X., Guan, C., Yin, J., Dai, Y., & Yang, R. (2019). Iou Loss for 2D/3D
+Object Detection. The 2019 international conference on 3D vision, Québec, Canada.
+
+27
+
+

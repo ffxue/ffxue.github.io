@@ -1,0 +1,582 @@
+Efficient assessment of window views
+in high-rise, high-density urban areas
+using 3D color City Information Models
+
+Maosu Li, Fan Xue, Anthony G.O. Yeh
+Faculty of Architecture, HKU
+18th International Conference on Computational Urban Planning and
+1
+Urban Management (CUPUM 2023), 20-22 June, Montreal, Canada
+
+Maosu Li
+
+Scan me.
+👈👈
+
+Final-year PhD Candidate,
+Depart of Urban Planning and Design,
+The University of Hong Kong.
+
+Supervisors:
+Prof. Anthony Gar On Yeh, Department of
+Urban Planning and Design;
+Dr. Fan Xue, Department of Real Estate
+and Construction.
+Research interest:
+Create automatic decision support methods
+and tools  quantify urban semantics
+through 3D City Information Modeling,
+Machine Learning, and Data Analytics 
+smarter urban planning and urban
+management.
+
+Human-perceived ① Openness
+Objective
+
+Feature
+
+Distance
+
+…
+
+Structure
+
+…
+
+Window view
+Step 1：Discovery and initial representation
+Step 2：Fine-scale modeling
+Step 3：Accuracy and efficiency
+2
+
+CONTENT
+
+1
+
+Introduction
+
+2
+
+Research methods
+
+3
+
+Initial results
+
+4
+
+Summary
+
+3
+
+1
+
+Introduction
+
+2
+
+Research methods
+
+3
+
+Initial results
+
+4
+
+Summary
+
+4
+
+1.1 Background
+ A high-quality window view,
+• with more greenery, sky, waterbody, and fewer construction elements
+• treasured by urban dwellers especially in high-rise, high-density (HRHD) urban areas
+*
+
+*
+
+*
+
+Stress
+relief
+
+Living
+satisfaction
+
+Recognized benefits
+
+Productivity
+improvement
+
+*
+
+Increasingly long-term indoor occupation
+
+Note: * (Source: flaticon.com)
+
+5
+
+1.1 Background
+ Assessment of window views,
+quantified evidence for multiple urban applications
+ However, window views are numerous especially in HRHD areas,
+ change in large numbers with the vertical development of neighborhoods
+*
+
+*
+
+*
+
+So many views to be assessed
+
+Both manual and automatic methods
+Thus, both efficient and accurate assessment of window views
+• Can aid housing property agencies, architectural designers, and urban planners
+Need
+plenty of resources!
+• Significant
+advancing
+the window
+view assessment for urban-scale
+applications
+Housing
+selection inBuilding
+space
+Built environment
+and valuation
+
+planning
+
+improvement
+
+Should I still do it?
+
+Note: * (Source: flaticon.com)
+
+Urban-scale window view
+assessment
+
+(Source: wallpaperflare.com)
+
+6
+
+1.2 Literature review
+ Window view assessment: Manual measurement and Simulation
+Method type
+
+Example
+
+Field
+
+Status
+
+Problem
+
+Manual
+measurement
+
+ Onsite photo
+collection
+
+ Psychology
+ Built environment
+ Architectural design
+
+High cost and laborious
+
+Unscalable to the
+urban scale
+
+Simulation
+
+ Visibility
+analysis
+
+Still shows “preference” for
+oversimplified models (Fig. 1)
+
+Inaccurate
+
+ Urban planning and
+design
+ Geographic
+Thus, next generation
+of assessment
+methods Information
+ Model
+view
+System
+photography
+
+Embrace 3D photorealistic City
+Models (CIMs) (Fig. 2)
+ improve the processing efficiency for an accurate Information
+quantification,
+
+More accurate but
+inefficient
+
+Supporting
+urban-scale
+assessment models
+and update of window view
+Fig. indices.
+2 Model view photography
+Fig. 1
+Traditional
+visibility
+analysis: Oversimplified
+Simulated
+
+(Cimburova and Blumentrath. 2022)
+
+(S.M. Labib et al. 2021)
+
+Real
+
+a) High burden of texture image
+loading and rendering
+
+(Li, M. et al. 2021; 2022; 2023)
+
+b) Repetitive 2D segmentation
+7
+
+1
+
+Introduction
+
+2
+
+Research methods
+
+3
+
+Initial results
+
+4
+
+Summary
+
+8
+
+2.1 Workflow of the proposed method
+ Input: Four datasets
+ Methods: 3D semantic segmentation + model view photography + color pixel counting
+ Output: Four Window View Indices (WVIs)
+• greenery, waterbody, sky, and construction.
+
+9
+
+2.2 Definition of WVIs
+ WVIs: Defined as a ratio ranging from 0 to 1 on an 8-bit RGB color view image
+• Extension of definition defined on a 3D photorealistic scene (Li et al. 2022).
+3D photorealistic scene
+
+Waterbody
+(Water)
+Construction
+(Const.)
+
+8-bit RGB color
+window view image c
+
+Greenery
+(Green)
+
+WVIl (Li et al.’s (2022) method)
+3D color scene
+Eq. 1
+WVIgreen
+
+WVIwater
+
+WVIsky
+
+WVIconst
+
+WVIl = |{p| p∈c, m(pcolor) = l}| ∕ n, l ∈L,
+
+L= {‘greenery’, ‘waterbody’, ‘sky’, ‘const.’},
+
+(1)
+
+3D scene colored by L
+10
+
+2.3 3D semantic segmentation of CIM for a 3D color scene
+ 3D semantic segmentation: KPConv (Thomas et al. 2019) and A priori-based rules
+ 3D scene color setting
+3D semantic segmentation of photorealistic mesh models
+
+3D semantic segmentation of DSM using NDVI
+
+Eq. 2
+
+KPConv
+
+Greenery
+Const.
+
+Eq. 3
+
+Waterbody
+
+Eq. 3
+
+Greenery
+
+Waterbody
+
+Const.
+
+Eq. 2
+
+RGB (0,255,0), l = greenery,
+RGB (0,0,255), l = waterbody,
+color(vl ) = �
+RGB (255,255,255), l = sky,
+RGB (255,0,0), l = construction,
+
+greenery, NDVIpg ≥ 0.1,
+lpg = �construction, 0 ≤ NDVIpg ≤ 0.1,
+waterbody, NDVIpg = no data,
+Greenery
+
+Waterbody
+
+Sky
+
+Const.
+11
+
+2.4 Batch computation of WVIs using color view images
+ Two-step computation process
+• Window view generation in the 3D color scene
+• Color pixel counting for WVIs
+3D color scene
+from Section 2.3
+
+Color pixel counting for WVIs
+
+Batch generation of color
+window view images
+1
+
+3
+4
+
+③
+
+②
+④
+
+Li et al. (2022)
+
+2
+
+①
+
+Greenery19,359 pixels
+Waterbody22,280 pixels
+sky 381,661 pixels
+const.  386,700 pixels
+
+greenery, pcolor = RGB (0,255,0),
+waterbody, pcolor = RGB (0,0,255),
+m(pcolor) = �
+sky, pcolor = RGB (255,255,255),
+construction, pcolor = RGB (255,0,0).
+
+Eq.1
+
+WVIgreen
+
+0.0239
+
+WVIwater
+
+0.0275
+
+WVIsky
+
+0.4712
+
+WVIconst
+
+0.4774
+
+(3)
+
+12
+
+1
+
+Introduction
+
+2
+
+Research methods
+
+3
+
+Initial results
+
+4
+
+Summary
+
+13
+
+3.1 Experimental settings
+ Using 100 random window views from 207 buildings in To Kwa Wan, Kowloon Peninsula of Hong Kong
+ To test the feasibility of the proposed method.
+Dataset
+3D photorealistic mesh models and annotations
+(Lands Department, 2017; Li et al. 2023)
+
+Building information models
+(Urban Renewal Authority, 2022)
+
+Digital surface model
+(Lands Department, 2020)
+
+NDVI map
+(B. Morgan and B. Guénard, 2019)
+
+Software
+3D segmentation of CIM
+KPConv (Thomas et al. 2019) for photorealistic mesh
+ArcGIS Pro (2.9.0) for DSM
+
+Batch computation of WVIs
+Cesium (1.99),
+Python (ver. 3.7.11)
+
+Baseline method (Li et al. 2022)
+Deeplab V3+ (Chen et al. 2018),
+Orange 3 (ver. 3.26)
+
+Deep learning environment
+Docker - Ubuntu (ver. 18.04.5), Python
+(ver. 3.7.11), Pytorch (ver. 1.10.0)
+
+Workstation
+
+100 photorealistic views and color views
+
+Intel i9-11900K CPU (3.50 GHz, 16 cores)
+
+64 GB memory
+
+24G Nvidia GeForce RTX 3090 graphic card
+
+Windows 10 operating system
+14
+
+3.2 Accuracy and efficiency
+ Comparison with Li et al.’s (2022) 2D segmentation method, the proposed 3D segmentation method:
+
+
+
+Accuracy  RMSE < 0.01; Improvement: 76.26%;
+Efficiency  Total < 0.6 s; Improvement: 73%.
+
+Li et al.’s (2022) 2D method
+
+Models without preparation and
+rendering of textures
+
+① Models with textures
+
+②
+More accurate
+2D Segmentation
+segmentation results
+
+Our 3D segmentation method
+
+WVIs
+
+Pixel counting
+
+WVIs
+
+Only pixel counting
+
+15
+
+1
+
+Introduction
+
+2
+
+Research methods
+
+3
+
+Initial results
+
+4
+
+Summary
+
+16
+
+4 Summary
+ This study proposes a both efficient and accurate window view assessment method
+• Using 3D semantic segmentation and 3D color CIM
+
+ Significance
+• Improvement of the accuracy and efficiency
+• For urban-scale quantification and update of four WVIs
+• RMSE < 0.01 and 3.68 times faster
+
+• Advancing urban-scale planning, design, and real estate applications to use quantified WVIs
+• Urban planners and architectural designers in urban planning and design
+• Housing purchasers, renters, property agencies in real estate market
+
+ Limitation
+• A full 3D color scene needed for assessing four WVIs
+• Small-scale quantification may not afford the large-scale but one-off preprocessing cost
+
+• Batch quantification of window views regardless of the similarity
+• Window view pattern mining for a more efficient assessment
+
+17
+
+References
+ Chen, L. C., Zhu, Y., Papandreou, G., Schroff, F., & Adam, H. (2018). Encoder-decoder with atrous separable convolution for semantic image
+segmentation. In Proceedings of the European conference on computer vision (ECCV) (pp. 801-818).
+ Cimburova, Z., & Blumentrath, S. (2022). Viewshed-based modelling of visual exposure to urban greenery–An efficient GIS tool for practical
+planning applications. Landscape and Urban Planning, 222, 104395.
+ HKLandsD. (2017). 3D Visualization Map. Hong Kong: Lands Department, Government of Hong Kong SAR.
+ HKLandsD. (2020). Digital Surface Model from 2020 LiDAR Survey. Hong Kong: Lands Department, Government of Hong Kong SAR.
+ HKURA. (2022). 3D Intelligent Map of an area in To Kwa Wan. Hong Kong: Urban Renewal Authority.
+ Labib, S. M., Huck, J. J., & Lindley, S. (2021). Modelling and mapping eye-level greenness visibility exposure using multi-source data at high
+spatial resolutions. Science of the Total Environment, 755, 143050.
+ Li, M., Xue, F., Yeh, A. G., & Lu, W. (2021). Classification of photo-realistic 3D window views in a high-density city: The case of Hong Kong. In
+Proceedings of the 25th International Symposium on Advancement of Construction Management and Real Estate (pp. 1339-1350). Springer
+Singapore.
+ Li, M., Xue, F., Wu, Y. & Yeh, A. G. (2022). A room with a view: Automated assessment of window views for high-rise high-density areas using City
+Information Models and transfer deep learning. Landscape and Urban Planning, 226, 104505. doi:10.1016/j.landurbplan.2022.104505
+ Li, M., Xue, F., & Yeh, A. G. (2023). Bi-objective analytics of 3D visual-physical nature exposures in high-rise high-density cities for landscape and
+urban planning. Landscape and Urban Planning, 233, 104714.
+ Morgan, B., & Guénard, B. (2019). New 30 m resolution Hong Kong climate, vegetation, and topography rasters indicate greater spatial variation
+than global grids within an urban mosaic. Earth System Science Data, 11(3), 1083-1098.
+ Thomas, H., Qi, C. R., Deschaud, J. E., Marcotegui, B., Goulette, F., & Guibas, L. J. (2019). Kpconv: Flexible and deformable convolution for point
+clouds. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6411-6420).
+18
+
+Thank you for your attention!
+Scan me.
+👈👈
+
+Li Maosu, PhD. Candidate
+Dept. of Urban Planning and Design, HKU
+maosulee@connect.hku.hk
+
+19
+
+

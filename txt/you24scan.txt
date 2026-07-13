@@ -1,0 +1,335 @@
+A Scan-to-BIM Automation Paradigm for Digital Transformation in
+the AEC Industry
+Ke You*, Fan Xue, Zhe Chen, Sou-Han Chen,
+This is the authors’ version of the paper:
+You, K., Xue, F., Chen, Z. & Chen, S.-H. (2025). A Scan-to-BIM Automation
+Paradigm for Digital Transformation in the AEC Industry. Proceedings of the
+29th International Symposium on Advancement of Construction Management
+and Real Estate, Springer, in press.
+This file is shared for personal and academic use only, under the license CC
+BY-NC-ND 4.0 (Non-Commercial, No Derivatives, and with an Attributed citation
+when you use). The final published version of this paper can be found at:
+[LINK_TO_SPRINGERLINK]. Any uses other than personal and academic purposes must
+obtain appropriate permissions from Springer first.
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong;
+e-mail: youke@hku.hk; xuef@hku.hk; cz77@connect.hku.hk; hankchen@connect.hku.hk
+
+Abstract
+Building information modeling (BIM) plays the central role in the digital transformation of the
+architecture, engineering, and construction (AEC) industry. As-built BIM plays a vital role in
+quality control, construction progress tracking, and infrastructure maintenance. Scan-to-BIM is an
+effective way to obtain accurate as-built BIM. Although Scan-to-BIM is a current research hotspot,
+it still faces challenges such as low efficiency and limited applicability. To address these gaps, this
+study proposes a Scan-to-BIM automation system (SBASE). SBASE integrates a large-scale
+data-driven deep learning method to obtain semantic information of 3D point clouds and perform
+instance segmentation. BIM can be automatically generated through model matching and
+parametric modeling. SBASE effectively combines rule-based and learning-based methods to
+improve the accuracy and generalizability of the model. Tests were conducted on real building
+facilities in Hong Kong to verify the reliability of SBASE. The results show that our proposed
+method can be effectively applied to unstructured building scenarios and contribute to the
+development of digitalization in the AEC industry.
+
+Keywords: Building Information Modeling (BIM); Scan-to-BIM; semantic segmentation; Point
+clouds.
+
+1 Introduction
+The digital transformation of the architecture, engineering, and construction (AEC) industry
+is a key development direction for smart construction. Building Information Modeling (BIM) is an
+important part of this change and plays a key role in quality control, construction progress
+tracking, and infrastructure maintenance [1,2]. However, in actual construction, changes in the
+assembly process or construction deviations may lead to substantial differences between the
+design BIM and the as-built BIM in the project. The existence of such differences brings
+additional costs and potential safety risks to maintenance during the building operation phase.
+Therefore, accurate and comprehensive as-built BIM is needed to effectively support the
+development of the AEC industry.
+Traditional methods of collecting as-built BIM require a lot of manual involvement, which is
+a tedious and time-consuming task. Considering the rising labor costs, and driven by technological
+advancement and the growing demand for efficiency, this paradigm shift has led to the rapid
+development of scan-to-BIM technology. The process of scan-to-BIM involves measuring and
+reconstructing the existing state of a building to obtain its functional and physical characteristics
+[3]. The process relies on the use of light detection and ranging (LiDAR) to obtain
+millimeter-level three-dimensional (3D) point cloud data (PCD), combined with other advanced
+technologies such as deep learning to capture the geometric and semantic information of the
+building environment. Scan-to-BIM can also achieve efficient management of the entire life cycle
+of a building project through real-time updating and integration of field data. Although
+scan-to-BIM has been widely used in the AEC industry, it still faces the challenge of low
+automation and still requires a lot of manual intervention in the modeling process, making it
+difficult to exert its advantages in some specific scenarios [2,3].
+This research proposes a scan-to-BIM automation system (SBASE) to address the challenges
+faced by existing research. SBASE uses data-driven deep learning technology to perform semantic
+segmentation and instance segmentation on 3D point clouds [4], thereby accurately and efficiently
+representing the site environment. SBASE integrates model matching and parametric modeling to
+achieve automatic construction of BIM models. By combining rule-based and learning-based
+methods, SBASE not only improves the accuracy of the generated model, but also enhances its
+generalization performance in various building scenarios.
+The structure of this research is as follows: Section 2 presents a literature review on
+scan2BIM and related advanced algorithms. Section 3 introduces the process and technical details
+of the proposed SBASE method. Section 4 analyzes the results of a case study and provides a
+discussion. Finally, Section 5 concludes the paper and offers future perspectives.
+
+2 Literature review
+2.1 Rule-Based Method
+The semantic information of 3D point clouds is necessary for the automated scan-to-BIM
+process. General architectural elements (AEs) are typically composed of parts with regular shapes,
+such as walls, floors, columns, and beams. Therefore, we can identify and extract target objects
+
+based on the geometric and spatial information of the 3D point clouds through algorithms. Based
+on the generalized random sample consensus (RANSAC), Schnabel et al. [5] implemented the
+detection of various 3D shapes, including spheres, cylinders, and cones. Methods based on
+centerlines [6] can employ 2D Hough transformations on sliced point clouds to identify pipes with
+predetermined dimensions. Sectional analysis can effectively detect mechanical, electrical, and
+plumbing (MEP) components [2]. Slicing methods and Gaussian spheres can be used to determine
+the primary direction of cylinders [7,8]. Despite the progress made in the aforementioned studies,
+the algorithms have limitations in identifying capabilities for some complex building structures,
+such as bends and T-shaped cross-sections.
+
+2.2 Deep learning-based semantic segmentation
+Traditional Scan-to-BIM approach necessitates significant manual labor in data processing,
+resulting in evident drawbacks such as low efficiency and high cost. The development of GPUs
+has facilitated the increasingly widespread application of deep learning-based semantic
+segmentation in practice. Charles et al. proposed PointNet [9], which can apply deep learning
+methods to process point cloud data. The global features extracted by PointNet can accomplish
+classification tasks effectively, but its local feature extraction capability is relatively weak, making
+it difficult to analyze complex scenes. PointNet++ [10] introduced a multi-level feature extraction
+structure, which can effectively address the issue of uneven point cloud density. F-PointNet [11]
+expanded the application of PointNet to 3D object detection, combining image information to
+obtain a prior search range, thus enhancing efficiency and accuracy.
+By leveraging contrastive learning and scene context information, the annotation work can be
+reduced and efficient learning of 3D point cloud data can be achieved [12,13]. One challenge
+faced by deep learning-based 3D point cloud semantic segmentation is the limited generalization
+capability of pre-trained models. When using a pre-trained model in an unknown scene, it is
+difficult for the model to meet performance requirements without retraining or fine-tuning [14].
+The complexity of scenes poses challenges for the automation of the scan-to-BIM process.
+
+3 Methodology
+The SBASE method proposed in this study effectively overcomes the limitations of
+conventional techniques, enhancing the automation level of Scan-to-BIM processes. Building
+upon semantic segmentation of 3D point cloud models, SBASE automatically generates BIM
+models of AEs, such as walls, floors, columns, and beams. For detailed BIM objects such as doors,
+windows, lighting, and Heating, Ventilation and Air Conditioning (HVAC), and furniture, instance
+segmentation serves as a foundation for matching these elements with BIM targets in a model
+library, ultimately generating interior BIM models. We have developed functional modules within
+Revit and the BlenderBIM plugin to facilitate improved user interaction experiences.
+
+3.1 Overall pipeline of SBASE
+The overall pipeline of the SBASE is illustrated in Figure 1. The process begins with the
+preprocessing of the acquired PCD. After applying noise reduction techniques and other
+
+operations to enhance data quality, the resulting dataset is used as the input for the system. We
+conduct semantic segmentation on the input data in step 1.1, which can realize auto-detection of
+groups based on point semantics and generating statistical information of individual objects.
+
+Figure 1. The overall pipeline of SBASE.
+
+Step 1.2 focuses on identifying general AEs, including walls, floors, columns, and beams.
+This step involves filtering target objects and using object snapping to efficiently reconstruct
+building elements. The accuracy and reliability of general AEs are ensured by incorporating user
+input. Step 1.3 focuses primarily on the automation of detailed BIM object creation. The main
+goal of this phase is to automatically place “m” scanned objects in “n” BIM families, thereby
+simplifying the model generation process. In terms of software features and tools, the SBASE
+plugin provides strong support for commercial and open source BIM/CIM platforms, making it a
+universal solution for a variety of building and construction projects.
+
+3.2 Algorithms and Data Flow
+The proposed SBASE method combines spatial voxel-based room partitioning and Mask 3D
+for semantic segmentation, as shown in Fig. 2. To ensure the relevance and effectiveness of the
+algorithm in the local context, we prepared a training dataset specifically based on the needs of the
+Hong Kong building landscape. This includes the utilization of resources such as the Construction
+Industry Council (CIC) Public BIM Library, which includes a comprehensive collection of BIM
+families and types relevant to the region. By leveraging this tailored approach, our segmentation
+method can improve the accuracy and applicability of BIM models, ultimately contributing to
+improving the efficiency and reliability of the building planning and construction process.
+
+Figure 2. Algorithms and data flow.
+
+To identify general AEs, we implement plane/cylinder detection based on RANSAC. By
+iteratively selecting random subsets of data points and fitting a geometric model, RANSAC is able
+to identify and distinguish various building elements in the point cloud, ultimately helping to
+generate accurate and reliable BIM models. We employ rule-based checks to ensure consistency
+with established architectural principles. Our approach follows the codes of building practice set
+by various departments. This compliance ensures that the generated BIM model meets the
+necessary legal and safety requirements and meets the highest industry standards.
+We implemented affine transformation optimization for automatic fitting of BIM objects and
+frequent BIM object indexing. Cross-section and visual structural measurement (VSM) point
+object matching are used to associate 3D structures with predefined objects in the BIM model
+library, improving the accuracy of the model. Affine transformation optimization enables
+automatic fitting of BIM objects by rotating, scaling, and translating objects, reducing manual
+intervention and error rates. Frequent BIM object indexing improves query efficiency by sorting
+and indexing objects in the BIM model library.
+
+4 Experimentation and Result
+We developed a web interface for SBASE, which integrates functions such as user
+registration and project progress preview. This user-friendly interface enables seamless interaction
+between users and the system, facilitating efficient management of BIM projects, as shown in Fig.
+3. In order to evaluate the effectiveness of the proposed SBASE method, we conducted practical
+tests and analysis based on real-world scenarios. PCD was collected within an office building in
+Hong Kong using a laser scanner, ensuring comprehensive coverage by setting up multiple
+stations at different locations. Subsequently, we registered the PCD and applied the proximity
+principle to fuse the acquired point clouds from various settings, ultimately generating a complete
+model of the office space.
+
+Figure 3. The web interface for SBASE.
+
+4.1 Case study
+Figure 4 showcases the typical example results obtained using the SBASE method. For
+generic architectural elements, we employed RANSAC and rule-based checking to accurately
+derive BIM models of walls, floors, columns, and beams. By performing instance segmentation on
+the basis of 3D point clouds, we were able to swiftly and accurately obtain point clouds of object
+elements such as tables, chairs, and sofas. By matching the frequent BIM objects from the CIC
+and local objects with the point cloud models, we were able to obtain BIM models for different
+object instances. The results indicate that the Auto place by SBASE method achieved a precision
+of 0.8, recall of 0.857, and an F1 score of 0.828.
+
+Figure 4. Results obtained by SBASE.
+
+4.2 Discussion
+We conducted a comparative analysis of different mainstream commercial software solutions
+and our proposed SBASE, as shown in Figure 5. In this context, PCD pre-processing refers to the
+file transfer process. The processing time for general AEs encompasses several stages, including
+room allocations and matching, measurement and deciding family type, placement of BIM
+families for walls and floors, and placement of BIM families for columns and beams. For detailed
+BIM objects, the processing time includes measurement and deciding family type, finding similar
+BIM families, creating new BIM families, and placing BIM families.
+
+Figure 5. Comparative analysis of processing time.
+
+The results demonstrate that the processing time required by the SBASE method is
+significantly shorter compared to its competitors, with time savings of 59.9% and 42.1%,
+respectively. The comparative analysis between SBASE and other commercial software solutions
+reveals the advantages of the proposed method in streamlining the BIM process and reducing
+processing time. This highlights the superiority of the proposed method in terms of efficiency and
+effectiveness.
+
+5 Conclusion
+The proposed SBASE method in this study is capable of integrating the advantages of both
+rule-based and learning-based methods, enhancing the level of automation in the scan-to-BIM
+process. The integration of a large-scale data-driven deep learning approach for semantic
+segmentation and instance segmentation of 3D point clouds within SBASE has shown to enhance
+both model accuracy and robustness. Tests on real-world building facilities in Hong Kong have
+demonstrated that SBASE, when compared to existing commercial software, achieves a notable
+improvement in time efficiency within architectural scenarios. Therefore, the proposed method
+holds substantial potential to contribute to the ongoing digitalization of the AEC industry. It is
+anticipated that future research and developments in scan-to-BIM will continue to leverage the
+advancements in deep learning techniques, further improving the accuracy, efficiency, and
+application of scan-to-BIM in the AEC industry.
+
+Acknowledgement
+This study was supported by Innovation and Technology Commission (ITC) (No.
+ITP/004/23LP).
+
+References
+[1]
+
+Li, X., Lu, W.S., Xue, F., Wu, L.P.F., Zhao, R., Lou, J.F., Xu, J.Y.
+
+(2022).
+
+Blockchain-Enabled IoT-BIM Platform for Supply Chain Management in Modular
+Construction, Journal of Construction Engineering and Management 148 (2), 18.
+[2]
+
+Bosché, F., Ahmed, M., Turkan, Y., Haas, C.T., Haas, R.
+
+(2015). The value of integrating
+
+Scan-to-BIM and Scan-vs-BIM techniques for construction monitoring using laser scanning
+and BIM: The case of cylindrical MEP components, Automation in Construction 49 201-213.
+[3]
+
+Murali, S., Speciale, P., Oswald, M.R., Pollefeys, M., Indoor Scan2BIM: Building Information
+Models of House Interiors,
+
+IEEE/RSJ International Conference on Intelligent Robots and
+
+Systems (IROS), Ieee, Vancouver, CANADA, 2017, pp. 6126-6133.
+[4]
+
+Chen, S.H., Xue, F.
+
+(2023). Automatic BIM detailing using deep features of 3D views,
+
+Automation in Construction 148 11.
+[5]
+
+Schnabel, R., Wahl, R., Klein, R.
+
+(2007). Efficient RANSAC for point-cloud shape detection,
+
+Computer Graphics Forum 26 (2), 214-226.
+[6]
+
+Ahmed, M.F., Haas, C.T., Haas, R.
+
+(2014). Automatic Detection of Cylindrical Objects in
+
+Built Facilities, Journal of Computing in Civil Engineering 28 (3), 11.
+[7]
+
+Qiu, R.Q., Zhou, Q.Y., Neumann, U., Pipe-Run Extraction and Reconstruction from Point
+Clouds,
+
+13th European Conference on Computer Vision (ECCV), Vol. 8691, Springer
+
+International Publishing Ag, Zurich, SWITZERLAND, 2014, pp. 17-30.
+[8]
+
+Tran, T.T., Cao, V.T., Laurendeau, D.
+
+(2015). Extraction of cylinders and estimation of their
+
+parameters from point clouds, Computers & Graphics-Uk 46 345-357.
+[9]
+
+Qi, C.R., Su, H., Mo, K., Guibas, L.J., Pointnet: Deep learning on point sets for 3d
+classification and segmentation,
+
+Proceedings of the IEEE conference on computer vision
+
+and pattern recognition, 2017, pp. 652-660.
+[10]
+
+Qi, C.R., Yi, L., Su, H., Guibas, L.J., PointNet plus plus : Deep Hierarchical Feature Learning
+on Point Sets in a Metric Space,
+
+31st Annual Conference on Neural Information Processing
+
+Systems (NIPS), Vol. 30, Neural Information Processing Systems (Nips), Long Beach, CA,
+2017.
+[11]
+
+Qi, C.R., Liu, W., Wu, C.X., Su, H., Guibas, L.J., Ieee, Frustum PointNets for 3D Object
+Detection from RGB-D Data,
+
+31st IEEE/CVF Conference on Computer Vision and Pattern
+
+Recognition (CVPR), Ieee, Salt Lake City, UT, 2018, pp. 918-927.
+[12]
+
+Hou, J., Graham, B., Niesner, M., Xie, S.N., Ieee Comp, S.O.C., Exploring Data-Efficient 3D
+Scene Understanding with Contrastive Scene Contexts,
+
+IEEE/CVF Conference on Computer
+
+Vision and Pattern Recognition (CVPR), Ieee Computer Soc, Electr Network, 2021, pp.
+15582-15592.
+[13]
+
+Hu, Q.Y., Yang, B., Fang, G.C., Guo, Y.L., Leonardis, A., Trigoni, N., Markham, A., SQN:
+Weakly-Supervised Semantic Segmentation of Large-Scale 3D Point Clouds,
+
+17th European
+
+Conference on Computer Vision (ECCV), Vol. 13687, Springer International Publishing Ag,
+
+Tel Aviv, ISRAEL, 2022, pp. 600-619.
+[14]
+
+Wang, B.Y., Chen, Z.Y., Li, M.K., Wang, Q., Yin, C., Cheng, J.C.P.
+
+(2024).
+
+Omni-Scan2BIM: A ready-to-use Scan2BIM approach based on vision foundation models for
+MEP scenes, Automation in Construction 162 18.
+
+

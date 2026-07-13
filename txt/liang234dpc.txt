@@ -1,0 +1,868 @@
+4D POINT CLOUD (4DPC)-DRIVEN REAL-TIME MONITORING OF CONSTRUCTION
+MOBILE CRANES
+Dong Liang1, Zhe Chen1, Lingming Kong1, Yijie Wu1, Sou-Han Chen1, and Fan Xue1
+1
+The University of Hong Kong, Hong Kong SAR, China
+This is the post-print version of the paper:
+Liang, D., Chen, Z., Kong, L., Wu, Y., Chen, S.-H., & Xue, F. (2023). 4D point cloud (4DPC)driven real-time monitoring of construction mobile cranes. In Proceedings of 2023 European
+Conference on Computing in Construction cum the 40th International CIB W78 Conference, 258.
+Heraklion, Crete, Greece. Doi: https://doi.org/10.35490/EC3.2023.258
+
+This file is released under the CC-BY NC 4.0 license, any other use of this file must seek for
+prior permission approval by the authors.
+
+Abstract
+Mobile cranes are essential equipment in construction
+sites due to their high flexibility and mobility. However,
+the existing sensing or monitoring methods have
+limitations in monitoring mobile cranes on sites.
+Recently, the advent of 4D point cloud (4DPC)
+technology with a unique spatial-temporal data structure
+has shown potential in addressing these issues. In this
+paper, we present a 4DPC monitoring approach, which
+includes a set of prototype devices and a rule-based object
+detection method. We conducted a proof-of-concept test
+to monitor the hoisting process of two H-beams in a
+footbridge construction project. The rule-based object
+detection method successfully detected the target beams
+in the collected six-hour 4DPC data. In the future, we
+expect more efficient and robust 4DPC sensing devices
+and processing methods for proactive crane motion
+prediction and optimization in a time-dynamic site
+environment.
+
+1 Introduction
+Cranes are critical equipment for hoisting and
+transporting heavy objects in the construction industry. In
+recent years, numerous efforts have been made to
+monitoring methods for crane-related activities in both
+academia and industry. The first reason is safety, because
+crane lifting is complex and risky on construction sites.
+Cheng and Teizer (2011) found that many crane-related
+safety incidents are associated with restricted visibility,
+e.g., sight occlusion, poor weather, or lighting conditions.
+Crane-related accidents usually cause casualties and
+significant economic losses, so extra measures must be
+taken. In addition, monitoring data could be visualized to
+help operators reduce workload and improve work
+efficiency, and the construction time is thus reduced.
+Productivity assessment may be another reason for the
+necessity of crane-related activities monitoring. Based on
+the assessment result, further optimization work could be
+done for the productivity improvement of the cranerelated construction process.
+
+There are two common types of cranes, i.e., mobile cranes
+and tower cranes. The most significant difference between
+them is that one is mobile, and the other one is not. Due
+to its fixed location and working range, monitoring or
+sensing devices are constantly installed on the tower
+crane. However, most existing monitoring methods are
+challenging to implement on mobile cranes. Potential
+reasons are the high mobility and flexibility of the mobile
+crane. Therefore, how to achieve practical and convenient
+monitoring for mobile cranes is still an unresolved issue.
+With increasing focus on-site safety of the construction
+industry and the emerging demand of digital construction
+sites, developing a practical monitoring approach for
+mobile cranes has become increasingly necessary and
+urgent. In order to improve the situation, some
+technologies, e.g., CCTV camera (Fang, et al., 2018)s and
+IoT devices (Mijwil, et al., 2023), that are used in other
+monitoring scenarios, are tried for monitoring or tracking
+objects for the mobile crane during the lifting process.
+However, the feasibility is not high for most methods. For
+example, CCTV cameras, the most widely used tool to
+monitor activities in construction sites, always lack depth
+information, making it challenging to accurately capture
+objects’ spatial position (Chen, et al., 2017). In addition,
+quantization errors are widely reported to be the
+shortcoming of conventional image-based video due to its
+grid-based geometric representation. Sensitivity to light
+conditions and the difficulty of multi-source data fusion
+also make it unsuitable for monitoring mobile crane in
+various complex environments. Second, IoT devices are
+other type of tools for sensing objects on sites. IoT devices
+are easy to locate, but various errors are widely reported.
+Meanwhile, IoT devices cannot achieve dynamic detail
+detection, such as rotation, which are significant for some
+tracking purposes. Extra installation procedures for each
+object will decrease productivity and increase risk, and
+using many IoT devices would increase the cost. In
+addition, the interaction of tracked objects and dynamic
+environment cannot be easily reflected. Thirdly, the
+Depth-RGB camera is also often reported to monitor or
+
+track objects in sites potentially, but its short detection
+distance restricts its application in outdoor scenarios.
+Point clouds, a three-dimensional collection of data points
+or coordinates, provide a new data form to produce highquality 3D reconstructions of the world (e.g.
+reconstructing building information model in construction
+site (Chen & Xue, 2023)). They provide more information
+than two-dimensional pictures and are insensitive to light.
+However, point clouds always refer to 3D point clouds
+and the application of 3D point clouds is limited in
+capturing some static objects due to only spatial
+information contained in the data (Mirzaei, et al., 2022).
+The advent of the 4D point cloud, consisting of three
+dimensions and time information, has expanded the
+application of the point cloud into a dynamic world (Silva,
+et al., 2022). 4D point cloud (4DPC), a form of time-series
+3D point clouds, is a rich data source demonstrating how
+objects move against the background. 4DPC has unique
+advantages against other motion tracking technologies,
+e.g., various Internet of Things (IoT) and AI cameras
+(Liang & Xue, 2022):
+a) Real-time environment (including objects and
+background) updating
+b) Highly precise geometry updates
+c) Higher adaptability in poor visibility
+environments
+d) Innate localization and mapping information
+e) Innate capability of multi-/many-device data
+fusion to eliminate visual blind spots
+f) Lower
+cost,
+minimal
+infrastructure
+requirements, lower carbon footprints
+g) Remote, non-destructive sensing
+4DPC is a novel enabling data source that facilitates
+precise 4D motion tracking. In contrast to conventional
+camera/IoT, our methods have three characteristics:
+i.
+High-definition 4D motion data (cm-s-level
+accuracy);
+ii.
+Precise depth information in a far range (up to
+500m);
+iii.
+Simultaneous motion tracking of multiple
+objects; and
+iv.
+Low cost of devices and easy operating.
+
+2 Related works
+
+Their primary purpose is to improve the efficiency and
+safety of crane operations and reduce operator workload.
+As listed in Table 1, this study reviews related to research,
+and the purpose, contribution, research focus, target crane
+type, methodology, and limitation are summarized. The
+research generally has three types of goals, i.e. crane pose
+estimation (Zhang, et al., 2012; Lee, et al., 2012; Zhong,
+et al., 2014; Yang, et al., 2014; Roberts, et al., 2017), load
+sway and rotation estimation (Fang, et al., 2018; Fang, et
+al., 2016; Chian, et al., 2022), and object detection in
+workspace (Li, et al., 2013; Chen, et al., 2017). Although
+both crane monitoring and object detection are
+investigated to help operators operate the crane in blind
+areas in the study by Price et al. (2021), the two functions
+are relatively separated and not well integrated into a
+system.
+Meanwhile, two types of sensing methods, i.e., sensorbased and vision-based, are used in these studies. For the
+former, different sensors are serving for different sensing
+goals. In specific, the UWB system, consisting of several
+sensors and multiple tags, is used to estimate the crane
+pose in the study by Zhang et al. (Zhang, et al., 2012), but
+it is not practical due to various errors from different
+sources and too many sensors required for full coverage
+of activity range. Li et al. try to use GPS and RFID to
+obtain positioning data of both site workers and the crane,
+and using multiple tags and receivers decreases its
+practicality. Zhong et al. (Zhong, et al., 2014) combined a
+Wireless Sensor Network (WSN) and the Internet of
+Things (IoT) to monitor the status of tower crane groups
+to avoid collisions, but the interactions of tower cranes
+with environment are not considered. Fang et al. (2016)
+use a series of encoder and IMU sensors to monitor the
+load object and visualize in the virtual platform. Except
+for extensive use of sensors, another problem is the
+dynamic change of the environment cannot be reflected
+by a limited number of sensors. For the latter, CCTV
+cameras or UAV camera are used to estimate crane pose
+(Lee, et al., 2012; Yang, et al., 2014; Roberts, et al., 2017),
+monitor load (Fang, et al., 2018) (Chian, et al., 2022), and
+detect object (Chen, et al., 2017). The common limitation
+stems from the data, such as not containing depth
+information or sensitivity to lighting conditions and color.
+In addition to shared drawbacks, UAV's endurance,
+stability, and safety are also criticized.
+
+2.1 Crane monitoring
+In past research, numerous efforts have been put into
+developing computer-aided crane monitoring systems.
+
+Table 1 Summarization of related literature
+
+Purpose and contribution
+
+Research focus
+
+Develop a UWB-based
+system to track crane
+boom movement, and
+estimate crane pose near
+
+crane pose
+estimation
+
+Sensing method Crane type
+UWB
+
+Mobile
+crane
+
+Limitation
+
+Source
+
+1) the installation space and device cost
+of several sensors and multiple tags
+would be a problem
+
+(Zhang, et
+al., 2012)
+
+real-time for collision
+avoidance
+
+Develop a tower crane
+navigation system to help
+operators operate with
+blind spots
+
+2) the accuracy in an ideal environment
+(open space) is 10cm, and it may be
+worse in unordered sites
+3) trajectory estimation is relatively
+rough since it is based on linear
+interpolation extrapolation of only two
+points
+crane pose
+estimation
+
+Video camera
+&
+sensors
+
+Identify unauthorized
+work or entrance of
+personnel within a predefined risk zone
+
+object detection in
+the workspace
+
+GPS
+&
+RFID
+
+Develop a Safety
+Management System to
+monitor the status of
+tower crane groups and
+avoid collisions
+
+crane pose
+estimation
+
+WSN
+&
+IoT
+
+Understand construction
+activity by tracking the
+pose of the tower crane
+
+crane pose
+estimation
+
+Video camera
+
+1) too many kinds of sensors increase
+the complexity of the proposed system
+2) virtual environment (BIM model)
+cannot BIM model cannot fully
+represent the as-is site condition
+
+(Lee, et al.,
+2012)
+
+Not limited 1) too many tags, receivers, and other
+units are used;
+to a
+specific 2) installation complexity and high cost
+would hinder its practical application;
+type of
+crane
+3) signal strength is also a possible issue
+
+(Li, et al.,
+2013)
+
+Tower
+crane
+
+Tower
+crane
+
+1) only the main body of the crane is
+considered, but the site situation is
+usually more complex
+
+Tower
+crane
+
+1) large range view needs to be
+covered, and the resolution of the object
+will become lower, so the recognition (Yang, et al.,
+accuracy will fluctuate due to many
+2014)
+factors, such as light condition
+2) the recognition result is general
+
+(Zhong, et
+al., 2014)
+
+Develop real-time proactive safety assistance
+for mobile crane
+lifting operations
+
+load sway and
+rotation estimation
+
+Encoder sensors
+&
+IMU sensor
+
+Mobile
+crane
+
+1) The pre-reconstructed site cannot
+reflect the dynamically changing site
+conditions
+2) A large number of sensors are
+required to sense the movement of the
+crane in real time
+
+Detect and Classify
+Cranes for monitoring
+crane-related safety
+hazards
+
+crane pose
+estimation
+
+UAV
+
+Tower
+crane
+
+1) The endurance and stability of drones (Roberts, et
+are obstacles to the practical application al., 2017)
+
+Mobile
+crane
+
+1) positioning accuracy (0.1-0.4m) in
+the ideal test environment is relatively
+high
+(Chen, et al.,
+2017)
+2) signal synchronization of camera and
+LiDAR is complicated, and the error is
+relatively large
+
+Update real-time 3D crane object detection in
+workspace
+the workspace
+
+Track crane load sway
+
+Detect workers near the
+crane load
+
+TLS
+&
+Video camera
+
+(Fang, et al.,
+2016)
+
+load sway and
+rotation estimation
+
+Not limited 1) only the 2D location of the load could
+to a
+be identified
+(Fang, et al.,
+specific
+Video camera
+2018)
+2)
+errors
+highly
+depend
+on
+the
+quality
+of
+type of
+the
+image
+crane
+
+crane pose
+estimation
+&
+load sway and
+rotation estimation
+
+1) sensor-part: positioning system has a
+high reliance on data from noisy
+encoders; large crane deflection
+caused by the load leads to errors
+(Price, et al.,
+2) vision-part: positioning errors are
+2021)
+widely reported during irregular lighting
+conditions and when the surrounding
+environment contains objects that have a
+similar color to the load
+
+Sensors,
+Camera,
+IMU,
+&
+TLS
+
+Tower
+crane
+
+Develop a novel method
+to detect
+and track the crane load
+fall zone
+
+load sway and
+rotation estimation
+
+Video camera
+
+Tower
+crane
+
+1) the estimation accuracy heavily relies
+on many factors, such as the quality of (Chian, et al.,
+2022)
+training data since it is based on deep
+learning
+
+#:UWB: Ultra Wideband; GPS: Global Positioning System; RFID: Radio-Frequency Identification; WSN: Wireless Sensor Network;
+
+IoT: Internet of Things; IMU: Inertial Measurement Unit; UAV: Unmanned Aerial Vehicle; TLS: Terrestrial Laser Scanners.
+
+In summary, existing sensor-based sensing methods in the
+literature showed the following drawbacks:
+1) Deploying and maintaining sensors in every
+object onsite is complex and time-consuming,
+which may affect productivity of the
+construction process;
+2) sensors are composed of many components
+susceptible to damage, and low reliability may
+hind its practice;
+3) many high-precision sensors are expensive, and
+the use of numerous sensors on-site may increase
+the cost;
+4) sensor technologies are sensitive to signal
+interference and may not adapt to the complex
+construction site with many existing physical
+obstacles (e.g., existing buildings and
+equipment);
+5) it is difficult for sensors to capture the whole
+environment with dynamical change, and hence
+the interaction between tracking objects with the
+existing site environment cannot be captured;
+6) Synchronization and visualization of multisource data increase the practice complexity of
+sensor technologies.
+Meanwhile, current vision-based sensing methods have
+other limitations:
+1) Depth information is not contained in 2D image,
+and hence vertical position information cannot
+be precisely captured;
+2) video errors caused by irregular lighting
+conditions and similar colors make it unreliable
+in daily use;
+3) 3D laser scanning by TLS only captures the site
+geometry at the time of scanning, and hence site
+condition cannot be dynamically reflected in
+real-time;
+4) Multi-angle view fusion has not been well
+resolved, which hinders its broad practice.
+2.2 4DPC
+Point clouds, a three-dimensional collection of data points
+or coordinates, provide more information than twodimensional pictures and are insensitive to light (Bhople
+et al., 2021). Conventional static point clouds have
+already been widely used in many research and industrial
+domains, such as surveying, electricity, construction, and
+industry, due to their excellent ability to represent our
+three-dimensional world. In the construction industry, the
+
+3D point cloud is currently used for various aims such as
+as-built building reconstruction and digital twin city (Wu,
+et al., 2021; Xue, et al., 2019; 2020). It should be noted
+that the applications of 3D point clouds are limited in
+capturing non-moving or assumingly non-moving
+objects.
+As a window into our ever-evolving 3D environment,
+4DPC are widely used in robotics and augmented reality
+systems. Point cloud sequences play an important role in
+understanding environmental changes and supporting
+interactions with the world that are difficult to describe
+with 2D images or static 3D point clouds due to their
+ability to record movements in physical space. In order to
+more accurately simulate the world, respond to changes in
+the environment, and interact with it, an intelligent agent
+must handle this kind of data with great precision.
+4DPC has gained popularity for some reasons. First, the
+ability to comprehend a changing 3D world is essential for
+robotic agents and various other applications. 4DPC has
+enabled many innovative studies, such as how a plant
+grows (Li, et al., 2013) and high-definition human
+motions (Fan, et al., 2021), as shown in Figure 1. In
+addition, various identification tasks, such as calculating
+a moving object's acceleration or identifying human
+activities, benefit from temporal data sequences longer
+than two frames (Fan, et al., 2021). 4D point cloud has
+also been widely utilized in robotic SLAM, autonomous
+driving, and video-assisted training of athletes.
+
+Figure 1 Example 4DPC-enabled studies. (a) how plant grows
+(Li, et al., 2013)—permission requesting, (b) high-definition
+human motions (Fan, et al., 2021)—permission requesting
+
+In contrast to grid-based RGB video, where points
+regularly emerge over time, point cloud video displays
+irregularities and lacks order along the spatial dimension.
+Therefore, numerous efforts have been engaged in
+processing the 4DPC data. Two existing methods, i.e.,
+
+voxelization-based (Choy, et al., 2019) and point-setbased, explored by many researchers to process 4DPC
+data.
+
+3 Case study
+3.1 Case description
+A pilot study was conducted on an infrastructure project
+in Hong Kong, as shown in Figure 4. The case project was
+the 3rd Sassoon Road footbridge project that links a new
+Campus building to the student residents across Sassoon
+Road. Two major steel tie-beams were hoisted and
+installed in the mid-night of 28 June 2022, and Figure 2
+shows the site condition before hoisting, the hoisting
+process of component 1, the completed status of the
+component 1 hoisting, and completed status of two
+components hoisting, respectively. This project uses a
+mobile crane since it is a temporary infrastructure project
+
+and the road is only temporarily closed for construction at
+night.
+The case project had characteristics and requirements in
+hoist efficiency, collision risk, and personnel safety. First,
+the process needs to be completed swiftly before dawn to
+resume day traffic from the temporary close of the road.
+As the most important and challenging work in this
+project, hoisting efficiency will directly affect the
+construction time. In addition, there were already building
+works on both sides of the road, and the facades are
+expensive glass curtain walls. A collision during the
+hoisting process will cause economic losses. Therefore,
+effective measures should be taken to reduce the potential
+collision risk. Furthermore, the workers working on other
+processes on-site may have entered the risky zone where
+the hoisted objects may fall due to negligence of steel
+beam at high height during the hoisting process.
+
+Figure 2 construction site condition of case study
+
+3.2 4DPC devices and setup
+To address the limitations mentioned in Sec. 2.1, this
+study proposes and validates a scheme that 4DPC
+technology is used to achieve the goal of monitoring all
+crane-related activities in real-time, including estimating
+crane pose, tracking load, and detecting objects on sites.
+To achieve that, a novel 4DPC sensing equipment for
+collecting high-definition 4D motion data from
+construction environments is developed in this study. The
+target spatial accuracy is cm-level, while the temporal
+accuracy is 0.5s-level. As shown in Figure 3(b), the device
+has four essential modules, i.e., (Ⅰ) Livox Mid-70 sensor,
+(Ⅱ) controller (Raspberry Pi 4), (Ⅲ) LED monitor, (Ⅳ)
+USB drive. The Livox Mid-70 has 70.4° circular fov, 5
+cm minimum detection range, and 2 cm range precision.
+Raspberry Pi 4 controller transmits 4DPC data to remote
+server via WiFi/4G/USB. The proof-to-concept test of the
+device is conducted in the pilot study. In order to cover
+the whole site, two LiDAR devices in Figure 3 (b) were
+installed on different locations, i.e., one is in the ground
+floor and the other is in the 4th floor (shown in Figure
+3(a)), to collect 6 hours of 4DPC data (format: lvx; size:
+80MB/min).
+
+Figure 3 (a) Installation illustration of 4DPC devices on site;
+(b) Components of our 4DPC device: (Ⅰ) Livox Mid sensor, (Ⅱ)
+controller (Raspberry Pi 4), (Ⅲ) LED monitor, (Ⅳ) USB drive
+
+3.3 Methods
+The most popular processing methods of 4DPC in existing
+research are based on deep learning. The impetus for this
+trend is mainly based on the large amount of data that can
+be collected. In this study, we only collected 1
+construction scenario; hence, deep learning is not
+applicable. Therefore, a rule-based object detection
+method on 4DPC data is proposed to monitor target
+
+components in real time effectively. As shown in Figure
+4, a cyclic processing workflow is determined:
+1) 4DPC data input: Each frame of data is input in
+chronological order;
+2) Background removal: using random sample
+consensus (RANSAC) algorithm (Schnabel, et
+al., 2007) is used to detect and delete plane of
+existing ground and walls
+3) Clustering:
+using DBSCAN clustering
+algorithm (Ester, et al., 1996) to cluster the
+remaining point cloud.
+4) First round match: judging whether the point
+cloud clustering results match the objects with
+known geometric dimensions. If all known
+components match, go to step 7. If not, continue
+to step 5.
+5) crop point cloud: using bounding box of
+previous frame to crop the whole point cloud
+
+(based on the assumption that there will be no
+large displacement of the member in a very short
+time-0.5s)
+6) Second round match: judging whether the crop
+result of point cloud match the objects with
+known geometric dimensions. If known
+components match, go to step 7. If not, the result
+of the previous frame will be assigned to the
+current frame (based on the assumption that
+there will be no large displacement of the
+member in a very short time-0.5s).
+7) Result saving: Saving related point cloud
+segmentation
+results
+and
+creating
+a
+corresponding bounding
+box for
+the
+corresponding component
+The program ends when all the time series data are
+processed.
+
+Figure 4 logic flow of rule-based detection method for time series 4DPC data
+
+3.4 Preliminary results and discussion
+As shown in Figure 5, the two steel beam components can
+be precisely detected in more than 95% of the time using
+the rule-based method described in Sect 3.3. The 4DPC
+data processing time per minute is within 1s.
+Figure 5(a), (b), (c), and (d) illustrate the motion detection
+result of two beams from two views at different times, and
+
+different typical statuses of beams, i.e., remaining on the
+transport vehicle, being placed on the ground, hoisting in
+the air, are all covered, or completing hoisting. However,
+there are also some time frames that beams cannot be
+tracked. Detailed analysis suggests the ineffective capture
+is that the point cloud data is too sparse or no data points
+exist due to small sensing area of components at specific
+
+view angles, long sensing distances, or some physical
+obstacles. These problems can be attributed to the limited
+number of 4DPC devices used in this pilot study and the
+low point cloud density provided by Livox. Increasing the
+number of LiDAR devices and using advanced LiDAR
+devices providing higher point cloud density would
+improve the robustness of 4DPC data. Obtaining the
+spatial-temporal information of beams will help further
+achieve a set of proactive motion prediction and
+optimization applications. In addition, it could facilitate
+the productivity assessment of mobile cranes, and future
+improvement may be based on these data records.
+3.4 Limitation
+While this study's proposed method effectively captures
+targeted objects, its rule-based approach is limited to the
+
+specific scenario in which it was tested. Therefore, future
+research is necessary to explore its actual deployment
+and extended application in different conditions.
+Furthermore, the rule-based method can only detect
+known objects since rules must be set with prior
+knowledge of components. Also, due to the angle of the
+equipment installation, the object cannot be fully
+scanned, which limits the reflection of the true detailed
+geometry of the component. Detailed modeling requires
+additional effort. Finally, it should be noted that the
+4DPC data collected from two devices was registered
+manually, which is a time-consuming process and
+hinders its application in mobile situations..
+
+Figure 5 typical detection result of 4DPC data
+
+4 Conclusion and future work
+This paper evaluated the existing studies focusing on
+sensing or monitoring crane-related activities, including
+estimating crane pose, tracking load, and detecting objects
+in workspace. Meanwhile, the limitation of sensor-based
+and vision-based sensing methods are analyzed and
+summarized. In order to overcome shortcoming of
+existing methods, a state-of-art 4DPC sensing and
+monitoring method is proposed. A rule-based object
+detection method is developed with two prototype devices
+of 4DPC sensing, and a proof-to-concept test was
+conducted on a footbridge construction project. In the
+pilot study, two 4DPC devices covered the whole
+construction site for 6 hours. The promising preliminary
+results suggested that target beam components were
+precisely captured in different statuses. The spatiotemporal data series obtained from the tracking results
+could generally satisfy the goal of monitoring load.
+
+There are three directions for future works. One is to
+develop more efficient and robust methods, such as some
+ML-based methods (Zhang, et al., 2019; Liang & Xue,
+2023), to match or detect objects from the collected data.
+Another is to explore a set of proactive motions prediction
+and optimization applications. The last is to integrate
+obtained spatial-temporal information of all objects and
+workers to achieve dynamic site management.
+
+Acknowledgement
+The work presented in this paper was supported by The
+Shenzhen Science and Technology Innovation
+Commission (SZSTI) (No. SGDX20201103093600002).
+
+Author Contributions
+Conceptualization, D.L. and F.X.; Methodology, D.L.;
+Software, W.Y.; Validation, Z.C., L.K. and S.C.; Formal
+Analysis, D.L.; Data Curation, F.X.; Writing – Original
+
+Draft Preparation, D.L.; Writing – Review & Editing,
+F.X.; Visualization, D.L. and F.X.; Supervision, F.X.;
+Funding Acquisition, F.X.
+
+References
+Cheng, T. & Teizer, J., 2011. Crane operator visibility of
+ground operations. Seoul, Korea, s.n., pp. 699-705.
+Chen, J., Fang, Y. & Cho, Y. K., 2017. Real-time 3D
+crane workspace update using a hybrid visualization
+approach. Journal of Computing in Civil Engineering,
+31(5), p. 04017049.
+Chen, S.-H. & Xue, F., 2023. Automatic BIM detailing
+using deep features of 3D views. Automation in
+Construction, Volume 148, p. 104780.
+Chian, E. Y. T., Goh, Y. M., Tian, J. & Guo, B. H., 2022.
+Dynamic identification of crane load fall zone: A
+computer vision approach. Safety Science, Volume
+156, p. 105904.
+Choy, C., Gwak, J. & Savarese, S., 2019. 4D spatiotemporal convnets: Minkowski convolutional neural
+networks. s.l., s.n., pp. 3075-3084.
+Ester, Kriegel, H.-P., Sander, J. & Xu, X., 1996. A
+density-based algorithm for discovering clusters in
+large spatial databases with noise. KDD, 96(34), pp.
+226-231.
+Fang, Y. et al., 2018. Vision-based load sway monitoring
+to improve crane safety in blind lifts. Journal of
+Structural Integrity and Maintenance, 3(4), pp. 233242.
+Fang, Y., Cho, Y. K. & Chen, J., 2016. A framework for
+real-time pro-active safety assistance for mobile crane
+lifting operations. Automation in Construction,
+Volume 72, pp. 367-379.
+Fan, H., Yang, Y. & Kankanhalli, M., 2021. Point 4d
+transformer networks for spatio-temporal modeling in
+point cloud videos. s.l., s.n., pp. 14204-14213.
+Lee, G. et al., 2012. A BIM- and sensor-based tower crane
+navigation system for blind lifts. Automation in
+Construction, Volume 26, pp. 1-10.
+Liang, D. & Xue, F., 2022. Applications of 4D Point
+Clouds (4DPC) in Digital Twin Construction: A
+SWOT Analysis. s.l., s.n., p. (in press).
+Liang, D. & Xue, F., 2023. Integrating automated
+machine learning and interpretability analysis in
+architecture, engineering and construction industry: A
+case of identifying failure modes of reinforced
+concrete shear walls. Computers in Industry, Volume
+147, p. 103883.
+Li, H., Chan, G. & Skitmore, M., 2013. Integrating real
+time positioning systems to improve blind lifting and
+loading crane operations. Construction Management
+and Economics, 31(6), pp. 596-605.
+Li, Y. et al., 2013. Analyzing growing plants from 4D
+point cloud data. ACM Transactions on Graphics,
+32(6), pp. 1-10.
+
+Mijwil, M. M., Hiran, K. K., Doshi, R. & Unogwu, O. J.,
+2023. Advancing Construction with IoT and RFID
+Technology in Civil Engineering: A Technology
+Review. Al-Salam Journal for Engineering and
+Technology, 2(2), pp. 54-62.
+Mirzaei, K. et al., 2022. 3D point cloud data processing
+with machine learning for construction and
+infrastructure applications: A comprehensive review.
+Advanced Engineering Informatics, Volume 51, p.
+101501.
+Price, L. C., Chen, J., Park, J. & Cho, Y. K., 2021.
+Multisensor-driven real-time crane monitoring system
+for blind lift operations: Lessons learned from a case
+study. Automation in Construction, Volume 124, p.
+103552.
+Roberts, D., Bretl, T. & Golparvar-Fard, M., 2017.
+Detecting and classifying cranes using cameraequipped UAVs for monitoring crane-related safety
+hazards. Seattle, Washington, s.n., pp. 442-449.
+Schnabel, R., Wah, R. & Klein, R., 2007. Efficient
+RANSAC for Point-Cloud Shape Detection.
+Computer graphics forum, 26(2), pp. 214-226.
+Silva, M. F. et al., 2022. 3D structural vibration
+identification from dynamic point clouds. Mechanical
+Systems and Signal Processing, Volume 166, p.
+108352.
+Wu, Y., Shang, J. & Xue, F., 2021. RegARD: Symmetrybased coarse registration of smartphone’s colorful
+point clouds with CAD drawings for low-cost Digital
+Twin Buildings. remote sensing, 13(10), p. 1882.
+Xue, F., Lu, W., Chen, K. & Webster, C. J., 2019. BIM
+reconstruction from 3D point clouds: A semantic
+registration approach based on multimodal
+optimization and architectural design knowledge.
+Advanced engineering informatics, Volume 42, p.
+100965.
+Xue, F., Lu, W., Chen, Z. & Webster, C. J., 2020. From
+LiDAR point cloud towards digital twin city:
+Clustering city objects based on Gestalt principles.
+ISPRS Journal of Photogrammetry and Remote
+Sensing, Volume 167, pp. 418-431.
+Yang, J., Vela, P., Teizer, J. & Shi, Z., 2014. VisionBased Tower Crane Tracking for Understanding
+Construction Activity. Journal of Computing in Civil
+Engineering, 28(1).
+Zhang, C., Hammad, A. & Rodriguez, S., 2012. Crane
+pose estimation using UWB real-time location system.
+Journal of Computing in Civil Engineering, 26(5), pp.
+625-637.
+Zhang, J., Zhao, X., Chen, Z. & Lu, Z., 2019. A review of
+deep learning-based semantic segmentation for point
+cloud.
+IEEE
+Access,
+Issue
+10.1109/access.2019.2958671 , pp. 179118-179133.
+Zhong, D., Lv, H., Han, J. & Wei, Q., 2014. A Practical
+Application Combining Wireless Sensor Networks
+and Internet of Things: Safety Management System
+
+for Tower Crane Groups. sensors, Volume 14, pp.
+13794-13814.
+
+

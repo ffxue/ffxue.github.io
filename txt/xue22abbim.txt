@@ -1,0 +1,1368 @@
+As-built building information modeling: joint effort of 3D
+reconstruction and semantic enrichment
+
+Fan Xue
+Assistant Professor, Dept. of Real Estate and Construction, The University of Hong Kong,
+China. ORCID: 0000-0003-2217-3693, e-mail: xuef@hku.hk
+This is the pre-print of the following Chapter:
+Xue, F. (2022). As-built building information modeling: joint effort of 3D
+reconstruction and semantic enrichment. In Lu W. & Anumba, C. (eds.) Research
+Companion to Building Information Modeling. Edward Elgar, in press.
+The final version is available at: https://www.e-elgar.com/shop/gbp/research-companionto-building-information-modeling-9781839105517.html . The use of this pre-print must
+follow the CC BY-NC ND License.
+
+5
+
+10
+
+Abstract
+As-built BIM represents a facility as actually constructed or as it currently exists. The
+information, such as actual geometry, current functions, and real topology, in as-built BIM is
+vital to construction research and smart city development. Two complementary classes of
+methods, i.e., digital 3D reconstruction and semantic enrichment, were applied, yet to
+consolidate, for as-built BIM creation in the literature. This paper presents a general
+framework that formulates the two classes as a joint effort. Two illustrative cases, one on
+outdoor rooftops and the other on indoor furniture, were employed to explain how the two
+streams of approaches can co-create as-built BIMs. Two future directions, i.e., digital twin
+building and blockchain BIM, are discussed. As a result, the semantically rich as-built BIM
+forges a shared construction information hub for smarter applications.
+Keywords
+As-built BIM; 3D reconstruction; semantic enrichment; digital twin; 3D point cloud
+
+15
+
+20
+
+25
+
+1. Introduction
+A building information model (BIM), also known as building information modeling, is the
+digital representation of physical and functional characteristics of a facility, according to the
+definition by the National BIM Standard of United States (NIBS, 2015). BIM acts as a shared
+information resource and knowledge base regarding the facility. Based on the information
+and knowledge shared, construction stakeholders are thereby able to have a reliable basis for
+decisions making (NIBS, 2015).
+
+Information is the keyword in BIM (Lu, Lai, & Tse, 2019). The as-built information is
+particularly vital to building research and smart city applications. Generally, there are two
+types of information (also known as semantics) contained in a BIM (Eastman, Teicholz,
+Sacks, & Liston, 2011; Belsky, Sacks, & Brilakis, 2016; Xue, Lu, & Chen, 2018).
+1
+
+30
+
+35
+
+40
+
+1) Regarding an individual construction component, e.g.:
+a. Geometric information, such as size, position, shape and textures; and
+b. Non-geometric information, such as type, specifications of material, and
+meanings of functions.
+2) Regarding relationships between components, such as dependency, topology, and
+joints.
+
+A BIM can be “blind” and “deaf” if it does not reflect the real situations of a construction
+(Chen, Lu, Peng, Rowlinson, & Huang, 2015). Furthermore, some critical information, such
+as actual building geometries, current functions, and real topology of facilities, are only
+embodied in as-built BIMs (Xiong, Adan, Akinci, & Huber, 2013; Pătrăucean, et al., 2015).
+Semantically rich as-built BIMs can enable many value-added applications, including facility
+management, building retrofitting and renovation, energy consumption simulation, indoor
+positioning, and augmented reality (AR). Otherwise, the inevitable design changes,
+inadvertent deviations or errors, and renovation work make an ‘as-designed’ BIM
+inappropriate for various applications. Only by reenergizing a BIM with the as-built (or as-is)
+information of actual and current situations, one can update the as-designed BIM to as-built
+BIM to reflect and represent the real facility (Pătrăucean, et al., 2015).
+
+45
+
+50
+
+55
+
+60
+
+However, the wide adoption of BIM in the architectural, engineering and construction
+(AECO) industry was very recent. Most constructions around the world do not have BIM
+representations; needless to say about the as-built information in BIM. In summary, there is a
+large gap between the need and the availability of as-built BIM for many existing
+constructions. An as-built BIM modeling is manually doable in a small scale, for example, in
+as-built modeling of one heritage building (Bruno, De Fino, & Fatiguso, 2018). Regarding
+the extreme number of buildings and irregular geometries in a larger context, e.g., a city,
+manual work is extremely tedious, time-consuming, and costly (Xue et al. 2020b).
+Researchers have thus endeavored to develop various automated (i.e., automatic or semiautomatic) as-built modeling approaches over the past decade (Xiong, Adan, Akinci, &
+Huber, 2013).
+
+In as-built BIM creation, no matter manual or automated, there are two groups of methods,
+i.e., 3D reconstruction and semantic enrichment. The two groups must work together to
+update all the as-built information, i.e., geometric, non-geometric individual, and relational.
+For example, if the geometric model is not available, 3D reconstruction can create the as-built
+geometry from measurement data. Otherwise, if the 3D geometric model is ready to reuse,
+
+2
+
+e.g., from an as-designed BIM or reconstructed 3D model, semantic enrichment can update it
+with the latest information (Xue et al. 2019b).
+65
+
+70
+
+This chapter aims to present a general framework of as-built BIM creation for BIM
+automation and applications in the construction industry. The next section summarizes related
+work. Section 3 describes the framework. Two cases, including one outdoor case of rooftop
+elements and the other of indoor furniture, are presented in Sections 4 and 5 to demonstrate
+how the 3D reconstruction and semantic enrichment work collaboratively. In addition, the
+recent evolving trend of as-built BIM to a digital twin is discussed and a conclusion is drawn.
+2. Related Work
+2.1 As-built BIM
+
+75
+
+80
+
+Every construction has a lifecycle, also a learning cycle. Along the whole cycle, BIM, as the
+shared construction information hub, goes through as-required, as-designed, as-planned, asbuilt (or “as-is”), as-altered, and as-demolished versions (Xue, Lu, & Chen, 2018). The asbuilt BIM mainly covers the building, use, and maintenance phases. That is, as-built BIM is
+also the longest persistent version of BIM for a facility. The generation of such BIMs has
+therefore attracted the interest of practitioners and academics in the architecture, engineering,
+construction, and operations (AECO) industry, urban geology, robotics, and autonomous
+vehicle.
+
+2.2 3D Reconstruction of Buildings
+
+85
+
+90
+
+95
+
+The geometric data sources of buildings are becoming accurate, detailed, diversified, and—
+perhaps most importantly—affordable. In tradition, taped-measured lengths, e.g., height, and
+depth, used to be the main forms of 3D geometry. The 2D imagery was also an important
+geometric data source (Ellenberg, Kontsos, Moon, & Bartoli, 2016). In recent one or two
+decades, more and more types of 3D surveying digital measurements have been adopted in
+the AECO industry. Examples are laser scanning by total station, photogrammetry (or
+structure from motion) by drones, RGBD images by depth camera, mobile scanning of
+simultaneous localization and mapping (SLAM) by AR smartphones and vehicles (Wang &
+Kim, 2019; Xu, et al., 2020).
+
+Considerable progress has also been made in enhancing data preparations (e.g., point cloud
+registration), developing preprocessing algorithms, and exploring model generation methods
+(Hamledari, McCabe, & Davari, 2017; Sacks, et al., 2017).These efforts responded to the
+challenges in the geometric data sources. For example, point clouds and imagery primarily
+represent the surface geometry, which makes it difficult to reveal the volumetric components
+3
+
+100
+
+105
+
+110
+
+115
+
+120
+
+125
+
+130
+
+135
+
+and discover non-geometric semantics from the surfaces. In addition, point clouds and
+imagery are even limited in collecting all the surfaces—sometimes only one side with big and
+small holes—of a facility.
+
+‘Semantic segmentation’ refers to a process of partitioning each pixel to a semantic label
+(Shamir, 2008), which has been successfully applied in object surfaces extraction and BIM
+components creation (Barazzetti, 2016; Babacan, Chen, & Sohn, 2017). There are four broad
+classifications of the segmentation-based 3D reconstruction methods: a priori rules,
+geometric shape descriptors, machine learning classifiers, and a composition of numerous
+BIM components. Employing the regularity of individual component is a priori rule for BIM
+object recognition, such as the prism boundary reconstruction of indoor space (Valero, Adán,
+& Cerrada, 2012). Performing the shape matching by extracting the characteristic geometric
+features as an explicit shape descriptor, such as the Laplace-Beltrami filtering (Wang, et al.,
+2018). The machine learning classifiers has also been applied in Babacan et al. (2017)’s
+research on convolutional neural network. Many studies have adopted a combination of
+multiple segmentation methods for multiple BIM components, such as Nguyen and Choi
+(2018) detached planar primitives before RANSAC fitting of cylindrical pipe systems.
+Notwithstanding that the reconstruction of simple shaped and regularly shaped objects has
+been successfully utilized through these semantic segmentation-based methods, there still
+exists disadvantages: substandard performance for complex shaped objects (e.g., furniture)
+(Wang, et al., 2018); reliance on a priori rules or labeled data set for models training; and
+failure to reuse online open BIM resources (Xue, Lu, & Chen, 2018).
+
+To solve defects when dealing with complex-shaped objects, the segmentation-free methods
+are thus proposed. Xue et al. (2018) propositioned the semantic registration, a method based
+on nonlinear optimization for BIM reconstruction. Employing overall error minimization or
+similarity maximization between the reconstructed BIM and the measured data, a single BIM
+object will be reassembled into a complete model, thereby combining them with semantic
+information from reliable sources (Xue et al. 2019b). Thus far, semantic registration has been
+verified on 2D photos and 3D point clouds of indoor and outdoor scenes. Hidaka et al. (2018)
+developed another noteworthy method, in which the similar areas of template CAD model
+were first adaptively located, and then the iterative closest point (ICP) algorithm was
+employed to finely register the CAD templates. Besides, the mechanical, electrical and
+plumbing (MEP) systems from clashes can be reorganized through simulated annealing from
+Hsua and Wua (2019)’s outcomes. Although the abovementioned first three weaknesses of
+semantic segmentation have been addressed by segmentation-free methods, it still presents
+two limitations, i.e., low efficiency from unnecessary re-exploration of the problem search
+space and the proneness to input errors Xue et al. (2018; 2019b) and Hidaka et al. (2018).
+4
+
+2.3 Semantic Enrichment to Buildings
+
+140
+
+145
+
+150
+
+155
+
+160
+
+165
+
+170
+
+Semantic enrichment is a way of automatic or semiautomatic adding of meaningful
+information to an existing BIM (or 3D building) model, instead of creating a new model from
+scratches (Jardim-Goncalves, Sarraipa, Agostinho, & Panetto, 2011; Belsky, Sacks, &
+Brilakis, 2016). Instead of creating a new BIM from scratches, one can apply semantic
+enrichment to use and reuse the existing 3D models of a facility. One main reason is that the
+geometry of a facility is usually rigid, as a whole or in most parts, for reusing. Another reason
+lies in the multi-disciplinary collaboration in obtaining and understanding the as-built
+conditions of a facility. Semantic enrichment, as a way of inter-disciplinary interoperability
+of information, showed strengths in other domains, such as database management systems,
+manufacturing, and semantic web (Lacasta, Nogueras-Iso, Falquet, Teller, & Zarazaga-Soria,
+2013; Liao, Lezoche, Panetto, & Boudjlida, 2016). Furthermore, cities and buildings are
+evolving over time. A BIM deems to be updated from time to time, otherwise it may become
+“blind” and “deaf.” Apart from the moving city objects, the facilities which seem to have
+steady geometries require their non-geometric information such as functions and property
+valuations to be updated from time to time (Chen, Lu, Peng, Rowlinson, & Huang, 2015).
+
+Semantic enrichment usually combines and correlates the measurement data and a priori
+semantic model. Yet, some studies relied more on the measurement data. For example,
+Koppula et al. (2011) predicted the semantic labels of indoor points based on edge potentials.
+Lin et al. (2013) classified the LiDAR point clouds into patches of geometric primitives, then
+reconstructed connected graphs of patches for building model enrichment such as the hole
+filling and surface enclosure. Yang et al. (2020) extracted the 3D dimensions from CAD
+drawings for semi-automatic BIM enrichment. Deep learning models that predict semantic
+labels from 3D point clouds, such as types of building components in Chen et al. (2019) and
+Pierdicca et al. (2020), also became popular recently.
+
+More research applied and adapted a priori semantic models to describe the measurement
+data, like design patterns, rules, and domain knowledge. For instance, Kim et al. (2013)
+registered as-built measurement point cloud to an as-planned BIM to update the schedule. Liu
+and Wu (2016) presented a rule-based method to reconstruct historical buildings with
+different architectural styles. Chen et al. (2018) applied a fundamental regularization rule to
+rooftop elements from noisy LiDAR data. Other examples included the topological rule
+processing in the SeeBIM system (Sacks, et al., 2017) and a knowledge-based system for
+resolving design clashes in BIMs (Hsu, Chang, Chen, & Wu, 2020).
+
+5
+
+3. A General Framework of Creating As-built BIM
+175
+
+180
+
+Figure 1 shows a general framework of creating and applying an as-built BIM. As shown in
+Figure 1, the conceptual model includes five interrelated components, namely, (1) The target
+facility, (2) Baseline model, (3) Sources of new semantics, (4) Semantic enrichment method,
+and (5) Enriched model. For a given facility, semantic enrichment is the process that extracts
+new semantics from the new semantics sources and adds them to the baseline BIM or CIM so
+that the updated model has a richer digital representation of the facility.
+
+Figure 1. A general framework of as-built BIM creation
+
+185
+
+190
+
+195
+
+The target facility is the primary subject of an as-built BIM. The facility also plays the roles
+of the ultimate information source and value-added application sink. The types of facilities
+may include: (i) indoor objects and systems like furniture and space network, (ii) buildings,
+(iii) civil infrastructures, and (iv) other city objects.
+
+The data sources in Figure 1 consist of two types, i.e., data of geometry and semantics data.
+Data of as-is geometry, which serves the purpose of 3D reconstruction mainly, can be
+collected, registered, integrated, and resampled from laser scanning, photogrammetry, or tape
+measurements (Baltsavias, 1999; Jung, et al., 2014). In contrast, semantics data enables
+semantic enrichment to non-geometric and relational information to the as-built BIM, while
+the data sources include non-geometric measurements, such as cement temperature from
+infrared sensors and laser reflection from LiDAR, and existing models from designers and
+manufacturers (Xue, Lu, Tan, & Chen, 2019c). Sometimes, the two data sources are
+intertwined. For example, the 3D coordinate (x, y, z) in a LiDAR point cloud is the geometric
+6
+
+200
+
+205
+
+210
+
+215
+
+data, while the laser reflectance denoting how much percentage of laser beams returned is a
+column of data of semantics.
+
+The 3D reconstruction methods can create 3D surfaces and volumetric BIM components for a
+facility based on the geometric data sets. Digital 3D construction, focusing on creating the
+geometric form from 2D plans or point data, has a deep root in Computer-aided Design
+(CAD) and Computer Vision and Pattern Recognition (CV/PR) since the 1980s. The result is
+as a geometric 3D building model, sometimes a volumetric BIM. The geometric model or
+BIM can enable several smart applications, e.g., solar power potential, fresh air ventilation,
+and sky view simulations.
+
+Semantic enrichment, in comparison, originated in database management systems (DBMS)
+and emphasizes the non-geometric functions and relational attributes in BIM. For example,
+the accuracy of building energy model and urban heat island simulations can be improved
+with the building surface materials predicted from laser reflectance in the LiDAR point
+clouds and colors in 2D photographs. Furthermore, 3D reconstruction processes and semantic
+enrichment are expected to run periodically to maintain the as-is geometric conditions and
+current functions in an as-built BIM.
+
+4 An Outdoor Case of Rooftop Elements
+4.1 A Case at the University of Hong Kong
+220
+
+225
+
+The study area, in this case, was a squared area around the University of Hong Kong (HKU)
+Main Campus, about 0.3 km2 in the Central Western District, Hong Kong. As shown in
+Figure 2, the LiDAR data was collected by the Civil Engineering and Development
+Department (CEDD) of the Hong Kong SAR Government (CEDD, 2015). The intensity in
+the LiDAR data was measured by an airborne Optech 3100 LidAR sensor. The point density
+was about 4.0 points per m2. The study area consisted of various urban landscapes, including
+high-density urban blocks.
+
+7
+
+230
+
+235
+
+Figure 2. The study area. (a) The CEDD (2015) LiDAR data, (b) topographic map and LoD1
+(2.5D) objects (Source: authors; Chen et al. (2018))
+
+Both 3D reconstruction and semantic enrichment tests were conducted to the rooftop
+elements in the test case. Roofs usually constitute 20~25% urban surfaces in typical
+metropolises (Rose, Akbari, & Taha, 2003). Rooftop albedo that measures how much solar
+radiation is reflected (other than absorbed) by roof coatings leads to a negative radiative
+forcing. At a worldwide level, high-albedo roofs can offset billions of tons of CO₂ emissions
+as well as save billions of dollars of energy bills every year (Akbari, Menon, & Rosenfeld,
+2009). Therefore, some governments, such as the California Energy Commission (2005),
+have required all new or retrofitted roofs to be white or reflective.
+8
+
+240
+
+245
+
+Apart from the LiDAR point cloud, an official topographic map was also used in the tests.
+The map, as shown in Figure 2b, was a 1:1000 Geodatabase (GDB) format digital map from
+the Lands Department (LD) of HKSAR. The 2D city objects were described in the Hong
+Kong 1980 Grid system (EPSG:2326), which mean all the x, y, z, values were in meter. The
+map contains 2D city objects such as buildings, land cover, and transportation. The 2D
+buildings in Figure 2b were highlighted. The building footprints and heights were used in this
+case.
+
+4.2 3D Reconstruction
+250
+
+255
+
+260
+
+The 3D reconstruction is completed by an integrated approach named multi-Source
+recTification of gEometric Primitives (mSTEP), presented in Chen et al. (2018). The mSTEP
+consists of four phases in as-built modeling. The first phase is 2.5D building polygons
+creation was visualized in ESRI ArcScene, as shown in Figure 2b. The geometric data source
+was the building footprints in the official topographic map. The results were Level of Details
+1 (LoD1) building blocks in terms of the CityGML standard.
+
+The second step aims to extract considerable (e.g., with > 1 m diameter) rooftop elements
+from the rooftop point clouds. First, the point cloud of each building was segmented. The
+boundary for segmentation was extended from the building footprint, because some buildings
+have slightly larger roof area than its foot. An iterated RANSAC (Schnabel, Wahl, & Klein,
+2007) was adopted for detecting geometric primitives from LiDAR point cloud of the
+building rooftops. It is decided to set the minimum number of support points of RANSAC to
+10 (i.e., element top area no less than 2.5 m2), maximum distance to primitive to 0.02 m, and
+sampling resolution to 1.0.
+
+265
+
+270
+
+275
+
+The third step detects the guiding directions (lines) from the building footprints. The
+perpendicular and parallel lines of the long edges in a footprint can indicate the major axes in
+the building design. Regular-shaped footprints and irregular-shaped ones can drive the
+guiding directions. As a result, the 3D reconstruction took advantage of both as-built
+measurement of LiDAR point clouds and as-designed building footprints. Figure 3 shows
+how the mSTEP method could achieve the goal. The mSTEP was tested on a personal
+notebook with 2.6GHz Quad-core CPU, 16 GB RAM, and a 64-bit Microsoft Windows 10
+operating system. First LoD2 as-built BIM is developed by aligning the rooftop elements to
+the guiding directions. Particularly, two object rectification rules were employed, as shown in
+Figure 3ab. In tests, the maximum normal deviations of α and β were set to 25°.
+9
+
+280
+
+285
+
+290
+
+Figure 3f shows eight examples of reconstructed building models involving various
+architectural features, for examples, an Edwardian Baroque-style building (ID: 11**374)
+including a central clock tower and corner turrets on the Main Campus of HKU; a high-rise
+residential building (ID: 11**486) with a pyramidal roof, surrounded by several irregular
+roof objects; a food wholesale market (ID: 11**535) with some parallel strips as well as boxshaped air conditioners on the roof; and a convex-shaped roofed building (ID: 11**845). It
+can be further noticed that no manual post-modification is required for those reconstructed
+models. It can be seen that the models reaching LoD2 retain more details than simple
+"boxes", and achieve acceptable criteria.
+
+Figure 3. Reconstruction and rectification of rooftop objects according to the guiding lines.
+(a) First vertical adjustment rule; (b) second horizontal adjustment rule; (c) LiDAR point
+clouds; (d) geometric primitives; (e) output; (f) Examples of the reconstructed LoD2 BIMs
+and the ground truth photographs. (Source: authors; Chen et al., (2018))
+
+10
+
+295
+
+300
+
+Table 1 compares mSTEP and Javanmardi et al.’s (2015) method using three metrics: (i)
+root-mean-squared error (RMSE) between the associated points and the BIM, (ii) percentage
+of segmented points (associated with as-built BIM), and (iii) computational time. Both
+methods reconstructed accurate geometry, in terms of RMSE, for segmenting the point
+clouds; while mSTEP was more accurate (average RMSE = 0.085 m). Furthermore, mSTEP
+segmented more points (81.3% on average) to support as-built BIM creation. However,
+Javanmardi et al.’s (2015) method was faster. The comparison results show that the 3D
+reconstruction was successful and competitive against other methods for building rooftops.
+
+Table 1. Comparison of mSTEP’s results (best values in bold)
+mSTEP
+Javanmardi et al. (2015)†
+Number of
+No.
+Time
+Segmented
+RMSE
+Time
+Segmented
+RMSE
+points
+(s)
+(%)#
+(m)*
+(s)
+(%)#
+(m)*
+1
+270
+0.03
+75.2
+0.114
+0.02
+63.1
+0.119
+2
+372
+0.03
+77.7
+0.048
+0.01
+58.7
+0.157
+3
+620
+0.40
+87.6
+0.065
+0.02
+84.7
+0.098
+4
+2,491
+0.16
+48.6
+0.196
+0.05
+31.6
+0.199
+5
+2,682
+0.09
+90.0
+0.057
+0.03
+60.2
+0.049
+6
+7,212
+0.23
+91.1
+0.067
+0.04
+26.4
+0.067
+7
+8,987
+0.26
+85.1
+0.065
+0.09
+18.8
+0.097
+8
+24,878
+2.23
+86.3
+0.068
+0.13
+66.2
+0.163
+9
+29,506
+0.47
+90.1
+0.088
+0.21
+71.1
+0.230
+Average
+0.48
+81.3
+0.085
+0.07
+53.4
+0.131
+†: The paprameter β of Javanmardi et al. (2015)’s method was set to 0.5m as the average
+point distance;
+#
+: Percentage of points that are segmented to support the detection of geometric primitives.
+*
+: Root mean square error of the distances of segmented points to their corresponding
+primitives.
+305
+
+310
+
+315
+
+4.3 Semantic Enrichment
+4.3.1 Rooftop Albedos
+Two data-driven applications of semantic enrichment were tested on the basis of the LoD2
+as-built BIMs. To monitor rooftop albedos and utilize them in simulations, Xue et al. (2019c)
+created a semantic as-built city information model (CIM) of rooftop albedos in the target
+area. The whole modeling process was straightforward. First, the geometric models of 1,087
+blocks of buildings and 1,288 rooftop elements on top of them were created using the method
+in Chen et al. (2018). Then, the values of albedos were estimated using a linear model of the
+near-infrared laser reflectance, according to the validation in Levinson et al. (2014). The
+enriched rooftop albedos are vital to various urban sustainability topics such as heat island,
+local climate, green roof, and urban morphology (Santamouris, 2014; Stewart, Oke, &
+Krayenhoff, 2014; Baniassadi, Heusinger, & Sailor, 2018). The enriched as-built model
+converted into GeoJSON formats and visualized on a web 3D library OSMBuildings (version
+11
+
+3.0.1, https://github.com/OSMBuildings/OSMBuildings). Figure 4a shows the visualized
+albedo models of the study area.
+320
+
+325
+
+330
+
+Beside of the albedo, Xue et al. (2019c) associated each rooftop model with the topographical
+map of Hong Kong (in HKGS1980 coordinate system) and Open Street Map (in WGS1984).
+As a result, more semantic properties can be enriched to the model of the building. Figure 4b
+shows the Knowles Building, HKU, in which the offices of the authors reside, in the web
+visualization system. Apart from the geometric dimensions, one can read the more properties
+from the mouse tooltip: Name, building IDs in the topographic map and Open Street Map,
+roof albedo (0.351), type of building, storeys (including the level of basements). In
+comparison to the model in Google Earth, as shown in Figure 4.c, all rooftop elements
+including the parapet walls, elevators’ machine rooms, water tank, and cooling towers, except
+for one circled. Since the albedo is not available in Google Earth, and the GeoJSON is an
+open GIS format, the albedo models presented in this paper can facilitate more in
+sustainability study.
+
+12
+
+335
+
+340
+
+Figure 4. Results of rooftop albedo enrichment. (a) LiDAR-based albedo; (b) Example of an
+enriched LoD2 BIM; (c) the referential 3D model (Source: Google Earth).
+
+4.3.2 Green Rooftop Element Prediction Enrichment
+The other semantic enrichment test was conducted in Tan et al. (2019) on the green roof
+elements prediction. In a small area of 55,000 m2 in the target campus, there existed a few
+green roofs. There were two types of green roofs, i.e., turf and potted. In addition, we found
+the laser reflectance might have correlations with the green roof. Therefore, the classification
+of green roof elements from the remainder of reconstructed geometric primitives can be
+another task of semantic enrichment for this study.
+
+13
+
+345
+
+350
+
+355
+
+360
+
+365
+
+In the pilot case, green roof elements are identified into two types: turf, where vegetation
+covering the entire surface of the roof; potted area, where plants live in pots or containers.
+Table 5a shows the excerpt of the data table of the pilot case for classification and
+enrichment, including average reflectance in percentage, the top area of each element in
+square meter, height in meter. The computational analyses were conducted on a Windows 10
+work area PC. The decision tree was trained by the rpart bundle (ver. 4.1), which is freely
+accessible on the R stage (ver. 3.4). The boundaries of the choice tree are: “min part = 2,”
+“max profundity = 5,” and “min container = 1.” Figure 5c shows the green rooftop
+components detection prepared by the decision tree, which utilized under 0.01s to get the last
+precise outcomes. Figure 5d shows the comparison of predicted green rooftops and aerial
+view of the 3D model on Google Earth. The screen capture of Google Earth shows genuine
+green rooftop components. The green areas, found primarily on top of three buildings, are
+highly correlated to the predicted green rooftop components. The semantic enrichment of the
+green rooftop makes our model semantically rich in terms of computer readable greenery.
+
+Figure 5. A small area of buildings with green roofs. (a) Excerpt of the training data; (b) the
+learned decision tree; (c) prediction results (dark = truf, light = potted); (d) Aerial view
+(Source: Google Earth).
+5. An indoor case of furniture
+5.1 A case at the Stanford University
+We selected the largest indoor instance in the Stanford 2D-3D-S dataset (Armeni, Sax, Zamir,
+& Savarese, 2017) to demonstrate the as-built modeling. The “Area_2 Auditorium_2”
+instance is the largest lecture hall room in a university building at the Stanford University.
+14
+
+380
+
+Furthermore, it is known that indoor point clouds are more challenging for as-built modeling
+in general. First, the regular large planar objects such as floor and walls were removed
+because they are relatively easy to reconstruct. The removal took advantage of the given
+labels in the dataset. As a result, a noisy ‘scene’ cloud of 293 theater chairs remained as
+shown in Figure 6.a. The cloud S = { p1, p2, …, pn } ⊂ ℝ³ of n = 1,879,282 points. As shown
+in the right bottom corner in Figure 6.a, some parts were considerably noisy, incomplete, and
+cluttered. The study area was 14.80m x 14.87m. From the general design principles, we
+assumed every chair has 4 degrees of freedoms (DoFs) including the 3D location tx, ty, tz, and
+the heading direction rz, while the rotations around x and y axes were not allowed. Figure 6c
+visualizes the expected fitness landscape, which was very jagged over the x-y plane. It should
+be noted that the z and rz were set as the optimal values. The spikes in Figure 6c are the
+optimal transformation parameters [tx, ty]T (or modes). Figure 6d is the vertical projection, in
+which we can see the patterns are the x-y positions of the chairs.
+
+385
+
+Figure 6. The indoor study case. (a) A noisy scene cloud S of 293 chairs (1,879,282 points);
+(b) the 4 degrees of freedom and boundary; (c) surface chart; (d) Contour chart in (a) (Source:
+authors; Xue et al. (2019a))
+
+370
+
+375
+
+390
+
+5.2 3D Reconstructions using Unimodal and Multimodal Algorithms
+The 3D reconstruction was formulated as a semantic registration approach by Xue et al.
+(2019b). Furthermore, two classes of optimization algorithms, i.e., a ‘unimodal’ algorithm
+CAM-ES and a multimodal algorithm NMMSO, were tested in parallel. As required by the
+semantic registration, an open BIM component ‘Theater chair’ was downloaded from a 3D
+model sharing website 3DWarehouse.com. The surfaces of the component were sampled into
+15
+
+a cloud 𝒞𝒞 of 1,802,939 points using an in-house developed Autodesk Revit plugin developed
+in Xue et al. (2019b).
+395
+
+Given the scene cloud S (n points) and a ‘component’ cloud 𝒞𝒞 = { p1, p2, …, pm } ⊂ ℝ³ of m
+points, the task of 3D reconstruction for as-built BIM creation is equivalent to an
+optimization problem that finds all the instances of 𝒞𝒞 in S in the semantic registration
+paradigm (Xue et al. 2019b):
+400
+
+1
+
+arg min 𝑓𝑓(𝑥𝑥) = 𝑅𝑅𝑅𝑅𝑅𝑅𝑅𝑅(𝒞𝒞(𝑥𝑥), 𝑆𝑆) = [𝑚𝑚 Σ𝑝𝑝∈(𝑥𝑥) ∥ 𝑝𝑝 − 𝑁𝑁(𝑝𝑝, 𝑆𝑆) ∥2 ]½
+s.t. 𝒞𝒞(𝑥𝑥) = {𝑇𝑇𝑥𝑥 (𝑝𝑝)|𝑝𝑝 ∈ 𝒞𝒞},
+𝑇𝑇𝑥𝑥 (𝑝𝑝) = R (𝑝𝑝) + [𝑡𝑡𝑥𝑥 , 𝑡𝑡𝑦𝑦 , 𝑡𝑡𝑧𝑧 ]𝑇𝑇
+cos 𝑟𝑟𝑧𝑧 − sin 𝑟𝑟𝑧𝑧 0
+R = � sin 𝑟𝑟𝑧𝑧
+cos 𝑟𝑟𝑧𝑧 0�,
+0
+0
+1
+𝑇𝑇
+6
+𝑥𝑥 = [𝑡𝑡𝑥𝑥 , 𝑡𝑡𝑦𝑦 , 𝑡𝑡𝑧𝑧 ] ∈ 𝑅𝑅
+[𝑡𝑡𝑥𝑥 ,
+
+𝑡𝑡𝑦𝑦 ,
+
+(1)
+
+𝑡𝑡𝑧𝑧 ]𝑇𝑇 ∈ 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏(𝐶𝐶)
+
+𝑟𝑟𝑧𝑧 ∈ [0, 2𝜋𝜋)
+𝑓𝑓(𝑥𝑥) ≤ 𝜀𝜀 = 0.25𝑑𝑑𝑑𝑑𝑑𝑑𝑑𝑑𝒞𝒞 ≈ 0.01𝑑𝑑𝑑𝑑𝑑𝑑𝑑𝑑𝐶𝐶
+
+405
+
+410
+
+Where parent is a function that returns the “parent” component that 𝒞𝒞(x) attaches to,
+boundingbox indicates the 3D bounding box of the scene cloud S (see Figure 6b), diag𝒞𝒞
+stands for the diagonal length of 𝒞𝒞, and diagC is the diagonal length of C. Also, the regular
+layout of concentric circles of the chairs is in line with architectural acoustic input to theatre
+designs (Mehta, Johnson, & Rocafort, 1999).
+
+Usually an optimal transformation parameters x* yields f(x*) = fmin (e.g., 0). However,
+regarding the possibility of instrumental, environmental, and calibration errors for the point
+cloud, as well as heterogeneous point density, geometric accuracy, occlusion, and clutters in
+the as-built measurement data, we relaxed the optimality condition to a satisfactory condition:
+
+𝑋𝑋 ∗ = { 𝑥𝑥 ∗ | 𝑓𝑓(𝑥𝑥 ∗) ≤ 𝑓𝑓min + 𝜀𝜀 },
+
+(2)
+
+where x* indicates one satisfactory solution (mode) to Eq. (1), X* is the set of satisfactory
+solutions, and ε denotes a small error tolerance.
+415
+
+Figure 7a shows the results of a unimodal optimization algorithm named covariance matrix
+adaptation with evolution strategy (CMA-ES) to the solving of Eq. (1). The “unimodality”
+16
+
+420
+
+425
+
+430
+
+435
+
+means the algorithm returns one instance of chair each time. The as-built BIM in Figure 7a
+consisted of 288 chairs, saved as a 1.83 MB Revit file. Figures 10.7b shows the false
+negatives (undetected) and false positives (wrong location or rotation) of chairs in the
+generated as-built BIM from the top view. Figure 7c shows the results of a multimodal
+optimization algorithm named niching migratory multi-swarm optimizer (NMMSO). The
+“multimodality” stands for returning many, if not all, instances of chairs from one run.
+NMMSO took 414.5s to discover 300 solutions to Eq. (1) in the incremental build phase
+through the greedy processing (see Figure 2a). In the second stage, COBIMG-Revit was
+adopted and used CMA-ES to fine-tune the 300 chairs in BIM in 512.1s.
+
+Figure 7. Results of 3D reconstructions. (a) As-built BIM of 288 chairs automatically
+reconstructed in 1434.2s by CMA-ES; (b) top view of 236 true positive chairs (wired frames),
+52 false positives (dark), and 10 false negatives (circles); (c) as-built BIM of 300 chairs in
+926.6s by NMMSO; (d) top view of 267 true positive chairs (wired frames), 33 false positive
+(dark), and 26 false negative (boxes). (Source: authors; Xue et al. (2019a))
+The confusion matrix of the chairs in the output BIM was listed in Table 3. The accuracy
+metrics for the unimodal algorithm CMA-ES were thus:
+true positive
+
+236
+
+precision = true positive + false positive = 288 = 81.9%,
+
+recall
+
+true positive
+
+236
+
+= true positive + false negative = 288 = 80.5 %,
+
+𝐹𝐹1 = 2 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 × 𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟(𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 + 𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟) = 81.2%.
+
+(3)
+
+17
+
+440
+
+Meanwhile, all three metrics of the multimodal algorithm NMMSO were about 10% higher
+than those by the unimodal optimization CMA-ES:
+true positive
+
+267
+
+precision = true positive + false positive = 300 = 89.0%,
+recall
+
+true positive
+
+267
+
+= true positive + false negative = 300 = 91.1%,
+
+(4)
+
+𝐹𝐹1 = 2 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 × 𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟 / (𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 + 𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟) = 90.1%.
+
+445
+
+450
+
+455
+
+460
+
+Table 3. A confusion matrix of the generated chairs in the generated
+CMA-ES
+NMMSO
+Evaluation
+Chairs Not a
+Chairs Not a
+chair
+chair
+Positive position and rotation
+236
+10
+267
+26
+Positive position but negative rotation (error >
+16
+45°)
+Negative position (error > 25cm*)
+36
+33
+Subtotal
+288
+10
+300
+26
+*: 25cm is a quarter of the diagonal of the target chair
+
+5.3 Semantic Enrichment
+The semantic enrichment, in this case, was a more model-driven procedure. As a lecture hall,
+the seats arrangement was set to the pattern of concentric circles for an optimal acoustic
+design (Mehta, Johnson, & Rocafort, 1999). Then, 14 clusters of seating rows were labeled
+manually in 223.7 s. An RMSE regression of arcs aims to find the patterns from the centroids
+of the chairs. The output equations for all chairs were in Equations (5). From Eq. (5), we can
+find the center of the stage center was at (–5.832 m, –2.091 m). In addition, the radius r
+increased perfectly linearly row by row (R² = 0.9999). Similarly, we got the regression
+Equation (6) for the z values of the chairs’ centroids against x, y, and ρ in 0.06s. Eq. (6)
+shows the seat altitudes (z) were mainly in a linear relation with the row number. But, two
+more coefficients +0.005 and -0.003 suggested that the chairs had a 1:200 slope over the yaxis and a 1:330 slope over the x-axis. Or, it can be a small error in calibrating the Stanford
+dataset.
+(𝑥𝑥 + 5.832) ² + (𝑦𝑦 + 2.091)² = 𝑟𝑟²
+r = 0.913 𝜌𝜌 + 7.387
+𝜌𝜌 ∈ {1,2, … ,14}
+𝑅𝑅 2 = 0.9999
+𝑧𝑧 = 0.418 + 0.061 𝜌𝜌 – 0.003 𝑥𝑥 + 0.005𝑦𝑦
+𝜌𝜌 ∈ {1,2, … ,14}
+𝑅𝑅 2 = 0.9673
+
+(5)
+
+(6)
+
+18
+
+465
+
+470
+
+475
+
+480
+
+485
+
+490
+
+495
+
+500
+
+The true pattern can be rebuilt from the symmetric regularization of the occupied arcs and
+isometric regularization of the angular distances between the chairs. First, the centers of
+groups of chairs were identified with local chairs as well the symmetric group of chairs, as
+shown in Figure 8a. Note that most of the missing chairs were compensated. In the isometric
+regularization, as shown in Figure 8b, the chairs in each extended cluster were first sorted by
+a clockwise order. The heading angles against the stage center (–5.832, –2.091) reordered the
+instances in 14 queues, then a maximum seat gap (or the minimum width of an aisle) at twice
+of the chair distance (2 × 55.26cm) segmented each queue into three groups. As a result, the
+14 clusters of 289 chairs were grouped into 42 sets. The z values were aligned to Eq. (6),
+accordingly.
+
+The semi-automatic regularization-based semantic enrichment (and 3D fine-tuning)
+processing took extra 228.6s after the 3D reconstruction. As shown in Figures 10.8c, a
+remarkable improvement was attained in the error distributions. The final as-built BIM
+achieved an accuracy at 99.3%, a recall at 98.0%, and an F1 score at 98.6%, in terms of the
+chairs. The RMSE between the BIM visible surface and the input field cloud was 8.79cm. In
+terms of ground-truth values, the average distance error was 9.6cm and the average angular
+error was 3.8°.
+
+The semantics of the concentric design pattern was enriched to the as-built BIM. The output
+was a 1.82 MB Autodesk Revit file. Figure 8e shows the screenshot of the properties of the
+first chair, with geometric information obtained from 3D reconstruction and semantic
+information from semantic enrichment. Some properties, such as e.g.,
+“COBIMG_translation” and “COBIMG_rotation” indicate location, heading direction, and
+parent component. Furthermore, some properties such as “COBIMG_cluster” and
+“COBIMG_peer_left” note the semantics of the cluster, group, sequence, and the “neighbor”
+components of each chair.
+Table 4 compares the results of the as-built BIM creation in this section. The metrics include
+the RMSE between the measurement 3D points and the as-built BIM, time cost, 3D position
+error of chair centroids, angular error of rz, precision, recall, and F1 score. The accuracy of
+the automatic 3D reconstruction by NMMSO was about 10% higher than CMA-ES, with
+35% time saved versus CMA-ES. Furthermore, the as-built BIM with regularization-based
+semantic enrichment had an even better 99.3% precision and 90% recall, while the time was
+still less than CMA-ES. Besides, one can find an interesting collision between the global
+RMSE error and local BIM object (chair) based error metrics. The CMA-ES had the best
+RMSE but the lowest precision and recall of chairs.
+
+19
+
+505
+
+Figure 8. Results of semantic enrichment of the as-built BIM. (a) Symmetric and isometric
+regularizations based on Eqs. (5) and (6); (b) 3D centroids of 289 regularized chair positions
+using the detected repetition equations; (c) the regularized and enriched model; (d) top view
+of 287 true positive chairs, 2 false positive (dark), and 4 false negative (boxes); (e) enriched
+semantic information. (Source: authors; Xue et al. (2019a))
+
+20
+
+510
+
+Table 4. Comparison of different algorithms on BIM chair detection, where the best value in
+each row is in bold
+NMMSO +
+Evaluation (unit)
+CMA-ES
+NMMSO
+semantic
+enrichment
+RMSE (cm)
+Computational time (s)
+Number of chairs
+Distance error (cm, mean ±
+stdev.)
+Angular error (°, mean ± stdev.)
+Precision (%)
+Recall (%)
+F1 (%)
+
+515
+
+520
+
+525
+
+530
+
+535
+
+8.10
+1,434.2
+288
+
+10.38
+926.6
+300
+
+8.97
+1,155.0
+289
+
+15.2 ± 7.7
+
+13.7 ± 6.5
+
+9.6 ± 3.5
+
+17.6 ± 28.8
+81.9
+80.5
+81.2
+
+10.5 ± 15.0
+89.0
+91.1
+90.1
+
+3.8 ± 3.3
+99.3
+98.0
+98.6
+
+6 Toward Digital Twin and Blockchain BIM
+There are, at least, two possible technological streams to push as-built BIM further. One is
+escalating the ‘as-built’ to a real-time virtual replica, i.e., digital twin. The other is extending
+the ‘BIM’ from isolated model files to an incremental process of changes and an
+interconnected chain of reliable information (Xue, Wu, & Lu, 2021).
+
+A digital twin is a “virtual representation of a physical object or system across its lifecycle,
+using real-time data to enable understanding, learning, and reasoning,” according to UK
+National Infrastructure Commission (2017). A digital twin with real-time data and
+information can monitor, simulate, and analyze complex systems. Examples of such systems
+include aircrafts, wind turbines, production shop floors, and building systems without close
+adjacency to the system physically. The value of digital twin lies in the monitored, simulated,
+and analytical results that can reveal emergent behaviors and mitigate unpredictable and
+undesirable consequences (Grieves & Vickers, 2017). By definition, a real-time updated asbuilt BIM is a digital twin, i.e., digital twin building. Apart from the 3D reconstruction and
+semantic enrichment approaches, a digital twin building requires real-time data collection and
+near-real-time processing. Data imperfections, such as heterogeneous point density,
+geometric accuracy, occlusion, and clutters, challenges as-built BIM creation and digital
+twinning (Barazzetti, 2016). However, an integration of 3D digital reconstruction and
+semantics, e.g., global patterns of repetitive furniture as shown in Sect. 5.2 and Xue et al.’s
+(2020b) cross-sections of unknown symmetric objects, can ease the problems of data
+imperfections for building and city objects designed in design principles. Thus, the
+framework of digital twinning is an updated version of that of as-built BIM creation, with
+real-time sensors, communication networks, and systematic and efficient model updating
+mechanisms.
+
+21
+
+540
+
+545
+
+550
+
+555
+
+560
+
+Xue and Lu (2020a) pinpointed another future direction as differential BIM changes and
+blockchain BIM. A subsequent challenge after the digital twin building is the trackability and
+traceability of the historical BIMs and information. It is incredibly inefficient to derive
+independent and isolated BIM files hour after hour, day after day. Because most as-built BIM
+components remain unchanged, one needs to back up the changes to the as-built BIM only. In
+other words, the temporal redundancy of the unchanged as-built information in many copies
+of BIM files should be eliminated. Xue and Lu (2020a) presented a feasible semantic
+differential transaction (SDT) approach that detects the minimal BIM changes in the semantic
+hierarchy. Another challenge can be distributed as-built BIM changes from different
+stakeholders at different physical places. Thus, a blockchain BIM architecture maintained by
+a permissioned group can synchronize all the BIM changes to form the blockchain BIM.
+
+7 Conclusion
+As-built BIM reflects the actual and current situations of a facility. To fulfill smarter building
+and smarter city development, as-built BIM is a strategically important urban information
+infrastructure. Based on the work presented in the literature and the demands in the industry,
+this paper concludes a general framework for as-built BIM creation and application. Notably,
+the 3D reconstruction of geometry and semantic enrichment of non-geometric and relational
+information are complementary means in the presented framework.
+
+Two demonstrative cases, one outdoor and the other indoor, are employed to explain the
+framework. Furthermore, one case shows how 3D measurement data is distilled for a 3D
+geometric model, while the other case shows how standard and open 3D BIM components
+are able to be utilized for as-built BIM creation. In the semantic enrichment to the outdoor
+case, the new semantic information, like albedos and green elements, was mainly driven by
+measurement data; in contrast, the new semantics was driven by knowledge as the concentric
+indoor design patterns.
+
+565
+
+570
+
+575
+
+Besides the various value-added applications of as-built BIM in the literature, two future
+research directions are advised. One is the digital twin technology that replicates and analyzes
+the target facility in real-time. A digital twin building is an upgrade version of as-built BIM
+that emphasizes the timely information synchronization and decision support. The other
+direction is minimal changes over the version history of an as-built BIM and the potential
+blockchain BIM which integrates all the as-required, as-designed, as-planned, as-built (or
+“as-is”), as-altered, and as-demolished BIMs of a facility throughout its lifecycle.
+
+Acknowledgements
+The work presented in this study was financially supported by grants from the Hong Kong
+Research Grant Council (Nos. 17201717 and 27200520).
+
+22
+
+References
+
+580
+
+Akbari, H., Menon, S., & Rosenfeld, A. (2009). Global cooling: increasing world-wide urban
+albedos to offset CO2. Climatic change, 94(3-4), 275-286. doi:10.1007/s10584-0089515-9
+Armeni, I., Sax, A., Zamir, A. R., & Savarese, S. (2017). Joint 2D-3D-Semantic Data for
+Indoor Scene Understanding. ArXiv e-prints, 1702.01105. Retrieved from
+https://arxiv.org/abs/1702.01105
+
+585
+
+590
+
+Babacan, K., Chen, L., & Sohn, G. (2017). Semantic segmentation of indoor point clouds
+using Convolutional Neural Network. ISPRS Annals of Photogrammetry, Remote
+Sensing and Spatial Information Sciences, IV-4(W4), 101-108. doi:10.5194/isprsannals-IV-4-W4-101-2017
+Baltsavias, E. P. (1999). A comparison between photogrammetry and laser scanning. ISPRS
+Journal of photogrammetry and Remote Sensing, 54(2-3), 83-94. doi:10.1016/S09242716(99)00014-3
+Baniassadi, A., Heusinger, J., & Sailor, D. J. (2018). Building energy savings potential of a
+hybrid roofing system involving high albedo, moisture retaining foam materials.
+Energy and Buildings, 169, 283-294. doi:10.1016/j.enbuild.2018.04.004
+
+595
+
+Barazzetti, L. (2016). Parametric as-built model generation of complex shapes from point
+clouds. Advanced Engineering Informatics, 30(3), 298-311.
+doi:10.1016/j.aei.2016.03.005
+Belsky, M., Sacks, R., & Brilakis, I. (2016). Semantic enrichment for building information
+modeling. Computer‐Aided Civil and Infrastructure Engineering, 31(4), 261-274.
+
+600
+
+Bruno, S., De Fino, M., & Fatiguso, F. (2018). Historic Building Information Modelling:
+performance assessment for diagnosis-aided information modelling and management.
+Automation in Construction, 86, 256-276. doi:10.1016/j.autcon.2017.11.009
+California Energy Commission. (2005). California Energy Commission Building Energy
+Efficiency Standards, For Residential and Nonresidential. Publication No. CEC-4002006-015. . Sacramento, CA, USA: California Energy Commission.
+
+605
+
+CEDD. (2015). The CEDD 2010 LiDAR Survey (private communication). Hong Kong: Civil
+Engineering and Development Department.
+Chen, J., Kira, Z., & Cho, Y. K. (2019). Deep learning approach to point cloud scene
+understanding for automated scan to 3D reconstruction. Journal of Computing in Civil
+Engineering, 33(4), 04019027. doi:10.1061/(ASCE)CP.1943-5487.0000842
+
+610
+
+Chen, K., Lu, W., Peng, Y., Rowlinson, S., & Huang, G. Q. (2015). Bridging BIM and
+building: From a literature review to an integrated conceptual framework.
+
+23
+
+International journal of project management, 33(6), 1405-1416.
+doi:10.1016/j.ijproman.2015.03.006
+
+615
+
+620
+
+Chen, K., Lu, W., Xue, F., Tang, P., & Li, L. H. (2018). Automatic building information
+model reconstruction in high-density urban areas: Augmenting multi-source data with
+architectural knowledge. Automation in Construction, 93, 22-34.
+doi:10.1016/j.autcon.2018.05.009
+Eastman, C., Teicholz, P., Sacks, R., & Liston, K. (2011). BIM handbook: A guide to
+building information modeling for owners, managers, designers, engineers and
+contractors (2nd ed.). Hoboken, USA: John Wiley & Sons.
+Ellenberg, A., Kontsos, A., Moon, F., & Bartoli, I. (2016). Bridge related damage
+quantification using unmanned aerial vehicle imagery. Structural Control and Health
+Monitoring, 23(9), 1168-1179. doi:10.1002/stc.1831
+
+625
+
+630
+
+Grieves, M., & Vickers, J. (2017). Digital twin: Mitigating unpredictable, undesirable
+emergent behavior in complex systems. In F.-J. Kahlen, S. Flumerfelt, & A. Alves,
+Transdisciplinary Perspectives on Complex Systems: New Findings and Approaches
+(pp. 85-113). Springer.
+Hamledari, H., McCabe, B., & Davari, S. (2017). Automated computer vision-based
+detection of components of under-construction indoor partitions. Automation in
+Construction, 74, 78-94. doi:https://doi.org/10.1016/j.autcon.2016.11.009
+Hidaka, N., Michikawa, T., Motamedi, A., Yabuki, N., & Fukuda, T. (2018). Polygonization
+of point clouds of repetitive components in civil infrastructure based on geometric
+similarities. Automation in Construction, 86, 99-117.
+doi:10.1016/j.autcon.2017.10.014
+
+635
+
+640
+
+645
+
+Hsu, H. C., Chang, S., Chen, C. C., & Wu, I. C. (2020). Knowledge-based system for
+resolving design clashes in building information models. Automation in Construction,
+110, 103001. doi:10.1016/j.autcon.2019.103001
+Hsua, H. C., & Wua, I. C. (2019). Employing Simulated Annealing Algorithms to
+Automatically Resolve MEP Clashes in Building Information Modeling Models.
+Proceedings of the International Symposium on Automation and Robotics in
+Construction (Vol. 36) (pp. 788-795). Waterloo: IAARC.
+doi:10.22260/ISARC2019/0106
+Jardim-Goncalves, R., Sarraipa, J., Agostinho, C., & Panetto, H. (2011). Knowledge
+framework for intelligent manufacturing systems. Journal of Intelligent
+Manufacturing, 22(5), 725-735. doi:10.1007/s10845-009-0332-4
+Javanmardi, M., Gu, Y., Javanmardi, E., Hsu, L. T., & Kamijo, S. (2015). 3D building map
+reconstruction in dense urban areas by integrating airborne laser point cloud with 2D
+24
+
+boundary map. Proceedings of the 2015 IEEE International Conference on Vehicular
+Electronics and Safety (pp. 126-131). IEEE. doi:10.1109/ICVES.2015.7396906
+650
+
+655
+
+Jung, J., Hong, S., Jeong, S., Kim, S., Cho, H., Hong, S., & Heo, J. (2014). Productive
+modeling for development of as-built BIM of existing indoor structures. Automation
+in Construction, 42, 68-77. doi:10.1016/j.autcon.2014.02.021
+Kim, C., Son, H., & Kim, C. (2013). Automated construction progress measurement using a
+4D building information model and 3D data. Automation in Construction, 31, 75-82.
+doi:10.1016/j.autcon.2012.11.041
+Koppula, H. S., Anand, A., Joachims, T., & Saxena, A. (2011). Semantic labeling of 3d point
+clouds for indoor scenes. Advances in neural information processing systems, (pp.
+244-252). doi:http://papers.nips.cc/paper/4226-semantic-labeling-of-3d-point-cloudsfor-indoor-scenes.pdf
+
+660
+
+665
+
+Lacasta, J., Nogueras-Iso, J., Falquet, G., Teller, J., & Zarazaga-Soria, F. J. (2013). Design
+and evaluation of a semantic enrichment process for bibliographic databases. Data &
+Knowledge Engineering, 88(C), 94-107. doi:10.1016/j.datak.2013.10.001
+Levinson, R., Chen, S., Berdahl, P., Rosado, P., & Medina, L. A. (2014). Reflectometer
+measurement of roofing aggregate albedo. Solar Energy, 100, 159-171.
+doi:10.1016/j.solener.2013.11.006
+Liao, Y., Lezoche, M., Panetto, H., & Boudjlida, N. (2016). Semantic annotations for
+semantic interoperability in a product lifecycle management context. International
+Journal of Production Research, 54(18), 5534-5553.
+doi:10.1080/00207543.2016.1165875
+
+670
+
+675
+
+Lin, H., Gao, J., Zhou, Y., Lu, G., Ye, M., Zhang, C., . . . Yang, R. (2013). Semantic
+decomposition and reconstruction of residential scenes from LiDAR data. ACM
+Transactions on Graphics, 32(4), 1-10. doi:10.1145/2461912.2461969
+Liu, J., & Wu, Z. (2016). Rule-based generation of ancient Chinese architecture from the
+Song Dynasty. Journal on Computing and Cultural Heritage, 9(2), Article 7.
+doi:10.1145/2835495
+Lu, W., Lai, C. C., & Tse, T. (2019). BIM and Big Data for Construction Cost Management.
+Abingdon, Oxon: Routledge.
+Mehta, M., Johnson, J., & Rocafort, J. (1999). Architectural acoustics: Principles and design.
+Englewood Cliffs, NJ United States: Prentice Hall.
+
+680
+
+Nguyen, C. H., & Choi, Y. (2018). Comparison of point cloud data and 3D CAD data for onsite dimensional inspection of industrial plant piping systems. Automation in
+Construction, 91, 44-52. doi:10.1016/j.autcon.2018.03.008
+
+25
+
+NIBS. (2015). Standard National BIM Standard - United States Version 3. National Institute
+of Building Sciences. Retrieved September 24, 2019, from https://bit.ly/33gTWZ4
+685
+
+NIC. (2017). Data for the Public Good. London: National Infrastructure Commission, UK.
+Retrieved from https://www.nic.org.uk/publications/data-public-good/
+Pătrăucean, V., Armeni, I., Nahangi, M., Yeung, J., Brilakis, I., & Haas, C. (2015). State of
+research in automatic as-built modelling. Advanced Engineering Informatics, 29(2),
+162-171. doi:10.1016/j.aei.2015.01.001
+
+690
+
+695
+
+700
+
+Pierdicca, R., Paolanti, M., Matrone, F., Martini, M., Morbidoni, C., Malinverni, E. S., . . .
+Lingua, A. M. (2020). Point cloud semantic segmentation using a deep learning
+framework for cultural heritage. Remote Sensing, 12(6), 1005.
+doi:10.3390/rs12061005
+Rose, L. S., Akbari, H., & Taha, H. (2003). Characterizing the fabric of the urban
+environment: a case study of Greater Houston, Texas. Berkeley, CA, USA: Lawrence
+Berkeley National Laboratory.
+Sacks, R., Ma, L., Yosef, R., Borrmann, A., Daum, S., & Kattel, U. (2017). Semantic
+enrichment for building information modeling: Procedure for compiling inference
+rules and operators for complex geometry. Journal of Computing in Civil
+Engineering, 31(6), 04017062. doi:10.1061/(asce)cp.1943-5487.0000705
+Santamouris, M. (2014). Cooling the cities–a review of reflective and green roof mitigation
+technologies to fight heat island and improve comfort in urban environments. Solar
+energy, 103, 682-703. doi:10.1016/j.solener.2012.07.003
+
+705
+
+Schnabel, R., Wahl, R., & Klein, R. (2007). Efficient RANSAC for point‐cloud shape
+detection. Computer GraphicsF forum, 26(2), 214-226. doi:10.1111/j.14678659.2007.01016.x
+Shamir, A. (2008). A survey on mesh segmentation techniques. Computer Graphics Forum,
+27(6), 1539-1556. doi:10.1111/j.1467-8659.2007.01103.x
+
+710
+
+715
+
+Stewart, I. D., Oke, T. R., & Krayenhoff, E. S. (2014). Evaluation of the ‘local climate
+zone’scheme using temperature observations and model simulations. International
+journal of climatology, 24(4), 1062-1080. doi:10.1002/joc.3746
+Tan, T., Chen, K., Lu, W., & Xue, F. (2019). Semantic enrichment for rooftop modeling
+using aerial LiDAR reflectance. Proceedings of the 2019 IEEE International
+Conference on Signal Processing, Communications and Computing. IEEE.
+doi:10.1109/ICSPCC46631.2019.8960769
+Valero, E., Adán, A., & Cerrada, C. (2012). Automatic method for building indoor boundary
+models from dense point clouds collected by laser scanners. Sensors, 12(12), 1609916115. doi:10.3390/s121216099
+26
+
+720
+
+Wang, J., Wu, Q., Remil, O., Yi, C., Guo, Y., & Wei, M. (2018). Modeling indoor scenes
+with repetitions from 3D raw point data. Computer-Aided Design, 94, 1-15.
+doi:10.1016/j.cad.2017.09.001
+Wang, Q., & Kim, M. K. (2019). Applications of 3D point cloud data in the construction
+industry: A fifteen-year review from 2004 to 2018. Advanced Engineering
+Informatics, 39, 306-319. doi:10.1016/j.aei.2019.02.007
+
+725
+
+730
+
+Xiong, X., Adan, A., Akinci, B., & Huber, D. (2013). Automatic creation of semantically rich
+3D building models from laser scanner data. Automation in Construction, 31, 325337. doi:10.1016/j.autcon.2012.10.006
+Xu, J., Chen, K., Zetkulic, A. E., Xue, F., Lu, W., & Niu, Y. (2020). Pervasive sensing
+technologies for facility management: A critical review. Facilities, 38(1/2), 161-180.
+doi:10.1108/F-02-2019-0024
+Xue, F., & Lu, W. (2020a). A semantic differential transaction approach to minimizing
+information redundancy for BIM and blockchain integration. Automation in
+Construction, 118, 103270. doi:10.1016/j.autcon.2020.103270
+
+735
+
+740
+
+745
+
+Xue, F., Lu, W., & Chen, K. (2018). Automatic Generation of Semantically Rich As‐Built
+Building Information Models Using 2D Images: A Derivative‐Free Optimization
+Approach. Computer‐Aided Civil and Infrastructure Engineering, 33(11), 926-942.
+doi:10.1111/mice.12378
+Xue, F., Lu, W., Chen, K., & Webster, C. J. (2019a). BIM reconstruction from 3D point
+clouds: A semantic registration approach based on multimodal optimization and
+architectural design knowledge. Advanced Engineering Informatics, 42, 100965.
+doi:10.1016/j.aei.2019.100965
+Xue, F., Lu, W., Chen, K., & Zetkulic, A. (2019b). From semantic segmentation to semantic
+registration: Derivative-free optimization-based approach for automatic generation of
+semantically rich as-built Building Information Models from 3D point clouds. Journal
+of Computing in Civil Engineering, 33(4), 04019024. doi:10.1061/(ASCE)CP.19435487.0000839
+
+750
+
+Xue, F., Lu, W., Chen, Z., & Webster, C. J. (2020b). From LiDAR point cloud towards
+digital twin city: Clustering city objects based on Gestalt principles. ISPRS Journal of
+Photogrammetry and Remote Sensing, 167, 418-431.
+doi:10.1016/j.isprsjprs.2020.07.020
+
+755
+
+Xue, F., Lu, W., Tan, T., & Chen, K. (2019c). Semantic enrichment of city information
+models with LiDAR-based rooftop albedo. Sustainable Buildings and Structures:
+Building a Sustainable Tomorrow: Proceedings of the 2nd International Conference
+in Sutainable Buildings and Structures (p. 207). CRC Press.
+doi:10.1201/9781003000716-27
+27
+
+Xue, F., Wu, L., & Lu, W. (2021). Semantic enrichment of Building and City Information
+Models: a ten-year review. Advanced Engineering Informatics, in press.
+
+760
+
+Yang, B., Liu, B., Zhu, D., Zhang, B., Wang, Z., & Lei, K. (2020). Semiautomatic Structural
+BIM-Model Generation Methodology Using CAD Construction Drawings. Journal of
+Computing in Civil Engineering, 34(3), 04020006. doi:10.1061/(ASCE)CP.19435487.0000885
+
+28
+
+

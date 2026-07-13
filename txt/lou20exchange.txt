@@ -1,0 +1,981 @@
+A review of BIM data exchange method in BIM collaboration
+Jinfeng Lou 1*, Weisheng Lu 2, Fan Xue 3
+This is the authors’ pre-print version (before peer review) of the paper:
+Lou, J., Lu, W. & Xue, F. (2020). A review of BIM data exchange method in BIM
+collaboration. Proceedings of the 25th International Symposium on Advancement of
+Construction Management and Real Estate (CRIOCM2020), Springer, in press.
+This file is shared for personal and academic use only, under the license CC BY-NC-ND 4.0
+(Non-Commercial, No Derivatives, and with an Attributed citation when you
+use). The final published version of this paper can be found at:
+[LINK_TO_SPRINGERLINK]. Any uses other than personal and academic purposes must
+obtain appropriate permissions from Springer first.
+Abstract: Nowadays, building information modeling (BIM) plays a crucial role in project
+collaboration. BIM information should be freely exchanged among different stakeholders for
+the purpose of collaboration. With the development of Information and Communication
+Technology (ICT), there are many novel data exchange methods for BIM information
+exchange. However, little literature has attempted to review the current status of BIM data
+exchange methods. This study aims to provide a comprehensive summary of the status quo of
+BIM data exchange methods, including file-based method, cloud-based method, and three
+local data exchange methods. The advantages and disadvantages of each method are
+identified. This paper reveals that more efforts should be paid for enhancing the capability to
+deal with large Industry Foundation Class (IFC) files; a more stable, consistent identifier that
+can uniquely and easily identify an object should be developed; more opportunity in
+integrating BIM with some emerging technologies, like blockchain, should be seized to solve
+the problems in BIM data exchange. This study presents an in-depth analysis of the current
+BIM data exchange method and helps the industry and academia to identify the existing gaps
+
+1* Jinfeng Lou
+
+Corresponding author, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+E-mail: waseljf@connect.hku.hk
+
+2 Weisheng Lu
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+3 Fan Xue
+
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+
+and future directions.
+Keywords: Building information modeling (BIM); Data exchange; Collaboration.
+1
+
+1 Introduction
+
+2
+
+Since building information modeling (BIM) first appeared in journal articles[1], BIM has
+
+3
+
+aroused widespread interest in academia and industry in many countries. BIM serves as a
+
+4
+
+digital representation of physical and functional characteristics of a facility, which can be
+
+5
+
+shared among various stakeholders[2]. The richness of data in BIM provides a brand new way
+
+6
+
+that people design, construct, and operate a building. From this point of view, BIM has led to
+
+7
+
+great transformation in Architecture, Engineering, Construction, and Operation (AECO). BIM
+
+8
+
+is not only a tool for representing facilities but also a project and process management
+
+9
+
+technique, covering almost all the information related to the project[3].
+
+10
+
+Recent years have witnessed a surge of leveraging BIM technology in a variety of
+
+11
+
+applications. It is reported that BIM increased labor productivity from 75% to 240% within a
+
+12
+
+small contractor[4]. With the help of BIM, Lee et al. proposed an ontological method to
+
+13
+
+automate the inference process and gain a more precise cost estimation, reducing the amount
+
+14
+
+of manual work[5]. Liu et al. also developed a framework for integrating change management
+
+15
+
+with BIM and created an automated model updating workflow[6]. Besides, BIM has been
+
+16
+
+regarded as a powerful and disruptive tool for education and training to boost education
+
+17
+
+design and students' learning outcomes[7]. Grilo and Jardim-Goncalves proved that BIM has
+
+18
+
+effectively promoted electronic procurement in the AECO sector[8]. In these cases, BIM can
+
+19
+
+benefit project management a lot.
+
+20
+
+Another significant advantage of BIM lies in project collaboration. BIM has the ability to
+
+21
+
+improve the collaboration between stakeholders, including owners, architects, engineers,
+
+22
+
+contractors, and suppliers, by conveying accurate information efficiently[9]. The concept of
+
+23
+
+“collaboration” refers to a process during which participants collectively evaluate their
+
+24
+
+differences and seek cooperative solutions that are beyond the vision and capacity of any
+
+25
+
+single individual participant[10]. From a project management perspective, collaboration means
+
+26
+
+an agreement that some experts share and exchange their expertise, information, and
+
+27
+
+experience to fulfill a specific task and reach the project aim[11][12]. The lack of collaboration
+
+28
+
+in construction projects has been heavily criticized in the literature[12]. The advent of BIM
+
+29
+
+technology provides a digital information platform for the collaboration of construction
+
+30
+
+projects. Information exchange, corresponding to data exchange in BIM, is a crucial basis for
+
+31
+
+participant collaboration. BIM, as a pool of digital data, can convey the proper information to
+
+32
+
+proper participants with the assistance of modern Information and Communication
+
+33
+
+Technology (ICT).
+
+34
+
+However, BIM-enabled data exchange is also faced with several problems from both
+
+35
+
+social and technical aspects. For the social issues, Gielingh identified the lack of motivation,
+
+36
+
+legal concerns, and industrial unreadiness when integrating BIM into collaboration[13]. In
+
+37
+
+2004, Kam and Fischer summarized some of the technical problems, such as geometric
+
+38
+
+misrepresentation, loss of object information, application-specific input/output, time-
+
+39
+
+consuming one-way conversion processes, and so on[14]. With the rapid development of BIM
+
+40
+
+and ICT technology, many aforementioned problems have already been solved, and many
+
+41
+
+new ones have emerged. Nevertheless, there is very little literature regarding the current BIM
+
+42
+
+data exchange methods.
+
+43
+
+This study aims to provide a comprehensive elaboration of the status quo of the
+
+44
+
+prevailing BIM data exchange approach from a technical perspective. Section 2 reviews the
+
+45
+
+file-based data exchange method. The cloud-based approach is reviewed in Section 3.
+
+46
+
+Moreover, three local data exchange method is summarized in Section 4. Conclusions and
+
+47
+
+future directions are given in Section 5.
+
+48
+
+2 File-based data exchange
+
+49
+
+File-based BIM data exchange is to directly transfer a specific file to the receiver manually. In
+
+50
+
+the early stages of BIM development, different software vendors had their own file formats,
+
+51
+
+which can not be recognized by other software. It caused much trouble in project
+
+52
+
+collaboration when the stakeholders used different software. Therefore, as expected, Industry
+
+53
+
+Foundation Class (IFC) format, as a neutral data format, has been widely accepted by existing
+
+54
+
+BIM collaboration standards and various software vendors[15]. Many recently developed
+
+55
+
+applications and studies are based on IFC format[16][17].
+
+56
+
+Exchanging IFC-based files is the most simple and straightforward way of
+
+57
+
+communicating BIM information. In IFC schema, one can easily extract a subset of data from
+
+58
+
+the overall model via Model View Definition (MVD), a pre-defined subset of the IFC schema
+
+59
+
+in light of the receiver’s need[18].
+
+60
+
+However, file-based exchange transfers information in a one-way manner, leading to the
+
+61
+
+results that designers should transfer files repeatedly in each design iteration to ensure all the
+
+62
+
+design changes are considered[19]. The request for BIM information and file transfer is
+
+63
+
+manually made often through emails or other correspondence. And current file-based
+
+64
+
+exchange technologies are incapable of managing data inconsistencies and redundancy, with
+
+65
+
+network resources occupied by excessive files[20]. Moreover, the file-based exchange is
+
+66
+
+unlikely to provide object-level data management without auxiliary tools. For example,
+
+67
+
+different participants may have different access privileges. For a file-based system, the
+
+68
+
+accessibility of data can only be regulated on a file-level instead of an object-level[21].
+
+69
+
+3 Cloud-based data exchange
+
+70
+
+Cloud computing has long been regarded as transforming information technology. The most
+
+71
+
+widely accepted definition of cloud computing stated that “Cloud computing is a model for
+
+72
+
+enabling convenient, on-demand network access to a shared pool of configurable computing
+
+73
+
+resources (e.g., networks, servers, storage, applications, and services) that can be rapidly
+
+74
+
+provisioned and released with minimal management effort or service provider interaction”[22].
+
+75
+
+The benefits of cloud computing come in many aspects, such as low cost, scalability,
+
+76
+
+independence of hardware, and venue[23]. Three common cloud service architectures are
+
+77
+
+identified: Software as a Service (SaaS), Platform as a Service (PaaS), and Infrastructure as a
+
+78
+
+Service (IaaS). By deployment model, cloud service can also be categorized into four types:
+
+79
+
+Private cloud, Community cloud, Public cloud, and Hybrid cloud. The advent of cloud BIM is
+
+80
+
+considered to realize the function of real-time data exchange[24]. There are already a number
+
+81
+
+of vendors developing their own cloud services, such as Graphisoft’s BIM Explorer (BIMx)
+
+82
+
+and BIMcloud, Autodesk’s A360, and BIM360, BIMServer, ONUMA System, and Trimble
+
+83
+
+QuadriDCM and Trimble Connect[19].
+
+84
+
+By combining cloud computing and BIM technology, cloud BIM promises to solve some
+
+85
+
+of the problems, such as lack of computing power and high cost[20]. Cloud BIM also allows
+
+86
+
+real-time access to data, on-demand access to computing resources and applications, which
+
+87
+
+potentially provides a high level of collaboration in a consolidated model[19].
+
+88
+
+However, the collaboration between various cloud BIM software provided by different
+
+89
+
+vendors is difficult[25]. The open standards for cloud BIM collaboration, like IFC schema, are
+
+90
+
+expected to be developed to tackle this issue[19]. More importantly, organizational and legal
+
+91
+
+problems are regarded as the major obstacles to implementing cloud BIM[24]. For example,
+
+92
+
+shared common platforms, like cloud BIM, create significant vulnerability and uncertainties
+
+93
+
+towards privacy and information security due to its nature of openness and
+
+94
+
+decentralization[26]. Redmond et al. maintained that the current contract does not cover
+
+95
+
+information about the ownership clarity of the BIM model[27]. The lack of a clear statement
+
+96
+
+about responsibility and liability can hinder the adoption of cloud BIM. Moreover, the
+
+97
+
+promotion of cloud BIM is in urgent need of a large number of technicians and professionals
+
+98
+
+to adapt to this new technology[24][27].
+
+99
+
+4 Local data exchange method
+
+100
+
+The above two methods are general methods for BIM data exchange. Recently researchers
+
+101
+
+have developed some other approaches to deal with local data exchange for partial models,
+
+102
+
+including the serialization method, transaction-based method, and blockchain-based method.
+
+103
+
+4.1 Serialization method
+
+104
+
+Some researchers attempted to serialize the contents of IFC files in order to store, transfer,
+
+105
+
+identify, trace objects. Data serialization refers to encoding IFC objects into a format or data
+
+106
+
+structure that can be stored or sent to other applications[28]. The data structure is critical for
+
+107
+
+exchanging data and other applications at an object level.
+
+108
+
+One of the serialization methods is the “flattening” method. Data exchange relies on an
+
+109
+
+identifier (e.g., the reference number of each line in IFC files and Globally Unique Identifier
+
+110
+
+(GUID)) to trace objects. The line reference number serves as a local reference of an object,
+
+111
+
+but only valid within one file[29]. With the help of these reference numbers, IFC files are
+
+112
+
+organized into an object-based inheritance hierarchy[30]. GUID is a unique and reproductive
+
+113
+
+128-bit number for identifying objects[31][32]. Different software has different internal data
+
+114
+
+structures and editing operations, which results in the inconsistency and inadequacy of both
+
+115
+
+the reference number and GUID to be an identifier during the IFC roundtripping
+
+116
+
+process[33][34]. Some techniques have been developed to avoid using the reference number or
+
+117
+
+GUID as an identifier. The “flattening” method, proposed by Lee et al.[35], is to replace the
+
+118
+
+reference numbers with the actual values by a recursive strategy and decode nested
+
+119
+
+relationships between various instances to form a full and unique description string for an IFC
+
+120
+
+instance itself[36]. In this case, each line of IFC files does not include any reference, and the
+
+121
+
+hierarchical structure is “flattened”. Each object can be identified by this unique string
+
+122
+
+directly, not affected by the unstable reference number or GUID. However, such a flattening
+
+123
+
+process may be sensitive to redundant instances[34] and produce an overly long string, which
+
+124
+
+costs a lot of computing resources and time[33].
+
+125
+
+Some other studies seek to convert an IFC file into a graph. Arthaud and Lombardo
+
+126
+
+developed a method to transform IFC files into oriented graphs[37]. Oraskari and Törmä
+
+127
+
+derived an RDF graph from IFC files and used a Short Paths Crossings Algorithm (SPCA) to
+
+128
+
+assign an identifier to those instances that do not have a GUID[29]. However, these graph-
+
+129
+
+based methods depend more or less on the GUID and can be very time-consuming when IFC
+
+130
+
+files are too large. Additionally, these methods can not cope with duplicate instances[34].
+
+131
+
+4.2 Transaction-based method
+
+132
+
+Froese pointed out that collecting common data in a centralized server allows various flexible
+
+133
+
+data management services and enables a series of transaction-based IFC exchange with proper
+
+134
+
+data exchange protocols between distributed parties[38]. Jørgensen et al. developed an IFC
+
+135
+
+model server, supporting functions such as working on partial models, granting different
+
+136
+
+access rights to different users, and versioning on an object level[39]. Du et al. realized the
+
+137
+
+real-time information interaction between BIM and VR via transactional data exchanges[32].
+
+138
+
+These transaction-based data exchange applications benefit from GUID, which could be
+
+139
+
+used to index an object for each transaction. Nevertheless, its disadvantages also lie here.
+
+140
+
+GUID has been criticized for its inconsistency and instability[33].
+
+141
+
+4.3 Blockchain-based method
+
+142
+
+Since Nakamoto proposed the prototype of Bitcoin in 2008, blockchain, as its core
+
+143
+
+technology, has been a buzzword around the world[40]. Nowadays, blockchain has evolved
+
+144
+
+from version 1.0 to 4.0[41]. Blockchain technology has permeated into all walks of life,
+
+145
+
+including the AECO industry. It can be used to facilitate the BIM collaboration process.
+
+146
+
+Xue and Lu developed a semantic differential transaction (SDT) approach to capture
+
+147
+
+model changes as SDT records and chronologically collect them into a BIM change contract
+
+148
+
+(BCC)[36]. All the stakeholders can submit their BIM changes to the blockchain, and all
+
+149
+
+history changes of the project are stored in one blockchain, unchangeable. This method
+
+150
+
+addresses the challenge of information redundancy in integrating BIM and blockchain, and
+
+151
+
+turns out to be light and lean, suitable for performing heavy computation[36].
+
+152
+
+However, the conflict-resolving mechanisms need to be improved by some other
+
+153
+
+sophisticated models[36]. And only two pilot case studies were conducted to prove the
+
+154
+
+feasibility of the SDT approach. More tests considering extensibility and compatibility
+
+155
+
+problems should be carried out within real blockchain shells in the context of practical
+
+156
+
+construction projects[36].
+
+157
+
+5 Conclusions
+
+158
+
+BIM data exchange plays a crucial role in BIM project collaboration. With the development of
+
+159
+
+Information and Communication Technology, some previous problems are already solved
+
+160
+
+while some new issues emerge. In this study, the current BIM data exchange methods are
+
+161
+
+comprehensively reviewed. For the file-based data exchange method, it is regarded as the
+
+162
+
+most straightforward way. Still, its disadvantages lie in its one-way file-transfer manner and
+
+163
+
+incapability to manipulate at an object level. For cloud-based data exchange method, it is
+
+164
+
+praised by efficiency, low cost, real-time access to data, and on-demand access. However, the
+
+165
+
+cloud BIM also faces the problem of lack of open cloud BIM standards, and too much
+
+166
+
+organizational and legal issues, such as privacy, information security, lack of sufficient
+
+167
+
+technicians, and ownership and responsibility clarity. There are some local data exchange
+
+168
+
+approaches developed for partial model exchange. The “flattening” method dissolves all
+
+169
+
+nested relationships between objects and identifies an object by a unique string. Others tried
+
+170
+
+to convert IFC files into a graphic structure. However, these methods are not applicable to
+
+171
+
+large IFC files and depend on the unstable GUID more or less. For the transaction-based
+
+172
+
+method, most of them are based on the GUID, which might be inconsistent. With the help of
+
+173
+
+blockchain, a novel semantic differential transaction (SDT) approach collects the model
+
+174
+
+changes into a blockchain, better solving the problem of redundancy. However, this is a
+
+175
+
+brand-new method, requiring more consideration, such as conflict-resolving mechanisms,
+
+176
+
+extensibility, and compatibility.
+
+177
+
+Future research directions should focus on: (1) developing an algorithm to deal with
+
+178
+
+large IFC files with less computing time and resources; (2) finding a unique, stable,
+
+179
+
+consistent, and easy-to-use identifier to track IFC objects throughout the building life-cycle;
+
+180
+
+(3) exploring more about the potential of blockchain and other emerging technologies in
+
+181
+
+facilitating BIM data exchange.
+
+182
+
+References
+
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+
+[1] Zhao, X. (2017). A scientometric review of global BIM research: Analysis and
+visualization. Automation in Construction, 80, 37-47.
+[2] ISO. (2016). Building Information Models - Information Delivery Manual - Part 1:
+Methodology and Format (ISO 29481-1: 2016). International Organization for
+Standardization, Geneva, Switzerland.
+[3] Succar, B. (2009). Building information modelling framework: A research and delivery
+foundation for industry stakeholders. Automation in construction, 18(3), 357-375.
+[4] Poirier, E. A., Staub-French, S., & Forgues, D. (2015). Measuring the impact of BIM on
+labor productivity in a small specialty contracting enterprise through actionresearch. Automation in Construction, 58, 74-84.
+[5] Lee, S. K., Kim, K. R., & Yu, J. H. (2014). BIM and ontology-based approach for
+building cost estimation. Automation in construction, 41, 96-105.
+[6] Liu, F., Jallow, A. K., Anumba, C. J., & Wu, D. (2014). A framework for integrating
+change management with building information modeling. In Computing in Civil and
+Building Engineering (2014) (pp. 439-446).
+[7] Wu, W., & Issa, R. R. (2014). BIM education and recruiting: Survey-based comparative
+analysis of issues, perceptions, and collaboration opportunities. Journal of professional
+issues in engineering education and practice, 140(2), 04013014.
+[8] Grilo, A., & Jardim-Goncalves, R. (2011). Challenging electronic procurement in the
+AEC sector: A BIM-based integrated perspective. Automation in Construction, 20(2),
+107-114.
+[9] Azhar, S., Khalfan, M., & Maqsood, T. (2012). Building information modelling (BIM):
+now and beyond. Construction Economics and Building, 12(4), 15-28.
+[10] Gray, B. (1985). Conditions facilitating interorganizational collaboration. Human
+relations, 38(10), 911-936.
+[11] Hu, Z. Z., Zhang, X. Y., Wang, H. W., & Kassem, M. (2016). Improving interoperability
+between architectural and structural design models: An industry foundation classesbased approach with web-based tools. Automation in Construction, 66, 29-42.
+[12] Oraee, M., Hosseini, M. R., Edwards, D. J., Li, H., Papadonikolaki, E., & Cao, D.
+(2019). Collaboration barriers in BIM-based construction networks: A conceptual
+model. International Journal of Project Management, 37(6), 839-854.
+[13] Gielingh, W. (2008). An assessment of the current state of product data technologies.
+Computer-Aided Design, 40(7), 750-759.
+[14] Kam, C., & Fischer, M. (2004). Capitalizing on early project decision-making
+opportunities to improve facility design, construction, and life-cycle performance—POP,
+PM4D, and decision dashboard approaches. Automation in construction, 13(1), 53-65.
+[15] buildingSMART International. (2020). Industry Foundation Classes (IFC). Retrieved
+September 15, 2020, from https://www.buildingsmart.org/standards/bsistandards/industry-foundation-classes/.
+[16] Jeong, S. K., & Ban, Y. U. (2011). Computational algorithms to evaluate design
+solutions using Space Syntax. Computer-Aided Design, 43(6), 664-676.
+[17] Sun, J., Liu, Y. S., Gao, G., & Han, X. G. (2015). IFCCompressor: A content-based
+compression algorithm for optimizing Industry Foundation Classes files. Automation in
+Construction, 50, 1-15.
+
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+
+[18] buildingSMART International. (2020). Model View Definitions (MVD). Retrieved
+September 15, 2020, from https://www.buildingsmart.org/standards/bsi-standards/modelview-definitions-mvd/.
+[19] Afsari, K., Eastman, C. M., & Shelden, D. R. (2016). Cloud-based BIM data
+transmission: current status and challenges. In ISARC. Proceedings of the International
+Symposium on Automation and Robotics in Construction (Vol. 33, p. 1). IAARC
+Publications.
+[20] Zhang, J. P., Liu, Q., Yu, F. Q., Hu, Z. Z., & Zhao, W. Z. (2014). A framework of cloudcomputing-based BIM service for building lifecycle. In Computing in Civil and Building
+Engineering (pp. 1514-1521).
+[21] Lee, G., Jeong, J., Won, J., Cho, C., You, S. J., Ham, S., & Kang, H. (2014). Query
+performance of the IFC model server using an object-relational database approach and
+a traditional relational database approach. Journal of Computing in Civil Engineering,
+28(2), 210-222.
+[22] Mell, P., & Grance, T. (2009). Draft NIST working definition of cloud computing-v15. 21.
+Aug 2009, 2, 123-135.
+[23] Shen, Z., Li, L., Yan, F., & Wu, X. (2010). Cloud computing system based on trusted
+computing platform. In 2010 International Conference on Intelligent Computation
+Technology and Automation (Vol. 1, pp. 942-945). IEEE.
+[24] Wong, J., Wang, X., Li, H., & Chan, G. (2014). A review of cloud-based BIM technology
+in the construction sector. Journal of information technology in construction, 19, 281291.
+[25] Wu, W., & Issa, R. R. (2012). Leveraging cloud-BIM for LEED automation. Journal of
+Information Technology in Construction (ITcon), 17(24), 367-384.
+[26] Mahamadu, A. M., Mahdjoubi, L., & Booth, C. (2013). Challenges to BIM-cloud
+integration: Implication of security issues on secure collaboration. In 2013 IEEE 5th
+International Conference on Cloud Computing Technology and Science (Vol. 2, pp. 209214). IEEE.
+[27] Redmond, A., Hore, A., Alshawi, M., & West, R. (2012). Exploring how information
+exchanges can be enhanced through Cloud BIM. Automation in construction, 24, 175183.
+[28] Afsari, K., Eastman, C. M., & Castro-Lacouture, D. (2017). JavaScript Object Notation
+(JSON) data serialization for IFC schema in web-based BIM data exchange. Automation
+in Construction, 77, 24-51.
+[29] Oraskari, J., & Törmä, S. (2015). RDF-based signature algorithms for computing
+differences of IFC models. Automation in Construction, 57, 213-221.
+[30] Lin, J. R., & Zhou, Y. C. (2020). Semantic classification and hash code accelerated
+detection of design changes in BIM models. Automation in Construction, 115, 103212.
+[31] Jeong, Y. S., Eastman, C. M., Sacks, R., & Kaner, I. (2009). Benchmark tests for BIM
+data exchanges of precast concrete. Automation in construction, 18(4), 469-484.
+[32] Du, J., Zou, Z., Shi, Y., & Zhao, D. (2018). Zero latency: Real-time synchronization of
+BIM data in virtual reality for collaborative decision-making. Automation in
+Construction, 85, 51-64.
+[33] Shafiq, M., & Lockley, S. (2018). Signature-based matching of IFC models. In 35th
+International Symposium on Automation and Robotics in Construction (ISARC).
+[34] Shi, X., Liu, Y. S., Gao, G., Gu, M., & Li, H. (2018). IFCdiff: A content-based automatic
+comparison approach for IFC files. Automation in Construction, 86, 53-68.
+[35] Lee, G., Won, J., Ham, S., & Shin, Y. (2011). Metrics for quantifying the similarities and
+differences between IFC files. Journal of Computing in Civil Engineering, 25(2), 172181.
+
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+
+[36] Xue, F., & Lu, W. (2020). A semantic differential transaction approach to minimizing
+information redundancy for BIM and blockchain integration. Automation in
+Construction, 118, 103270.
+[37] Arthaud, G., & Lombardo, J. C. (2006). Automatic semantic comparison of STEP
+product models. In Innovations in Design & Decision Support Systems in Architecture
+and Urban Planning (pp. 447-463). Springer, Dordrecht.
+[38] Froese, T. (2003). Future directions for IFC-based interoperability. Journal of
+Information Technology in Construction (ITcon), 8(17), 231-246.
+[39] Jørgensen, K., Skauge, J., Christiansson, P., Svidt, K., Sørensen, K. B., & Mitchel, J.
+(2008). Use of IFC Model Servers: Modelling Collaboaration Possibilities in Practice.
+Aalborg Universitet.
+[40] Nakamoto, S. (2008). Bitcoin: A peer-to-peer electronic cash system.
+[41] Angelis, J., & da Silva, E. R. (2019). Blockchain adoption: A value driver perspective.
+Business Horizons, 62(3), 307-314.
+
+

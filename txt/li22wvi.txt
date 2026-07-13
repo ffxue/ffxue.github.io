@@ -1,0 +1,3292 @@
+A room with a view: Automatic assessment of window views for high-rise high-density areas using
+City Information Models and deep transfer learning
+Maosu Li 1, Fan Xue 2*, Yijie Wu 3, and Anthony G. O. Yeh 4
+This is the peer-reviewed post-print version of the paper:
+Li, M., Xue, F., Wu, Y., & Yeh, A.G.O. (2022). A room with a view: Automatic
+assessment of window views for high-rise high-density areas using City Information
+Models and deep transfer learning. Landscape and Urban Planning, 226, 104505.
+Doi: 10.1016/j.landurbplan.2022.104505
+The final version of this paper is available at: https://doi.org/10.1016/j.landurbplan.2022.104505.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+Highlights
+⋅
+⋅
+⋅
+⋅
+⋅
+
+Four Window View Indices (WVIs) were defined for measuring outside greenery,
+water-body, sky, and construction views.
+WVIs complemented existing view indices from the ground, aircraft, and satellites for
+urban computing.
+City Information Model (CIM)-based view images were trustworthy data sources for
+WVIs.
+Automatic WVI assessment based on deep transfer learning with an ML regression
+layer was performed.
+Highly satisfactory (R2 > 0.95) and fast (3.08 s/view) assessment results from
+experimental tests were obtained.
+
+1
+
+Abstract
+
+2
+
+Every windowed room has a view, which reflects the visibility of nature and landscape and
+
+3
+
+has a strong influence on the health, living satisfaction, and housing value of inhabitants.
+
+4
+
+Thus, automatic accurate window view assessment is vital in examining neighborhood
+
+5
+
+landscape and optimizing the social and physical settings for sustainable urban development.
+1 Maosu LI, PhD Candidate.
+
+Department of Urban Planning and Design, The University of Hong Kong, Pokfulam, Hong Kong SAR, China; Email:
+maosulee@connect.hku.hk, : https://orcid.org/0000-0002-9970-4053
+
+2 Fan XUE, Assistant Professor.
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong SAR, China; Email:
+xuef@hku.hk, : http://orcid.org/0000-0003-2217-3693
+*: Corresponding author, Tel: +852 3917 4174, Fax: +852 2559 9457; Email: xuef@hku.hk
+3 Yijie WU, PhD Student.
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong SAR, China; Email:
+yijiewu@connect.hku.hk, : https://orcid.org/0000-0003-1441-1583
+4 Anthony G. O. YEH, Chair Professor.
+
+Department of Urban Planning and Design, The University of Hong Kong, Pokfulam, Hong Kong SAR, China; Email:
+hdxugoy@hku.hk, : http://orcid.org/0000-0002-0587-0588
+
+1
+
+6
+
+However, existing methods are labor-intensive, inaccurate, and non-scalable to assess
+
+7
+
+window views in high-rise, high-density cities. This study aims to assess Window View
+
+8
+
+Indices (WVIs) quantitatively and automatically by using a photo-realistic City Information
+
+9
+
+Model (CIM). First, we define four WVIs to represent the outside (i) greenery, (ii) water-
+
+10
+
+body, (iii) sky, and (iv) construction views quantitatively. Then, we proposed a deep transfer
+
+11
+
+learning method to estimate the WVIs for the window views captured in the CIM.
+
+12
+
+Preliminary experimental tests in Wan Chai District, Hong Kong confirmed that our method
+
+13
+
+was highly satisfactory (R² > 0.95) and fast (3.08 s per view), and the WVIs were accurate
+
+14
+
+(RMSE < 0.042). The proposed approach can be used in computing city-scale window views
+
+15
+
+for landscape management, sustainable urban planning and design, and real estate valuation.
+
+16
+
+Keywords: Window view; View quality index; High-rise buildings; City information model;
+
+17
+
+Deep learning; Urban computing.
+
+18
+
+19
+
+1 Introduction
+
+20
+
+High-quality views can promote the physical and mental health, satisfaction,
+
+21
+
+restoration, and productivity of inhabitants as shown by studies on psychology, physiology,
+
+22
+
+and urban health (Ulrich 1984; Lottrup et al. 2015; Waczynska et al. 2021). In general, high-
+
+23
+
+quality views often involve considerable proportions of natural features, such as greenery,
+
+24
+
+sky, and water body, which are preferred by people (Hellinga 2013). Although the world
+
+25
+
+population is migrating to cities (UNPD 2014), urban planners and citizens find it challenging
+
+26
+
+to optimize the visibility of nature and landscape for windows in cities, especially in high-
+
+27
+
+rise, high-density areas. The Covid-19 pandemic recently has limited people’s physical access
+
+28
+
+to nature in many places, further amplifying the benefits of high-quality window views.
+
+29
+
+Consequently, high-quality window views, as a scarce resource, have been found to have
+
+30
+
+considerable influence on real estate values and sustainable urban development in terms of
+
+31
+
+neighborhood satisfaction, psychological and physical well-being, and urban planning and
+
+32
+
+design (Benson et al. 1998; Bishop et al. 2004; Jim & Chen 2009; Baranzini & Schaerer
+
+33
+
+2011).
+
+34
+35
+
+Researchers have developed a plethora of urban indices and computational methods to
+
+36
+
+assess various urban views from different dimensions and perspectives. For example, on the
+
+37
+
+global scale, satellite images can produce overhead view indices (Tucker 1979; McFeeters
+
+38
+
+1996), such as the Normalized Difference Vegetation Index (NDVI) for vegetation (Liu et al.
+2
+
+39
+
+2016) and the Normalized Difference Water Index for blue space exposure (Helbich et al.
+
+40
+
+2019). At the city and neighborhood scale, photographs and videos taken by vehicle-borne
+
+41
+
+cameras can assess the street views (Li et al. 2015; Shen et al. 2017; Dong et al. 2018; Lu
+
+42
+
+2018). These quantified view indices considerably contribute to human-built-environment
+
+43
+
+studies, such as urban depression symptoms (Helbich et al. 2019). However, cities, especially
+
+44
+
+high-rise, high-density ones, are not flat, so overhead and street-view assessment methods
+
+45
+
+cannot correctly represent window views (Li et al. 2015). High-rise, high-density areas, like
+
+46
+
+Hong Kong urban areas, have characteristics of high-rise buildings, narrow compacted street
+
+47
+
+canyons, high-level plot ratios, and high building densities (Gong et al. 2018). Within this
+
+48
+
+kind of context, the view from the window of a 30/F of an apartment may be completely
+
+49
+
+different from that of a 3/F one.
+
+50
+51
+
+Window view quality is receiving increased attention from researchers in the fields of
+
+52
+
+architecture, urban health, and property valuation. For example, an ideal architectural design
+
+53
+
+tends to assess the indoor design and the outdoor views holistically (Ko et al. 2021; Li &
+
+54
+
+Samuelson 2020). Urban health researchers often use survey, interview, or questionnaire
+
+55
+
+methods to classify the window view qualitatively (Lottrup et al. 2015; Masoudinejad &
+
+56
+
+Hartig 2020). Qualitative descriptions of housing quality such as “with deluxe sea view” and
+
+57
+
+“with hill view” have been popular in the housing and hostel market of urban areas such as
+
+58
+
+Hong Kong (Jim & Chen 2009), and Mediterranean coastal cities (Fleischer 2012). However,
+
+59
+
+the existing methods are challenging for the assessment of window views at the city level.
+
+60
+
+First, too many window views exist in a city to be represented and preprocessed (Li et al.
+
+61
+
+2015). Second, conventional methods are too laborious to assess millions of window views
+
+62
+
+for a city, and manual assessments are prone to various errors, such as preconceived notions
+
+63
+
+in questionnaires and subjective judgments in valuation (Helbich et al. 2019). Thus, an
+
+64
+
+automatic accurate assessment of window views can contribute to large-scale landscape and
+
+65
+
+urban studies, as well as related disciplines and industries, for billions of urban inhabitants.
+
+66
+
+The quantified views serving as a vertical view information hub can facilitate developers,
+
+67
+
+urban planners, and other decision-makers to make well-informed decisions in real estate
+
+68
+
+valuation, sustainable urban planning, e.g., green space planning for prioritized buildings, and
+
+69
+
+new town design for balanced natural view acquisition and high-quality landscape view
+
+70
+
+conservation, especially in high-rise, high-density cities.
+
+71
+72
+
+This study aims to present a series of Window View Indices (WVIs) together with an
+3
+
+73
+
+automatic assessment method based on City Information Models (CIMs) and deep transfer
+
+74
+
+learning. A CIM is a digital representation of the physical and functional characteristics of a
+
+75
+
+city, and it can serve as a shared-knowledge resource (Song et al. 2017; Xue et al. 2021).
+
+76
+
+With advanced remote sensing technologies, photo-realistic 3D CIMs become increasingly
+
+77
+
+accurate in geometry and affordable in price. Recently, researchers have applied virtual
+
+78
+
+cameras to CIMs to generate realistic images of 3D window views as needed (Li &
+
+79
+
+Samuelson 2020; Li et al. 2020). The proposed method in the presented study extends the
+
+80
+
+existing work with deep transfer learning to quantify massive quantities of view images.
+
+81
+82
+83
+
+The main contributions of this study are thus twofold:
+i.
+
+From a theoretical perspective, the WVIs and assessment methods in this study extend
+
+84
+
+the knowledge on computing window views in cities, especially in high-rise, high-
+
+85
+
+density areas. The WVIs complement the existing studies on overhead and street-level
+
+86
+
+urban views.
+
+87
+
+ii.
+
+For urban planning and design, the assessment results of this study are automatic and
+
+88
+
+accurate for any window (or 3D viewport), thanks to the up-to-date CIM and deep
+
+89
+
+transfer learning model pre-trained on other urban datasets. The output WVIs can
+
+90
+
+facilitate planners, architects, and other decision-makers in optimizing the
+
+91
+
+neighborhood landscape, urban planning and design, and property valuation for
+
+92
+
+sustainable urban development.
+
+93
+94
+
+The remainder of this study is organized as follows. The related work in literature is reviewed
+
+95
+
+in Section 2. The WVI definitions and the automatic assessment method are presented in
+
+96
+
+Section 3. Section 4 describes preliminary experiments and the results. The discussion and
+
+97
+
+conclusion are presented in Sections 5 and 6, respectively.
+
+98
+
+2 Literature review
+
+99
+
+2.1 Urban views
+
+100
+
+Numerous studies have been conducted to compute and analyze urban views, e.g., impacts on
+
+101
+
+human response (Roe et al. 2013) and economic development (Bishop et al. 2004; Jim &
+
+102
+
+Chen 2009). Examples are green, water, sky, and construction views. Such views are not only
+
+103
+
+of the interest in landscape and urban planning, but also attracting researchers in other
+
+104
+
+disciplines such as psychology, physiology, urban health, and real estate.
+
+105
+
+4
+
+106
+
+First, greenery is of great significance to urban dwellers’ psychological and physical health.
+
+107
+
+Classical theories such as the stress reduction theory (Ulrich 1983) and attentional restorative
+
+108
+
+theory (Kaplan S. 1995) have already shown this. For instance, green views can reportedly
+
+109
+
+heighten positive effects such as performance and vitality (Van den Berg et al. 2016), reduce
+
+110
+
+fears (Ulrich 1984), and block stressful thoughts (Roe et al. 2013). Other studies have shown
+
+111
+
+that people’s accessibility to greenery can increase their restorative potential (Pazhouhanfar
+
+112
+
+& Kamal 2014) and thus influence the recovery from surgery (Ulrich 1984), and promote
+
+113
+
+productivity and job satisfaction (Kaplan R. 2001; Lottrup et al. 2015). The green view
+
+114
+
+impacts have been more extensively related to topics such as mental fatigue, depression
+
+115
+
+(Helbich et al. 2019), and potential for violence and crime (Kuo & Sullivan 2001).
+
+116
+117
+
+Water and sky views as blue elements enable housing to enhance human healthcare and
+
+118
+
+property value. High-quality water bodies benefit people by having better aesthetic
+
+119
+
+enjoyment and restorative potential (White et al. 2010), whereas viewing the sky offers
+
+120
+
+occupants the sight and feeling of openness and spaciousness (Kaya & Erkip 2001). They
+
+121
+
+found that exposures to water and sky, similar to green views, benefit health and well-being,
+
+122
+
+such as stress reduction (Ulrich 1981), increased physical activity (Gascon et al. 2017), high
+
+123
+
+restorative potential (Masoudinejad & Hartig 2020), and promotion of positive mood and
+
+124
+
+satisfaction (Kaplan R. 2001; Gascon et al. 2017). Meanwhile, as precious attributes of the
+
+125
+
+aesthetic landscape, water and sky views are of great value, especially in high-rise, high-
+
+126
+
+density areas. As a result, both are influential on the property price (Baranzini & Schaerer
+
+127
+
+2011; Fleischer 2012).
+
+128
+129
+
+For construction views from buildings, streets, and roads, their aesthetics and scarcity affect
+
+130
+
+the preferences of humans. For instance, features such as constructed landmarks are desirable
+
+131
+
+in window views (Baranzini & Schaerer 2011; Damigos & Anyfantis 2011). By contrast,
+
+132
+
+studies also demonstrated that urban views with natural features are preferred by occupants
+
+133
+
+over plain and dull construction scenes (Ulrich 1981; Grinde & Patil 2009). In summary, the
+
+134
+
+four types of view features are worthy of assessment for windows in high-rise, high-density
+
+135
+
+areas.
+
+136
+137
+
+2.2 Assessments of window views
+
+138
+
+Generally, window-view quality can be assessed by two methods, namely, subjective and
+
+5
+
+139
+
+objective. First, numerous studies have utilized mostly a window view assessment according
+
+140
+
+to the participants’ subjective judgments on views (Lottrup et al. 2015; Li & Samuelson
+
+141
+
+2020; Masoudinejad & Hartig 2020). The window views are presented by physical forms,
+
+142
+
+such as photographs and virtual forms (e.g., virtual reality). Researchers and practitioners
+
+143
+
+first collect window views according to their research objects. Then, participants assess or
+
+144
+
+rank the window views by using interview forms and questionnaire tables. The assessment
+
+145
+
+results are not concrete owing to fuzzy scales and criteria. The assessment methods on the
+
+146
+
+participants’ subjective answers are also time-consuming (Helbich et al. 2019; Labib et al.
+
+147
+
+2021). Thus, subjective methods are limited to a small scale and cannot practically form
+
+148
+
+common standards to coalesce the window view information objectively and automatically.
+
+149
+150
+
+Objective methods and indices have emerged in the last decade for quantifying vertical
+
+151
+
+views. An example is a simulation-based view index harnessing the power of techniques in
+
+152
+
+the Geographic Information System, Remote Sensing, and 3D modeling (Yu et al. 2016;
+
+153
+
+Labib et al. 2021). A traditional method, namely 3D visibility analysis, has been used to
+
+154
+
+examine neighborhood amenities at the site and ground levels (Turan et al. 2019; Labib et al.
+
+155
+
+2021). Particularly, Yu et al.’s (2016) method measures floor-level greenery view based on
+
+156
+
+the NDVI metric in a high-rise, high-density context, though the oversimplified 2.5D
+
+157
+
+greenery can lead to errors. Alternatively, view photography method can effectively compute
+
+158
+
+and analyze the real profile view of landscapes (Li et al. 2015; Shen et al. 2017; Dong et al.
+
+159
+
+2018). Recently, the method has also been used in Li et al.’s (2020) two-class window view
+
+160
+
+classification, i.e., “nature” and “construction,” based on Apriori rules and a transfer learning
+
+161
+
+model. However, Li et al.’s (2020) method relies on rigid classification rules and has only
+
+162
+
+two types of features. Thus, next-generation objective assessment methods should be able to
+
+163
+
+adapt to more urban scenes, with up-to-date machine learning (ML) technologies.
+
+164
+165
+
+2.3 Deep learning and applications in urban studies
+
+166
+
+Deep learning is a group of multi-layer artificial neural networks involving multiple levels of
+
+167
+
+representation learning (LeCun et al. 2015). Deep learning models have shown strengths in
+
+168
+
+general pattern recognition tasks (LeCun et al. 2015). For instance, SegNet as one of the best
+
+169
+
+deep convolutional network models has been used in visible landscape segmentation and
+
+170
+
+quantification tasks (Liang et al. 2017; Shen et al. 2017). To study the relationship of natural
+
+171
+
+features including greenery and water with geriatric depression in Beijing, China, a fully
+
+6
+
+172
+
+convolutional neural network (FCN-8s) was used to segment the street view images into
+
+173
+
+green parts and blue parts (Helbich et al. 2019).
+
+174
+175
+
+Deep transfer learning adopts a pre-trained network, inductively or transductively, from a
+
+176
+
+source domain to the target domain on the basis of a mapping mechanism (Pan & Yang
+
+177
+
+2009). A small training dataset in the target domain can effectively map the variables’
+
+178
+
+relationships and transfer the pre-trained network. Deep transfer learning has become
+
+179
+
+prevalent for saving the time and resource costs in labeling training data with negligible
+
+180
+
+performance downgrades from the original model. Thus, it is widely used in the semantic
+
+181
+
+understanding of urban research, such as environmental management (Chen et al., "Looking
+
+182
+
+beneath the surface”: A visual-physical feature hybrid approach for unattended gauging of
+
+183
+
+construction waste composition 2021; 2022), urban morphology (Middel et al. 2019), and
+
+184
+
+perception (Yao et al. 2019; Li et al. 2020). For instance, fed by the street view images, FCN-
+
+185
+
+8s pre-trained on the ADE20K dataset was transferred in water and greenery extraction of
+
+186
+
+streetscape (Helbich et al. 2019). All previous studies have confirmed that deep transfer
+
+187
+
+learning can be a versatile and inexpensive instrument from one domain to a similar domain
+
+188
+
+application. Thus, for large-scale window view quality assessment and applications, deep
+
+189
+
+transfer learning can provide cost-effective support for the semantic segmentation of the
+
+190
+
+view.
+
+191
+192
+
+In summary, large-scale window view assessment, especially the automatic method, has
+
+193
+
+previously been a conundrum owing to the poor availability of window data and immature
+
+194
+
+window view reconstruction and processing. Meanwhile, textured CIMs, deep transfer
+
+195
+
+learning, and other learning technologies may open a window of opportunity to improve the
+
+196
+
+automatic window view assessment for high-rise, high-density areas significantly.
+
+197
+
+198
+
+3 Research methods
+
+199
+
+Figure 1 shows the proposed method as an Icam DEFinition for Function modeling (IDEF0)
+
+200
+
+diagram, which is a public-domain flowchart-like methodology for modeling processes and
+
+201
+
+functions (Colquhoun et al. 1993). The legend in Figure 1 explains the inputs, methods and
+
+202
+
+tools, control parameters, and final outputs of each sub-process. The proposed automatic
+
+203
+
+window view assessment method comprises three steps: (i) batch generation, (ii) semantic
+
+204
+
+segmentation of pixels, and (iii) estimation of view indices. Each step employs a specific
+7
+
+205
+
+method and control parameters. Overall, the main inputs are a 3D photo-realistic CIM and
+
+206
+
+corresponding 2D building footprints in this study. The output is a set of quantified WVIs.
+
+207
+
+Finally, post-processing enriches the input CIM with the WVIs for smart decision-making for
+
+208
+
+landscape and urban planning and related disciplines. A practitioner can follow the same
+
+209
+
+methods and tools in Figure 1 and adjust the control parameters for specific application
+
+210
+211
+
+scenarios.
+
+212
+213
+214
+
+Figure 1. IDEF0 (Colquhoun et al. 1993) diagram of the proposed method for assessing
+window views.
+
+215
+216
+
+3.1 Definitions of WVIs
+
+217
+
+3.1.1 Window view index
+
+218
+
+This study defines the WVI as the ratio of pixels for each view type. Given a view image v =
+
+219
+
+{ pij | 1 ≤ i ≤ M, 1 ≤ j ≤ N } of M × N pixels and a finite set L of views, as shown in Figure 2,
+
+220
+
+the WVI in an input window view image is the ratio:
+
+221
+222
+223
+224
+225
+226
+
+WVIl =
+
+|{p | p ∈ v, λ(p) = l}|
+
+, l ∈ L,
+
+M×N
+
+(1)
+
+where λ(p) = l is the semantic label of a pixel p, e.g., “green” or “waterbody”, and | · | is the
+
+cardinality operator indicating the total number of pixels. Thus, all WVIs are scalars bounded
+between 0 and 1:
+
+WVIl ∈ [0, 1]
+
+, l ∈ L.
+
+(2)
+
+227
+
+We select the four major types of window views as summarized in Section 2.1. That is, L =
+
+228
+
+{‘green’, ‘waterbody (water)’, ‘sky’, ‘construction (const.)’}, as shown in Figure 2. Table 1
+
+229
+
+lists the common city objects’ mapping to L. For instance, the “green” view type covers all
+
+230
+
+kinds of greenery, including trees, bushes, and grasses. Four symbols, namely, WVIgreen,
+
+231
+
+WVIwater, WVIsky, and WVIconst., represent the scalar values, respectively. Despite the presence
+8
+
+232
+
+of other possible city objects such as pedestrians, pets, vehicles, and aircraft, the four major
+
+233
+
+types are dominant in window views in our experiment, i.e., WVIgreen + WVIwater + WVIsky +
+
+234
+
+WVIconst. ≈ 1, as shown in Figure 2. Furthermore, the ratio-based definition is consistent and
+
+235
+
+robust for the comparison of views from different window sizes across districts and cities,
+
+236
+
+which is helpful for the proof-of-concept purpose in this study, e.g., a window with WVIgreen =
+
+237
+
+0.8 owns more proportions of greenery and can thus be regarded as a totally green-view
+
+238
+
+window, compared with another having WVIgreen = 0.4.
+
+239
+240
+
+Figure 2. Examples of the four Window View Indices (WVIs).
+
+241
+242
+
+Table 1. List of types of views and associated common city objects.
+Type
+Green
+Waterbody
+Sky
+Construction
+
+Symbol
+WVIgreen
+WVIwater
+WVIsky
+WVIconst.
+
+Example objects
+Trees, bushes, and grasses
+Sea, lakes, ponds, and rivers
+Sky, clouds, and fog
+Building facades, roofs, walls, streets, houses, and roads
+
+243
+244
+
+3.1.2 Window view ranking
+
+245
+
+Furthermore, the relative window view ranking (WVR) of a window’s WVI within a high-
+
+246
+
+rise, high-density area A can be defined as the percentile to the maximum WVI of the context:
+
+247
+
+Very high, WVRAl ∈ [0.8, 1.0]
+⎧
+A
+⎪ High, WVRl ∈ [0.6, 0.8)
+WVI
+l
+WVR Al =
+= Average, WVRAl ∈ [0.4, 0.6)
+max�WVIl𝐴𝐴 � ⎨
+A
+⎪ Low, WVRl ∈ [0.2, 0.4)
+⎩ Very low, WVRAl ∈ [0.0, 0.2)
+9
+
+, l ∈ L.
+
+(3)
+
+248
+
+Therefore, the WVR classifies all the windows in an area into five isometric groups. WVR
+
+249
+
+can resolve the issue of inconsistent upper bounds of different WVIs, which enables an inter-
+
+250
+
+view-type comparison. For instance, although max(WVIsky) is roughly 0.5 and max(WVIgreen)
+
+251
+
+is 1.0 theoretically, max(WVRsky) and max(WVRgreen) can still reach 1.0. Thus, one window
+
+252
+
+with absolute WVIsky = 0.5 and WVIgreen = 0.5 can be tagged as a “very high”-level sky view
+
+253
+
+but an “average”-level green view within the context. People’s decision-making is expected
+
+254
+
+to be associated more with WVRs than WVIs, e.g., in property valuation.
+
+255
+
+3.2 Proposed assessment method
+
+256
+
+3.2.1 Batch generation of window view images
+
+257
+
+The first step aims to generate the window view images in an urban area in batch. The image
+
+258
+
+extraction process, as shown in Figure 3, is automatic on 3D GIS platforms with camera
+
+259
+
+functions, such as Cesium (Cesium GS 2022). Figure 3a shows a window’s 3D geolocation
+
+260
+
+(lng, lat, height) and heading direction are computed on the facade of extruded footprints by
+
+261
+
+building height information, where the heading direction is assumed perpendicular to the
+
+262
+
+facade at (lng, lat). The field of view is set to 60° to represent the normal human field of
+
+263
+
+vision (FoV) (Tara et al. 2021), while the pose of the virtual camera is set on the window with
+
+264
+
+tilt = 0 and pitch = 0 to capture views. The image extraction extends Li et al. (2020) as the
+
+265
+
+camera’s view of the photo-realistic CIM’s textured appearance. The difference from Li et al.
+
+266
+
+(2020) is the full automation for massive windows using a JavaScript program as shown in
+
+267
+
+Figure 3b.
+
+268
+269
+270
+
+Figure 3. Batch generation of window view images. (a) Window location computation,
+camera settings, and (b) image generation process.
+10
+
+271
+272
+
+However, neighboring windows on the same facade often share similar views. Thus,
+
+273
+
+sampling the facade with certain intervals, e.g., every 10 or 20 m, is a cost-effective method,
+
+274
+
+as shown in Figure 3b, which can considerably save computational effort without losing
+
+275
+
+notable WVI accuracy. Based on the efficient sampling and GIS-based view visualization, the
+
+276
+
+batch generation can extract view images for the windows of a high-rise, high-density area.
+
+277
+
+Learned from experiments and sensitivity analysis results in Section 4, we used 20 and 5 m to
+
+278
+
+obtain a location matrix of view sites within the large and small facades, respectively.
+
+279
+280
+
+3.2.2 Deep transfer learning-based semantic segmentation
+
+281
+
+This step classifies every pixel in an input image to a semantic view label through deep
+
+282
+
+transfer learning. One of the most relevant deep learning datasets is the Cityscapes
+
+283
+
+benchmarking dataset (Cordts et al. 2016), which comprises 25,000 urban views annotated as
+
+284
+
+19 pixel-level labels from 50 cities in Germany. According to the study of Pan & Yang
+
+285
+
+(2009), the models trained in Germany can potentially be transferred to other areas like Hong
+
+286
+
+Kong. Table 2 lists the labels for Cityscapes in seven groups. Apparently, three types of
+
+287
+
+views, i.e., green, sky, and construction, can be directly mapped from Cityscapes’ definitions.
+
+288
+289
+
+Table 2. List of labels for the Cityscapes dataset and for WVIs in this study.
+
+290
+
+Group
+Labels for Cityscapes
+Labels for WVIs
+a
+Nature
+Vegetation, Terrain
+Green
+Sky
+Sky
+Sky
+Construction Building, Wall, Fence
+Const.
+Paved
+Road, Sidewalk
+Const.
+Object
+Pole, Traffic sign, Traffic light
+Const.
+Human
+Rider, Person
+–b
+Vehicle
+Car, Truck, Bus, Motorcycle, Bicycle, On rails
+–b
+a: Including all kinds of horizontal vegetation in Cityscapes; b: Negligible in this study.
+
+291
+292
+
+A Deeplab (Ver. 3+ with the Xception_65 backbone) model pre-trained on Cityscapes (Chen
+
+293
+
+et al. 2018; Xia et al. 2021) is transductively transferred to the segmentation of captured
+
+294
+
+window view images to the labels in Table 2. The off-the-shelf Deeplab model is one of the
+
+295
+
+top open-source deep learning models for urban views, where the training parameters can be
+
+296
+
+referred to (Chollet 2017) and (Chen et al. 2018). Xue et al. (2021) showed that transductive
+
+297
+
+transferring Deeplab leads to an efficient and low-cost semantic segmentation of view
+
+298
+
+images, even though the training and target datasets are from different contexts. As shown in
+11
+
+299
+
+Figure 4, the incorporated version of Deeplab has a network architecture consisting of two
+
+300
+
+parts, i.e., an encoder and a decoder (Chen et al. 2018). The encoder mainly includes an
+
+301
+
+Atrous Spatial Pyramid Pooling Module (ASPP) for concatenated features from a low-level
+
+302
+
+Atrous convolution (Chollet 2017), while the decoder concatenates the ASPP outputs and
+
+303
+
+low-level features with convolution and upsampling.
+
+304
+305
+306
+
+Figure 4. Three types of semantic segmentation errors in direct transductive transferring of
+Deeplab. (a) Undefined labels, (b) segmentation errors, and (c) from input noises.
+
+307
+308
+
+However, as shown in Figure 4, the segmentation results of a direct transductive transferring
+
+309
+
+were erroneous and unsatisfactory for WVIs in the study area. The primary source of errors
+
+310
+
+was from the inconsistent labels, e.g., the water body, between the training dataset Cityscapes
+
+311
+
+and our view images. Besides, minor errors resulted from the segmentation and input noises.
+
+312
+
+Therefore, deep transfer learning can deliver pixel-level semantic segmentation with relevant
+
+313
+
+labels for window view images, but the results must be corrected for the errors to improve the
+
+314
+
+accuracy in computing WVIs and WVRs using the ML-based WVI regression layer described
+
+315
+
+in Section 3.2.3 below.
+
+316
+
+3.2.3 ML-based regression for WVIs
+
+317
+
+This step applies an ML-based WVI regression, as shown in Figure 5, to correct the errors
+
+318
+
+from deep transfer learning for computing WVIs. The input features to the regression are
+
+319
+
+Cityscapes labels in terms of proportions of pixels segmented by Deeplab in Figure 4. The
+
+320
+
+outputs are the four WVIs, i.e., WVIgreen, WVIwater, WVIsky, and WVIconst. We annotate a small
+
+321
+
+set of window view images with five labels, i.e., green, waterbody, sky, construction, and
+
+322
+
+others (e.g., terrain and vehicles), which provide ground truth WVIs for the training process.
+
+323
+
+The candidate ML models include Decision Trees, Linear Regression, Support Vector
+
+324
+
+Machines (SVMs), kNN, Artificial Neural Network (ANN), Random Forest, and Adaboost. A
+12
+
+325
+
+standard train-compare-finetune pipeline is applied to select appropriate ML models to
+
+326
+
+estimate the WVIs through cross-validations. For each type of WVI, the most accurate ML
+
+327
+
+model (together with its parameters) is selected for the regression layer. As a result, the first
+
+328
+329
+
+two types of errors shown in Figure 4 can be considerably reduced.
+
+330
+331
+
+Figure 5. ML-based regression layer for estimating WVIs.
+
+332
+333
+
+The results of ML training are compared with the actual values of the four view types from
+
+334
+
+view image annotation using root-mean-squared error (RMSE):
+
+335
+
+∑
+
+RMSE = � l∈L
+
+(Predl −WVIl )2
+n
+
+,
+
+(4)
+
+336
+
+where WVIl indicates the actual value for the view type l, Predl is the estimated value, and n
+
+337
+
+denotes the number of window view images. The ML model trained with the minimum
+
+338
+
+RMSE is selected for WVI estimation. We utilize 10-fold cross-validation for unbiased
+
+339
+
+RMSEs.
+
+340
+341
+
+3.3 Post-processing for semantic enrichment of CIM
+
+342
+
+The estimated WVIs are post-processed to enrich the semantics of 3D CIM, which can
+
+343
+
+conveniently support future applications in related domains as a common knowledge
+
+344
+
+platform. The detailed workflow is as follows. First, geocoded view sites with WVIs are
+
+345
+
+registered at the 3D globe. Then, regarding view sites within the same facade as a group of
+
+346
+
+vertices, we triangulate them to reconstruct the building facade through a classic Delaunay
+13
+
+347
+
+method (Lee & Schachter 1980). Thereafter, a linear interpolation-based 3D rendering
+
+348
+
+(Akenine-Möller et al. 2019) of WVIs visualizes the whole building facades in a mesh
+
+349
+
+surface. The interpolation result also estimates the WVIs of all locations of the building
+
+350
+
+facades. Finally, the CIM is enriched with the WVI semantics for a spectrum of applications
+
+351
+
+in landscape management, sustainable urban planning and design, and real estate valuation.
+
+352
+
+4 Experimental tests
+
+353
+
+4.1 Experimental area and settings
+
+354
+
+The study area was Wan Chai in Hong Kong, as shown in Figure 6a. Wan Chai is one of the
+
+355
+
+highest residential density zones according to the Hong Kong Planning Standards and
+
+356
+
+Guidelines (HKPlanD 2018). The average of building heights is 35.5 m and the 75th
+
+357
+
+percentile is over 48 m. The study area owns a plot ratio at 8.0 and building density at 0.29
+
+358
+
+(the ratio of building site area to land area). Although the area enjoys considerable sky, sea,
+
+359
+
+and greenery view contents, the visibility of natural features is often blocked by other
+
+360
+
+buildings. The 2D footprint data with building height information were extracted from the
+
+361
+
+iB1000 digital topographic map of Hong Kong (HKLandsD 2014) as shown in Figure 6b, and
+
+362
+
+converted into the GeoJSON (Butler et al. 2016) format for batch attribute computations of
+
+363
+
+view sites’ locations and headings. The data source of 3D photorealistic CIM was produced
+
+364
+
+and freely shared by the Planning Department of Hong Kong (2019) as shown in Figure 6c.
+
+365
+
+We calibrated the CIM as 3D tiles to the correct geographical locations on the WGS-84 globe.
+
+366
+
+Then, 2D and 3D datasets were loaded and registered in an open-source 3D GIS platform
+
+367
+
+named “Cesium ion.” Ten buildings with typical different built environments from the seaside
+
+368
+
+to the mountain area were selected as case studies to examine the proposed approach, as
+
+369
+
+shown in Figure 6d.
+
+14
+
+370
+371
+372
+
+Figure 6. Study area of Wan Chai, Hong Kong. (a) Location of Wan Chai, (b) building
+footprints, (c) input CIM, and (d) location of 10 case study buildings.
+
+373
+374
+
+The computational experiments were set up as follows. The workstation comprised an Intel
+
+375
+
+i7-10700 CPU (2.90GHz, 16 cores), 128 GB memory, one Nvidia GeForce RTX 2070
+
+376
+
+graphic card, and Ubuntu 20.04 (64-bit) operating system. Sample window views were
+
+377
+
+collected on the Cesium platform (ver. 1.75). Deep transfer learning was in the environment
+
+378
+
+of Tensorflow (ver. 2.4) and Python (ver. 3.6). We adopted the seven ML models
+
+379
+
+implemented on Orange (ver. 3.26), a Python ML platform. From the case study buildings,
+
+380
+
+110 training examples were selected for unbiased representation of diversified window views
+
+381
+
+and manually annotated with the WVIs for training the ML models. The one-off annotation
+
+382
+
+work consumed about 10 person-hours. The size of training examples satisfied the
+
+383
+
+requirements of deep transfer learning. We set each view image with 900 × 900 pixels to
+
+384
+
+represent the view features seen from the window.
+
+385
+386
+
+4.2 Results
+
+387
+
+Results showed that the proposed method is automatic and efficient, as shown in Table 3. The
+
+388
+
+first step of batch generation returned 1,416 window view images from the 10 selected
+
+389
+
+buildings for the case study. The average time for generating one view image was 2.00 s. The
+
+390
+
+deep transfer learning processed the view images at an average time of 1.08 s in the second
+
+391
+
+step. The ML-based regression estimated the WVIs in <0.001 s on average for each image.
+15
+
+392
+393
+
+Table 3. Computational time of the proposed method for a window view image.
+Step
+1
+2
+3
+
+394
+
+Processing
+CIM-based batch generation
+Deep transfer learning
+ML-based regression
+
+Software library
+Cesium (ver. 1.75)
+Deeplab (ver. 3+)
+Orange (ver. 3.26)
+
+Average time (s)
+2.00#
+1.08
+0.00*
+Total
+3.08
+#: A pre-set value that can be fine-tuned by workstation performance; *: Less than 0.001 s.
+
+395
+396
+
+The WVIs’ assessments of the proposed method were also satisfactory. Table 4 shows that for
+
+397
+
+the best model of the four view indices’ estimation, the R² values were 0.952, 0.965, 0.978,
+
+398
+
+and 0.977 respectively, which represented more than 95% of the variance in the dependent
+
+399
+
+variables. The RMSEs of the four training models were 0.021, 0.022, 0.025, and 0.042,
+
+400
+
+respectively. The optimal parameter of each best model was as follows. For WVIgreen, the
+
+401
+
+Linear Regression model was trained with Lasso (L1) regularization and strength at 0.0001.
+
+402
+
+For WVIwater, the SVM model performed the best, with kernel = RBF, C = 0.9, gamma = 0.05.
+
+403
+
+For WVIsky, a Linear Regression model with an elastic net regularization (L1:L2=0.50:0.50)
+
+404
+
+was utilized with the best accuracy of estimation, whereas for WVIconst., the best estimation
+
+405
+
+was observed from a Linear Regression model with a Ridge (L2) regularization (Alpha =
+
+406
+
+0.003).
+
+407
+408
+
+Table 4. Training errors and time of the best model for four WVIs.
+WVI
+Green
+
+Best model
+Linear
+Regression
+
+Parameters
+L1 = 0.0001
+
+RMSE
+0.021
+
+R²
+0.952
+
+Training time (s)
+0.077
+
+Water
+
+SVM
+
+Kernel = RBF, C =
+0.9, gamma = 0.05
+
+0.022
+
+0.965
+
+0.154
+
+Sky
+
+Linear
+Regression
+
+L1:L2 = 0.50:0.50
+
+0.025
+
+0.978
+
+0.070
+
+Const.
+
+Linear
+Regression
+
+L2 =0.003
+
+0.042
+
+0.977
+
+0.091
+
+409
+410
+
+WVRs were computed from the WVIs by the best model. Table 5 shows three typical window
+
+411
+
+views and their WVIs and WVRs. In Table 5, a WVR is represented in an array of stars,
+
+412
+
+showing the level from “very low” to “very high” in Eq. 3. The highest WVRs correctly
+
+413
+
+reflected the given dominant features for all the samples.
+
+414
+
+16
+
+415
+
+Table 5. Sample WVIs and WVRs for typical sample window views.
+
+View images
+Dominant feature
+Feature
+Max.
+Green
+0.5421
+Water
+0.4375
+Sky
+0.5505
+Const.
+1.0000
+
+Sky
+WVI
+0.0165
+0.3352
+0.4682
+0.1870
+
+416
+
+Green
+WVI
+0.4867
+0.0024
+0.3236
+0.1704
+
+WVR
+⋆
+⋆⋆⋆⋆
+⋆⋆⋆⋆⋆
+⋆
+
+WVR
+⋆⋆⋆⋆⋆
+⋆
+⋆⋆⋆
+⋆
+
+Construction
+WVI
+WVR
+0.0130
+⋆
+0.0000
+⋆
+0.0928
+⋆
+0.9057
+⋆⋆⋆⋆⋆
+
+417
+
+4.3 Post-processing for enriching CIMs
+
+418
+
+In the post-processing, the estimated WVIs and WVRs were registered for enriching the
+
+419
+
+semantics of input CIM. Figure 7 shows the 3D mesh model of the regional WVIs in the
+
+420
+
+study area. Generally, most rooms of the buildings owned a high WVIconst. in this area as
+
+421
+
+shown in Figure 7d. Figure 7b shows that only windows facing the seaside in the high-rise
+
+422
+
+buildings near the harbor can have high-level WVIwater values in Wan Chai. Great sky views
+
+423
+
+were scattered across the rooms with the high storeys as shown in Figure 7c. Figure 7a shows
+
+424
+
+the generally low and fluctuated WVIgreen, reflecting the varied amount of the surrounding
+
+425
+
+greenery at different locations. In summary, the disparity of possession of natural view
+
+426
+
+resources, i.e., greenery, water, and sky, is significant in the study area. The quantified
+
+427
+
+disparity can help the urban planners to make a more accurate and specific decision for future
+
+428
+
+landscape management and urban planning, e.g., prioritized greenery planning for buildings
+
+429
+
+without any nature views.
+
+17
+
+430
+431
+
+Figure 7. Regional patterns of WVIs. (a) WVIgreen, (b) WVIwater, (c) WVIsky, and (d) WVIconst..
+
+432
+433
+
+Figure 8 shows a WVR-enriched comparison of two example north-facing facades, one
+
+434
+
+nearby and the other far away from the seafront, of which the locations are marked in Figure
+
+435
+
+8e. Holistically, water and sky views of the first facade were above the “average” levels in the
+
+436
+
+study area (≥ 40%), as shown in Figures 8b and 8c; in contrast, the levels of those views of
+
+437
+
+the second facade were consistently lower due to the inter-building obstruction. Figure 8a
+
+438
+
+shows the green views were both at a “very low” level (< 20%) due to the less visible
+
+439
+
+greenery. The construction view patterns of the two facades varied as shown in Figure 8d,
+
+440
+
+where construction views dominated the second facade. In comparison with WVI values, the
+
+441
+
+relativity in such WVR results is more convenient for certain applications such as real estate
+
+442
+
+valuation, since the levelization of the window view such as “very high” and “very low” can
+
+443
+
+intuitively inform developers and occupants of the room view quality within the local
+
+444
+
+context.
+
+445
+
+18
+
+446
+447
+
+Figure 8. WVR patterns of two example building facades. (a) WVRgreen, (b) WVRwater, (c)
+WVRsky, (d) WVRconst., and (e) their general locations.
+
+448
+449
+
+4.4 Sensitivity analysis
+
+450
+
+4.4.1 View sampling interval in Step 1
+
+451
+
+A trade-off existed between processing time cost and accuracy when applying the view
+
+452
+
+sampling interval in Step 1. A sensitivity analysis was conducted to identify a cost-effective
+
+453
+
+sampling plan. In the experiments, the case was a facade area (120 m × 60 m) of the China
+
+454
+
+Resources Building, as shown in Figure 9a. The benchmark was set to the result of a 5 m
+
+455
+
+sampling interval. We tested a range of sampling intervals from 10 m to 60 m in an
+
+456
+
+approximately exponential increment. Figure 9b shows the example of WVIsky estimation
+
+457
+
+results resampled back to the 5 m scale through linear interpolation to compare the accuracies
+
+458
+
+in terms of RMSE. We found that with increased sampling interval, the time consumption of
+
+459
+
+the window view image processing from generation to estimation witnessed a sharp decline,
+
+460
+
+whereas the RMSEs of four WVIs increased accordingly, as shown in Figure 9c. From the
+
+461
+
+observation, the sample interval of 20 m can be a “sweet point,” in which an efficient and
+
+462
+
+accurate estimation of WVI (RMSE<0.015) was obtained without excessive processing time.
+
+463
+
+Thus, for the view image processing of case buildings, we used 20 m as the sampling interval
+
+464
+
+for large facades. For a building facade whose length or width was less than 20 m, 5 m was
+
+465
+
+used.
+
+19
+
+466
+
+467
+468
+469
+
+Figure 9. Sensitivity analysis of sampling intervals. (a) A case facade, (b) estimated WVIsky at
+different sampling intervals, and (c) trade-off between time cost and four WVIs’ accuracy.
+
+470
+471
+
+4.4.2 Input CIM in Step 1
+
+472
+
+Figure 10 compares view segmentation results using two different CIMs. The appearances of
+
+473
+
+the two 3D models were close but clearly distinguishable. First, the color contrast of Google
+
+474
+
+Earth’s CIM was softer than the model adopted in this study, and the low contrast resulted in
+
+475
+
+the misclassification of constructions and greenery highlighted in Figure 10a. Second, the
+
+476
+
+model fidelity also affected the stimulation effects. Figure 10b shows that some parts of the
+20
+
+477
+
+vegetation view (as highlighted in the rectangles), which were wrongly segmented using our
+
+478
+
+CIM, can be corrected using Google Earth’s model. This finding was due to the higher
+
+479
+
+quality of Google Earth’s in expressing the vegetation features, especially in close range.
+
+480
+
+Lastly, the distortions in CIMs affected the segmentation accuracy. As shown in the red
+
+481
+
+rectangles in Figure 10c, the blurred facades in the left column resulted in inaccurate
+
+482
+
+segmentation, whereas the distortions in Google Earth’s model led to the wrong detection of
+
+483
+
+buildings to vegetation.
+
+484
+485
+486
+
+Figure 10. Comparison of window view image segmentation (Step 2) against different CIMs.
+(a) View color, (b) view fidelity, and (c) view distortions.
+
+487
+488
+
+4.4.3 ML models for regression in Step 3
+
+489
+
+Based on the R², the performance of trained models is examined, and results are shown in
+
+490
+
+Figure 11. For the estimation of the four WVIs, all ML models had R² values greater than 0.7.
+
+491
+
+For three types of WVIs, i.e., WVIgreen, WVIsky, and WVIconst., the best models were produced
+
+492
+
+by Linear Regression. For the WVIwater estimation, the best model was SVM, whereas the
+
+493
+
+Linear Regression returned R² > 0.93. The satisfactory results from Linear Regression might
+
+494
+
+echo the assumption that four window view types could be mapped directly from the urban
+
+495
+
+street view features in high-rise, high-density areas.
+
+21
+
+496
+497
+
+Figure 11. Comparison of R² performances of the seven ML models.
+
+498
+
+499
+
+5 Discussion
+
+500
+
+5.1 Significance
+
+501
+
+Large-scale window view assessment has a great potential to support many smart city
+
+502
+
+applications. The window view quality is of great significance for residents in high-rise, high-
+
+503
+
+density areas. In the post-Covid-19 era, window view plays an important role in accessing
+
+504
+
+nature as people have to stay longer in their houses or offices. The quantitative window view
+
+505
+
+quality assessment at the city scale can provide an intuitive understanding of environmental
+
+506
+
+inequality. Planners can use the results to prioritize improvements of the poor living
+
+507
+
+environments, such as prioritized provision of more green space for neighborhoods with poor
+
+508
+
+window views. And government sectors and policymakers can make the regulations, e.g.,
+
+509
+
+minimum acquisition of nature views in the future sustainable urban development. The results
+
+510
+
+can also facilitate urban and architectural design by quantifying the window view quality at a
+
+511
+
+relatively low cost. Designers can integrate the quantified view results for more
+
+512
+
+comprehensive generative designs of building spaces (Laovisutthichai et al. 2021) and new
+
+513
+
+towns. In addition, the method can serve as a new indicator for the housing market and thus
+
+514
+
+has a great potential to the architecture, engineering, and construction development.
+
+515
+516
+
+In the past, surveyors had to enter real rooms of buildings to capture the window views.
+
+517
+
+Owing to this time-consuming, labor-intensive task, the window view dataset is always
+
+518
+
+limited (Labib et al. 2021). Furthermore, accessing all window views manually at a large
+
+519
+
+scale becomes impossible in terms of cost, labor force, and privacy (Helbich et al. 2019).
+
+520
+
+Nowadays, with the advancement of remote sensing, photogrammetry, and digital twin
+
+521
+
+technology, mature 3D CIMs with high-quality textured appearances are becoming
+22
+
+522
+
+increasingly available for detecting multiple groups of view features. CIM-based simulated
+
+523
+
+window views for the real world have been validated effectively (Li & Samuelson 2020; Li et
+
+524
+
+al. 2020). However, for an urban-scale window view quality evaluation, processing a large
+
+525
+
+number of views manually remains laborious and expensive for surveyors. The proposed
+
+526
+
+window view quality assessment method can free humans from repetitive and time-
+
+527
+
+consuming tasks, and provide a set of quantifiable indicators to support fundamental and
+
+528
+
+derivative applications in window view quality evaluation.
+
+529
+530
+
+The proposed automatic assessment method can effectively generate four major view indices
+
+531
+
+for quantifying and analyzing the urban-scale window views. First, this study makes full use
+
+532
+
+of volumetric landscapes from 3D photo-realistic CIMs to further enrich the CIM with four
+
+533
+
+WVIs, thereby enabling many window-view-based digital twin city applications, such as 3D
+
+534
+
+city living environment assessment and housing scenic quality comparison. From a
+
+535
+
+practitioners’ point of view, the method is easy-to-use, low-cost, and accurate. For example,
+
+536
+
+the automation process can be implemented without considerable prior knowledge. The pre-
+
+537
+
+trained Deeplab model was shared freely. Based on the transfer learning theory, only a small
+
+538
+
+dataset is required for a satisfactory WVI assessment. Moreover, the experimental results
+
+539
+
+confirmed a high accuracy of assessing the window views (R² > 0.95). In summary, the
+
+540
+
+proposed method contributes to window view assessment using CIM and AI, and also
+
+541
+
+provides relatively low-cost and high-accuracy WVIs for applications in urban planning and
+
+542
+
+design, and property valuation.
+
+543
+544
+
+5.2 Limitations and future work
+
+545
+
+Nevertheless, a few limitations exist in the work presented in this study. First, the assessed
+
+546
+
+window view quality in this study only involved limited contents, including greenery, sky,
+
+547
+
+water body, and construction. Movable city objects e.g., pedestrian, car, and rare urban
+
+548
+
+features e.g., bare soil surface were not involved. Other view elements exerting influence on
+
+549
+
+indoor living satisfaction and outdoor environment perception such as aesthetic and
+
+550
+
+environmental quality, view distance, and layer were not considered. Second, the horizontal
+
+551
+
+view was set to compute the WVIs, which might miss visible features from other directions,
+
+552
+
+e.g., the ground level. Next, another limitation was the high workload of 2D image
+
+553
+
+segmentation involving repeated computation. For instance, similar view images from
+
+554
+
+neighboring windows were independent without reusing the intermediate segmentations. The
+
+555
+
+computation cost could be slightly higher for irregular buildings due to more view samples
+23
+
+556
+
+and processing. Last, the window sampling and interpolation also led to possible accuracy
+
+557
+
+losses.
+
+558
+559
+
+Future directions to improve the presented study are as follows. The first is extending the 2D
+
+560
+
+image format of window views to incorporate high-dimensional factors (e.g., fine-scale
+
+561
+
+classified view features, view distance that influences residents’ feeling of spaciousness, and
+
+562
+
+aesthetics and environmental quality attributes that influence living satisfaction) for holistic
+
+563
+
+quality and optimization. More FoVs, such as 360-views, can extend the WVIs assessed in
+
+564
+
+the 60° horizontal views in this study. Well-labelled CIM for landscapes is proven effective
+
+565
+
+for large-scale view quantification (Yu et al. 2016). Thus, a 3D segmented CIM may
+
+566
+
+eliminate the repetitive and redundant 2D image segmentation and save considerable costs of
+
+567
+
+training and applying deep transfer learning, especially for irregular buildings. Another
+
+568
+
+direction is to identify the accurate 3D location and orientation for each physical window in
+
+569
+
+the CIM so that the assessed WVIs and WVRs can be associated with windows and rooms.
+
+570
+
+571
+
+6 Conclusion
+
+572
+
+A high-quality window view with enough features such as greenery, sky, and water not only
+
+573
+
+has a good impact on residents’ health, well-being, and performance, but also can enrich the
+
+574
+
+value of the house, especially in high-rise, high-density areas. Traditional window view
+
+575
+
+assessment methods have common problems such as subjectivity, scalability, and efficiency.
+
+576
+
+To address these limitations, this study uses an automatic method for the large-scale window
+
+577
+
+view quality assessment through the use of CIM-based window view images of city
+
+578
+
+buildings.
+
+579
+580
+
+This study defines an indicator named Window View Index (WVI) including four sub-indices
+
+581
+
+i.e. Green view index, Water view index, Sky view index, and Construction view index,
+
+582
+
+which are measured at one time efficiently. By implementing a fast-sampling method, outside
+
+583
+
+views are captured at each view site of the 3D CIM at the initial stage. Then, a pre-trained
+
+584
+
+deep transfer learning model is used to classify view images into multiple features efficiently.
+
+585
+
+To construct the regression between detected features and the WVI, seven traditional machine
+
+586
+
+learning models are tuned to achieve the best performance. Our method achieved highly
+
+587
+
+satisfactory results in estimating the WVIs for the high-rise, high-density area, in Wan Chai,
+
+588
+
+Hong Kong. The RMSEs of estimation did not exceed 0.042, whereas the average time of
+24
+
+589
+
+processing each window was 3.08 s.
+
+590
+591
+
+The proposed method provides intuitive indicators of the window view quality for high-rise,
+
+592
+
+high-density areas. The automatic, accurate method is scalable to the urban scale, thereby
+
+593
+
+enabling many window view-based applications in landscape management, sustainable urban
+
+594
+
+planning and design, and real estate valuation, which would benefit residents’ health, urban
+
+595
+
+optimization, and the housing industry. Future work includes extending the view indices, 3D
+
+596
+
+semantic segmentation of CIM, and mapping the WVIs to physical windows and rooms.
+
+597
+
+Acknowledgment
+
+598
+
+The work presented in this study was supported in part by the Hong Kong Research Grants
+
+599
+
+Council (RGC) under the Early Career Scheme (ECS) No. 27200520 and the Guangdong–
+
+600
+
+Hong Kong-Macau Joint Laboratory for Smart Cities of the 2020 Guangdong New
+
+601
+
+Innovative Strategic Research Fund, Guangdong Science and Technology Department
+
+602
+
+(Project No.: 2020B1212030009)
+
+603
+
+604
+
+References
+
+605
+
+Akenine-Möller, T., Haines, E. & Hoffman, N. (2019). Real-Time Rendering (3rd ed.). New
+
+606
+607
+
+York: A K Peters/CRC Press. doi:10.1201/9781315365459
+Baranzini, A. & Schaerer, C. (2011). A sight for sore eyes: Assessing the value of view and
+
+608
+
+land use in the housing market. Journal of Housing Economics, 20(3), 191-199.
+
+609
+
+doi:10.1016/j.jhe.2011.06.001
+
+610
+
+Benson, E. D., Hansen, J. L., Schwartz, A. L. & Smersh, G. T. (1998). Pricing residential
+
+611
+
+amenities: the value of a view. The Journal of Real Estate Finance and Economics,
+
+612
+
+16(1), 55-73. doi:10.1023/A:1007785315925
+
+613
+
+Bishop, I. D., Lange, E. & Mahbubul, A. M. (2004). Estimation of the influence of view
+
+614
+
+components on high-rise apartment pricing using a public survey and GIS modeling.
+
+615
+
+Environment and Planning B: Planning and Design, 31(3), 439-452.
+
+616
+
+doi:10.1068/b3042
+
+617
+618
+619
+620
+
+Butler, H., Daly, M., Doyle, A., Gillies, S., Hagen, S. & Schaub, T. (2016). The geojson
+format. California, USA: Internet Engineering Task Force (IETF).
+Cesium GS. (2022). The Cesium Platform. Philadelphia, USA: Cesium GS, Inc. Retrieved
+from https://cesium.com/platform/
+
+25
+
+621
+
+Chen, J., Lu, W. & Xue, F. (2021). "Looking beneath the surface”: A visual-physical feature
+
+622
+
+hybrid approach for unattended gauging of construction waste composition. Journal
+
+623
+
+of Environmental Management, 286, 112233. doi:10.1016/j.jenvman.2021.112233
+
+624
+
+Chen, J., Lu, W., Yuan, L., Wu, Y. & Xue, F. (2022). Estimating construction waste truck
+
+625
+
+payload volume using monocular vision. Resources, Conservation and Recycling,
+
+626
+
+177, 106013. doi:10.1016/j.resconrec.2021.106013
+
+627
+
+Chen, L.-C., Zhu, Y., Papandreou, G., Schroff, F. & Adam, H. (2018). Encoder-decoder with
+
+628
+
+atrous separable convolution for semantic image segmentation. Proceedings of the
+
+629
+
+European Conference on Computer Vision (ECCV) (pp. 801-818). Munich, Germany:
+
+630
+
+Springer Science. doi:10.1007/978-3-030-01234-2_49
+
+631
+
+Chollet, F. (2017). Xception: Deep learning with depthwise separable convolutions.
+
+632
+
+Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition
+
+633
+
+(pp. 1251-1258). Honolulu, Hawaii: IEEE. doi:10.1109/CVPR.2017.195
+
+634
+
+Colquhoun, G. J., Baines, R. W. & Crossley, R. (1993). A state of the art review of IDEFO.
+
+635
+
+International Journal of Computer Integrated Manufacturing, 6(4), 252-264.
+
+636
+
+doi:10.1080/09511929308944576
+
+637
+
+Cordts, M., Omran, M., Ramos, S., Rehfeld, T., Enzweiler, M., Benenson, R., Franke, U.,
+
+638
+
+Roth, S. & Schiele, B. (2016). The cityscapes dataset for semantic urban scene
+
+639
+
+understanding. Proceedings of the IEEE Conference on Computer Vision and Pattern
+
+640
+
+Recognition (pp. 3213-3223). Las Vegas, Nevada: IEEE. doi:10.1109/CVPR.2016.350
+
+641
+
+Damigos, D. & Anyfantis, F. (2011). The value of view through the eyes of real estate
+
+642
+
+experts: A Fuzzy Delphi Approach. Landscape and Urban Planning, 101(2), 171-178.
+
+643
+
+doi:10.1016/j.landurbplan.2011.02.009
+
+644
+
+Dong, R., Zhang, Y. & Zhao, J. (2018). How green are the streets within the sixth ring road of
+
+645
+
+Beijing? An analysis based on tencent street view pictures and the green view index.
+
+646
+
+International Journal of Environmental Research and Public Health, 15(7), 1367.
+
+647
+
+doi:10.3390/ijerph15071367
+
+648
+
+Fleischer, A. (2012). A room with a view—A valuation of the Mediterranean Sea view.
+
+649
+
+Tourism Management, 33(3), 598-602. doi:10.1016/j.tourman.2011.06.016
+
+650
+
+Gascon, M., Zijlema, W., Vert, C., White, M. P. & Nieuwenhuijsen, M. J. (2017). Outdoor
+
+651
+
+blue spaces, human health and well-being: A systematic review of quantitative
+
+652
+
+studies. International Journal of Hygiene and Environmental Health, 220(8), 1207-
+
+653
+
+1221. doi:10.1016/j.ijheh.2017.08.004
+
+654
+
+Gong, F.-Y., Zeng, Z.-C., Zhang, F., Li, X., Ng, E. & Norford, L. K. (2018). Mapping sky,
+26
+
+655
+
+tree, and building view factors of street canyons in a high-density urban environment.
+
+656
+
+Building and Environment, 134, 155-167. doi:10.1016/j.buildenv.2018.02.042
+
+657
+
+Grinde, B. & Patil, G. G. (2009). Biophilia: does visual contact with nature impact on health
+
+658
+
+and well-being? International Journal of Environmental Research and Public Health,
+
+659
+
+6(9), 2332-2343. doi:10.3390/ijerph6092332
+
+660
+
+Helbich, M., Yao, Y., Liu, Y., Zhang, J., Liu, P. & Wang, R. (2019). Using deep learning to
+
+661
+
+examine street view green and blue spaces and their associations with geriatric
+
+662
+
+depression in Beijing, China. Environment International, 126, 107-11.
+
+663
+
+doi:10.1016/j.envint.2019.02.013
+
+664
+
+Hellinga, H. I. (2013). Daylight and View: The influence of windows on the visual quality of
+
+665
+
+indoor spaces. Architectural Engineering and Technology. Delft, Netherlands: Delft
+
+666
+
+University of Technology. doi:10.4233/uuid:2daeb534-9572-4c85-bf8f-308f3f6825fd
+
+667
+668
+669
+
+HKLandsD. (2014). iB1000 Digital Topographic Map. Hong Kong: Lands Department,
+Goverment of Hong Kong SAR.
+HKPlanD. (2018). Hong Kong Planning Standards and Guidelines. Hong Kong: Planning
+
+670
+
+department, Hong Kong SAR.
+
+671
+
+doi:https://www.pland.gov.hk/pland_en/tech_doc/hkpsg/full/pdf/ch2.pdf
+
+672
+
+HKPlanD. (2019). 3D Photo-realistic Model. Hong Kong: Planning Department, Goverment
+
+673
+
+of Hong Kong SAR. Retrieved from
+
+674
+
+https://www.pland.gov.hk/pland_en/info_serv/3D_models/download.htm
+
+675
+
+Jim, C. Y. & Chen, W. Y. (2009). Value of scenic views: Hedonic assessment of private
+
+676
+
+housing in Hong Kong. Landscape and Urban Planning, 91(4), 226-234.
+
+677
+
+doi:10.1016/j.landurbplan.2009.01.009
+
+678
+679
+
+Kaplan, R. (2001). The nature of the view from home: Psychological benefits. Environment
+and Behavior, 33(4), 507-542. doi:10.1177/00139160121973115
+
+680
+
+Kaplan, S. (1995). The restorative benefits of nature: Toward an integrative framework.
+
+681
+
+Journal of Environmental Psychology, 15(3), 169-182. doi:10.1016/0272-
+
+682
+
+4944(95)90001-2
+
+683
+
+Kaya, N. & Erkip, F. (2001). Satisfaction in a dormitory building: The effects of floor height
+
+684
+
+on the perception of room size and crowding. Environment and Behavior, 33(1), 35-
+
+685
+
+53. doi:10.1177/00139160121972855
+
+686
+
+Ko, W. H., Kent, M. G., Schiavon, S., Levitt, B. & Betti, G. (2021). A window view quality
+
+687
+
+assessment framework. Leukos, 1-26. doi:10.1080/15502724.2021.1965889
+
+688
+
+Kuo, F. E. & Sullivan, W. C. (2001). Environment and crime in the inner city: Does
+27
+
+689
+
+vegetation reduce crime? Environment and Behavior, 33(3), 343-367.
+
+690
+
+doi:10.1177/0013916501333002
+
+691
+
+Labib, S. M., Huck, J. J. & Lindley, S. (2021). Modelling and mapping eye-level greenness
+
+692
+
+visibility exposure using multi-source data at high spatial resolutions. Science of the
+
+693
+
+Total Environment, 755, 143050. doi:10.1016/j.scitotenv.2020.143050
+
+694
+
+Laovisutthichai, V., Li, M., Xue, F., Lu, W., Tam, K. & Yeh, A. G. (2021). CIM-enabled
+
+695
+
+quantitative view assessment in architectural design and space planning. 38th
+
+696
+
+International Symposium on Automation and Robotics in Construction (ISARC 2021).
+
+697
+
+Dubai.
+
+698
+699
+700
+
+LeCun, Y., Bengio, Y. & Hinton, G. (2015). Deep learning. Nature, 521(7553), 436-444.
+doi:10.1038/nature14539
+Lee, D.-T. & Schachter, B. J. (1980). Two algorithms for constructing a Delaunay
+
+701
+
+triangulation. International Journal of Computer & Information Sciences, 9(3), 219-
+
+702
+
+242. doi:10.1007/BF00977785
+
+703
+
+Li, M., Xue, F., Yeh, A. G. & Lu, W. (2020). Classification of photo-realistic 3D window
+
+704
+
+views in a high-density city: The case of Hong Kong. 25th International Symposium
+
+705
+
+on Advancement of Construction Management and Real Estate (pp. 1339-1350).
+
+706
+
+Singapore: Springer Nature.
+
+707
+
+Li, W. & Samuelson, H. (2020). A new method for visualizing and evaluating views in
+
+708
+
+architectural design. Developments in the Built Environment, 1, 100005.
+
+709
+
+doi:10.1016/j.dibe.2020.100005
+
+710
+
+Li, X., Zhang, C., Li, W., Ricard, R., Meng, Q. & Zhang, W. (2015). Assessing street-level
+
+711
+
+urban greenery using Google Street View and a modified green view index. Urban
+
+712
+
+Forestry & Urban Greening, 14(3), 675-685. doi:10.1016/j.ufug.2015.06.006
+
+713
+
+Liang, J., Gong, J., Sun, J., Zhou, J., Li, W., Li, Y., Liu, J. & Shen, S. (2017). Automatic sky
+
+714
+
+view factor estimation from street view photographs—A big data approach. Remote
+
+715
+
+Sensing, 9(5), 411. doi:10.3390/rs9050411
+
+716
+
+Liu, Y., Meng, Q., Zhang, J., Zhang, L., Jancso, T. & Vatseva, R. (2016). An effective
+
+717
+
+Building Neighborhood Green Index model for measuring urban green space.
+
+718
+
+International Journal of Digital Earth, 9(4), 387-409.
+
+719
+
+doi:10.1080/17538947.2015.1037870
+
+720
+
+Lottrup, L., Stigsdotter, U. K., Meilby, H. & Claudi, A. G. (2015). The workplace window
+
+721
+
+view: a determinant of office workers’ work ability and job satisfaction. Landscape
+
+722
+
+Research, 40(1), 57-75. doi:10.1080/01426397.2013.829806
+28
+
+723
+
+Lu, Y. (2018). The association of urban greenness and walking behavior: Using google street
+
+724
+
+view and deep learning techniques to estimate residents’ exposure to urban greenness.
+
+725
+
+International Journal of Environmental Research and Public Health, 15(8), 1576.
+
+726
+
+doi:10.3390/ijerph15081576
+
+727
+
+Masoudinejad, S. & Hartig, T. (2020). Window view to the sky as a restorative resource for
+
+728
+
+residents in densely populated cities. Environment and Behavior, 52(4), 401-436.
+
+729
+
+doi:10.1177/0013916518807274
+
+730
+
+McFeeters, S. K. (1996). Difference Water Index (NDWI) in the delineation of open water
+
+731
+
+features. International Journal of Remote Sensing, 17(7), 1425-1432.
+
+732
+
+doi:10.1080/01431169608948714
+
+733
+
+Middel, A., Lukasczyk, J., Zakrzewski, S., Arnold, M. & Maciejewski, R. (2019). Urban form
+
+734
+
+and composition of street canyons: A human-centric big data and deep learning
+
+735
+
+approach. Landscape and Urban Planning, 183, 122-132.
+
+736
+
+doi:10.1016/j.landurbplan.2018.12.001
+
+737
+738
+739
+
+Pan, S. J. & Yang, Q. (2009). A survey on transfer learning. IEEE Transactions on Knowledge
+and Data Engineering, 22(10), 1345-1359. doi:10.1109/TKDE.2009.191
+Pazhouhanfar, M. & Kamal, M. (2014). Effect of predictors of visual preference as
+
+740
+
+characteristics of urban natural landscapes in increasing perceived restorative
+
+741
+
+potential. Urban Forestry & Urban Greening, 13(1), 145-151.
+
+742
+
+doi:10.1016/j.ufug.2013.08.005
+
+743
+
+Roe, J. J., Thompson, C. W., Aspinall, P. A., Brewer, M. J., Duff, E. I., Miller, D., Mitchell, R.
+
+744
+
+& Clow, A. (2013). Green space and stress: evidence from cortisol measures in
+
+745
+
+deprived urban communities. International Journal of Environmental Research and
+
+746
+
+Public Health, 10(9), 4086-4103. doi:10.3390/ijerph10094086
+
+747
+
+Shen, Q., Zeng, W., Ye, Y., Arisona, S. M., Schubiger, S., Burkhard, R. & Qu, H. (2017).
+
+748
+
+StreetVizor: Visual exploration of human-scale urban forms based on street views.
+
+749
+
+IEEE Transactions on Visualization and Computer Graphics, 24(1), 1004-1013.
+
+750
+
+doi:10.1109/TVCG.2017.2744159
+
+751
+
+Song, Y., Wang, X., Tan, Y., Wu, P., Sutrisna, M., Cheng, J. C. & Hampson, K. (2017). Trends
+
+752
+
+and opportunities of BIM-GIS integration in the architecture, engineering and
+
+753
+
+construction industry: a review from a spatio-temporal statistical perspective. ISPRS
+
+754
+
+International Journal of Geo-Information, 6(12), 397. doi:10.3390/ijgi6120397
+
+755
+
+Tara, A., Lawson, G. & Renata, A. (2021). Measuring magnitude of change by high-rise
+
+756
+
+buildings in visual amenity conflicts in Brisbane. Landscape and Urban Planning,
+29
+
+757
+758
+
+205, 103930. doi:10.1016/j.landurbplan.2020.103930
+Tucker, C. J. (1979). Red and photographic infrared linear combinations for monitoring
+
+759
+
+vegetation. Remote sensing of Environment, 8(2), 127-150. doi:10.1016/0034-
+
+760
+
+4257(79)90013-0
+
+761
+
+Turan, I., Reinhart, C. & Kocher, M. (2019). Evaluating spatially-distributed views in open
+
+762
+
+plan work spaces. Proceedings of the IBPSA International Building Simulation
+
+763
+
+Conference, (pp. 1098-1105). Rome. doi:10.26868/25222708.2019.210755
+
+764
+
+Ulrich, R. S. (1981). Natural versus urban scenes: Some psychophysiological effects.
+
+765
+
+Environment and Behavior, 13(5), 523-556. doi:10.1177/0013916581135001
+
+766
+
+Ulrich, R. S. (1983). Aesthetic and affective response to natural environment. Behavior and
+
+767
+
+the Natural Environment (pp. 85-125). Boston: Springer. doi:10.1007/978-1-4613-
+
+768
+
+3539-9_4
+
+769
+770
+
+Ulrich, R. S. (1984). View through a window may influence recovery from surgery. Science,
+224(4647), 420-421. doi:10.1126/science.6143402
+
+771
+
+UNPD. (2014). World Urbanization Prospects: The 2014 Revision, Highlights. Population
+
+772
+
+Division, Department of Economic and Social Affairs, ST/ESA/SER.A/352. United
+
+773
+
+Nations. Retrieved from https://population.un.org/wup/Publications/Files/WUP2014-
+
+774
+
+Highlights.pdf
+
+775
+
+Van den Berg, M., Poppel, M. v., Kamp, I. v., Andrusaityte, S., Balseviciene, B., Cirach, M.
+
+776
+
+& Danileviciute, A. e. (2016). Visiting green space is associated with mental health
+
+777
+
+and vitality: A cross-sectional study in four european cities. Health & Place, 38, 8-15.
+
+778
+
+doi:10.1016/j.healthplace.2016.01.003
+
+779
+
+Waczynska, M., Sokol, N. & Martyniuk-Peczek, J. (2021). Computational and experimental
+
+780
+
+evaluation of view out according to European Standard EN17037. Building and
+
+781
+
+Environment, 188, 107414. doi:10.1016/j.buildenv.2020.107414
+
+782
+
+White, M., Smith, A., Humphryes, K., Pahl, S., Snelling, D. & Depledge, M. (2010). Blue
+
+783
+
+space: The importance of water for preference, affect, and restorativeness ratings of
+
+784
+
+natural and built scenes. Journal of Environmental Psychology, 30(4), 482-493.
+
+785
+
+doi:10.1016/j.jenvp.2010.04.004
+
+786
+
+Xia, Y., Yabuki, N. & Fukuda, T. (2021). Development of a system for assessing the quality
+
+787
+
+of urban street-level greenery using street view images and deep learning. Urban
+
+788
+
+Forestry & Urban Greening , 59, 126995. doi:10.1016/j.ufug.2021.126995
+
+789
+
+Xue, F., Li, X., Lu, W., Webster, C. J., Chen, Z. & Lin, L. (2021). Big data-driven pedestrian
+
+790
+
+analytics: unsupervised clustering and relational query based on Tencent Street View
+30
+
+791
+
+photographs. ISPRS International Journal of Geo-Information, 10(8), 561.
+
+792
+
+doi:10.3390/ijgi10080561
+
+793
+
+Xue, F., Wu, L. & Lu, W. (2021). Semantic enrichment of building and city information
+
+794
+
+models: A ten-year review. Advanced Engineering Informatics, 47, 101245.
+
+795
+
+doi:10.1016/j.aei.2020.101245
+
+796
+
+Yao, Y., Liang, Z., Yuan, Z., Liu, P., Bie, Y., Zhang, J., Wang, R., Wang, J. & Guan, Q.
+
+797
+
+(2019). A human-machine adversarial scoring framework for urban perception
+
+798
+
+assessment using street-view images. International Journal of Geographical
+
+799
+
+Information Science, 33(12), 2363-2384. doi:10.1080/13658816.2019.1643024
+
+800
+
+Yu, S., Yu, B., Song, W., Wu, B., Zhou, J., Huang, Y., Wu, J., Zhao, F. & Mao, W. (2016).
+
+801
+
+View-based greenery: A three-dimensional assessment of city buildings’ green
+
+802
+
+visibility using Floor Green View Index. Landscape and Urban Planning , 152, 13-
+
+803
+
+26. doi:10.1016/j.landurbplan.2016.04.004
+
+804
+
+31
+
+

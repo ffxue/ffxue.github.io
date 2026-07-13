@@ -1,0 +1,424 @@
+© 2019 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future
+media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or
+redistribution to servers or lists, or reuse of any copyrighted component of this work in other works.
+
+Semantic Enrichment for Rooftop Modeling using
+Aerial LiDAR Reflectance
+Tan Tan
+Department of Real Estate and
+Construction
+The University of Hong Kong
+Hong Kong SAR
+tan.tan.17@ucl.ac.uk
+
+Ke Chen
+School of Civil Engineering and
+Mechanics
+Huazhong University of Science and
+Technology
+Wuhan, China
+chenkecm@hust.edu.cn
+
+Weisheng Lu
+Department of Real Estate and
+Construction
+The University of Hong Kong
+Hong Kong SAR
+wilsonlu@hku.hk
+
+Fan Xue*
+Department of Real Estate and
+Construction
+The University of Hong Kong
+Hong Kong SAR
+*Corresponding author, xuef@hku.hk
+Abstract—As demanded by smart city applications, the
+recognition and enrichment of urban semantics from
+unstructured spatial big data became an emerging trend for
+the development of building information model (BIM) and city
+information model (CIM). Rooftop constructs the essential
+part of BIM and CIM and loads various new application
+practices and scenarios. The recognition and enrichment of
+rooftop elements represent the trending requirements. This
+study develops a new approach for semantic enrichment of
+aerial Light Detection and Ranging (LiDAR) point clouds. In
+this paper, machine learning models such as decision tree are
+applied to predict green roof elements based on the geometry
+and laser reflectance, and was validated in a pilot zone in the
+main campus of The University of Hong Kong. The recognized
+rooftop elements could provide a solid foundation for further
+research, such as rooftop landscape, rooftop energy, rooftop
+farming.
+Keywords—Rooftop, building information model,
+information model, LiDAR reflectance, decision tree
+
+city
+
+I. INTRODUCTION
+In the era of smart cities, rooftops have gone far beyond
+their traditional functions to increasingly become the focal
+point for more intriguing uses. This is particularly in highdensity urban areas. For example, in Hong Kong, rooftops
+are increasingly part of discussions about solar energy
+farming, urban agriculture [1], community connection, and
+open space [2]. These applications of rooftops could benefit
+from the availability of digital rooftop models with rich
+semantics. Semantically-rich rooftop models enable
+visualization and simulation, based on which more informed
+decision could be made in order to make use of rooftop
+spaces. Therefore, the recognition and enrichment of
+semantics, e.g., category, materials, functions, of rooftop
+elements, is a trending theme.
+Nevertheless, semantic enrichment for rooftop modeling
+is still a challenging problem. Manually complementing and
+modeling the rooftop details are extremely expensive,
+tedious, and hampered by accessibility problems. Automatic
+or semi-automatic object recognition of photos and 3D point
+clouds, the rooftop elements can form the uppermost part of
+
+978-1-7281-1708-9/19/$31.00 ©2019
+
+the created BIM or CIM. However, the current enrichment
+practice of semantics, especially those non-geometric
+semantics, of rooftops, are unsatisfactory. More solid
+methods should be developed for developing semanticallyrich rooftop models.
+This study aims to utilize the reflectance, a physical
+property that denotes how much of laser beam is reflected by
+an object’s surface materials. Reflectance is also a standard
+data property of every point in the Log ASCII Standard
+(LAS) format of LiDAR (Light Detection and Ranging), for
+rooftop element recognition and semantic enrichment. It
+extends previous research work that reconstructs the
+geometries of rooftop elements by using point clouds [2]. In
+this paper, the laser reflectance is introduced as a key feature
+for rooftop element classification and semantic enrichment.
+Decision tree, a typical machine learning model, is applied to
+classify the rooftop elements using laser reflectance and
+geometric features (e.g., area and height of the rooftop
+element).
+The contributions made by this study are two-fold.
+Firstly, this study suggests that reliable urban object
+recognition requires non-geometric information beyond the
+spatial data. Second, this study confirms that laser
+reflectance can be an important data source for recognizing
+and enriching the urban semantics of rooftop elements.
+The remainder of this paper is organized as follows.
+Section II reviews the related methods. Section III describes
+our semantic enrichment approach. A pilot case is introduced
+in Section IV, and the experimental results appear in Section
+V. Conclusion is given at the end of the paper.
+II. LITERATURE REVIEW
+Many methods, including data clustering, region
+growing, energy minimization (optimization), and model
+fitting, have been developed to automate the recognition of
+the semantics of building rooftops from 3D point clouds [3],
+[4]. Reference [5] proposed a two-step method to segment
+and form rooftop boundary from raw boundary data
+extracted from point clouds. Reference [6] proposed an
+enhanced probability density clustering algorithm to cluster
+
+Fig. 1. The overall framework of the proposed approach
+
+(a) Input LiDAR point cloud of 55,000m² pilot area (298,126
+(b) 158 reconstructed rooftop elements using [2], where color
+points), where color indicates the laser reflectance (warmer = less)
+indicates average reflectance (warmer = less)
+Fig. 2. The input LiDAR data and reconstructed rooftop elements with reflectance
+
+the rooftop primitives by taking into account the topological
+consistency among primitives. Then, it employed a new
+Voronoi subgraph based algorithm to trace the primitive
+boundaries seamlessly. Reference [7] provided an
+interpolation of rooftop area in which multi-surfaces intersect
+generating non-manifold points. Reference [8] proposed a
+triangle geometry method to help reconstruct virtual roofs
+using point cloud data. Reference [2] employed architectural
+regularity to fine-tune the recognized identified rooftop
+elements with the building footprint.
+Generally, these methods not only are capable of creating
+complex building models but also, they can be applied for
+the simulation of any roof styles including curved and freely
+formed roofs. Nevertheless, the quality of raw data
+influences the model reconstruction extremely, such as the
+sensitive impact from the point density, noise and outliers.
+Besides, the non-geometric semantic enrichment from point
+clouds is still challenging [9]. As a result, the semantics, e.g.,
+category, materials, functions, in the reconstructed models,
+are unsatisfactory.
+III. OVERVIEW OF PROPOSED METHOD
+This paper aims to utilize the LiDAR reflectance, and
+apply a machine learning-based semantic enrichment for
+rooftop modeling. The value of laser reflectance can often
+the albedo approximately, because many aerial LiDAR uses
+ultraviolet (e.g., 340nm), vis, or near infrared laser beams
+[10]. Laser reflectance, as well as the derived albedo, offer
+vital semantics about the surface, type of objects, and
+possible functions. Fig. 1 shows the overall framework of the
+proposed approach. The reflectance is an innate property of
+each laser-measured point, e.g., the property “Intensity” is
+reserved for reflectance in the LAS (ver. 1.4) format. By
+associating the reconstructed rooftop elements and a small
+set of training example, the machine learning models in the
+
+proposed approach can predict new semantics, e.g., type of
+green roof elements, materials, and functions, to enrich the
+reconstructed geometric rooftop models to a semantically
+rich one.
+Decision tree is a popular machine learning model, and
+easy to interpret to human experts [11]. Various decision tree
+models have successfully been trained and applied in many
+research areas such as radar signal classification, character
+recognition, remote sensing, medical diagnosis, and expert
+systems. The most significant feature of a decision tree is the
+ability to decompose a complicated decision process into a
+collection of a more straightforward decision. As shown in
+Fig. 1, this study applies the decision tree to predict the
+semantics via classification based on their geometric and
+reflectance features.
+IV. A PILOT CASE IN HONG KONG
+This study selects an area of The University of Hong
+Kong. Totally, ten buildings at the center of the campus area
+were selected for the case. There are three main reasons for
+the selection. Firstly, the selected area is small but resides
+tens of various buildings, ranging from Edwardian style to
+post-modern style, from low-rise to high-rise, and with the
+year of built from the 1910s to 2010s. Secondly, the results
+can be compared to previous studies, such as [2], [5], and [8].
+The last concern was about privacy and data ownership.
+Fig. 2a shows the input LiDAR point cloud of 298,126
+points as a part of the aerial survey done by [12]. The
+reflectance in Fig. 2a was measured between 400-2000 nm
+wavelength range, where the warmer color indicates less
+reflectance; Fig. 2b shows 158 small rooftop elements
+reconstructed using [2], where the blue color shows a high
+reflectance and the yellow color shows a low reflectance.
+Based on the observation and news reports, three areas of
+
+green roof elements (of 7 rooftop elements), were assigned to
+the training examples. In Fig. 2, there was only one lowreflective roof, of which the building is the Main Building, a
+built heritage (built in 1911) in Hong Kong.
+
+final accurate results. It can be found that the target attribute
+in the root node is the “non-green”; the first level condition is
+“height ≥ −0.18m”; the second level is “area < 71m²”; the
+third level is “height ≥ 0.96m”; the fourth level is “height
+
+The task of semantic enrichment in this paper is thus to
+classify the green roof elements from the rest reconstructed
+geometric primitives. In addition, two specific types of green
+roof elements are distinguished in the pilot case: (i) turf on
+which vegetation covers the whole surface of the roof
+elements, and (ii) potted area on which plants live in pots or
+other small containers. Table 1 lists an excerpt of the
+summarized data table of the pilot case for roof element
+classification and semantic enrichment. The data columns in
+Table 1 include average reflectance in percentage, the top
+area of each element in square meter, height (top surface
+above the registered building roof level in government’s
+digital map) in meter.
+TABLE I.
+
+EXCERPT OF THE DATA TABLE OF THE PILOT CASE FOR
+CLASSIFICATION AND ENRICHMENT
+
+Label
+Non-green
+Non-green
+Non-green
+Non-green
+Non-green
+Non-green
+Non-green
+Non-green
+Non-green
+potted
+turf
+turf
+turf
+
+Avg. reflectance
+(%)
+54.5
+53.6
+36.7
+34.6
+50.8
+29.5
+30.5
+33.5
+28.1
+35.1
+54.9
+53.7
+50.4
+
+Top area
+(m²)
+123.6
+66.2
+400.5
+58.6
+12.5
+5.0
+9.5
+29.1
+5.3
+74.0
+61.9
+529.3
+74. 4
+
+height
+(m)
+2.47
+2.39
+3.53
+3.52
+2.84
+0.80
+0.72
+0.63
+0.72
+0.35
+–0.35
+–0.34
+–0.39
+
+The computational experiments were conducted on a
+Windows 10 desktop PC. The decision tree is offered by the
+rpart package (ver. 4.1), which is freely available on the R
+platform (ver. 3.4). The parameters of the decision tree are:
+“min split = 2,” “max depth = 5,” and “min bucket = 1.”
+V. EXPERIMENTAL RESULTS
+5.1 The trained decision tree model
+Fig. 3 shows the rooftop elements recognition processed
+by the decision tree, which used less than 0.01s to get the
+
+(a) Prediction results (dark green = turf, light green = potted)
+
+Fig. 3. A decision tree model trained in less than 0.01s
+
+≥1.4m”; and the fifth level is average “reflectance ≥ 64%”.
+Overall, the “potted” elements are distinguished by selecting
+attribute between “0.96m ≤ height < 1.4m” and “area ≥
+71m².” There are two rules embedded in Fig. 3 that lead to
+“turf” elements. One rule is height < −0.18m; the other is
+“height ≥ 1.4m” and “area > 71m²” and “average reflectance
+≥ 64%”.
+5.2 Semantic enrichment of green roof elements
+Fig. 4 shows the comparison of predicted green roofs and
+mesh models on Google Maps. The screenshot of the mesh
+models on Google Maps illustrates the real distribution of
+rooftop elements. The green areas, located mainly on top of
+three buildings, are corresponded with the predicted green
+roof elements. The semantic enrichment of green roof from
+reflectance makes up the shortcoming of incomputable
+Google’s mesh model even though they have details. The
+comparison result shows the expecting accuracy for the
+elements detection and division.
+
+(b) Screenshot of the mesh models on Google Maps
+
+Fig. 4. Comparison of predicted green roofs and the mesh models on Google Maps
+
+5.3 Discussion
+In comparison to previous results such as [3] and [5-8],
+the proposed method has several advantages. Firstly, it
+overcomes the drawback of the low quality of raw data, such
+as the sensitive impact from the local point density, noise and
+outliers. Second, it introduces laser reflectance as a key
+factor for rooftop elements recognition. As a result, the
+semantics, e.g., category, materials, functions, in the
+automatically reconstructed BIM/CIM would be more
+satisfied than traditional methods.
+However, there also are some limitations in this paper.
+This study used five-level attributes and limited data for the
+small area detection, but this division technique and limited
+scale of training data might not accurate enough when
+applying it to city-scale rooftop elements recognition. The
+sample data of the training may, therefore, require manual
+debugging as the test area increases. In addition, the range of
+detected green areas is mainly divided by rectangles.
+However, many roof green areas may exhibit a distribution
+of irregular patterns.
+VI. CONCLUSION
+A new criterion to rooftop elements recognition from
+LiDAR data is proposed. The statistical fluctuations of the
+laser reflectance, which roughly reflects the reflectance, is
+proven successful for recognizing non-geometric
+characteristics of rooftop elements. This study contributes to
+the importance of non-geometric information regarding
+reliable urban object recognition and confirms that laser
+reflectance can be an important data source for recognizing
+and enriching the urban semantics of rooftop elements. This
+proposed method can overcome the shortcomings of
+traditional recognition methods and increases detection
+accuracy. In addition, the method overcomes the drawback
+of the quality of raw data, such as the sensitive impact from
+the local point density, noise and outliers. As a result, the
+semantics, e.g., category, materials, functions, in the
+automatically reconstructed BIM/CIM would be more
+satisfied than traditional methods. The proposed utilization
+of laser reflectance can also be helpful in BIM/CIM research
+for indoor scenes and city areas. Further research could focus
+on the widening of technique application scenarios, semantic
+evidences such as architectural symmetry [13], and the
+increasing of recognition accuracy in large-scale areas.
+
+ACKNOWLEDGMENT
+The work presented in this paper was supported by the
+Hong Kong Research Grant Council (No. 17200218) and
+The University of Hong Kong (Nos. 201711159016,
+102009741).
+REFERENCES
+[1]
+
+F. Orsini, D. Gasperi, L. Marchetti, C. Piovene, S. Draghetti, S.
+Ramazzotti, G. Bazzocchi, and G. Gianquinto, “Exploring the
+production capacity of rooftop gardens (RTGs) in urban agriculture:
+the potential impact on food and nutrition security, biodiversity and
+other ecosystem services in the city of Bologna,” Food Security, vol.
+6, no. 6, pp. 781-792, 2014.
+[2] K. Chen, W. Lu, F. Xue, P. Tang, and L. H. Li, “Automatic building
+information model reconstruction in high-density urban areas:
+Augmenting multi-source data with architectural knowledge,”
+Automation in Construction, vol. 93, pp. 22-34, 2018.
+[3] J. Yan, J. Shan, and W. Jiang, “A global optimization approach to
+roof segmentation from airborne lidar point clouds,” ISPRS journal of
+photogrammetry and remote sensing, vol. 94, pp. 183-193, 2014.
+[4] F. Xue, W. Lu, and K. Chen, “Automatic Generation of Semantically
+Rich As-Built Building Information Models Using 2D Images: A
+Derivative-Free Optimization Approach,” Computer-Aided Civil and
+Infrastructure Engineering, vol. 3, no. 11, pp. 926-942, 2018.
+[5] Y.-H. Tseng, and H.-C. Hung, “Extraction of Building Boundary
+Lines from Airborne LIDAR Point Clouds,” ISPRS-International
+Archives of the Photogrammetry, Remote Sensing and Spatial
+Information Sciences, vol. XLI-B3, pp. 957-962, 2016.
+[6] D. Chen, R. Wang, and J. Peethambaran, “Topologically aware
+building rooftop reconstruction from airborne laser scanning point
+clouds,” IEEE Transactions on Geoscience and Remote Sensing, vol.
+55, no. 12, pp. 7032-7052, 2017.
+[7] S. A. N. Gilani, M. Awrangjeb, and G. Lu, “Segmentation of airborne
+point cloud data for automatic building roof extraction,” GIScience &
+Remote Sensing, vol. 55, no. 1, pp. 63-89, 2018.
+[8] L. Cheng, L. Tong, W. Zhao, Y. Liu, and M. Li, “Dynamic triangle—
+Based method for 3D building rooftop reconstruction from LiDAR
+data,”, 19th IEEE International Conference on Geoinformatics. IEEE,
+2011.
+[9] Y. Sun, C. Wang, J. Li, Z. Zhang, D. Zai, P. Huang, and C. Wen,
+“Automated segmentation of LiDAR point clouds for building rooftop
+extraction,” 2016 IEEE International Geoscience and Remote Sensing
+Symposium (IGARSS). IEEE, pp.1472-1475, 2016.
+[10] R. Levinson, S. Chen, P. Berdahl, P. Rosado, and L. A. Medina,
+“Reflectometer measurement of roofing aggregate albedo,” Solar
+Energy, vol. 100, pp. 159-171, 2014.
+[11] S. R. Safavian, and D. Landgrebe, “A survey of decision tree
+classifier methodology,” IEEE transactions on systems, man, and
+cybernetics, vol. 21, no. 3, pp. 660-674, 1991.
+[12] CEDD. “The CEDD 2010 LiDAR Survey,” private communication,
+Hong Kong: Civil Engineering and Development Department, 2015.
+[13] F. Xue, W. Lu, C. J. Webster, and K. Chen, “A derivative-free
+optimization-based approach for detecting architectural symmetries
+from 3D point clouds,” ISPRS Journal of Photogrammetry and
+Remote Sensing, vol. 148, pp. 32-40, 2019.
+
+

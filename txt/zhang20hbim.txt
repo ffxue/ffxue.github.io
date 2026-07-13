@@ -1,0 +1,1241 @@
+Prospect of architectonic grammar reconstruction from dense 3D
+point clouds: Historical building information modeling (HBIM) of
+Guangdong cultural heritages
+Jing Zhang 1, Maosu Li 2, Wenjin Zhang 3, Yijie Wu 4, Fan Xue 5*
+This is the authors’ pre-print version (before peer review) of the paper:
+Zhang, J., Li, M., Zhang, W., Wu, Y., & Xue, F. (2020). Prospect of architectonic
+grammar reconstruction from dense 3D point clouds: Historical building information
+modeling (HBIM) of Guangdong cultural heritages. Proceedings of the 25th
+International Symposium on Advancement of Construction Management and Real
+Estate (CRIOCM2020), Springer, in press. Merit Paper Award.
+This file is shared for personal and academic use only, under the license CC BY-NC-ND 4.0
+(Non-Commercial, No Derivatives, and with an Attributed citation when you
+use). The final published version of this paper can be found at:
+[LINK_TO_SPRINGERLINK]. Any uses other than personal and academic purposes must
+obtain appropriate permissions from Springer first.
+
+1
+
+Jing Zhang, Research Assistant, jing.zhang@ucl.ac.uk, zhangjing_lilian@foxmail.com
+
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR, China
+2
+
+Maosu Li, PhD student, maosulee@connect.hku.hk
+
+Department of Urban Planning and Design, University of Hong Kong, Hong Kong SAR, China
+3
+
+Wenjin Zhang, General Technical Officer, zhangwenjin@okaygis.com
+
+Guangzhou Okay Information Technology Co., Ltd., 14/F B2 162 Sciences Avenue, Guangzhou, Guangdong,
+China
+4
+
+Yijie Wu, Research Assistant, yijiewu@hku.hk
+
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR, China
+5
+
+Fan Xue, Assistant Professor, xuef@hku.hk
+
+Corresponding author, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+SAR, China
+
+Abstract:
+Building information modeling (BIM) of cultural heritages, i.e., historic building information
+modeling (HBIM), advances the monitoring, maintenance, restoration, and virtual exhibitions
+of historical buildings. However, due to the elaborate styles and the unavoidable erosion and
+renovation, the reconstruction of HBIM from the prevalent raw data, such as point clouds and
+images, is very challenging, especially parametrical and semantic modeling. Recent studies
+have noticed the potential of architectonic grammar for facilitating parametric and semantic
+reconstruction. In this paper, we investigate the manual modeling of cultural heritage with the
+architectonic grammar and propose a roadmap consisting of four levels of automation, i.e.,
+‘calibration,’ ‘selection,’ ‘combination,’ and ‘generation,’ of the architectonic grammar
+reconstruction. Further quality improvement and cost analysis of these four levels show that
+‘calibration’ and ‘selection’ are the most suitable options currently for real-world
+applications. This study inspires the future application of architectonic grammar to facilitate
+the parametric and semantic HBIM reconstruction and explores the prospect of a new HBIM
+reconstruction schema.
+Keywords:
+HBIM, BIM automation, cultural heritage, architectonic grammar, parametric modeling,
+building semantics, automated model reconstruction
+1
+
+1 Introduction to architectonic grammar reconstruction
+
+2
+
+Building information modeling (BIM) is a digital representation of physical and functional
+
+3
+
+characteristics of a facility to enhance data interoperability and serves as the fundamental
+
+4
+
+information infrastructure to facilitate data sharing, construction control, facility
+
+5
+
+management, and decision making (NIBS 2015). When applied in cultural heritage, i.e.,
+
+6
+
+historic buildings, BIM is known as historic BIM (HBIM) (Murphy et al. 2009). HBIM has
+
+7
+
+received much attention in the past decade due to its promising applications in heritage
+
+8
+
+monitoring, maintenance, restoration, and virtual exhibitions (López et al. 2018).
+
+9
+
+However, HBIM is not as prevalent as its counterpart of modern buildings, and its
+
+10
+
+automation supported by the software is still limited (López et al. 2018). The reconstruction
+
+11
+
+of HBIMs could be much more challenging than that of BIMs. Because unlike modern
+
+12
+
+buildings which are prone to be highly regular, concise, or compact, historic buildings are
+
+13
+
+always highly elaborate, both in structures, e.g., the wooden composition of Shanxi Hanging
+
+14
+
+Temple, and decorations, e.g., the facades of Cathédrale Notre-Dame de Paris (Pocobelli et
+
+15
+
+al. 2018). Therefore, the complexity of geometry, semantics, and topology of heritages could
+
+16
+
+be very high. Furthermore, erosion and refurbishment are unavoidable in cultural heritages
+
+17
+
+during their long history, which improves the complexity of HBIM reconstruction.
+
+18
+
+Existing approaches to HBIM take advantage of 3D scanning and photography to
+
+19
+
+capture cultural heritages’ surface information (Murphy et al. 2009; Quattrini et al. 2015).
+
+20
+
+Once captured, mesh models can be created by triangulation from point clouds or performing
+
+21
+
+structure-from-motion (SfM) algorithms on images, which is mature and automatic. Next, to
+
+22
+
+create semantic and parametric HBIMs, interactive and automatic solutions have been
+
+23
+
+investigated. For example, Murphy et al. (2009) introduced an HBIM system to map the BIM
+
+24
+
+objects from a parametric object library onto point clouds. However, the conversion from
+
+25
+
+point clouds or mesh models to parametric components of these HBIM systems still requires
+
+26
+
+much manual effort. Moreover, BIM semantics recognition by segmentation is a typical
+
+27
+
+schema of automatic reconstruction, which could be further categorized into (i) heuristic and
+
+28
+
+(ii) learning approaches (Bassier et al. 2019; Chen et al. 2019). However, segmentation with
+
+29
+
+heuristic rules is limited to simple geometry shapes (Musialski et al. 2013). Moreover,
+
+30
+
+segmentation by learning relies on burdensome manual annotations for training. Furthermore,
+
+31
+
+both paradigms of segmentation are sensitive to data imperfections, e.g., occlusion and clutter
+
+32
+
+in point clouds or mesh models.
+
+33
+
+Recently, architectonic grammar is exploited for the parametric reconstruction of
+
+34
+
+buildings as a segmentation-free approach. The architectonic grammar regularizes the
+
+35
+
+expressions of elements, forms, and styles from the ground plan to the rooftop (Cole 2002)
+
+36
+
+and is presented in our built environments from the main structure to the smallest details. It
+
+37
+
+has some essential properties that facilitate parametric and semantic reconstruction of HBIM.
+
+38
+
+First, architectonic grammar is highly extensible to different architectural styles based on the
+
+39
+
+concept of meta-grammar. Traditional grammars could be found out in the cultural heritages;
+
+40
+
+meanwhile, some architectural modernists, such as Frank Gehry and Zaha Hadid, have
+
+41
+
+deviated their distinguishable ones. Secondly, architectonic grammar holds a hierarchy from
+
+42
+
+the main structures to the smallest details. More specifically, the grammar covers the
+
+43
+
+definitions of (i) parameters, (ii) geometric primitives, (iii) components, and (4) component
+
+44
+
+relations. Consequently, researchers and engineers can configure the most suitable hierarchy
+
+45
+
+level for HBIM reconstruction. For example, the HBIM system can automatically adjust the
+
+46
+
+parameters or select appropriate geometric primitives and parameters of the semantic
+
+47
+
+components. Thirdly, the architectonic grammar is compatible with some statistical reasoning
+
+48
+
+frameworks (Kalogerakis et al. 2012), advancing the automatic semantics recognition while
+
+49
+
+preserving the interpretation compared with some “black-box” segmentation-based
+
+50
+
+reconstruction.
+
+51
+
+This paper aims at proposing a roadmap for the future automation of the architectonic
+
+52
+
+grammar reconstruction from point clouds. First, we select a set of Guangdong cultural
+
+53
+
+heritage sites and collected dense and colorful 3D point clouds. A manual process then
+
+54
+
+reflects how the architectonic grammars of the target heritage buildings can be organized into
+
+55
+
+the Grasshopper diagrams. A roadmap consisting of four levels of automation is presented in
+
+56
+
+contrast with the manual modeling results. We recommend the ‘calibration’ and the
+
+57
+
+‘selection’ levels for practitioners.
+
+58
+
+2 The case of Guangdong cultural heritage
+
+59
+
+A pilot study was conducted on a case in Sanxiang Town, Zhongshan City, Guangdong
+
+60
+
+Province, China, as shown in Figure 1. We focused on three cultural heritage sites’ colorful
+
+61
+
+point clouds scanned by a drone. The LiDAR point cloud includes one Tower named Wenge
+
+62
+
+and three watchtowers (486 MB compressed on disk), which were relatively complete and
+
+63
+
+uniformly sampled in the LASzip Compressed Lidar (.laz) format. The data set’s coordinate
+
+64
+
+system was WGS 84/UTM zone 49N (EPSG: 32649).
+
+65
+66
+
+Figure 1. Three study sites as circled around the Old Street, Sanxiang Town, Guangdong
+
+67
+
+Wenge Pagoda, located in the Xuzai community of Sanxiang Town, was built in 1747 in
+
+68
+
+Qing Dynasty, which has a 273-year-long history as for now. The tower has five stories and
+
+69
+
+is 30 meters high, covering an area of 39 square meters, which was rebuilt three times in
+
+70
+
+1819, 1895, as well as 1984 and announced as a cultural relic protection unit in Zhongshan
+
+71
+
+City in 1990. A dense cloud of 29,606,820 colorful points were collected from the
+
+72
+
+photogrammetric model of drone photographs. The mean volume density of it is 7272552.5
+
+73
+
+pts/m3.
+
+74
+75
+76
+
+Figure 2. Dense point clouds of cultural heritage buildings, with a density of >10,000 pts/m². (a) Wenge Pagoda
+(29,606,820 points), (b) a watchtower (13,571,861 points), (c) twin watchtowers (20,853,279 points)
+
+77
+
+Watchtowers as a typical historic site in Sanxiang Town are scattered in the old streets
+
+78
+
+and alleys, especially in Baishi Village. They were built from the end of the Qing Dynasty to
+
+79
+
+the Republic of China for military use. These watchtowers have been listed in the category of
+
+80
+
+Historical Buildings in Zhongshan City in 2009 and listed in the Historical and Cultural
+
+81
+
+Protection Areas of Sanxiang Town. Three watchtowers of them were scanned and collected
+
+82
+
+in the point cloud datasets. The first set with one tower has 13,571,861 colorful points while
+
+83
+
+the second set including two watchtowers of 20,853,279 colorful points. The point densities
+
+84
+
+in the datasets are over 10,000 pts/m².
+
+85
+
+3 Baseline parametric modeling
+
+86
+
+We utilized the Grasshopper, a built-in modeling language and plug-in on the Rhino platform
+
+87
+
+(ver. 6), for the manual parametric modeling. Grasshopper is a non-uniform rational basis
+
+88
+
+spline (NURBS) based on visual programming language and 3D modeling software. The
+
+89
+
+value of Grasshopper lies in parametric modeling and human-machine interactive design.
+
+90
+
+Besides, Rhino can create, edit, analyze, and transform NURBS curves, surfaces, and entities
+
+91
+
+in the aspect of complexity, angle, or size—though Rhino 6 needs relatively high computer
+
+92
+
+configuration. The laptop for the experiment runs a Windows 10 (64 bits) on Intel i9-9980HK
+
+93
+
+CPU, 16GB memory, and NVDIA Quadro T2000 GPU.
+
+94
+
+First, the dense point clouds were converted from the data set to ASTEM E57 (.e57)
+
+95
+
+format and Wavefront object (.obj) for Rhino’s use. The three sets of point clouds were
+
+96
+
+centered on the origins. Grasshopper was utilized to rebuild the reference points from the
+
+97
+
+point cloud data. In sequence, it is used to be the center point of the reference plane in the
+
+98
+
+model. Then, the shape’s contour line or curve battery by setting the plane figure’s relative
+
+99
+
+length details and shows different its location through translation or rotation. Then, the
+
+100
+
+contour line or curve battery of the shape may move up or down, expand or shrink through
+
+101
+
+number battery to form other flat figures of different heights or sizes needed. After that, the
+
+102
+
+shape surfaces can form from external contour lines or curves through covering surfaces. The
+
+103
+
+operator might also blast curves and then extract, and loft surfaces separately if some surfaces
+
+104
+
+are not needed ultimately. Eventually, a series of planes from every module is made up of
+
+105
+
+generated planes in the module and then are composed of the whole model surface.
+
+106
+
+The architectonic grammar diagram of the pagoda in Grasshopper, as shown in Figures
+
+107
+
+3a and 3b, consists of six modules. The base and the first layer of the pagoda presents in the
+
+108
+
+first module. Firstly, the reference anchor point (0,0,0) needs to be found from the 3D could
+
+109
+
+point model. Secondly, the base’s hexagonal contour line of with 5 meters on each side is
+
+110
+
+generated with the reference point as the center point of the graph, then it rotates 15 degrees
+
+111
+
+counterclockwise and moves up 0.4 meters. Then, the hexagonal contour line of the base goes
+
+112
+
+to move up 0.4 meters and do the same generation and rotation again. In sequence, the first
+
+113
+
+layers’ hexagonal contour line is produced by moving up or down 0.35 meters while
+
+114
+
+expanding to 1.1 times or shrinking 0.95 times. Lastly, the above generated hexagonal
+
+115
+
+contour lines are combined into a line composition and then the set of lines lofting into the
+
+116
+
+first layer plane together with the base one. From the first layer to the second one, the top
+
+117
+
+hexagonal contour line of the first layer is lifted 4.5 meters to become the middle one of the
+
+118
+
+first layer. Next, the same steps are continued. Then, the generation from the first to the
+
+119
+
+second is applicable to the third, fourth, and fifth layers. In the tower top module, the spire
+
+120
+
+performs by lifting the fifth layer’s reference anchor point by 3.6 meters. The six points of the
+
+121
+
+middle hexagonal contour line of the fifth layer move up 0.6 meters and then shrinks to 0.8
+
+122
+
+times to be the reference points for the tower roof design. In the end, the spire's point is
+
+123
+
+duplicated to generate the circular reference line, and then the six planes are set out to get the
+
+124
+
+top roof of the tower.
+
+125
+126
+127
+
+Figure 3. Grasshopper diagram and parametric models. (a) Diagram for Wenge Pagoda, (b) 3D view of (a), (c)
+diagrams for the watchtowers, (d) 3D view of (c)
+
+128
+
+The architectonic grammar diagram of the first tower in Grasshopper, as shown in
+
+129
+
+Figure 3c and 3d, consists of 2 modules. The body layer of the tower presents in the first
+
+130
+
+module. Firstly, the reference anchor point (0, 0, 0) needs to be found from the 3D could
+
+131
+
+point model. Next, the base’s rectangular contour line is generated with the reference point as
+
+132
+
+the center point of the graph, and then it rotates 35 degrees counterclockwise and moves up 8
+
+133
+
+meters to generate the rectangular contour line of the lower top layer. Next, the top layer’s
+
+134
+
+rectangular contour lines are produced by moving up 0.1 meters, up 0.1 meters, or down
+
+135
+
+0.895 meters while expanding to 1.1 times or shrinking 0.95 times. Lastly, the rectangles
+
+136
+
+cover, and lines are lofting into planes. Therefore, the surface composition of the tower’s
+
+137
+
+body layer performs in the model. In the second module, the floor of the roof covers through
+
+138
+
+the principle called the three points to form a plane. Next, the floor of the affiliated small
+
+139
+
+house generates by the above reference point and setting the length of X and Y. Finally, a set
+
+140
+
+of horizontal rectangular contour lines of the house are produced through moving up 1.8
+
+141
+
+meters or 0.895 meters meanwhile shrinking 0.9 times. Eventually, a series of rectangles
+
+142
+
+cover and lines lofting into planes. Similarly, in the last Grasshopper diagram, the second
+
+143
+
+tower’s modeling process is divided into two modules, and the third towers are divided by 1
+
+144
+
+module. The sequence of the first tower’s modeling is also adaptive to these two.
+
+145
+
+These restoration models of ancient buildings in Guangdong through computational
+
+146
+
+design software preliminarily perform the buildings’ main body shape. Therefore, what is
+
+147
+
+fundamental and essential in reserving while reconstructing the cultural heritage field is that
+
+148
+
+the broken and incomplete physical architectural model shows again in public in the form of
+
+149
+
+virtual architectural models through novel digital tools. Furthermore, one of the usual
+
+150
+
+computational design methods is parametric design, a design process in which the
+
+151
+
+engineering itself is programmed as a function and a process. The design process is
+
+152
+
+automatically realized by modifying the initial conditions and obtaining the engineering
+
+153
+
+results by computer calculation.
+
+154
+
+4 A roadmap to the automation
+
+155
+
+The automation of architectonic grammar reconstruction can be projected and classified into
+
+156
+
+four levels, as shown in Figure 4. We noticed that the diagrams in Grasshopper were
+
+157
+
+comprised of four types of grammar components, i.e., (i) parameters, (ii) geometric
+
+158
+
+primitives, (iii) components, and (iv) relations to new components. Therefore, the most
+
+159
+
+straightforward automation is to let the machine fine-tune the parameters, while the whole
+
+160
+
+diagram structure designed manually remains unchanged. The most challenging automation
+
+161
+
+level is automatic incremental design or revision of new components, while no apparent work
+
+162
+
+demand is there for human modelers. Note that the automation roadmap and the levels are
+
+163
+
+independent of the Grasshopper + Rhino and compatible with other parametric design tools
+
+164
+
+such as Dynamo + Revit.
+
+165
+166
+167
+
+Figure 4. Four levels of prospect of automation for architectonic grammar reconstruction. (a) A general diagram, (b)
+table of diagram automation
+
+168
+
+The first automation level is ‘calibration.’ At this level, the whole grammar structure
+
+169
+
+still comes from an experienced modeler’s manual work. The structure aims to reflect what
+
+170
+
+components and primitives are there in the rough parameters of locations and sizes. The
+
+171
+
+machine will do the parameters calibration, automatically. In this way, the human resource
+
+172
+
+can be partially relieved from the laborious effort on fine-tuning the small digits in the
+
+173
+
+parameters. Similar parameter optimization approaches are known well in the BIM
+
+174
+
+performance fine-tuning (Asl et al. 2015) as well as HBIM (Bienvenido-Huertas et al. 2019).
+
+175
+
+The saving will be more considerable if the parameters are interconnected—so that one small
+
+176
+
+change in a parameter leads to impacts to another parameter.
+
+177
+
+The next level is ‘selection.’ A selection-level grammar reconstruction inherits the
+
+178
+
+parameters automation part of the first level. Additionally, the components are selected
+
+179
+
+automatically from an available library. For the manual work, the modelers first need to
+
+180
+
+prepare a big enough component library—like the BIM component and resources libraries.
+
+181
+
+Then, a sketch diagram of known relations of major unknown components can guide the
+
+182
+
+machine to search for the best-fit instances in the library. On every trial, the first calibration
+
+183
+
+level will be called to tell the best fitness. Overall, the machine runs in a trial-and-error
+
+184
+
+fashion. For instance, Xue et al. (2019a) show that automatic ‘semantic registration’ of 8
+
+185
+
+furniture BIM components to a noisy point cloud. The semantic registration first performed
+
+186
+
+such a ‘selection’ automation, then calibrated the three parameters, i.e., x, y, and heading
+
+187
+
+direction. According to the experiments in Xue et al. (2019a), over 98% of modeling time
+
+188
+
+was saved.
+
+189
+
+The ‘combination’ level elevates the selection level by evolving the components. Every
+
+190
+
+as-designed component in the library consists of a system of geometric primitives. A
+
+191
+
+combination-level automation machine evolves these primitives to the best-fit primitives
+
+192
+
+through iterated evolutionary computation. For example, suppose the six sides of Wenge
+
+193
+
+Pagoda in Figure 2a are slightly different (e.g, deformations within 5 mm), while the selected
+
+194
+
+components by a Level-2 machine are perfectly symmetric. In that case, the Level-3
+
+195
+
+combination operation will try to select the related geometric primitives inside of the best-fit
+
+196
+
+components for better fitting to the measurement. The combination-level reconstruction
+
+197
+
+improves the accuracy of the Level-2 selection results.
+
+198
+
+The fully automatic level is classified as ‘Generation’ in this framework. The a
+
+199
+
+priori setting of relations among major components is automated at this level. As a result, the
+
+200
+
+relation modeling and arbitrarily new components are created by the machine rather than
+
+201
+
+human export. However, a combinatorial explosion of the computational load growth is
+
+202
+
+expected, due to the complicated and nested variables in the four levels. In the near future,
+
+203
+
+the authors are not optimistic about seeing massive applications of this level to modeling
+
+204
+
+cultural heritages.
+
+205
+
+The selection of an appropriate level can be based on the trade-off between marginal
+
+206
+
+quality and cost. It means if both quality and cost are improved by an automated method, it is
+
+207
+
+strongly recommended. Furthermore, the most recommended level is equipped with
+
+208
+
+maximum bi-objective gains. Because usually, the quality may increase along with the
+
+209
+
+automation level, while the cost is in the opposite direction. For example, Table 1 shows an
+
+210
+
+assumed trade-off table for a company. When we use the “MIN()” function to measure the
+
+211
+
+bottom-line gain, the ‘selection’ is the best level. The highest level may not be the best level.
+
+212
+
+The authors wish to see progressive research and development in the next couple of decades,
+
+213
+
+regarding the drivers and barriers. There is no need to target the highest level at the very
+
+214
+
+beginning blindly.
+
+215
+
+216
+
+Table 1. Example trade-off table and recommendation for a company
+
+Level
+
+Name
+
+1
+2
+3
+4
+
+Calibration
+Selection
+Combination
+Generation
+
+Quality gain (e.g.,
+accuracy, innovation,
+semantics, etc.)
+★
+★★
+★★★
+★★★
+
+Cost gain (e.g.,
+money, time,
+effort)
+★★★
+★★
+(Cost increased)
+(Cost increased)
+
+Recommendation
+(e.g., based on
+MIN(quality, cost))
+✔
+
+217
+
+5 Conclusion
+
+218
+
+The automation of parametric and semantic HBIM reconstruction remains a very challenging
+
+219
+
+topic to date. New schemas are desirable to improve this automation without increasing the
+
+220
+
+cost. Architectonic grammar shows excellent potentials for HBIM reconstruction in recent
+
+221
+
+studies. Therefore, we investigated a pilot case and a roadmap to inspire the future
+
+222
+
+automation of architectonic grammar reconstruction from point clouds. The manual modeling
+
+223
+
+of the selected Guangdong cultural heritages demonstrates how the architectonic grammars of
+
+224
+
+the historic buildings can be organized as Grasshopper diagrams. Next, a roadmap described
+
+225
+
+the four levels of automation is proposed. The quality improvement and cost of these four
+
+226
+
+levels are also analyzed. Consequently, ‘calibration’ and ‘selection’ levels are recommended
+
+227
+
+for practitioners based on the prospect of future research.
+
+228
+
+Following our roadmap, we will further investigate and develop the automatic
+
+229
+
+‘calibration’ and ‘selection’ methods based on architectonic grammar, and search for
+
+230
+
+opportunities to attack the ‘combination’ and ‘generation’ levels of architectonic grammar
+
+231
+
+reconstruction. Along with the architectonic grammar reconstruction, the geometric,
+
+232
+
+semantic, and topological definitions in BIM and HBIM will be exploited and formulated.
+
+233
+
+Moreover, advanced evolutionary computation algorithms and design knowledge suitable for
+
+234
+
+solving such non-linear and expensive optimization problems, such as derivative-free
+
+235
+
+optimization (DFO) and Gestalt principles (Xue et al. 2019b; 2020), will be employed in our
+
+236
+
+automatic reconstruction.
+
+237
+
+Acknowledgements
+
+238
+
+The work presented in this paper was financially supported by Hong Kong Research Grant
+
+239
+
+Council (No. 27200520) and Key R&D Program of the Guangdong Province (No.
+
+240
+
+2019B010151001).
+
+241
+
+Author contributions: J.Z.: Grasshopper modeling, paper drafting; M.L.: Data
+
+242
+
+processing, supportive data set; Y.W.: Analysis, paper drafting; W.Z.: Data source; F.X.:
+
+243
+
+Research design, proofreading and revision.
+
+244
+
+References
+
+245
+
+Asl, M. R., Zarrinmehr, S., Bergin, M. & Yan, W. (2015). BPOpt: A framework for BIM-
+
+246
+
+based performance optimization. Energy and Buildings, 108, 401-412.
+
+247
+
+doi:10.1016/j.enbuild.2015.09.011
+
+248
+
+Bassier, M., Van Genechten, B. & Vergauwen, M. (2019). Classification of sensor
+
+249
+
+independent point cloud data of building objects using random forests. Journal of
+
+250
+
+Building Engineering, 21, 468-477. doi:10.1016/j.jobe.2018.04.027
+
+251
+
+Bienvenido-Huertas, D., Nieto-Julián, J. E., Moyano, J. J., Macías-Bernal, J. M. & Castro, J.
+
+252
+
+(2019). Implementing artificial intelligence in H-BIM using the J48 algorithm to manage
+
+253
+
+historic buildings. International Journal of Architectural Heritage, 14(8), 1148-1160.
+
+254
+
+doi:10.1080/15583058.2019.1589602
+
+255
+
+Chen, J., Kira, Z. & Cho, Y. K. (2019). Deep learning approach to point cloud scene
+
+256
+
+understanding for automated scan to 3D reconstruction. Journal of Computing in Civil
+
+257
+
+Engineering, 33(4), 04019027. doi:10.1061/(ASCE)CP.1943-5487.0000842
+
+258
+
+Cole, E. (2002). The grammar of architecture. Boston, USA: Bulfinch Press.
+
+259
+
+Kalogerakis, E., Chaudhuri, S., Koller, D. & Koltun, V. (2012). A probabilistic model for
+
+260
+
+component-based shape synthesis. ACM Transactions on Graphics, 31(4), 55.
+
+261
+
+doi:10.1145/2185520.2185551
+
+262
+
+López, F. J., Lerones, P. M., Llamas, J., Gómez-García-Bermejo, J. & Zalama, E. (2018). A
+
+263
+
+Review of Heritage Building Information Modeling (H-BIM). Multimodal Technologies
+
+264
+
+and Interaction, 2(2), 21. doi:10.3390/mti2020021
+
+265
+
+Murphy, M., McGovern, E. & Pavia, S. (2009). Historic building information modelling
+
+266
+
+(HBIM). Structural Survey, 27(4), 311-327. doi:10.1108/02630800910985108
+
+267
+
+Musialski , P., Wonka, P., Aliaga, D., Wimmer, M., van Gool, L. & Purgathofer, W. (2013).
+
+268
+
+A Survey of Urban Reconstruction. Computer graphics forum, 32(6), 146-177.
+
+269
+
+doi:10.1111/cgf.12077
+
+270
+
+NIBS. (2015). Standard National BIM Standard - United States Version 3. National Institute
+
+271
+
+of Building Sciences. Retrieved September 24, 2019, from https://bit.ly/33gTWZ4
+
+272
+
+Pocobelli, D. P., Boehm, J., Bryan, P., Still, J. & Grau-Bové, J. (2018). BIM for heritage
+
+273
+
+science: a review. Heritage Science, 6(1), 30. doi:10.1186/s40494-018-0191-4
+
+274
+
+Quattrini, R., Malinverni, E. S., Clini, P., Nespeca, R. & Orlietti, E. (2015). From TLS to
+
+275
+
+HBIM. High quality Semantically-aware 3D modeling of complex architecture. The
+
+276
+
+International Archives of the Photogrammetry, Remote Sensing and Spatial Information
+
+277
+
+Sciences. XL-5/W4, pp. 367-374. Avila, Spain: ISPRS. doi:10.5194/isprsarchives-XL-5-
+
+278
+
+W4-367-2015
+
+279
+
+Xue, F., Lu, W., Chen, K. & Zetkulic, A. (2019a). From Semantic Segmentation to Semantic
+
+280
+
+Registration: Derivative-Free Optimization–Based Approach for Automatic Generation
+
+281
+
+of Semantically Rich As-Built Building Information Models from 3D Point Clouds.
+
+282
+
+Journal of Computing in Civil Engineering, 33(4), 04019024.
+
+283
+
+doi:10.1061/(ASCE)CP.1943-5487.0000839
+
+284
+
+Xue, F., Lu, W., Chen, Z. & Webster, C. J. (2020). From LiDAR point cloud towards digital
+
+285
+
+twin city: Clustering city objects based on Gestalt principles. ISPRS Journal of
+
+286
+
+Photogrammetry and Remote Sensing, 167, 418-431.
+
+287
+
+doi:10.1016/j.isprsjprs.2020.07.020
+
+288
+
+Xue, F., Lu, W., Webster, C. J. & Chen, K. (2019b). A derivative-free optimization-based
+
+289
+
+approach for detecting architectural symmetries from 3D point clouds. ISPRS Journal of
+
+290
+
+Photogrammetry and Remote Sensing, 148, 32-40. doi:10.1016/j.isprsjprs.2018.12.005
+
+291
+292
+
+

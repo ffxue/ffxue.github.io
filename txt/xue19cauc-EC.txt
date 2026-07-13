@@ -1,0 +1,611 @@
+Evolutionary computation with applications
+in 3D urban reconstruction
+24 September 2019
+Tianjin, China
+Civil Aviation University of China
+Fan Xue 薛 帆
+
+Assistant Professor
+Dept. of REC / iLab
+FoA, HKU, HKSAR, PRC
+www.frankxue.com
+
+Outline
+1
+
+Evolutionary computation
+
+2
+
+Optimization-driven 3D reconstruction
+
+3
+
+Discussion
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+2
+
+0.1 HKUrbanLab, HKU
+ Faculty of Architecture, HKU 建筑学院
+ 3 Departments: Arch., REC, DUPAD
+ 2 Divisions: Landscape Arch., Arch. Conservation
+
+ HKURBANlab 实验室集群
+ Newly branded research arm of FoA
+ 1 Academician (CAS), 12 full professors
+ 14 labs on
+o Urban planning;
+
+o Chinese architecture;
+
+Property rights;
+Rural;
+
+o iLab (data and information);
+
+Virtual Reality; …
+
+o Health;
+
+o Fabrication and materials;
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+Sustainability;
+Conservation;
+
+www.arch.hku.hk
+
+3
+
+0.1 iLab: The urban big data hub
+ iLab 实验室
+ Urban big data hub
+ multi-dimensional and multi-disciplinary urban big data
+
+collection, storage, analysis, and presentation to inform decisionmaking in urban development
+
+iLabHKU
+fac.arch.hku.hk/iLab
+
+ Focusing on information technology (IT)
+o Geographical Information Systems (GIS)
+o Global Positioning Systems (GPS)
+o Urban Remote Sensing (URS)
+
+o Building Information Model (BIM)
+o Internet of Things (IoT)
+
+o virtual design and construction (VDC)
+o integrated project delivery (IPD)
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+4
+
+0.1 iLab
+ Director
+ Prof. Wilson Lu
+
+ Members
+ 1 Assistant Professor, 1 Postdoc Fellow
+ 3 Research Assistants, 6 PhD students
+
+ Themes 方向
+ Urban big data / urban computing
+o BIM, GIS, Digital Twin, Text mining, IoT, …
+
+ Construction waste
+
+Lunch-time gathering
+
+o Metrics, Behavioral analysis, policy
+
+ International construction
+
+o Corporate social responsibility
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+5
+
+0.2 About myself
+ A mixed background 背景
+
+ Engineering
+
+ BEng in Automation, CAUC
+
+2004
+
+ MSc in Computer Science, CAUC
+
+2007
+
+o Advisor: Prof. W Fan
+
+ Computer Science
+ AI, DFO, ML
+
+ PhD in System Engineering, HKPU
+
+2012
+
+ PDF/RAP/AP in Construction IT
+
+2016
+
+ Research interests 方向
+
+ ISE, CEM, EIE
+
+ Economics
+ SCM
+
+ Urban sensing and computing
+ Automation in construction
+ Applied operations research
+ Machine learning and data visualization
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+6
+
+0.2 My research projects
+ On-going 在研
+ PI: HK RGC (17201717, 17200218), HKU-Tsinghua SPF (20300083), HKU
+(201811159177)
+
+ Co-PI: Key R&D Guangdong (2019B010151001), HKU PTF (102009741)
+ Co-I: NSFC (71671156), NSSFC (17ZDA062), HK SPPR (S2018.A8.010.18S),
+
+HK PPR (2018.A8.078.18D)
+
+ Completed 完成
+ PI: HKU (201702159013, 201711159016)
+ Co-I: NSFC (60472123)
+
+ Job vacancy – Research Assistant (2~3 openings)
+ $17,000/month, Transferable to PhD applicant (vision, performance)
+ New updates on my web page (QR code)
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+7
+
+Section 1
+
+EVOLUTIONARY
+COMPUTATION
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+8
+
+1.1 Fundamentals
+ Function
+ A mapping f from a domain set to a range set
+
+ Optimization problem
+ the selection of a best element (with regard to some criteria)
+
+from some set of available alternatives
+o Optimality  Objective function
+
+𝐦𝐦𝐦𝐦𝐦𝐦 𝑓𝑓: ℝ𝑛𝑛 ⟼ ℝ
+o “Best element” in domain 𝐚𝐚𝐚𝐚𝐚𝐚 𝐦𝐦𝐦𝐦𝐦𝐦 𝑓𝑓
+ Fitness landscape
+o “Best value” in range
+
+y
+
+ Appearance of f
+
+x
+
+ Peaks/valleys contain the solutions min f(x,y) = |x|+ |y|
+o Extremum / extrema
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+9
+
+1.1 Fundamentals
+ Optimality guaranteed methods
+ Linear programming
+o Linear super plane of fitness landscape
+
+ Gradient-based
+
+o Stationary points, where the first derivative is zero
+
+ Brach-and-bound/cut
+ Exhaustive
+
+First derivative and stationary points
+
+ Non-guaranteed methods
+ Monte Carlo
+
+Expensive f
+
+ Quasi-gradient / Surrogate
+ Heuristics (Fixed rules)
+ Evolutionary / metaheuristics (rules of rules)
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+Inexpensive f,
+escape “local
+optima”
+
+Aerodynamics simulation
+Picture source: mentor.com
+
+10
+
+1.2 Evolutionary computation
+ Evolutionary computation (EC)
+ A.k.a. metaheuristics
+ A set of optimization algorithms
+o Iteration, population
+
+ Often a meta-model “M”
+
+ A long History
+
+ From bio-inspiration
+ To meta-model
+ With many variants
+o see AC
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+Derivations of AC (Xue 2012)
+
+Timeline of early EC (Xue 2012)
+
+11
+
+1.2 Evolutionary computation (cont.)
+ Some recent ones with quasi-gradient meta-model
+ For expensive f
+ Escaping local optima
+ Approximately a.k.a. derivative-free optimization (DFO)
+
+ Examples
+ CMA: Covariance Matrix Adaptation
+
+Nelder-Mead Source: Wikipedia.org
+
+o CMA-ES; Variants of CMA-ES
+o CMA-VNS (Xue & Shen, 2017)
+
+ IDEA: Iterated Density Estimation EA
+ Nelder—Mead (downhill simplex)
+ NEWUOA: New Unconstrained Optimization w. quadratic Approximation
+ DIRECT: DIviding RECTangles
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+CMA-ES Source: otoro.net
+
+12
+
+1.3 Benchmark performance
+ Black-Box Optimization Benchmark
+solving without explicit ∇
+ Surrogate methods
+
+o CMA-ES and its variants are
+
+competitive
+
+ Trust-region methods
+
+o DIRECT, NEWUOA, etc.
+
+ Metaheuristics (GA, PSO, VNS, etc.)
+ Hyper-heuristics, data mining
+ … and Monte Carlo
+
+Comparison of algorithms for BBOB-2009 (Black-Box Optimization
+Benchmarking, higher is better) (Auger et al., 2010) Image courtesy: Inria
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+13
+
+1.3 Benchmarking performance (cont.)
+ Symmetry detection in 3D point clouds (Xue et al. 2019a)
+ Among 7 algorithms
+o All with default parameters
+
+ DIRECT was the best
+
+ NSGA2 was the worst
+
+ So, overall, we say
+ ‘Quasi-derivative + evolutionary’ > Quasi-derivative >
+
+evolutionary
+ Due to the characteristics of real world problems
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+14
+
+Section 2
+
+OPTIMIZATION-DRIVEN 3D
+RECONSTRUCTION
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+15
+
+2.1 3D urban reconstruction
+ 3D Reconstruction
+ Capturing the shape and appearance of real objects to cyber
+
+space
+
+ Abundant 2D/3D urban data from sensors
+ Underground
+ Ground
+ Air
+ Satellite
+
+ Needs
+ Smart city
+ HD 3D map
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+16
+
+2.2 An indoor case (Xue et al. 2019b)
+ Input: 3D point cloud
+ Traditional methods
+ Non-semantic: Photogrammetry, 3D mesh
+ Semantic: Segment  features  class, parameters
+
+ Modeling f for EC
+ Available 3D components from manufacturer/WWW
+ Best model = best fitting
+o Fitting parameters: 3D location (tz, tz, tz), 3D rotation (rz)
+o x = (tz, tz, tz, rz), DoF(x) = 4
+
+ f = RMSE(model(x), input)
+o min f
+
+o s.t. x in Boundary, C(x) ≤ 0
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+17
+
+2.2.2 The overall flow
+ Two inputs
+ One output
+ Four modules
+ Autodesk Revit
+ Component op. (Revit plugin) / C++ CLR
+ DFO algorithm (CMA-ES) / C++11
+ f evaluation / C++11
+ (See the message sequencing chart)
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+18
+
+2.2.3 f evaluation
+ f is still too expensive
+ Computing m points against thousands of triangles
+
+ An effective approximation
+ Component point cloud dense sampling (pre-iteration)
+ Input cloud down sampling
+
+O(m log m)**
+
+ Iteration
+o Transform component with x
+o Octree voxel down sampling
+o nndist for n’ points
+o Compute f
+
+o Meta-model Evolution
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+**: optional
+
+O(n)
+O(n log n)**
+
+O(n’ log m’)
+O(n’)
+
+Octree search for 3D space/points Source: apple.com 19
+
+2.2.3 Implementation with GUI
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+20
+
+2.2.4 3D reconstruction as f descending
+ T=6.44s
+ Manual = 330s
+
+ Iter = 9,000
+ Precision = 1.0
+ Recall = 1.0
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+21
+
+2.2.4 Result BIM
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+22
+
+2.2.4 Demo video (another scene)
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+23
+
+2.2.5 Parameter sensitivity analysis
+ Two major parameters
+ Iterations per component (trails)
+ Grid size of octree voxelization
+
+ Indicators
+ (a): correctness
+ (b): f
+ (c): time consumption
+ (d): trade-off between (a) and (c)
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+24
+
+2.3.1 Image-based reconstruction (Xue et al. 2018)
+ Problem
+ To fit 3D object to 2D
+
+ f = dissimilarity
+ arg max f(x)=SSIM(t(x), m)
+
+ Algorithm
+ CMA-ES
+
+ Performance
+ Good
+ ~1 trails/s
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+25
+
+2.3.2 Opt in algorithms (Xue et al. 2019c)
+ Problem
+ Reconstructing repetitive objects
+
+ Same f to 2.2
+ Algorithm
+  Multi-Modal Optimization (MMO)
+ NMMSO
+
+ Performance
+ Recall  + 10%
+ Precision  + 10%
+ Time  –35%
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+26
+
+2.3.3 Topology reconstruction: Symmetry (Xue et al. 2019d)
+ Problem
+ Detecting symmetry in point cloud
+
+ f = distance
+ arg min f = RMSE(C(x), C) ≈ RMSE(C’(x), C’)
+
+ Algorithm
+ CMA-ES
+
+ Performance
+ Time = 98.6s
+ PCR = 93.7%
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+27
+
+2.3.4 Clustering similar objects (Xue et al. 2019e)
+ Problem
+ To cluster similar cloud patches
+
+ f = dissimilarity
+ min f = RMSE(C1(x), C2)
+
+ Algorithm
+ CMA-ES
+
+ Performance
+ ~0.6s for each pair
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+城市点云中的目标聚类
+
+28
+
+Section 3
+
+DISCUSSION
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+29
+
+3.1 A recap
+ “Any evidence-based decision making can be formulated
+as an optimization problem”
+ Evolutionary computation
+ A long history
+ Still a thriving domain
+o Conferences: GECCO, IEEE CEC
+
+ Good to handle expensive, complex tests
+o E.g., 3D urban reconstruction
+o Especially recent algorithms
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+30
+
+3.2 Modeling for EC
+ To design f
+ Supporting functions
+
+ To set up domain
+ To validate range
+ To apply EC
+ To analyze parameter sensitivity
+
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+31
+
+References
+ Xue, F., Lu, W., Chen, K. (2018). Automatic generation of semantically rich as-built building information
+
+models using 2D images: A derivative-free optimization approach. Computer-Aided Civil and Infrastructure
+Engineering, 33(11), 926-942.
+ Xue, F., Lu, W., Webster, C. J., & Chen, K. (2019a). A derivative-free optimization-based approach for detecting
+architectural symmetries from 3D point clouds. ISPRS Journal of Photogrammetry and Remote Sensing, 148, 3240.
+ Xue, F., Lu, W., Chen, K., & Zetkulic, A. (2019b). From Semantic Segmentation to Semantic Registration:
+Derivative-Free Optimization–Based Approach for Automatic Generation of Semantically Rich As-Built
+Building Information Models from 3D Point Clouds. Journal of Computing in Civil Engineering, 33(4),
+04019024.
+ Xue, F., Lu, W., Chen, K., & Webster, C. J. (2019c). BIM reconstruction from 3D point clouds: A semantic
+registration approach based on multimodal optimization and architectural design knowledge, Advanced
+Engineering Informatics, 42, 100965.
+ Xue, F., Chen, K., & Lu, W. (2019d). Architectural symmetry detection from 3D urban point clouds: A
+derivative-free optimization (DFO) approach. In Advances in Informatics and Computing in Civil and
+Construction Engineering (pp. 513-519). Springer, Cham.
+ Xue, F., Chen, K., & Lu, W. (2019e). Understanding unstructured 3D point clouds for creating digital twin city:
+An unsupervised hierarchical clustering approach. CIB World Building Congress 2019.
+F. Xue: EO for 3D Reconstruction, CAUC, China
+
+32
+
+Thank you !
+Q&A time
+
+www.frankxue.com
+
+33
+
+

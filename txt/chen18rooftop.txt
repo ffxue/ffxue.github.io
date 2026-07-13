@@ -1,0 +1,1440 @@
+Automatic building information model reconstruction in high-density urban areas:
+Augmenting multi-source data with architectural knowledge
+Ke Chen1, Weisheng Lu2, Fan Xue3, Pingbo Tang4, and Ling Hin Li5
+1
+
+Post-doctoral Fellow, Department of Real Estate and Construction, Faculty of Architecture, The
+University of Hong Kong, Hong Kong, leochen@connect.hku.hk;
+2
+Associate Professor, Department of Real Estate and Construction, Faculty of Architecture, The
+University of Hong Kong, Hong Kong, wilsonlu@hku.hk;
+3
+Research Assistant Professor, Department of Real Estate and Construction, Faculty of Architecture,
+The University of Hong Kong, Hong Kong, xuef@hku.hk;
+4
+Assistant Professor, Del E. Webb School of Construction, Arizona State University, USA,
+tangpingbo@asu.edu;
+5
+Associate Professor, Department of Real Estate and Construction, Faculty of Architecture, The
+University of Hong Kong, Hong Kong, lhli@hku.hk;
+
+This is the peer-reviewed post-print version of the paper:
+Chen, K., Lu, W., Xue, F., Tang, P., & Li, L. H. (2018). Automatic building
+information model reconstruction in high-density urban areas: Augmenting multisource data with architectural knowledge. Automation in Construction, 93, 22-34.
+Doi: 10.1016/j.autcon.2018.05.009
+The final version of this paper is available at: https://doi.org/10.1016/j.autcon.2018.05.009.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+
+Abstract: Many studies have been conducted to create building information models (BIMs) or
+city information models (CIMs) as the digital infrastructure to support various smart city
+programs. However, automatic generation of such models for high-density (HD) urban areas
+remains a challenge owing to (a) complex topographic conditions and noisy data irrelevant to
+the buildings, and (b) exponentially growing computational complexity when the task is
+reconstructing hundreds of buildings at an urban scale. This paper develops a method — multiSource recTification of gEometric Primitives (mSTEP) — for automatic reconstruction of
+BIMs in HD urban areas. By retrieving building base, height, and footprint geodata from
+topographic maps, level of detail 1 (LoD1) BIMs representing buildings with flat roof
+configuration were first constructed. Geometric primitives were then detected from LiDAR
+point clouds and rectified using architectural knowledge about building geometries (e.g. a
+rooftop object would normally be in parallel with the outer edge of the roof). Finally, the
+rectified primitives were used to refine the LoD1 BIMs to LoD2, which show detailed
+geometric features of roofs and rooftop objects. A total of 1,361 buildings located in a four
+square kilometer area of Hong Kong Island were selected as the subjects for this study. The
+1
+
+evaluation results show that mSTEP is an efficient BIM reconstruction method that can
+significantly improve the level of automation and decrease the computation time. mSTEP is
+also well applicable to point clouds of various densities. The research is thus of profound
+significance; other cities and districts around the world can easily adopt mSTEP to reconstruct
+their own BIMs/CIMs to support their smart city programs.
+
+Keywords: building information model; city information model; LiDAR point clouds;
+topographic map; architecture; high-density city
+
+1. Introduction
+City reconstruction in 3D digital format emerges popularity in the era of information (Heo et
+al. 2013). A city information model (CIM) contains spatial data and virtual representations of
+all objects of interest in an urban area. A well-developed CIM can facilitate the work of city
+planners and urban designers in addressing urban problems such as traffic congestion,
+accessibility, connectivity, and the potential impact of natural disasters (AECbytes 2016). From
+a city administrator’s perspective, a CIM with rich information can be useful for city
+governance, while at the individual citizen level, a CIM enables applications such as
+transportation navigation, emergency response, and many other location-based services. Cities
+such as New York, London, Berlin, and Adelaide have all created their CIMs to support many
+of the applications cited above (Over et al. 2010; Gröger and Plümer 2012; Sun and Salvaggio
+2013).
+
+Buildings are the most important manmade objects in the urban scene (Henricsson and
+Baltsavias, 1997). Many studies, over the years, have focused on the reconstruction of building
+information models (BIMs) (e.g. Tang et al. 2010; Xue et al. 2018) which can be stitched
+together to form a CIM. Another approach is to create CIMs using Geographic Information
+Systems (GIS) (Li et al. 2015) and remote sensing (Haala and Kada 2010; Lillesand et al. 2015).
+In these CIMs, individual buildings could be roughly represented by prisms or “boxes” without
+precise information on the “as-is” condition. With the advancements of data acquisition and
+processing technologies, the trend is to reconstruct BIMs that contain detailed geometric
+features of roofs and rooftop objects (so termed as Level of Detail 2 [LoD2] defined by the
+Open Geospatial Consortium [OGC] [2012]) to extend CIM applications, e.g. green roof
+development (Choi et al. 2017) and energy performance improvement (Yang and Zou 2016).
+
+2
+
+However, the reconstruction of BIMs, particularly those with greater details, is labor-intensive,
+time-consuming, and error-prone (Volk et al. 2014). The process requires a considerable
+amount of manual rectifications and computational power, and this becomes extreme
+burdensome when the task is at the urban scale (Sun and Salvaggio 2013; Li et al. 2016; Wu
+et al. 2017).
+
+Researchers have attempted to improve the efficiency of BIM reconstruction by introducing
+automatic or semi-automatic approaches. Images, 3D laser scanning point clouds, and total
+station surveying data are commonly used for model reconstruction (e.g. Awrangjeb et al. 2013;
+Li et al. 2016; Wu et al. 2017). Algorithms have been developed to process different types of
+data and reconstruct BIMs (e.g. Heo et al. 2013; Xue et al. 2018). In addition, with data from
+multiple sources become affordable, it is now possible to use multi-source data to overcome
+some of the inherent problems (e.g. inaccurate/”noisy” data, incomplete information)
+associated with single-source data (e.g. Habib et al. 2010; Cheng et al. 2011; Gilani et al.
+2016). Acknowledging considerable achievements in the field of BIM/CIM reconstruction,
+BIM/CIM reconstruction in high-density (HD) urban areas remains an open problem
+(Musialski et al. 2013). Firstly, city features such as trees, roads, and terrain introduce a lot of
+noise that undermines the quality of the measurement data. Secondly, densely-distributed
+buildings make it difficult to segment data for generating individual BIMs. Lastly,
+reconstructing thousands of buildings at an urban scale exponentially increases the
+computational complexity, bringing many difficulties for methods which rely on general object
+recognition approaches to derive geometric primitives to form the building models.
+
+This study aims to improve automatic BIM reconstruction in HD urban areas by proposing a
+reconstruction method called multi-Source recTification of gEometric Primitives (mSTEP).
+mSTEP harnesses the data from multiple sources and makes use of architectural features (e.g.
+parallels and symmetries) to reduce the noisy data and fine-tune the geometric primitives to
+reconstruct LoD2 BIMs automatically. The data employed in this study comes from the Hong
+Kong governmental agencies, comprising digital topographic map and light detection and
+ranging (LiDAR) point cloud. Given the fact that such types of data are extensively available
+in many cities and districts around the world, mSTEP can be applied to reconstruct their
+BIMs/CIMs in an efficient manner.
+
+3
+
+The organization of the paper is as follows: Section 2 reviews the state-of-the-art studies on
+BIM reconstruction. Section 3 describes the overall research progress, the subject area and
+characteristics of the corresponding topographic map and LiDAR point clouds. Section 4
+details the BIM reconstruction method – mSTEP. Section 5 provides a comprehensive
+discussion of the evaluation results, discusses the parameter configuration of mSTEP, and
+shows the compatibility of mSTEP with a denser point cloud. Section 6 concludes with a
+summary and highlights future research directions.
+
+2. Literature Review
+Previous studies on the generation of BIMs in the urban environment can be viewed from two
+different perspectives: (1) The raw data used for BIM reconstruction; and (2) the methods
+employed in processing the data. While the two perspectives are related, the discussion deals
+with each perspective separately for the sake of clarity.
+
+2.1 Original datasets
+Aerial and satellite images are typical data sources for large-scale BIM reconstruction.
+Spaceborne sensors like IKONOS, QuickBird, and GeoEye-1 have provided 1m-resolution
+satellite images for 3D building reconstruction (Lafarge et al. 2008; Poli et al. 2015). Aerial
+image resolution can be even higher than that of satellite images, in some cases, reaching
+decimeter accuracy. Owing to their high image resolution as well as the widespread use of
+unmanned aerial vehicles (UAVs), the uses of aerial images to create 3D models of individual
+buildings or even to reconstruct the entire urban scenes are increasing (Li et al. 2016).
+
+LiDAR point clouds have also been widely used for BIM reconstruction. It typically utilizes
+laser light which is projected on surfaces and its reflected backscattering is captured for
+generating 3D point clouds. Heo et al. (2013) used LiDAR point clouds to develop the models
+of 29 buildings. Other studies including Sun and Salvaggio (2013), Xiong et al. (2014), and
+Yan et al. (2016) used airborne LiDAR point clouds to model a limited number of buildings
+with roofs of various shapes. With the availability of city-scale LiDAR point clouds, Poullis
+and You (2009) created simplified BIMs within a large city area.
+
+Topographic maps, which describe urban objects in terms of geometry, land use, and other
+attributes, are another important data source for BIM reconstruction at city- or district-scale. In
+addition to the topographic maps produced by government agencies, recent years have seen the
+4
+
+emergence of open-access geographic datasets. For example, OpenStreetMap (OSM) – a
+prominent volunteered geographic information service – has been used for BIM reconstruction
+(Over et al. 2010). However, without official verification, the common problem of open-access
+geographic datasets is their completeness and accuracy.
+
+The use of single-source data for BIM reconstruction, be it aerial images or LiDAR point
+clouds, is prevailing but still poses problems such as “noise” data caused by complex urban
+features and incomplete information (Cheng et al. 2011). These drawbacks have given rise to
+increased use of multi-source data for BIM reconstruction. A number of studies have confirmed
+that using multi-source data can overcome some of the problems associated with the use of
+single-source data (Rottensteiner and Jansa 2002; Alexandar et al. 2009; You and Lin 2011;
+Henn et al. 2013; Zhang et al. 2014; Zhu et al. 2015).
+
+2.2 Data processing methods
+Various data processing methods have been proposed for BIM/CIM reconstruction (Haala and
+Kada 2010; Musialski et al. 2013). Aerial or satellite images can be processed into digital
+elevation model (DEM) (Lafarge et al. 2008; Poli et al. 2015) from which building models can
+be extracted by applying height thresholds. With the further development of image matching,
+an alternative way is to generate colored point clouds from a number of aligned aerial images
+and then processed the generated point clouds into textured BIMs, which are formed by a large
+number of small geometric primitives (Singh et al. 2014). This method, however, requires
+careful selection of images and manual interpretation to adjust the building models is often
+needed. Li et al. (2016) also generated point clouds from images, and proposed an object-level
+point cloud segmentation and roof extraction. However, their method was only tested on
+buildings with flat roofs.
+
+Processing LiDAR data starts with segmentation of the point clouds of individual buildings.
+This can generally be achieved using semantic segmentation approach (Lin et al. 2013),
+classification or clustering algorithms (Zhu et al. 2015; Cao et al. 2017) or the reflectance value
+captured by the LiDAR sensors (Sun and Salvaggio 2013). LiDAR point clouds can also be
+integrated with other datasets. For example, building footprints retrieved from a topographic
+map can provide a reference for segmenting the point clouds of buildings (Alexander et al.
+2009; Ledoux and Meijers 2011). The segmentation of LiDAR point clouds can also be
+improved with aerial images that provide regions of homogeneous gray level or color
+5
+
+distribution (Rottensteiner and Jansa 2002). Once segmented, the point clouds are used to
+model the buildings with roofs and rooftop objects by various methods. A typical method is to
+decompose the roof shapes into simple pre-defined ones by 2D plans (Henn et al. 2013) or
+graph matching technique (Xiong et al. 2014), but the reconstruction may fail if the roof shape
+is not pre-defined in the model library. Connecting the extracted primitives to form the roof
+features is also widely-used due to its flexibility (Poullis and You 2009; Zhang et al. 2014; Yan
+et al. 2016). However, such kind of method is sensitive to noise (Goebbelsa and PohleFröhlicha 2016) and so far have only been used for specific roof forms.
+
+Although it is difficult to directly compare all these reconstruction methods since they are
+developed under different context with their own emphasis, our review has revealed that
+existing data processing methods usually require much time for noise filtering and assume
+buildings with flat or other simplified roof structures. Those methods that can generate more
+differentiated building and roof structures require considerable manual interpretation for preor post-processing. Actually, architectural designs commonly exhibit some conventional
+features such as parallels, symmetries or other structural regularities, which are not accidental,
+but often the result of economical, manufacturing, functional, or aesthetic considerations (Mitra
+and Pauly 2008). Parallel and perpendicular features have been used as the constraints to
+segment the point cloud to extract planar segments that constitute approximate building roof
+structure (Dorninger and Pfeifer 2008, Sampath and Shan 2010). However, few studies have
+systematically applied architectural rules to reconstructing BIMs of densely-distributed
+buildings in large-scale urban areas. As will be demonstrated in this study, rules derived from
+architectural conventions can help reduce the noise in the collected data and improve the
+efficiency of the modeling method and the informativeness of the reconstructed models.
+
+3. Research approach
+3.1 Overview of the research process
+Given the aim of this study, a design science research approach (Peffers et al. 2008) is adopted
+to develop an automatic and efficient BIM reconstruction method. Design science focuses on
+not only understanding problems, but also developing methods or artifacts with the explicit
+intention of improving human performance (Van Aken 2005). A diagrammatic illustration of
+the research process is presented in Figure 1.
+
+6
+
+Figure 1 Research process
+
+By identifying the challenges of BIM reconstruction in high-density urban areas, multi-Source
+recTification of gEometric Primitives (mSTEP) was proposed, which takes the topographic
+map, point clouds, and architectural conventions as inputs and generates BIMs with detailed
+rooftop structures and objects identified. A 2km×2km area in northwestern Hong Kong Island,
+containing 1,361 blocks of densely-distributed buildings of varying heights and shapes, was
+selected as the subject area since all identified challenges of BIM reconstruction exist in this
+area: The buildings are surrounded by urban features like trees on hills and slopes, commercial
+signs and power lines, which create noise in the data captured for BIM reconstruction; The
+narrow gaps between buildings also cause severe occlusions in the collected data. In
+combination, these factors present difficulties for segmentation, refinement and other BIM
+reconstruction processes. After applying mSTEP on test datasets, the generated BIMs were
+compared with results from another two reconstruction methods (i.e. methods described in
+Javanmardi et al. [2015] and Wu et al. [2017]) and manual modeling for evaluation.
+
+3.2 Test datasets
+The topographic map used in this study was purchased from the Lands Department (LD) of
+HKSAR. It is in Geodatabase (GDB) format with a scale of 1:1000. The Hong Kong 1980 Grid
+Coordinates provides the latitude and longitude of the map, and heights are in meters above
+the Hong Kong Principal Datum. The topographic map contains feature datasets including
+buildings, land cover, transportation, etc. As shown in Figure 2, the buildings in the selected
+region are shown in green with their boundaries in black. The map also contains data on
+building ID, shape, shape area, type of building block, base level, roof level, and data source.
+A preliminary analysis of the base and roof levels found that the datasets in the topographic
+map are collected from various sources such as building plans, photogrammetry, and
+7
+
+topographic survey. Data for the buildings was last updated in the period 1 July 2014 to 27
+April 2016.
+
+Figure 2 Data of the topographic map of the subject area
+
+The LiDAR point clouds used in this study was provided by the Civil Engineering and
+Development Department (CEDD) of HKSAR. The data, comprising buildings, roads, and
+many other urban features, was collected between 1 December 2010 and 8 January 2011 by
+the CEDD by hiring an airborne LiDAR surveying company. In the original dataset, the point
+density is about 4 points/m2. Points classified according to American Society for
+Photogrammetry and Remote Sensing (ASPRS) laser (LAS) format specification 1.1 (ASPRS
+2005) are shown in different colors (see Figure 3). The classification codes represent the type
+of object that has reflected the laser pulse.
+
+8
+
+Figure 3 An illustration of the LiDAR point clouds
+
+4. BIM reconstruction method
+The main purpose of the proposed method — multi-Source recTification of gEometric
+Primitives (mSTEP) — is to enable automatic and efficient BIM reconstruction. The overall
+procedure of mSTEP is shown in Figure 4, which consists of four main phases. In this section,
+each of the four phases of mSTEP is introduced in details.
+
+Figure 4 Overall procedure of mSTEP
+
+4.1 Reconstructing LoD1 BIMs from topographic map
+In the first phase, data in the topographic map is filtered to retrieve the data of building footprint,
+base level, and top level. By vertically stretching the footprint of each building according to
+the base level and top level of that building, the LoD1 BIM with flat roof configuration can be
+created (see Figure 5).
+
+9
+
+Figure 5 An illustration of created LoD1 BIMs
+
+4.2 Filtering the LiDAR point clouds
+The LiDAR point clouds is first filtered in ESRI ArcScene by using the classification codes to
+separate building point clouds from those of trees, terrain, and other features (ESRI 2016).
+However, it was found that many points of building structures were unclassified (see the circled
+area in Figure 6). Therefore, points classified as either “building” or “unclassified” were thus
+kept for further rectifications and other points were removed. Then, the point cloud of
+individual buildings was obtained by segmentation, a process accelerated through the use of
+building footprints contained in the topographic map. After converting the LiDAR point clouds
+and topographic map in the same coordinate system, points with XY-coordinates falling into
+the area zoned by a building footprint was segmented to that building.
+
+Figure 6 An example of unclassified points in the raw LiDAR point clouds
+
+4.3 Developing object rectification rules from conventional architectural features
+Architectural conventions refer to the domain knowledge applied in the architectural design,
+such as geometrical or physical features (e.g. flatness, parallels, and symmetries) of building
+objects and their spatial relationships (Cantzler 2003). Some of the conventions can be obtained
+10
+
+from ordinances or standards, while others can be originated from general observation in realworld situations. In this study, two object rectification rules are developed based on very simple
+architectural conventions to ensure “structural regularity”: (1) the top surface of rooftop objects
+are either in parallel with the horizontal plane or with a considerable angle of dip; and (2) the
+rooftop objects are normally in parallel with the outer edge of roof.
+
+Both rules should be satisfied when rectifying the geometric primitives detected from the
+segmented LiDAR point clouds to form roofs and rooftop objects. An illustration of
+rectification by the first rule is presented in Figure 7(a). The rectangle in blue is the top surface
+of a rooftop object, which has a very small angle β of dip to the horizontal plane (i.e. the roof).
+Therefore, this detected primitive is against the first rule, and should be rotated to be the
+rectangle in gray, which is in parallel with the horizontal plane. An illustration of rectification
+by the second architectural rule is shown in Figure 7(b). The rectangle in dashed line is not in
+parallel with the outer edge of the roof, but has a deviation of angle α. This is rare in
+architectural conventions, therefore, it should be rotated to be the rectangle in gray.
+
+(a) First object rectification rule
+
+(b) Second object rectification rule
+
+Figure 7 An illustration of the two rules of rectification
+
+In order to enable automatic application of these two rules, especially the second one, guiding
+directions were are derived from the building footprints since the outer edge of the roof and
+building footprint usually have the same shape, unless it is an irregular-shaped building. As
+can be seen in Figures 8(a) and (b), for simple, regular-shaped building footprint, its centerline
+provide the guiding direction for the rooftop object to be in parallel with, while for irregularshaped building footprint, the centerlines of its top 25% longest lines will provide guiding
+directions for the computer to check whether the rooftop object is in parallel with at least one
+of the directions.
+
+11
+
+(a) Regular-shaped footprint
+
+(b) Irregular-shaped footprint
+
+Figure 8 An illustration of deriving guiding direction(s) from building footprints
+
+4.4 Reconstructing LoD2 BIM by using object rectification rules
+In the last phase of mSTEP, LoD2 BIM is developed by using the two object rectification rules.
+The pseudo code of this process is shown in Figure 9. Given a target building, its LoD1 model
+is inherited from the topographic map (Line 6). A variant of RANSAC (Fischler and Bolles
+1981; Schnabel et al. 2007) is adopted for detecting geometric primitives from LiDAR point
+cloud of the building rooftop (Lines 7-8). The application of RANSAC requires a set of
+parameters to be determined (see Table 1). Different values of these parameters have been
+tested in order to find the optimal parameter set regarding the LiDAR point clouds to be
+processed. It is decided to set minimum number of support points to 10, maximum distance to
+primitive to 0.02m, and sampling resolution to 1.0. Maximum normal deviation and
+overlooking probability, are set to 25o and 1.0×10-6 respectively. More details regarding the
+parameters configuration are provided in Section 5.2.
+
+Then, the detected geometric primitives are rectified to form the building roofs and rooftop
+objects. A tolerance level (ε), which is set to 0.05π, is used to determine whether one primitive
+needs rectification or not. The detected geometric primitives of roofs and rooftop objects will
+be rectified by the horizontal plane (Lines 9-13) and the guiding directions (Lines 14-21). After
+rectification, the volumetric models of roofs and rooftop objects can be created by projection
+to the top level of individual buildings, and will be integrated with the LoD1 BIMs created in
+the first phase to enrich them into LoD2 ones that have differentiated roof structures with higher
+completeness and accuracy (Lines 22-24).
+1
+
+procedure multi-source primitives rectification
+
+12
+
+2
+
+input: a set of building exterior data sources (S) of a building, including data in topographic map and
+LiDAR point clouds,
+
+3
+
+five parameters (param) of RANSAC,
+
+4
+
+a tolerance level (ε) for orientation rectification (default value of 0.05π)
+
+5
+
+output: an LoD2 building model (M) with detailed roof and rooftop objects
+
+6
+
+M  a LoD1 model from topographic map (S)
+
+//referring to subsection 4.1
+
+7
+
+r  filter point cloud of rooftops (S);
+
+//referring to subsection 4.2
+
+8
+
+P  RANSAC (r, param);
+
+//detecting geometric primitives
+
+9
+
+loop for each p in P
+
+//for each detected geometric primitive
+
+10
+
+α  heading of normal (p); β  dip of plane (p);
+
+// for α and β referring to Figure 7
+
+11
+
+if |β| < ε or | π - β| < ε
+
+//if β is close to the horizontal plane
+
+β0
+
+12
+
+//rectify w.r.t. the horizontal plane (as shown in Figure 7[a])
+
+13
+
+end if
+
+14
+
+A  derived guiding directions;
+
+15
+
+loop for each α* in A
+
+16
+
+loop for q = -2 to 2
+
+//for each direction α*
+
+17
+
+if | α - α + q × π / 2| < ε
+
+18
+
+α  α* - q × π / 2
+
+//for each quadrant
+//if α is close to α*
+
+*
+
+19
+
+end if
+
+20
+
+end loop
+
+//rectify w.r.t. the direction α* (as shown in Figure 7[b])
+
+21
+
+end loop
+
+22
+
+if α, β meets the two object rectification rules
+
+23
+
+M  M∪update and 3D projection(p, α, β)
+
+24
+
+end if
+
+25
+
+end loop
+
+26
+
+return M
+
+//enrich LoD1 BIM with roof and rooftop objects
+
+Figure 9 Pseudo code of the multi-source rectification
+
+Table 1 Descriptions of the RANSAC parameters
+Parameter
+
+Description
+
+minimum number of support
+
+The minimum number of points required to identify a geometry. A larger
+
+points
+
+minimum support points means a more rigorous geometry detection process.
+
+maximum distance to primitive
+
+The maximum distance of an inlier point to a geometry.
+
+sampling resolution
+
+The parameter determines the sample rate of neighboring points
+
+maximum normal deviation
+
+The difference between the normal at a point and the normal of a geometry
+at the closest project of that point onto that geometry.
+
+overlooking probability
+
+The parameter controls the population size of the primitive candidates.
+
+13
+
+A demonstration of multi-source rectification is shown in Figure 10. At the beginning,
+geometric primitives are detected from LiDAR point clouds (see Figure 10[a]) by RANSAC,
+but the detected geometric primitives may not be corrected from an architectural point of view.
+For instance, in Figure 10(b), the rectangle marked in red circle conjuncts to the roof surface
+at an angle. Then, the detected primitives are rectified according to the horizontal plane and
+the guiding direction(s). After that, the rectified primitives will be projected to create
+volumetric models of roofs and rooftop objects (see Figure 10[c]).
+
+(a) LiDAR point clouds of one
+
+(b) Geometric primitives detected
+
+building roof of the subject area
+
+by using RANSAC
+
+(c) Rectified geometric primitives
+
+Figure 10 A demonstration of the multi-source rectification
+
+5. Evaluation
+5.1 Overall results
+In this study, the first phase of mSTEP is performed in ESRI ArcScene, and the remaining three
+phases are automatically performed by using a plug-in of CloudComapre which is tailorprogrammed in C++ by the authors. A screenshot of the plug-in is shown in Figure 11. The
+computation environment was a personal notebook with 2.6GHz Quad-core CPU, 16 GB RAM,
+and a 64-bit Microsoft Windows 10 operating system. Applying mSTEP, the automatic
+generation of BIMs in the subject area took 319.7 seconds. 81.9% of the 1,361 buildings were
+successfully modeled. Among the remainder, 113 buildings do not have either the base level
+or the roof level in the topographic map, and 134 buildings lacked points in the LiDAR dataset
+for modeling of the roofs and the rooftop objects.
+
+14
+
+Figure 11 The screenshot of the developed CloudCompare plug-in
+
+Some examples of the reconstructed models are shown in Figure 12. Among the buildings
+shown include a building on a university campus (ID: 11**374), Edwardian Baroque in style
+with a central clock tower and several turrets; a residential building with a pyramid-shaped
+roof and many rooftop objects (ID: 11**486); a wholesale food market with a strip-shaped
+roof and several box-shaped air conditioners (ID: 11**535); and a residential building (ID:
+11**845) with flat roof and cuboid-shaped rooftop objects. Other building models shown in
+Figure 12 also have their roof and rooftop objects in the correct shapes constituted without the
+need for manual post-modifications. By manually checking the 3D building models and the
+actual buildings, it can be seen that the models reach the LoD2 that possess more detailed
+information than simple “boxes”. It can also be seen that the models are in an acceptable
+standard of accuracy.
+Building ID in the
+topographic map
+
+Reconstructed model (colors
+are for distinguishing only)
+
+11**374
+
+11**486
+
+15
+
+Photo (collected from the
+Internet or taken by the authors)
+
+11**535
+
+11**845
+
+11**386
+
+11**200
+
+11**500
+
+11**345
+
+Figure 12 An illustration of the reconstructed models and actual buildings
+
+5.1.1 Efficiency assessment
+To assess the efficiency of reconstruction, the time spent on reconstructing buildings by using
+mSTEP was compared with the time required for manual modeling. In SketchUp, two human
+modelers, who have over four years’ experience in architectural drawing, created LoD2 BIMs
+based on base and roof levels from the topographic map and the segmented LiDAR point clouds.
+They began modeling at the same time and alerted the researchers once they finished each of
+the nine models so that the time they spent on modeling each building was recorded. In addition,
+mSTEP was compared with: (1) a concave hull and Hough transform based reconstruction
+method (take LiDAR point cloud and topographic map as inputs) introduced in Javanmardi et
+16
+
+al. (2015); and (2) a bipartite graphic matching-based reconstruction method introduced in Wu
+et al. (2017). The two reconstruction methods were selected for comparison due to two reasons.
+First, all the three methods share the same vision of enhancing 3D model reconstruction by
+taking advantage of architectural conventions and graph theory. The other reason was that their
+input point clouds were all airborne LiDAR data of HD urban areas. The comparison was based
+on three commonly-adopted metrics, including (1) reconstruction time; (2) percentage of
+points that are segmented to support the detection of geometric primitives; and (3) root mean
+square error (RMSE) of the distances of points to their corresponding primitives. The
+assessment results on nine randomly-selected buildings are presented in Table 2.
+Table 2 Assessment results
+Javanmardi et al. (2015)†
+
+Wu et al. (2017)‡
+
+Manual
+
+Time
+(s)
+
+Segmented
+#
+(%)
+
+RMSE
+(m)*
+
+Time (In
+average; s)
+
+0.119
+
+0.01
+
+88.3
+
+0.341
+
+266.65
+
+58.7
+
+0.157
+
+0.01
+
+60.4
+
+0.223
+
+171.23
+
+0.02
+
+84.7
+
+0.098
+
+0.01
+
+78.8
+
+0.370
+
+94.33
+
+0.196
+
+0.05
+
+31.6
+
+0.199
+
+0.01
+
+99.8
+
+0.315
+
+2,486.75
+
+90.0
+
+0.057
+
+0.03
+
+60.2
+
+0.049
+
+0.01
+
+89.6
+
+0.251
+
+515.65
+
+0.23
+
+91.1
+
+0.067
+
+0.04
+
+26.4
+
+0.067
+
+0.01
+
+90.4
+
+0.280
+
+597.92
+
+8,987
+
+0.26
+
+85.1
+
+0.065
+
+0.09
+
+18.8
+
+0.097
+
+0.01
+
+100.0
+
+0.257
+
+1,386.16
+
+24,878
+
+2.23
+
+86.3
+
+0.068
+
+0.13
+
+66.2
+
+0.163
+
+0.02
+
+99.1
+
+0.340
+
+2,498.84
+
+mSTEP
+
+Number
+of
+points
+
+Time
+(s)
+
+Segmented
+#
+(%)
+
+RMSE
+(m)*
+
+Time
+(s)
+
+Segmented
+#
+(%)
+
+RMSE
+(m)*
+
+1
+
+270
+
+0.03
+
+75.2
+
+0.114
+
+0.02
+
+63.1
+
+2
+
+372
+
+0.03
+
+77.7
+
+0.048
+
+0.01
+
+3
+
+620
+
+0.40
+
+87.6
+
+0.065
+
+4
+
+2,491
+
+0.16
+
+48.6
+
+5
+
+2,682
+
+0.09
+
+6
+
+7,212
+
+7
+8
+
+No.
+
+9
+29,506 0.47
+90.1 0.088 0.21
+71.1 0.230 0.02
+99.9 0.291
+701.43
+†: The paprameter β of Javanmardi et al. (2015)’s method was set to 0.5m as the average point distance;
+
+‡: The two parameters, i.e., variable n and contour interval di, were set as 250 and 0.5m based on Wu et al.
+(2017)’s experimental results.
+#
+
+: Percentage of points that are segmented to support the detection of geometric primitives.
+
+*
+
+: Root mean square error of the distances of segmented points to their corresponding primitives.
+
+The results in Table 2 showed that mSTEP achieved a competitive performance. Specifically,
+both mSTEP and Javanmardi et al. (2015)’s method reconstructed accurate geometric
+primitives for segmenting the point clouds. The proposed mSTEP segmented more points than
+Javanmardi et al. (2015)’s to support the detection of geometric primitives and reconstruct
+BIMs with less RMSE. In contrast, Wu et al. (2017)’s method achieved a fast reconstruction
+with a high-level of segmentation; yet at a significant cost of error (see the level of RMSE).
+The results confirmed that mSTEP could overcome the three identified challenges in BIM
+reconstruction in HD urban areas, i.e., much noise in measurement data, difficulties in
+segmenting data of densely-distributed buildings, and high computational complexity. With
+17
+
+the help of mSTEP, the efficiency of BIM reconstruction in HD urban areas can be
+considerably improved.
+
+Nevertheless, there seems no convincing way to measure the exact accuracy of the
+reconstructed BIMs scientifically due to the lack of ground truth (Poullis and You 2009; Sun
+and Salvaggio 2013). It is far from an effective measurement to reflect the resemblance
+between the generated BIMs and the “as-is” condition. Neither can the model accuracy be
+measured using a single index, such as the physical volume. A BIM professional, with expertise
+and insights, can also tell whether the accuracy of a reconstructed 3D model is “acceptable” or
+not. The issue of measurement standard is left for further studies.
+
+5.1.2 Identified problems
+During application of mSTEP, it was found that the modeling outcomes can be affected by the
+accuracy of data used, including the building footprints and heights in the topographic map,
+and the LiDAR point clouds. Regarding the topographic map used in this study, some building
+footprints were inaccurate and some heights were generated by estimation. This affected the
+quality and accuracy of the retrieved guiding directions and, in turn, the accuracy of geometric
+primitives detected from the point clouds.
+
+Regarding the accuracy of the LiDAR point clouds, this is adversely affected by missing points
+and interference caused by densely-distributed buildings, city features, and the like. mSTEP
+can address interference, but not the problem of missing data. In this study, three factors
+resulted in missing data. Firstly, the LiDAR scan pulse typically does not provide a detectable
+return from transparent materials such as glass. Therefore, the points for roofs and rooftop
+objects made of such materials were missing and thus could not be used for BIM reconstruction.
+Secondly, the density of the point cloud was 4 points/m2. This may not be sufficient to capture
+data on certain rooftop objects, such as parapet walls that are relatively thin in the horizontal
+dimension. Thirdly, the LiDAR point clouds, collected from 2010 and 2011, was not up-todate.
+
+5.2 Parameter configuration of mSTEP
+A set of tests was performed on the parameter configuration of mSTEP. The purpose is to
+identify the parameters that can significantly impact the modeling outcomes measured by the
+average number of detected geometric primitives. This indicator is chosen because it measures
+18
+
+the primitives generated from the LiDAR point clouds to form the roof and rooftop objects.
+Generally, the larger value the indicator, the more details the roof and rooftop objects have
+been reconstructed by mSTEP. However, excessive primitives detected are also undesirable
+since they are often caused by a single rooftop object being separated into several small pieces
+(e.g. a pipe separated into different trunks), which actually decrease the accuracy of
+reconstruction.
+
+The parameters to be tested include the tolerance level and the five RANSAC parameters in
+terms of (a) minimum number of support points, (b) maximum normal deviation, (c) maximum
+distance to primitive, (d) sampling resolution, and (e)overlook probability. The test subject is
+the LiDAR point clouds of a randomly-selected building, which has an ID 11**200 in Figure
+12. The tests aim at evaluating the sensitivity of each parameter, therefore when performing
+the testing one parameter, other five parameters are controlled, i.e. remaining unchanged. In
+the single factor sensitivity analysis, for each parameter, the tests were replicated for 100 times
+to get the statistic values at 5th and the 95th percentiles. The results of all tests are shown in
+Figure 13. In each of the six sub-figures, the Y-axis on the left denote the number of geometric
+primitives detected by mSTEP, the X-axis denotes the value of the tested parameter. The box
+chart shows the average values, and the 5th and the 95th percentiles of the indicator. The curve
+depicted in each sub-figure illustrates the trend of value changes of the indicator as reflection
+to the value change of the parameter under evaluation.
+
+19
+
+Figure 13 Testing results of parameter configuration of mSTEP
+
+Based on the results shown in Figure 13, it can be confirmed that minimum number of support
+points and maximum normal deviation are the two parameters that have the most significant
+impact on the indicator of average number of detected geometric primitives since the curves
+shown in Figure 13(a) and (b) cover a much wider range in Y-axis than the curves in the other
+four figures. Particularly in Figure 13(a), when minimum number of support points increase
+from 3 to 10, the indicator decreases steeply from 95 to 33.6. Once minimum number of support
+points exceed 10, the indicator will continuously decrease, at a slower pace, to 9. From the
+three outputs of mSTEP when minimum number of support points equal to 3, 10 and 50
+respectively, it can be seen that some of the rooftop objects such as the parapet wall are divided
+into small pieces (see the comparison between the two parts marked in red rectangle of Figure
+
+20
+
+13[a]). When minimum number of support points is set to 3, too many primitives are detected.
+By contrast, when minimum number of support points is set to 50, many details of rooftop
+objects are missing. Setting minimum number of support points to 10 can generate an
+appropriate output. In Figure 13(b), when maximum normal deviation increases from 0o to 90o,
+the average number of detected geometric primitives increases from 0 to 55.4. Similar to the
+evaluation on minimum support points, three outputs when maximum normal deviation equals
+to 5o, 25o, and 90o are presented, from which, it is found that setting maximum normal deviation
+to 5o and 90o lead to too few and too many detected primitives respectively. When maximum
+normal deviation equals 25o, an appropriate amount of primitives can be detected.
+
+For the remaining four parameters, the impact of maximum distance to primitive on the
+indicator is relatively complex. As it increases from 1.0×10-4m to 1.0m, the average number
+of detected geometric primitives fluctuates (see Figure 13[c]). It seems that setting maximum
+distance to primitive to either 1.0×10-4m or 0.02m can deliver similar outputs in terms of
+quantity, but it is found that when maximum distance to primitive equals to 1.0×10-4m, most of
+the detected primitives are too small, which shows a lack of accuracy. Therefore, 0.02m is the
+more appropriate value for maximum distance to primitive. Additionally, when tolerance level
+increases from 0.001π to 0.5π, the average number of detected geometric primitives increases
+from 3.58 to 33.91. Such impact, however, becomes negligible after tolerance level reaches
+0.05π (see Figure 13[f]). For sampling resolution, when it is either less than 1.0 or large than
+1.25, the average number of detected geometric primitives will become less than 30, which
+decreases the accuracy of the reconstructed roof and rooftop objects (see Figure 13[d]). Finally,
+for overlook probability, its overall influence is less significant compared with the other five
+parameters (see Figure 13[e]). Its values between 1.0×10-6 and 5×10-5 can detect an appropriate
+amount of primitives, but the best output is identified when setting overlook probability to
+1.0×10-6.
+
+5.3 Implementing mSTEP on dense point cloud
+The density of LiDAR point clouds used to reconstruct buildings in the subject areas is 4
+points/m2. With the improvement in sensing devices, the cost of data acquisition is expected to
+continuously decrease and denser point clouds will become available. Therefore, it is necessary
+to test the applicability of mSTEP to dense point clouds. Since few buildings in the subject area
+have publicly available dense point cloud, a building at the main campus of the University of
+Hong Kong in Hong Kong Island is selected for the test.
+21
+
+The dense point cloud of the selected building contains 482,404 points in total, which is
+obtained by using SfM to process 200 photos taken by a UAV (see Figure 14[a]). Details about
+SfM for processing images into point cloud can be found in Jancosek and Pajdla (2011). When
+applying mSTEP to this dense point cloud, one parameter, i.e. minimum number of support
+points, is changed from 10 to 30 in order to cope with the point density, while other five
+parameters remain unchanged. The rooftop model is developed in 1.41s with 475 geometric
+primitives detected (see Figure 14[b]). In doing so, mSTEP is proved to be capable of
+reconstructing BIMs from a denser point cloud. A conclusion thus can be drawn that mSTEP
+is applicable to both sparse point clouds (e.g. 4 points/m2) and dense point clouds for BIM
+reconstruction. This suggests mSTEP can be applied to 3D building reconstruction in many
+other cities or districts, which possess point clouds of various densities.
+
+(a) Dense point cloud (482,404 points)
+
+(b) Rooftop model generated from (a)
+
+Figure 14 An illustration of applying mSTEP to a dense point cloud
+
+6. Conclusions
+The challenges of automatic reconstruction of building information models (BIMs)/city
+information models (CIMs) in high-density (HD) urban areas are predominately twofold: (a)
+the complex topographic conditions and noisy data, and (b) the heavy computational
+complexity when the task is at an urban scale. This paper took the challenges by developing an
+improved method — multi-Source recTification of gEometric Primitives (mSTEP) — for
+automatic BIM reconstruction in complex urban areas. mSTEP comprises of several
+interconnected steps to make good use of multi-source data including light detection and
+ranging (LiDAR) point clouds, and topographic maps. The method has been validated through
+a series of rigorous tests, and the results show that mSTEP is an efficient method to reconstruct
+informative BIMs by significantly improving the level of automation and decreasing the
+computation time.
+
+22
+
+Of particular originality of this research is augmenting the multi-source data with some simple
+architectural conventions, which can effectively tackle the challenges of automatic BIM/CIM
+reconstruction. Another original contribution made by this study is the optimal parameter
+configuration of mSTEP, which is derived from a series of sensitivity analyses of the
+parameters’ impacts on the accuracy of the reconstructed models. As the paper shows, mSTEP
+can be applied to both sparse and dense point clouds. The research is thus of profound
+significance; It can help other cities or districts, which have possessed such “common” datasets
+as topographic map and LiDAR point clouds, to produce their own BIMs/CIMs to support their
+smart city programs.
+
+Future research will be conducted in mainly three aspects. Firstly, the two object rectification
+rules used in the current version of mSTEP might be too restrictive when dealing with atypical
+architectures. Improvements thus are desired to allow reconstruction of buildings with curved
+and irregular-shaped roofs and rooftop objects. Secondly, data from other sources, such as
+aerial images, will be integrated with the topographic map and LiDAR point clouds to increase
+the level of detail (e.g. texture) of the generated models. In this connection, other architectural
+conventions such as symmetries or repetitive patterns should be exploited to facilitate the BIM
+reconstruction processes.
+
+Acknowledgement
+This study is financially supported by HKU Seed Fund (201702159013) and RGC General
+Research Fund (17201717). The assistance of the Civil Engineering and Development
+Department (CEDD) of Hong Kong SAR in providing LiDAR point clouds for research
+purposes is much appreciated. The authors are particularly in debt to Prof. Kincho Law at
+Stanford University, who has spent his precious time to provide several rounds of comments
+on the paper as it was developed. The authors would like to thank all the editors and anonymous
+reviewers for their constructive comments.
+
+References
+AECbytes
+
+(2016).
+
+City
+
+Information
+
+Modeling.
+
+Available
+
+at:
+
+http://www.aecbytes.com/feature/2016/CityInformationModeling.html, Accessed date:
+6 January 2017.
+Alexander, C., Smith-Voysey, S., Jarvis, C., and Tansey, K. (2009). Integrating building
+footprints and LiDAR elevation data to classify roof structures and visualise buildings.
+23
+
+Computers,
+
+Environment
+
+and
+
+Urban
+
+Systems,
+
+33(4),
+
+285-292.
+
+doi:10.1016/j.compenvurbsys.2009.01.009.
+ASPRS (American Society for Photogrammetry & Remote Sensing). (2005). LAS
+specification
+
+version
+
+1.1.
+
+Available
+
+at:
+
+http://www.asprs.org/wp-
+
+content/uploads/2010/12/asprs_las_format_v11.pdf, Accessed date: 6 January 2017.
+Awrangjeb, M., Zhang, C., and Fraser, C. S. (2013). Automatic extraction of building roofs
+using LIDAR data and multispectral imagery. ISPRS Journal of Photogrammetry and
+Remote Sensing, 83, 1-18. doi:10.1016/j.isprsjprs.2013.05.006.
+Cantzler, H. (2003). Improving architectural 3D reconstruction by constrained modelling.
+Doctoral
+
+thesis,
+
+University
+
+of
+
+Edinburgh.
+
+Available
+
+at:
+
+https://www.inf.ed.ac.uk/publications/thesis/online/IP030017.pdf, Accessed date: 6
+January 2017.
+Cao, R., Zhang, Y., Liu, X., and Zhao, Z. (2017). 3D building roof reconstruction from airborne
+LiDAR point clouds: a framework based on a spatial database. International Journal of
+Geographical
+
+Information
+
+Science, 31(7),
+
+1359-1380.
+
+doi:10.1080/13658816.2017.1301456.
+Cheng, L., Gong, J., Li, M., and Liu, Y. (2011). 3D building model reconstruction from multiview aerial imagery and lidar data. Photogrammetric Engineering & Remote Sensing,
+77(2), 125-139. doi:10.14358/PERS.77.2.125.
+Choi, J. O., Chen, X. B., and Kim, T. W. (2017). Opportunities and challenges of modular
+methods in dense urban environment. International Journal of Construction
+Management, 1-13. doi:10.1080/15623599.2017.1382093.
+Dorninger, P., and Pfeifer, N. (2008). A comprehensive automated 3D approach for building
+extraction, reconstruction, and regularization from airborne laser scanning point
+clouds. Sensors, 8(11), 7323-7343. doi:10.3390/s8117323.
+ESRI
+
+(2016).
+
+Lidar
+
+point
+
+classification,
+
+Available
+
+at:
+
+http://desktop.arcgis.com/en/arcmap/10.4/manage-data/las-dataset/lidar-pointclassification.htm, Accessed date: 15 January 2017.
+Fischler, M. A., and Bolles, R. C. (1981). Random sample consensus: a paradigm for model
+fitting
+
+with
+
+applications
+
+to
+
+image
+
+analysis
+
+and
+
+automated
+
+cartography.
+
+Communications of the ACM, 24(6), 381-395. doi:10.1145/358669.358692.
+Gilani, S. A. N., Awrangjeb, M., and Lu, G. (2016). An automatic building extraction and
+regularisation technique using LiDAR point cloud data and Orthoimage. Remote
+Sensing, 8(3), 258. doi:10.3390/rs8030258.
+24
+
+Goebbelsa, S., and Pohle-Fröhlicha, R. (2016). Roof reconstruction from airborne laser
+scanning data based on image processing methods. ISPRS Annals of Photogrammetry,
+Remote Sensing and Spatial Information Sciences, 407-414. doi:10.5194/isprs-annalsIII-3-407-2016.
+Gröger, G., and Plümer, L. (2012). CityGML–Interoperable semantic 3D city models. ISPRS
+Journal
+
+of
+
+Photogrammetry
+
+and
+
+Remote
+
+Sensing,
+
+71,
+
+12-33.
+
+doi:10.1016/j.isprsjprs.2012.04.004.
+Haala, N., and Kada, M. (2010). An update on automatic 3D building reconstruction. ISPRS
+Journal
+
+of
+
+Photogrammetry
+
+and
+
+Remote
+
+Sensing,
+
+65(6),
+
+570-580.
+
+doi:10.1016/j.isprsjprs.2010.09.006.
+Habib, A. F., Zhai, R., and Kim, C. (2010). Generation of complex polyhedral building models
+by integrating stereo-aerial imagery and lidar data. Photogrammetric Engineering &
+Remote Sensing, 76(5), 609-623. doi:10.14358/PERS.76.5.609.
+Henn, A., Gröger, G., Stroh, V., and Plümer, L. (2013). Model driven reconstruction of roofs
+from sparse LIDAR point clouds. ISPRS Journal of Photogrammetry and Remote
+Sensing, 76, 17-29. doi:10.1016/j.isprsjprs.2012.11.004.
+Henricsson, O., and Baltsavias, E. (1997) 3-D Building Reconstruction with ARUBA: A
+Qualitative and Quantitative Evaluation. In: Gruen, A., Baltsavias, E.P., Henricsson, O.
+(eds) Automatic Extraction of Man-Made Objects from Aerial and Space Images (II).
+Monte Verità (Proceedings of the Centro Stefano Franscini Ascona). Birkhäuser, Basel.
+doi:10.1007/978-3-0348-8906-3_7.
+Heo, J., Jeong, S., Park, H. K., Jung, J., Han, S., Hong, S., and Sohn, H. G. (2013). Productive
+high-complexity 3D city modeling with point clouds collected from terrestrial LiDAR.
+Computers,
+
+Environment
+
+and
+
+Urban
+
+Systems,
+
+41,
+
+26-38.
+
+doi:10.1016/j.compenvurbsys.2013.04.002.
+Jancosek, M., and Pajdla, T. (2011). Multi-view reconstruction preserving weakly-supported
+surfaces. In , 2011 IEEE Conference on Computer Vision and Pattern Recognition, pp.
+3121-3128. IEEE. doi:10.1109/CVPR.2011.5995693.
+Javanmardi, M., Gu, Y., Javanmardi, E., Hsu, L. T., and Kamijo, S. (2015). 3D building map
+reconstruction in dense urban areas by integrating airborne laser point cloud with 2D
+boundary map. In 2015 IEEE International Conference on Vehicular Electronics and
+Safety, pp. 126-131. IEEE. doi:10.1109/ICVES.2015.7396906.
+Lafarge, F., Descombes, X., Zerubia, J., and Pierrot-Deseilligny, M. (2008). Automatic
+building extraction from DEMs using an object approach and application to the 3D-city
+25
+
+modeling. ISPRS Journal of Photogrammetry and Remote Sensing, 63(3), 365-381.
+doi:10.1016/j.isprsjprs.2007.09.003.
+Ledoux, H., and Meijers, M. (2011). Topologically consistent 3D city models obtained by
+extrusion. International Journal of Geographical Information Science, 25(4), 557-574.
+doi:10.1080/13658811003623277.
+Li, X., Lv, Z., Hu, J., Zhang, B., Shi, L., and Feng, S. (2015). XEarth: A 3D GIS platform for
+managing massive city information. In 2015 IEEE International Conference on
+Computational Intelligence and Virtual Environments for Measurement Systems and
+Applications, pp. 1-6. IEEE. doi:10.1109/CIVEMSA.2015.7158625.
+Li, M., Nan, L., Smith, N., and Wonka, P. (2016). Reconstructing building mass models from
+UAV images. Computers & Graphics, 54, 84-93. doi:10.1016/j.cag.2015.07.004.
+Lillesand, T., Kiefer, R. W., and Chipman, J. (2015). Remote sensing and image interpretation.
+John Wiley & Sons (ISBN-13: 978-1118343289).
+Lin, H., Gao, J., Zhou, Y., Lu, G., Ye, M., Zhang, C., Liu, L., and Yang, R. (2013). Semantic
+decomposition and reconstruction of residential scenes from LiDAR data. ACM
+Transactions on Graphics, 32(4), 66. doi:10.1145/2461912.2461969.
+Mitra, N. J., and Pauly, M. (2008). Symmetry for architectural design. In Advances in
+Architectural
+
+Geometry,
+
+13-16.
+
+Available
+
+at:
+
+http://www0.cs.ucl.ac.uk/staff/n.mitra/research/archi_symm/paper_docs/archi_symm_
+agg_08.pdf, Accessed date: 6 January 2017.
+Musialski, P., Wonka, P., Aliaga, D. G., Wimmer, M., Gool, L. V., and Purgathofer, W. (2013).
+A survey of urban reconstruction. Computer Graphics Forum, 32(6), 146-177.
+doi:10.1111/cgf.12077.
+Open Geospatial Consortium (2012). OGC City Geography Markup Language (CityGML)
+Encoding Standard. Available at: http://www.opengeospatial.org/standards/citygml,
+Accessed date: 6 January 2017.
+Over, M., Schilling, A., Neubauer, S., and Zipf, A. (2010). Generating web-based 3D City
+Models from OpenStreetMap: The current situation in Germany. Computers,
+Environment
+
+and
+
+Urban
+
+Systems,
+
+34(6),
+
+496-507.
+
+doi:10.1016/j.compenvurbsys.2010.05.001.
+Peffers, K., Tuunanen, T., Rothenberger, M. A., and Chatterjee, S. (2007). A design science
+research methodology for information systems research. Journal of Management
+Information Systems, 24(3), 45-77. doi:10.2753/MIS0742-1222240302.
+
+26
+
+Poli, D., Remondino, F., Angiuli, E., and Agugiaro, G. (2015). Radiometric and geometric
+evaluation of GeoEye-1, WorldView-2 and Pléiades-1A stereo images for 3D
+information extraction. ISPRS Journal of Photogrammetry and Remote Sensing, 100,
+35-47. doi:10.1016/j.isprsjprs.2014.04.007.
+Poullis, C., and You, S. (2009). Automatic reconstruction of cities from remote sensor data. In
+2009. IEEE Conference on Computer Vision and Pattern Recognition, pp. 2775-2782.
+IEEE. doi:10.1109/CVPR.2009.5206562.
+Rottensteiner, F., and Jansa, J. (2002). Automatic extraction of buildings from LIDAR data
+and aerial images. International Archives of Photogrammetry Remote Sensing and
+Spatial
+
+Information
+
+Sciences.
+
+Available
+
+at:
+
+http://www.isprs.org/proceedings/XXXIV/part4/pdfpapers/204.pdf, Accessed date: 6
+January 2017.
+Sampath, A., and Shan, J. (2010). Segmentation and reconstruction of polyhedral building
+roofs from aerial lidar point clouds. IEEE Transactions on Geoscience and Remote
+Sensing, 48(3), 1554-1567. doi:10.1109/TGRS.2009.2030180.
+Schnabel, R., Wahl, R., and Klein, R. (2007). Efficient RANSAC for point‐cloud shape
+detection.
+
+Computer
+
+Graphics
+
+Forum,
+
+26(2),
+
+214-226.
+
+doi:10.1111/j.1467-
+
+8659.2007.01016.x.
+Singh, S. P., Jain, K., and Mandla, V. R. (2014). A new approach towards image based virtual
+3D city modeling by using close range photogrammetry. ISPRS Annals of
+Photogrammetry, Remote Sensing and Spatial Information Sciences, 2(5), 329.
+doi:10.5194/isprsannals-II-5-329-2014.
+Sun, S., and Salvaggio, C. (2013). Aerial 3D building detection and modeling from airborne
+LiDAR point clouds. IEEE Journal of Selected Topics in Applied Earth Observations
+and Remote Sensing, 6(3), 1440-1449. doi:10.1109/JSTARS.2013.2251457.
+Tang, P., Huber, D., Akinci, B., Lipman, R., and Lytle, A. (2010). Automatic reconstruction
+of as-built building information models from laser-scanned point clouds: A review of
+related
+
+techniques.
+
+Automation
+
+in
+
+Construction,
+
+19(7),
+
+829-843.
+
+doi:10.1016/j.autcon.2010.06.007.
+Van Aken, J. E. (2005). Management research as a design science: Articulating the research
+products of mode 2 knowledge production in management. British Journal of
+Management, 16(1), 19-36. doi:10.1111/j.1467-8551.2005.00437.x.
+
+27
+
+Volk, R., Stengel, J., and Schultmann, F. (2014). Building Information Modeling (BIM) for
+existing buildings—Literature review and future needs. Automation in Construction,
+38, 109-127. doi:10.1016/j.autcon.2013.10.023.
+Xiong, B., Elberink, S. O., and Vosselman, G. (2014). A graph edit dictionary for correcting
+errors in roof topology graphs reconstructed from point clouds. ISPRS Journal of
+Photogrammetry
+
+and
+
+Remote
+
+Sensing,
+
+93,
+
+227-242.
+
+doi:10.1016/j.isprsjprs.2014.01.007.
+Wu, B., Yu, B., Wu, Q., Yao, S., Zhao, F., Mao, W., and Wu, J. (2017). A graph-based
+approach for 3D building model reconstruction from airborne LIDAR point clouds.
+Remote Sensing, 9(1), 92. doi:10.3390/rs9010092.
+Xue, F., Chen, K., Liu, D., Niu, Y., and Lu, W. (2018). An optimization-based semantic
+building model generation method with a pilot case of a demolished construction. In:
+Chau K., Chan I., Lu W., and Webster C. (eds) Proceedings of the 21st International
+Symposium on Advancement of Construction Management and Real Estate. Springer,
+Singapore. doi:10.1007/978-981-10-6190-5_22.
+Yan, J., Jiang, W., and Shan, J. (2016). A global solution to topological reconstruction of
+building roof models from airborne LiDAR point clouds. ISPRS Annals of
+Photogrammetry, Remote Sensing and Spatial Information Sciences, 379-386.
+doi:10.5194/isprs-annals-III-3-379-2016.
+Yang, R. J., and Zou, P. X. (2016). Building integrated photovoltaics (BIPV): costs, benefits,
+risks, barriers and improvement strategy. International Journal of Construction
+Management, 16(1), 39-53. doi:10.1080/15623599.2015.1117709.
+You, R. J., and Lin, B. C. (2011). A quality prediction method for building model
+reconstruction using LiDAR data and topographic maps. IEEE Transactions on
+Geoscience and Remote Sensing, 49(9), 3471-3480. doi:10.1109/TGRS.2011.2128326.
+Zhang, W., Wang, H., Chen, Y., Yan, K., and Chen, M. (2014). 3D building roof modeling by
+optimizing primitive’s parameters using constraints from LiDAR data and aerial
+imagery. Remote Sensing, 6(9), 8107-8133. doi:10.3390/rs6098107.
+Zhu, L., Lehtomäki, M., Hyyppä, J., Puttonen, E., Krooks, A., and Hyyppä, H. (2015).
+Automated 3D scene reconstruction from open geospatial data sources: Airborne laser
+scanning and a 2D topographic database. Remote Sensing, 7(6), 6710-6740.
+doi:10.3390/rs70606710.
+
+28
+
+

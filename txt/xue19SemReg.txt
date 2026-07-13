@@ -1,0 +1,1343 @@
+From Semantic Segmentation to Semantic Registration: Derivative-Free OptimizationBased Approach for Automatic Generation of Semantically Rich As-Built Building
+Information Models from 3D Point Clouds
+Fan Xue 1, Weisheng Lu 2, Ke Chen 3, and Anna Zetkulic 4
+This is the peer-reviewed, post-print version of the paper:
+Xue, F., Lu, W., Chen, K., & Zetkulic, A. (2019). From semantic segmentation to
+semantic registration: Derivative-free optimization-based approach for automatic
+generation of semantically rich as-built building information models from 3D point
+clouds. Journal of Computing in Civil Engineering, 33(4): 04019024. Doi:
+10.1061/(ASCE)CP.1943-5487.0000839
+This material is shared under the permission of ASCE, and may be downloaded for personal
+use only. Any other use requires prior permission of ASCE. The official version of this paper
+may be accessed at http://doi.org/10.1061/(ASCE)CP.1943-5487.0000839.
+
+Highlights
+
+
+This paper proposes a new ‘semantic registration’ paradigm for reconstructing as-built
+BIMs from 3D point clouds.
+
+
+
+This paper develops a derivative-free optimization approach as well as a BIM software
+plugin to realize the ‘semantic registration’ paradigm.
+
+
+
+This paper employs two processes of surface sampling and voxelization for efficient
+estimation of geometric errors between a BIM and a point cloud in the derivative-free
+optimization approach.
+
+
+
+The effectiveness and the sensitivity of the approach was validated using a noisy indoor
+furniture case (100% precision and recall, RMSE=3.87cm, in 0.8s per BIM component),
+and the scalability was tested in a lecture hall case with 293 chairs (over 80% precision
+and recall, RMSE = 8.1cm, in about 5.0s per BIM component).
+
+
+
+The proposed ‘semantic registration’ paradigm is proven: (i) free from segmentation, (ii)
+capable of processing complex scenes, and (iii) reusing online open BIM resources.
+
+1
+
+Research Assistant Professor, Department of Real Estate and Construction, The University of Hong Kong,
+Pokfulam, Hong Kong SAR, Email: xuef@hku.hk;
+2
+Associate Professor, Corresponding Author, Department of Real Estate and Construction, The University of
+Hong Kong, Pokfulam, Hong Kong SAR, Email: wilsonlu@hku.hk;
+3
+Postdoctoral Fellow, Department of Real Estate and Construction, The University of Hong Kong, Pokfulam,
+Hong Kong SAR, Email: leochen@connect.hku.hk;
+4
+Senior Research Assistant, Department of Real Estate and Construction, The University of Hong Kong,
+Pokfulam, Hong Kong SAR, Email: zetkulic@hku.hk;
+
+Abstract
+Development of semantically rich as-built building information models (BIMs) presents an
+ongoing challenge for the global BIM and computing engineering communities. A plethora of
+approaches have been developed which, however, possess several common weaknesses: (1)
+heavy reliance on laborious manual or semi-automatic segmentation of raw data (e.g., 2D
+images or 3D point clouds); (2) unsatisfactory results for complex scenes (e.g., furniture or
+non-standard indoor settings); and (3) failure to use existing resources for modelling and
+semantic enrichment. This paper aims to advance a novel, derivative-free optimization (DFO)based approach that can automatically generate semantically rich as-built BIMs of complex
+scenes from 3D point clouds. In layman’s terms, the proposed approach recognizes candidate
+BIM components from 3D point clouds, reassembles the components into a BIM, and registers
+them with semantic information from credible sources. The approach was prototyped in
+Autodesk Revit and tested on a noisy point cloud of office furniture scanned via a Google
+Tango smartphone. The results revealed that the semantically rich as-built BIM was
+automatically and correctly generated with a root-mean-square error (RMSE) of 3.87 cm in a
+sheer 6.44 seconds, which outperformed the well-known Iterative Closest Point (ICP)
+algorithm. The approach was then scaled up to a large auditorium scene consisting of 293 chairs
+to generate a satisfactory output BIM with a precision of 81.9% and a recall of 80.5%. The
+‘semantic registration’ approach also proved superior to existing ‘segmentation approaches’ in
+that it is segmentation-free, and capable of processing complex scenes and reusing known
+information. In addition to these methodological contributions, this approach, properly scaled
+up, will open new avenues for creation of building/ city information models from inexpensive
+data sources and support profound value-added applications such as smart building or smart
+city developments.
+
+Keywords: Building information model (BIM); ‘as-built’ BIM; semantic enrichment;
+derivative-free optimization; semantic registration.
+
+Introduction
+A building information model (BIM) is a digital representation of the physical and functional
+characteristics of a facility and serves as a shared knowledge resource for decision-making
+throughout its lifecycle (NIBS, 2015). BIM has evolved from a buzzword into a technological
+hallmark of the architecture, engineering, construction, and operations (AECO) industry
+(Eastman et al., 2011; Xiong et al., 2013; Pătrăucean et al., 2015). Properly integrated with
+2
+
+geographic information systems (GIS) or city information models (CIM), it can mature into an
+indispensable component of urban-scale information infrastructure and enable various
+urbanization initiatives (Lu et al., 2018). The development of ‘as-built’ or ‘as-is’ BIMs is at the
+core of these potential applications.
+
+An ‘as-built’ BIM is a representation of a facility as actually constructed or as it currently exists
+(Tang et al., 2010). Semantic information contained in a BIM generally consists of details
+specific to individual construction components (e.g., position, geometric size and shape, nongeometric type, material specification, and meanings of functions) and their relationships (e.g.,
+dependency, topology, and joints) (e.g., Belsky et al., 2016). Some semantic information vital
+to a facility, such as actual building geometries, current functions, and real topology, can only
+embodied in as-built BIMs (Tang et al., 2010; Pătrăucean et al., 2015). In addition, the as-built
+condition of a facility will differ from when it was designed (i.e., an as-designed BIM) due to
+design changes, inadvertent deviations or errors, and renovation work. To better support new
+and complex applications, therefore, the AECO community continues to pursue the generation
+of semantically rich as-built BIMs.
+
+A wealth of technological approaches has been developed to generate as-built BIMs. Volk et
+al. (2014) delineate these approaches as either data-driven or model-driven. A data-driven
+method performs modeling based on the extraction of features, shapes, materials, and statistics
+from the preprocessed measurement data, while a model-driven method generally refers to
+comparing the known components against the datasets (e.g., point clouds or imagery),
+recognizing components, and fitting them in a BIM based on pre-defined rules (Xue et al.,
+2018b). Manual creation of as-built BIMs by professional modelers is often adopted but this
+process is extremely tedious, time-consuming, and error-prone (Pătrăucean et al., 2015; PerezPerez et al., 2016; Xue et al., 2018a; Tang et al., 2010; Jung et al., 2014), and these limitations
+become insurmountable when modeling at an urban scale (i.e., inputting BIM with CIM). For
+this reason, the prevailing research has focused on semi-automatic or fully automatic methods
+of as-built BIM generation.
+
+Input measurement data for as-built BIM generation range from 2D imagery to point clouds.
+The latter, which can be collected using any type of 3D scanner, have become increasingly
+affordable and thus popular in recent years (Tang et al., 2010; Wang et al., 2017). Considerable
+advances have also been made in point cloud preparation and pre-processing proficiencies (e.g.,
+3
+
+Song et al., 2014; Zhang et al., 2016) in model generation methods (e.g., Bosché et al., 2015;
+Díaz-Vilariño et al., 2015) and for semantic enrichment (Belsky et al., 2016; Hamledari et al.,
+2017; Sacks et al., 2017). For example, by cloaking the geometry of an existing facility as
+meshes, a model can mimic the real-life object and its exterior and interior surfaces with
+millimeter accuracy. However, semantic information, such as functions, materials, volumes,
+and topology, continues to present an immense challenge in as-built BIM generation.
+Conventional approaches rely on ‘semantic segmentation’, which is a computer vision or
+graphics technology that assigns each 3D point, or 2D pixel, to one of several semantic labels
+(Shamir, 2008; Vezhnevets and Buhmann, 2010) via a priori rules-enabled reasoning models
+(e.g., Valero et al., 2012; Chen et al., 2018b), and training example-enabled machine learning
+models like deep learning (e.g., Babacan et al., 2017; Zou et al., 2017). Although these
+approaches have achieved acceptable results on simple and regularly shaped components such
+as walls, windows, pipelines, and boxes of internal walls (e.g., Valero et al., 2012; Babacan et
+al., 2017; Nguyen and Choi, 2018; Zou et al., 2018), they have yet to satisfactorily deal with
+complex scenes such as furniture, irregularly shaped components, and non-geometric
+information (e.g., Koppula et al., 2011; Wang et al., 2018).
+
+This paper contends that the inadequacies of conventional semantic segmentation approaches
+are rooted in their methodology. The essence of semantic segmentation is to establish a
+correlation model between the input geometries and the output semantic labels, such as
+functions (e.g., OmniClass), materials, and invisible internal details (e.g., steel bars in a joint)
+(see Shamir, 2008; Vezhnevets and Buhmann, 2010; Koppula et al., 2011). The ‘geometry-tolabel’ correlation models (i.e., a priori rules and trained machine learning models) are usually
+sound and clear for simple and regularly shaped components. The labeled points can further
+form 3D geometric primitives for volumetric objects (Martinovic et al., 2015; Zou et al., 2017;
+2018). However, the segmentation of point clouds for uncontrolled real-world scenarios
+featuring heterogeneous components is fundamentally challenging due to too many labels,
+complex geometries, and complicated topologies (Andreopoulos and Tsotsos, 2013). In other
+words, the correlation models (a priori rules, geometric features, or machine learning
+techniques) are fundamentally constrained in labeling complex components.
+
+There is also a missed opportunity from conventional methods, which disregard readily
+available resources that could facilitate semantic enrichment. Existing methods can only
+recognize limited semantics from the measurement data (e.g., 3D point clouds) concerning
+4
+
+geometric surfaces. However, information resources for 3D modeling and semantic enrichment
+already exist in the form of numerous public and private BIM databases, such as the National
+BIM Library (nationalbimlibrary.com; over 6,500 components), BIM Object (bimobject.com;
+over 290,000 components), those maintained by producers (e.g., steelcase.com), localized
+libraries (e.g., Lu et al., 2017), and private BIM databases actively maintained by developers
+and contractors (HKHA, 2010; Chen et al., 2017). All these are actually missed resources that
+could serve as credible BIM semantics sources for as-built BIM generation.
+
+This paper reports a novel ‘semantic registration’ approach for automatic generation of
+semantically rich as-built BIMs from 3D point clouds. This approach fundamentally differs
+from existing semantic segmentation approaches in that it is segmentation free, capable of
+processing complex scenes, and able to cleverly reuse existing information. The theoretical
+stance of this approach is an extension of Xue et al. (2018a; 2018b), which formulate the task
+of generating as-built BIMs from a given measurement as a constraint optimization problem to
+reassemble candidate BIM components for the measurement. The remainder of this paper
+comprises five sections. The second section reviews the relevant research on as-built BIM
+generation and derivative-free optimization (DFO) applications in computing engineering. The
+third section presents the proposed approach. The fourth describes the experimental tests of the
+proposed approach in Autodesk Revit. Discussions concerning the advantages and
+shortcomings of the proposed approach appear in the fifth section, and the sixth recapitulates
+and concludes the study.
+
+Literature review
+Generation of as-built BIMs from 3D point clouds
+The process involves first collecting and pre-processing a facility’s actual conditions as point
+clouds. Numerous advanced non-contact sensing technologies are available for such data
+collection. One can capture the measurements of a facility on foot with a handheld augmented
+reality (AR) smartphone. For larger facilities, one can use a vehicle-borne light detection and
+ranging (LiDAR) scanner, a consumer unmanned aerial vehicle (UAV) or drone flown at low
+altitude, fixed-wing aircraft-borne LiDAR at a high altitude, or interferometric synthetic
+aperture radar (InSAR) at low Earth orbit (Tang et al., 2010; Zhu and Shahzad, 2014; Wang
+et al., 2017). If the directly measured data exists as multiple 2D images, structure from motion
+(SfM) or simultaneous localization and mapping (SLAM) can convert the images to 3D point
+clouds by estimating the camera positions and fusing with 3D scenes (Snavely et al., 2008).
+5
+
+Equally numerous are the data-driven or model-driven methods researchers have developed to
+generate as-built BIM from 3D point clouds (Shamir, 2008; Vezhnevets and Buhmann, 2010;
+Xiong et al, 2013). Nevertheless, these data-driven and model-driven types of approaches
+(Volk et al., 2014) both rely heavily on semantic segmentation requiring geometry-to-label
+correlation models (e.g., based on rules or machine learning models). Examples of rule-based
+models include random sample consensus (RANSAC) for planar components (Schnabel et al.,
+2007; Lagüela et al., 2013; Jung et al., 2014), parametric curved surface components (Dimitrov
+et al., 2016), geometric simplification such as voxelization (Aijazi et al., 2013; Zhu et al.,
+2017), and asserted simple geometry (e.g., indoor boundary and rooftop primitives) from
+intersection of planes (Valero et al., 2012; Chen et al., 2018b). Some approaches have
+employed machine learning techniques for more complicated correlation models, like support
+vector machines (SVM) (Adan and Huber, 2011; Koppula et al., 2011; Perez-Perez et al., 2016;
+Wang et al., 2017) or convolutional neural networks (Babacan et al., 2017). Features such as
+color from imagery (Quintana et al., 2018) and geometric metrics (e.g., key points) from
+computer vision (Chen et al., 2018a; Wang et al., 2018) have been applied to enhance the
+correlation models.
+
+Nevertheless, the semantic segmentation methods are tedious, time-consuming, and in some
+cases inaccurate, especially for complex scenes. For example, Koppula et al.’s (2011) SVM
+model exhibited roughly 80% precision and 70% recall for ofﬁce point clouds, but only roughly
+50% precision and 50% recall for homes. The deep learning model in Babacan et al. (2017)
+succeeded in segmenting walls and floors with over 90% precision and 90% recall, but showed
+unsatisfactory results for beams (40% precision) and doors (55% recall). Wang et al.’s (2018)
+method was effective in segmenting chairs from dense point clouds (about 90% recall), but less
+effective on sparse and noisy data (about 40% recall). In summary, the semantic segmentation
+methods flounder when faced with the fundamental challenge of segmenting complex
+components. Uncontrolled real-life environments characterized by diversity of labels, irregular
+geometries, and topological relationships all make semantic segmentation even less
+satisfactory (Andreopoulos and Tsotsos, 2013).
+
+Registration of credible, available BIM components is a possible means of responding to this
+difficulty. The concept of parametric 3D component registration emerged decades ago, for
+example in computer-aided design (CAD) surface fitting in reverse engineering (Varady et al.,
+6
+
+1997), and has been practiced in modeling curved surfaces (e.g., Dimitrov et al., 2016),
+pipelines (e.g., Bosché et al., 2014; Nguyen and Choi, 2018), secondary elements on walls
+(e.g., Adán et al., 2018), and historic BIMs (e.g., Barazzetti, 2016). A well-known registration
+algorithm is the iterated closest point (ICP). Kim et al. (2013) employed it to register an asplanned model to as-built point clouds. Sharif et al. (2017) used it to isolate the points of a
+complex BIM component and remove clutter points. A notable merit of this approach is its
+reuse of 3D geometry domain knowledge. Commercial software, e.g., IMAGINiT, PointFuse,
+Floored, and many in-house solutions were developed for supporting such generic registration
+approach. Yet, According to Bruno et al. (2018), there are only three technical papers on semiautomatic methods generating historic BIMs from point clouds and no paper on fully automatic
+methods. The reason was that the automatic registration of BIM components used to be
+confined by ineffective feature extraction and semantic segmentation (see Quattrini et al., 2015;
+Andreopoulos and Tsotsos, 2013). A recent breakthrough is the segmentation-free registration
+method in Xue et al. (2018a; 2018b), where the as-built BIM was generated by maximizing the
+structural similarity (SSIM) index between the input 2D images and the 2D projections of the
+BIM. Based on their problem formulation and semantic resources, complex components (e.g.,
+furniture) became as easily recognizable as simple ones (e.g., walls). However, it is unclear
+whether the segmentation-free, ‘semantic registration’ approach (Xue et al., 2018a; 2018b) can
+be applied to 3D point clouds which, compared with 2D images, are generally noisier, bulkier,
+and less supported by scientific software libraries. It is thus the primary aim of this paper to
+advance a method that can automatically generate semantically rich as-built BIMs of complex
+scenes from 3D point clouds.
+
+Derivative-free optimization and its applications
+Registration of BIM components is often formulated as a mathematical function to optimize
+(e.g., Dimitrov et al., 2016; Xue et al., 2018a). The derivatives of a function universally contain
+vital information for finding its best values (i.e., minimum or maximum). However, in the
+problem of generating as-built BIMs from 3D point clouds the derivatives of objective
+functions are impractical to obtain (Rios and Sahinidis, 2013). Derivative-free optimization
+(DFO) is a class of nonlinear optimization that carries out optimization under such
+circumstances (Conn et al., 2009). Examples of DFO applications include general pattern
+search for protein structure prediction (Andreopoulos and Tsotsos, 2013) and surrogate
+management frameworks for optimization of cardiovascular geometries in surgical planning
+and treatment design (Marsden et al., 2008). CMA-ES (covariance matrix adaptation evolution
+7
+
+strategy) is another DFO algorithm that employs perturbations with expected values and an
+iteratively updated covariance matrix to guide the search for global optimization (Rios and
+Sahinidis, 2013); CMA-ES and its variants were proven among the most advanced algorithms
+for solving noisy problems (Hansen et al., 2010). In construction and civil engineering, Kaveh
+et al.’s (2011) applied CMA-ES for optimal design of a 26-story-tower space truss exhibited a
+31% improvement in weight over a previous result by genetic algorithm, and Athanasiou et
+al.’s (2011) CMA-ES for structural system identification in earthquake engineering saw a 53%
+improvement from previous studies.
+
+Xue et al. (2018b) applied the CMA-ES to as-built BIM generation and reconstructed an
+outdoor scene of a demolished building and an indoor furniture scene with a root-mean-squareerror (RMSE) of 3.9 cm. However, several hours were spent generating the necessary small
+BIMs, which feature just a few components, the major issue being the thousands of model
+manipulations (e.g., creating, moving, rotating, scaling, and detecting components, while
+projecting 3D BIM to 2D images) on commercial BIM platforms. Thus, there remains room
+for improvement in efficiency of DFO algorithm application to as-built BIM generation.
+Another aim of this paper, therefore, is to make a contribution to this methodology.
+
+The ‘semantic registration’ method for automatic BIM generation
+Problem formulation
+Essentially, the semantic registration method is to recognize candidate BIM components from
+3D point clouds, reassemble the components into a BIM, and register them with semantic
+information from credible sources. In this formulation, the error between the as-built BIM and
+the input 3D point cloud is the objective function to minimize. Mathematical methods like DFO
+algorithms can automate the entire generation process. An overview of the formulation of the
+as-built BIM generation is shown in Figure 1. The two inputs of the proposed approach, as
+shown in Figure 1, are:
+1) an input 3D point cloud Pin of m points (|| Pin || = m) which represents the as-is
+conditions of a facility; and
+2) a library of semantic BIM components (with both geometric and non-geometric
+semantic information) and topologies.
+
+8
+
+Figure 1. A conceptual framework of the proposed semantic registration approach
+
+During the automatic as-built BIM generation process, some information, such as location,
+rotation, and topology, needs to be determined. This paper defines a tuple X of variables for
+each (e.g., i-th) component instance in the as-built BIM:
+Xi = (cl, l, s, r),
+
+(1)
+
+where cl is the family class of the component (e.g., a meeting table), l is the 3D location, s is
+the 3D scaling, and r is the rotation which is usually around the z-axis (Note: some components
+such as a door handle may use other axes). The solving of X is equivalent to the object
+recognition in conventional segmentation-based methods. Other semantic information
+including surface texture, producer, and market price can be directly registered to the as-built
+BIM. Therefore, the output BIM is fully determined by X = {X1, X2, …, Xn}, which represents
+a combination of all the parameters of n component instances, as shown in Figure 1. The
+candidate components and their topologies can be quickly filtered by scene (e.g., “indoor” and
+“office furniture”) before problem-solving to reduce the computational load. The input 3D
+point cloud is the geometric reference frame for the as-built BIM.
+
+The objective function f to minimize, in this paper, is the RMSE between the as-built BIM
+(determined by X) and the input 3D point cloud. The accurate RMSE can be calculated by
+computing the minimal distance to the as-built BIM for each point in the input cloud. However,
+since there can be a huge number of points in a cloud and another huge number of “faces” in
+an as-built BIM, the calculation of f is far too inefficient. In this paper, we first sample the
+surface of the BIM to a point cloud PX with the same point density as the input cloud; so that
+the RMSE can be approximated by computing the RMSE between PX and Pin, where |PX| ≈ |Pin|
+= m. Furthermore, we sample both point clouds by the voxelization method, which is proven
+effective for processing point clouds (Aijazi et al., 2013; Zhu et al., 2017), so that |P’X| ≈ |P’in|
+9
+
+= m’ ≪ m. Advanced spatial data structures, such as oct-trees, can guarantee the RMSE
+computational time between P’X and P’in at O(m’ log m’) (Elseberg et al., 2013). Thus, we have
+the objective function f in Figure 1 defined and approximately simplified as:
+f(X) = RMSE(BIM(X), Pin )
+≈ RMSE(PX , Pin )
+
+(2)
+
+≈ RMSE(P′X , P′in ) = �Σ𝑝𝑝∈P′in nndist2 (𝑝𝑝, P′X )⁄m′
+
+≈ RMSE(P′in , P′X ) = �Σ𝑝𝑝∈P′X nndist2 (𝑝𝑝, P′in )�‖P′X ‖
+
+= fX (X)
+
+where BIM is the surface of BIM determined by X, nndist is the Euclidean distance between a
+point and its nearest neighbor in another point cloud, and fX is the approximate objective
+function. Eq. (2) implies that fX(X) ≈ f(X), where the P’X (down-sampled BIM surface) can be
+accumulated through model generation, so that it is not necessary to repeatedly calculate the
+whole BIM on commercial BIM platforms. As a result, the result of approximate objective (fX)
+is very close to that of f, but fX is much easier to calculate than f.
+
+The variables X to optimize are constrained by possible domains, topological requirements,
+and conventions. An example of a topological requirement is that of a wheeled office chair
+sitting on a horizontal plane. An example of a convention is that of an office chair location
+likely to be next to a desk or table. Among the components, there exist a small group of
+topological relationships such as adjacency (e.g., above, below, and next-to), separation,
+containment, intersection, and connectivity (Nguyen et al., 2005). Thus, we can formulate the
+constraints C in Figure 1 as:
+C(X) = {CI(Xi)}∪{CR(Xi, Xj), i≠j},
+
+(3)
+
+where CI indicates the constraints on the parameters Xi of any i-th individual component, and
+CR is the constraints on the topological relationships between any pair of (i-th, j-th)
+components. Examples of the two groups of constraints can be found in Table 1.
+
+10
+
+Table 1. Example of constraints in the proposed formulation
+C
+Example
+Example value
+Notes
+CI
+
+CR
+
+scaling_max
+
+[2.0, 2.0, 1.5]
+
+xyz coordinates
+
+scaling_min
+
+[0.5 0.5, 0.75]
+
+Ibid.
+
+z_rotation_max
+
+2π
+
+z_rotation_min
+
+0
+
+on_top_of
+
+‘Ground’
+
+Adjacency, connectivity
+
+contains_on
+
+‘Wall’
+
+Containment or intersection
+
+After the formulation of the variables X, objective function f, and constraints C, we have a
+general form of the overall optimization problem of as-built BIM generation:
+minimize f (X) = RMSE(BIM(X), Pin )
+subject to C(X) ≤ 0.
+
+(4)
+
+Based on the popular optimization mechanisms in existing literature, Xue et al. (2018a)
+proposed a one-by-one, incremental generation process. In such a process, the problem-solving
+focuses on recognizing one component at a time and n incremental runs to complete the asbuilt BIM. An overall fine-tuning process of all the components after the incremental phase
+has also proven helpful in improving accuracy of the as-built BIM.
+
+Problem solving
+Based on the COBIMG, which stands for constrained optimization-based BIM generator
+(available at: https://github.com/ffxue/cobimg) software library (Xue et al., 2018b), the authors
+developed the “COBIMG-Revit”, which is an automatic as-built BIM generation plugin for a
+popular BIM platform (i.e., Autodesk Revit). Figure 2 shows the three major modules of
+COBIMG-Revit. The first module, the core algorithm, is CMA-ES integrated in COBIMG.
+The second module is a new module, i.e., the f(X) calculation based on Eq. (2), where the
+functions of voxelization and kd-tree search are employed from PCL (point cloud library). The
+third module is the component assembly (e.g. creation, hiding, movement, rotation, and surface
+sampling of the as-built BIM) extended from COBIMG. The input components were a set of
+annotated Revit component families. The COBIMG-Revit, encapsulated as a plugin, interacts
+with Autodesk Revit via its C++ APIs and generates the as-built BIM in Revit project format.
+
+11
+
+Figure 2. Key modules, software libraries, and execution processes of COBIMG-Revit
+
+Recognizing any i-th component is an automatic, iterative, trial-and-error procedure. As shown
+in Figure 3, the three modules of COBIMG-Revit operate in the same sequence for each trial.
+The trial starts from a feasible Xi that meets all the constraints. The component assembly
+module decodes the values of Xi to Revit family class (cl), location (l), scaling (s), and rotation
+(r). Then, the i-th component is modified (or created for the first trial) through Revit APIs
+based on the decoded parameters. The surface of the updated as-built BIM with the modified
+i-th component is sampled by the component assembly module to a point cloud PX. The next
+module samples Pin and PX down with voxelization and returns the RMSE (i.e., f(Xi)), back to
+the first module of core algorithms. Finally, the core algorithm CMA-ES updates its covariance
+matrix and evolves its search strategy for succeeding trials.
+
+12
+
+Figure 3. Message sequence chart of the operations and interactions between the modules of
+COBIMG-Revit in an individual trial
+
+The incremental generation phase can be explained as follows. At the very beginning, the first
+component is always an invisible Ground component, or a similar fundamental component,
+which can be directly computed from the boundary of the input 3D point cloud. Therefore,
+during the whole incremental generation phase, there are (i − 1) components already assembled
+before the i-th component. A “parent” component, either Ground or one of the assembled
+components, is sequentially selected to regulate a physical target area (e.g., a planar surface, a
+linear joint, or a room space) and a topological relationship (see Table 1) for the i-th component
+candidates to reside on. COBIMG-Revit then runs a few trials for each component candidate
+for the least RMSE. After trial-and-error tests on all the possible candidates, the component
+with the least RMSE is recognized as the i-th component in the as-built BIM. Meanwhile, the
+topological relationship between the i-th component and its parent is also confirmed. In such
+an incremental fashion, the whole BIM and its topology can be gradually built from the library
+of Revit families.
+
+The nature of the incremental generation implies an asymmetric precedence of recognition of
+the n components in the as-built BIM. That is, the i-th component may influence the assembling
+of the j-th component only if i < j; but not vice versa. The asymmetric precedence thus may
+lead to a loss in accuracy of the as-built BIM. To complement the possible loss of accuracy, a
+fine-tuning phase runs after the incremental generation. In this phase, the parameters of each
+component, except for Ground, are re-optimized. If the re-optimization brings a better (i.e.,
+13
+
+less) RMSE, the BIM is changed based on the new parameters. The step-by-step fine-tuning
+continues until a terminate condition (e.g., a time limit) is met. The output as-built BIM is a
+project model (.rvt) in Revit.
+
+Experiments
+Experiment setting
+An experiment was set to validate the proposed approach. The test case featured a noisy
+laboratory scene filled with furniture (see Figure 4), for which recognition proved challenging
+for traditional semantic segmentation approaches. The test scene consisted of two discussion
+tables, a round table, two footstools and three wheeled chairs, one with high armrests and two
+with low armrests. The 3D point cloud in Figure 4, with 194,813 points, was scanned by a
+Google Tango smartphone (Model: Lenovo PB2-690Y). The smartphone manipulated an
+infrared distance sensor and two cameras to estimate the indoor point cloud, which proved
+noisy, as shown in Figure 4. The scanning took about 20 minutes and the pre-processing (i.e.,
+registration and stitching) roughly 15 minutes. There is no semantic segmentation in the
+experiments. The Revit families of the furniture, as listed in Table 2, were downloaded from
+the producer’s website: steelcase.com. The research team spent about four minutes annotating
+the Revit family (.rfa) with the CI and CR listed in Table 1. Figure 5 shows the graphic user
+interface (GUI) of COBIMG-Revit encapsulated as a plugin of Autodesk Revit 2015
+Educational 64-bit. The GUI of COBIMG-Revit consists of three parts: 1) an input point cloud,
+2) a list of the Revit families (i.e. component candidates), 3) the as-built BIM generation panel.
+
+Figure 4. An indoor furniture scene with 194,813 noisy points scanned by a smartphone
+14
+
+Table 2. A list of the annotated semantic BIM components
+Model of
+
+FlipTop Twin
+
+Groupwork
+
+Think V2
+
+Think V2
+
+B-Free
+
+component
+
+Table
+
+Coffee Table
+
+chair (high
+
+chair (low
+
+footstool
+
+armrest)
+
+armrest)
+
+3D view of
+component
+(screenshot
+in Revit)
+CI
+
+smin, smax, rmin, and rmax
+
+CR
+
+on_top_of = Ground
+
+Semantics
+
+OmniClass number, manufacturer, model, materials, style number, product, website,
+
+from family
+
+product line, release date, cost, assembly code, assembly description, etc.
+
+Figure 5. The user interface of COBIMG-Revit (on Revit 2015 Educational 64-bit)
+
+15
+
+The experiments were conducted at a workstation with two Intel XEON E5-2690 v4 CPUs
+(2.6GHz, 28 cores, 56 logical processors), 64 GB memory, and Windows 10 Enterprise 64-bit
+operating system. The invisible Ground was set to match the boundary of x and y of the input
+point cloud in Figure 4, with z = 0. The two major parameters of the proposed approach, as
+formulated in Sections 3.2 and 3.3, are the size of the voxel grid and the number of trials by
+CMA-ES per component (see the GUI in Figure 5). The size of the voxel grid was set in ten
+values from 1 cm to 10 cm in a linear order; while the number of trials was set in 10 values
+from 10 to 10,000 (104) in exponential order. COBIMG-Revit was also tested in a different
+number of threads to evaluate the acceleration by parallel computing. The team also tested the
+most popular point cloud registration algorithm ICP (see Kim et al. 2013; Sharif et al. 2017)
+for a comparison. We tested a number of variants of ICP, and selected one variant starting from
+random locations in parallel for a correct output. The number of the iterations of ICP was set
+to be equal to the number of trials of COBIMG-Revit.
+
+Experimental results
+The results of the experimental tests under different parameter settings, as shown in Figure 6,
+confirmed that the COBIMG-Revit was sensitive to the two parameters. Figure 6 shows three
+sets of experimental results (i.e., the number of correct components, the objective function, and
+the time cost in 56 threads) and a trade-off analysis from the tests under 100 configurations of
+the two parameters. Figure 6 (a) demonstrates that more trials generally led to more correct asbuilt BIMs when the grid size (i.e., resolution) was not too large (e.g., ≤ 8 cm); while in Figure
+6 (b), f (RMSE) which was closely associated with correctness of components, showed a
+similar pattern. The trend on time cost in Figure 6 (c) shows that more trials and smaller grid
+size led to more computation time. The trade-off analysis in Figure 6 (d) shows that there exists
+an intersection of effectiveness (e.g., f < 5 cm, above the dashed polyline) and efficiency (e.g.,
+< 10.5 s, below the curve of 10.5 s) for configuring the parameters. For instance, the research
+team selected a grid size of 5 cm and 500 trials for the test case.
+
+16
+
+(a) The number of correct components (Note: (b) The objective function (Note: lower is
+higher is better)
+better)
+
+(c) The time cost (Note: in log10, i.e., lower is (d) A trade-off analysis
+better)
+Figure 6. Experimental results of different parameter settings and a trade-off analysis on
+accuracy versus time cost of as-built BIM generation by COBIMG-Revit
+Details of the problem-solving procedure by COBIMG-Revit are shown in Figure 7, with the
+selected grid size as 5 cm and 500 trials per component. The objective function f descended
+steadily from about 100 cm in the beginning when the as-built BIM was almost empty. When
+more and more components were incrementally added to the BIM, the two curves of f and fX
+in Eq. (2), gradually approached one another; the convergence of the curves confirmed that the
+approximation in Eq. (2) is sound and effective. The incremental generation phase ended in
+3.09 seconds after searching for the 9-th component in vain (no component had sufficient
+support of points). The result of the incremental generation phase was a BIM with 8
+17
+
+components on the Ground (f = 4.26 cm). The fine-tuning phase further improved the objective
+function down to f = 3.87 cm in 3.36 seconds by slightly changing the positions and rotations
+of the components, while the overall topology and the big picture of the as-built BIM remained
+the same. The overall time amounted to a sheer 6.44 seconds, and the output as-built BIM was
+saved as a Revit project (see Figure 8 (a)). A visual comparison in Figure 8 (b) shows that the
+output as-built BIM well matched the input 3D point cloud. In addition, the ground truth 3D
+presentations offered by the producer overcame to a considerable extent the noise present in
+the input, as shown in Figure 8 (b). In contrast, Figure 8 (c) shows the BIM generated by the
+ICP algorithm in 30.1s. There were five correct components and four wrong furniture as
+highlighted in Figure 8 (c). It can be seen that one FlipTop Twin table was mistakenly modeled
+as two Groupwork Coffee tables; the other fault was the two chairs with low armrests were
+registered as those with high armrests. Figure 8 (d) shows a top view of the point cloud and the
+BIM by ICP. The RMSE in Figure 8 (d) was 4.76 cm. In summary, the proposed COBIMGRevit outperformed the well-known ICP algorithm in terms of correctness, geometric accuracy,
+and time cost.
+
+Figure 7. A typical problem-solving process of COBIMG-Revit (Parameters: grid size = 5
+cm, 500 trials per component)
+
+18
+
+(a) A screenshot of the 3D view of the output asbuilt BIM
+
+(b) A visual comparison between the
+input (grey points) and the output BIM
+
+(c) A screenshot of the BIM generated by ICP
+(time = 30.1s, consisting of 4 wrong furniture)
+
+(d) A visual comparison between the
+input (grey points) and the BIM
+generated by ICP (RMSE = 4.76 cm)
+Figure 8. Comparison of the generated as-built BIMs by COBIMG-Revit and ICP (Note: grid
+size = 5 cm, 500 trials per component, the wrong components are highlighted in blue)
+
+The COBIMG-Revit then registered semantic information into the as-built BIM shown in
+Figure 8 (a). Figure 9 illustrates the properties of a B-Free footstool in the as-built BIM. The
+left window in Figure 9 shows the footstool’s properties, including “COBIMG_translation”,
+“COBIMG_rotation”, and topological relationships (e.g., “COBIMG_parent”). The right
+window in Figure 9 shows the ‘type’ properties that contain the semantic information registered
+from the producer’s online library (e.g., manufacturer, model, materials, style number, product
+19
+
+line, release date, assembly code, and assembly description). In fact, most of the registered
+properties were almost impossible to segment using the conventional approaches relying on
+rule-based and machine learning-based correlation models.
+
+Figure 9. A screenshot of the semantic information in the as-built BIM
+Parameters analysis
+The team applied Pearson’s bivariate correlation tests to evaluate the sensitivity of the two
+parameters of COBIMG-Revit (see Figure 6). Table 3 lists the results on the number of correct
+components, f, and time cost computed by IBM SPSS (version 24.0). It shows that the voxel
+grid size prompts a strong negative correlation to computation time (i.e., the greater the grid
+size, the less computation time), and no significant correlation to the number of correct
+components or f. In comparison, the number of trials has significant correlations with all three
+indicators (i.e., a very strong positive correlation with the correct components, a very strong
+negative correlation with f, and a strong positive correlation with the time cost). The analytical
+results suggest: 1) the voxelization can efficiently reduce the time cost without significant loss
+of accuracy in f (and a decrease in the number of correct components); 2) the number of trials
+per component should be large enough (e.g., 500 or above) for accurate as-built BIM
+generation.
+
+20
+
+Table 3. Pearson’s correlations between the two parameters and the three algorithmic
+performance indicators (N = 100)
+No. of correct
+
+f (cm)
+
+components
+
+Time cost (s, in
+log10)
+
+Pearson cor.
+
+-0.111
+
+0.109
+
+-0.656**
+
+Sig. (2-tailed)
+
+0.270
+
+0.282
+
+0.000
+
+No. of trials per
+
+Pearson cor.
+
+0.904**
+
+-0.823**
+
+0.690**
+
+component (in log10)
+
+Sig. (2-tailed)
+
+0.000
+
+0.000
+
+0.000
+
+Grid size (cm)
+
+**: Correlation is significant at 0.001 level (2-tailed).
+
+The number of threads were also tested to evaluate the acceleration from multi-threading
+parallel computing. As shown in Figure 10, the overall time cost decreased, almost log-linearly,
+from about 70 seconds to 8 seconds while the number of threads increased from 1 to 14 (i.e.,
+the number of the physical cores in one test CPU). There was a slight increase in time when
+the number of threads went beyond a single CPU due to the operational system (e.g., the load
+balancing of multiple CPUs). On two CPUs (i.e., with more than 14 threads), the time cost
+decreased log-linearly again. The curve in Figure 10 confirmed that COBIMG-Revit can make
+good use of the parallel computing hardware acceleration from everyday computers to highend enterprise workstations.
+
+Figure 10. The computation time of COBIMG-Revit by multi-threading parallel computing
+21
+
+A comparison with manual modeling
+The rationale of the semantic registration approach resembles closely the ‘logo-stacking’ style
+of a manual as-built modeling process. To compare accuracy and efficiency of the two
+approaches, the team invited three volunteer modelers with divergent levels of experience in
+Autodesk Revit to undertake manual modeling tests. The input 3D point cloud and the Revit
+family types were preloaded in the BIM software, and each modeler was required to select and
+adjust the furniture components to their correct locations (x and y) and rotations (around z),
+while the furniture components were placed on the default floor (z = 0) automatically in Revit.
+The modelers received a three-minute training course before they began. Table 4 lists the
+correctness, RMSE, and time cost of the three manually made as-built BIMs. In accuracy,
+COBIMG-Revit’s output model ranked second after the model developed by the most
+experienced modeler. The modeling speed of COBIMG-Revit, however, was about 50 times
+that of the modelers. Although ICP was also faster than manual modelers, it failed to generate
+an accurate and correct BIM. COBIMG-Revit, as an automate approach, thus successfully
+addresses the challenges of manual modelling (e.g. tedium, slowness, and inaccuracy).
+
+Table 4. The results of three manual as-built BIM generations, where the best value in each
+column is in bold
+Modeler No.
+
+Experience
+
+Correctness (out of 8)
+
+RMSE (cm)
+
+Time cost (s)
+
+1
+
+Expert (3 years)
+
+8
+
+3.79
+
+363.9
+
+2
+
+Average (1 year)
+
+8
+
+3.90
+
+335.4
+
+3
+
+Beginner
+
+8
+
+4.22
+
+691.1
+
+COBIMG-Revit
+
+8
+
+3.87
+
+6.44
+
+ICP
+
+5
+
+4.76
+
+30.1
+
+Scalability tests
+To test the scalability of the proposed approach, a cloud (about 1.9 million points) of 293
+auditorium chairs, as shown in Figure 11 (a), from the Stanford 2D-3D-S dataset (Armeni et
+al., 2017) was selected according to the segmentation predefined in the dataset. Unlike the
+completeness in the office scene, there existed a low level of occlusion and clutters in the
+auditorium scene. There is no semantic segmentation in the experiments, either. As shown in
+Figure 11 (b), the ground at the rear area was about 1.0m higher than that in the front. Two
+22
+
+BIM
+
+components,
+
+‘Theater
+
+Chair’
+
+and
+
+‘Fixed
+
+Chair’,
+
+were
+
+downloaded
+
+from
+
+3DWarehouse.com, and then annotated. Apart from the topological relationship settings in
+Table 1, the translation over z-axis (lz) was allowed from 0m to 1.0m in the annotation. The
+grid size of COBIMG-Revit was 5 cm; the number of trials was set to 5,000 due to an extra
+freedom on the z-axis; the multi-threading parallel computing was enabled. Each component
+was tested in an independent experiment because all the chairs were known identical.
+
+(a) A cloud of 1,879,282 points of chairs in the
+“Area_2 Auditorium_2” instance in the Stanford
+2D-3D-S dataset (the zoomed area shows the
+occlusion and clutters)
+
+(b) The height ramp of the point cloud
+(i.e., rear chairs are about 1.0m higher)
+
+(c) ‘Theater Chair’ (author: AJ)
+(d) ‘Fixed Chair’ (author: Veronica S.)
+Figure 11. An auditorium scene of 293 identical theater chairs and two chair components
+
+The COBIMG-Revit generated an output BIM as shown in Figures 12 (a) and (b) using the
+‘Theater Chair’ component. As listed in Table 5, the output BIM consisted of 288 chairs, with
+an RMSE = 8.10 cm, and was saved as a 1.83 MB Revit project file. The other BIM, as shown
+in Figures 12 (c) and (d), were generated using the ‘Fixed Chair’ component with an RMSE =
+9.15 cm. Figures 12 (b) and (d) show the comparisons with the input point cloud from the top
+view, where the major part of the input was correctly registered to chairs in both BIMs, the
+23
+
+false positive (with wrong location or rotation) chairs are highlighted, and the false negative
+(undetected) chairs are in circles. It can be found from Table 5 that the output BIM resembled
+the furniture setup of the auditorium scene using different components. The latter BIM had
+better precision and recall, but the first BIM had smaller RMSE, geometric error, and angular
+error. According to the objective function, e.g., Eq. (2), the BIM in Figure 12 (a) was selected
+as the output BIM from the noisy input.
+
+(a) Screenshot of the BIM consisting of 288
+‘Theater Chairs’ (RMSE = 8.10cm, time
+=1,434.2s)
+
+(b) Top view of (a) (false positive
+highlighted, false negative in circles)
+
+(c) Screenshot of the second BIM consisting of
+(d) Top view of (c) (false positive
+312 ‘Fixed Chairs’ (RMSE = 9.15cm, time =
+highlighted, false negative in circles)
+1,538.3s)
+Figure 12. Comparison of the BIMs using the ‘Theater Chair’ and another BIM using ‘Fixed
+Chair’
+
+24
+
+Table 5. Comparison of the auditorium BIM generation using different component (better value
+in each row in bold)
+Evaluation
+
+‘Theater Chair’
+
+Time (s)
+
+‘Fixed Chair’
+
+1,434.2
+
+1,538.3
+
+RMSE (cm)
+
+8.10
+
+9.15
+
+Number of chairs
+
+288
+
+312
+
+Output file size (MB)
+
+1.83
+
+2.19
+
+Mean
+
+15.2
+
+15.8
+
+Std. dev.
+
+7.7
+
+8.6
+
+Mean
+
+17.6
+
+19.7
+
+Std. dev.
+
+28.8
+
+34.6
+
+Precision (%)
+
+81.9
+
+84.3
+
+Recall (%)
+
+80.5
+
+89.8
+
+F1 (%)
+
+81.2
+
+87.0
+
+Centroid distance error (cm)
+
+Angular error (°)
+
+Table 6 lists the detailed confusion matrix of the chairs in the two output BIMs in Figure 12.
+The metrics of the first output BIM can be calculated by:
+Precision = True positive / Number of chairs in BIM = 236 / 288 = 81.9%
+Recall = True positive / Ground truth number of chairs = 236 / 293 = 80.5%
+
+(5)
+
+F1 = 2 × Precision × Recall / (precision + Recall) = 81.2%
+In Figure 12 and Table 6, there were 36 chairs generated in wrong positions, 16 chairs in correct
+positions but wrong directions. One reason of the incorrect positive is the exclusion of using
+repeated patterns of the chairs (e.g., Wang et al. 2018), while another is the noise in the input
+point cloud leading to the errors, as shown in the zoomed box in Figure 11 (a). The average
+time for generating a chair was about 5.0 seconds, considerably increased from the less than 1
+second in the indoor office scene due to the increased number of trials. Overall, the satisfactory
+results of the test and the inexpensive computational time validate that the proposed ‘semantic
+registration’ approach is scalable to large-scale point clouds. Thanks to the embedded
+knowledge in the BIM components and the advanced DFO algorithms, the output BIM also
+outperformed many conventional semantic segmentation methods, e.g., Armeni et al. (2017),
+to achieve a 16.5% precision in the point-level – rather than the component level in this paper
+– classification of chairs.
+
+25
+
+Table 6. A confusion matrix of the generated chairs in the generated BIM by COBIMG-Revit
+Evaluation
+
+‘Theater Chair’
+
+‘Fixed Chair’
+
+Chairs
+
+Not a chair
+
+Chairs
+
+Not a chair
+
+Positive position and rotation
+
+236
+
+10
+
+263
+
+12
+
+Positive position but negative rotation
+
+16
+
+-
+
+13
+
+-
+
+Negative position (error > 25cm*)
+
+36
+
+-
+
+36
+
+-
+
+Subtotal
+
+288
+
+10
+
+312
+
+12
+
+(error > 45°)
+
+*: 25cm is a quarter of the diagonal of the target chair
+
+Discussion
+In contrast to conventional approaches dependent on semantic segmentation, the presented
+approach offers several advantages:
+1) Complex building components can be accurately modeled via 3D point clouds, even atop
+noisy point clouds. In addition, the noise in the input point cloud considerably improves with
+the ground truth 3D presentations, as a part of the geometric semantics, from credible sources
+like the producer’s library. Accuracy of the model generated using the proposed approach was
+close to that of manual models.
+2) The proposed approach can be applied to simple and regularly shaped components.
+Although the efficiency may not be comparable with conventional segmentation approaches,
+it can include any pre-defined BIM components in Eq. (2).
+3) The whole as-built BIM generation process is fully automatic. In conventional
+approaches, human modelers are still required to post-process the segmentation results (e.g.,
+Jung et al., 2014).
+4) Rich semantic information can be registered from credible semantic resources to produce
+a semantically rich as-built BIM. Computer programs can reuse semantic information from
+existing BIM resources for value-added applications.
+5) Preparation of geometry-to-label correlation models, such as retrieval of rules from
+experts and collection of training examples for machine learning techniques, is not needed.
+Instead, credible and available BIM resources represent the domain knowledge for as-built
+BIM generation in the proposed approach.
+
+26
+
+6) The proposed approach boasts a high level of efficiency. By harnessing the power of
+parallel computing, such an efficient approach could promote wider use of as-built BIM within
+the AECO industry and inspire assorted smart city applications.
+
+Despite its many merits, the proposed approach also has its shortcomings:
+1) The proposed approach relies on structured BIM knowledge such as external sources, the
+geometric details, and the embedded semantics of BIM components and annotated topological
+requirements. For example, oversimplified BIM components (e.g., a box model of wheeled
+chair) that considerably changes the 5-cm sampled surface points may lead to inaccuracy in
+geometry and incorrect BIMs.
+2) If the two mechanisms (i.e., surface sampling and voxel-based down-sampling) are not
+configured correctly, the fidelity of the output as-built BIM can be undermined, as shown in
+Figures 6 (a) and (b). A trade-off exists between speed and accuracy in as-built BIM generation,
+as shown in Figure 6 (d).
+3) Although similar BIM components can come close to an approximated BIM (see Figures
+11 and 12), the approach may not work on unique and tailor-made components due to its
+reliance on availability of BIM components. The approach may not work on scenes under
+heavy occlusion and distortion due to the unavailable geometric data.
+4) The approach is yet to make good use of the ‘instance parameters’ in prevailing BIM
+software (e.g., Revit) to determine more accurate semantics such as the exact height of the
+armrest and its family class, location, and rotation.
+5) The approach is yet to utilize 3D point color and texture information to determine more
+accurate semantics. It should also be noted that the infrared and laser scanned 3D point clouds
+usually do not represent reflective surfaces such as glass and waterbody; thus the surfaces with
+materials of glass and water in the components should be separated in the sampling process of
+the approach.
+6) The overall computational time of the presented approach, as formulated in Section 3.2,
+grows at least in a linear relation to the number n of components.
+7) The experiments in this paper are for a relatively complex scene but it needs to be scaled
+up in future studies, e.g., including all the building elements such as walls, floors, and columns
+as well as the possible patterns of their formations.
+
+27
+
+Conclusion
+This paper presents a DFO-based ‘semantic registration’ approach for automatic generation of
+semantically rich as-built BIMs from 3D point clouds. This approach builds upon previous
+DFO-based approaches by exploiting 3D point clouds in prevailing BIM platform Revit, and
+by polishing the algorithms behind the application. The task of generating as-built BIMs is
+formulated to a constrained optimization problem by minimizing the error between the output
+BIM and the input 3D point clouds. The formulated problem is simplified by sampling the BIM
+surface and voxelization of the point clouds, and a well-known DFO algorithm, CMA-ES, is
+applied to solve the formulated and simplified problem. The BIM resulting from experiments
+on a noisy point cloud of an indoor furniture scene was accurate (RMSE = 3.87 cm), efficient
+(time = 6.44 s), and consisted of rich semantic information (e.g., materials, product line, and
+assembly code) registered from the manufacturer’s library. The approach was also proved
+scalable for modeling large-scale point clouds.
+
+This paper offers a trifold contribution to the BIM and computing engineering communities. It
+presents the first semantic registration approach for as-built BIM generation from 3D point
+clouds. Unlike the a priori rules or machine learning methods of predominant semantic
+segmentation schemes, the presented approach exploits available, credible semantic BIM
+resources to handle simple to complex scenes. Secondly, the presented DFO-based semantic
+registration approach is highly accurate and efficient in processing noisy complex point clouds
+and reusing public and private BIM resources. This paper also improves upon Xue et al.’s
+(2018a; 2018b) methodology (e.g., the time length of the experiment dramatically dropped
+from a few hours to a few seconds). In summary, the semantic registration approach presented
+here is superior to existing segmentation approaches in several ways: it is segmentation free,
+capable of processing complex scenes, and able to cleverly apply existing information for 3D
+modeling and semantic enrichment.
+
+The innovative approach reported in this paper opens new avenues for professionals in the built
+environment and development field. Architects and designers, construction crews and
+engineers, facilities managers and conservationists can contribute to the realization of truly
+smart cities. It offers global business leaders and developers a more expedient and quality tool
+for creating semantically rich BIMs/CIMs. The proposed approach suggests that inexpensive
+data sources can be effectively and efficiently exploited to produce models of complex scenes
+and is a potential game-changer in the competitive landscape of BIM/CIM. The research team
+28
+
+recommends further studies follow to examine the applicability of the approach to other scenes,
+and its applicability on a wider, possible urban scale.
+
+Acknowledgements
+This study was supported by a grant from the Hong Kong Research Grant Council (GRF
+HKU17201717) and two grants from The University of Hong Kong (201702159013,
+201711159016). We would like to thank the reviewers for their insightful comments and
+suggestions on improving the quality of the paper.
+
+References
+Adan, A. & Huber, D. (2011), 3D reconstruction of interior wall surfaces under occlusion and
+clutter. In 2011 International Conference on 3D Imaging, Modeling, Processing,
+Visualization and Transmission (3DIMPVT 2011), 275-281, Hangzhou, China.
+doi:10.1109/3DIMPVT.2011.42
+Adán, A., Quintana, B., Prieto, S. A., & Bosché, F. (2018). Scan-to-BIM for ‘secondary’
+building components. Advanced Engineering Informatics, 37, 119-138.
+Aijazi, A. K., Checchin, P., & Trassoudaine, L. (2013). Segmentation based classification of
+3D urban point clouds: A super-voxel based approach with evaluation. Remote Sensing,
+5(4), 1624-1650.
+Andreopoulos, A., & Tsotsos, J. K. (2013). 50 years of object recognition: Directions forward.
+Computer Vision and Image Understanding, 117(8), 827-891.
+Armeni, I., Sax, S., Zamir, A. R., & Savarese, S. (2017). Joint 2D-3D-semantic data for indoor
+scene understanding. arXiv preprint arXiv:1702.01105.
+Athanasiou, A., De Felice, M., Oliveto, G. & Oliveto, P. S. (2011). Evolutionary algorithms
+for the identification of structural systems in earthquake engineering. In Proceedings of
+the International Conference on Evolutionary Computation Theory and Applications Volume 1: ECTA, (IJCCI 2011), 52-62. doi:10.5220/0003672900520062
+Babacan, K., Chen, L. & Sohn, G. (2017). Semantic Segmentation of Indoor Point Clouds
+Using Convolutional Neural Network. ISPRS Annals of Photogrammetry, Remote
+Sensing and Spatial Information Sciences, IV-4/W4, 101-108.
+Barazzetti, L. (2016). Parametric as-built model generation of complex shapes from point
+clouds. Advanced Engineering Informatics, 30(3), 298-311.
+Belsky, M., Sacks, R., & Brilakis, I. (2016). Semantic enrichment for building information
+modeling. Computer‐Aided Civil and Infrastructure Engineering, 31(4), 261-274.
+29
+
+Bosché, F., Ahmed, M., Turkan, Y., Haas, C. T. & Haas, R. (2015), The value of integrating
+Scan-to-BIM and Scan-vs-BIM techniques for construction monitoring using laser
+scanning and BIM: The case of cylindrical MEP components. Automation in Construction,
+49, 201-213.
+Bosché, F., Guillemet, A., Turkan, Y., Haas, C. T., & Haas, R. (2014). Tracking the built status
+of MEP works: Assessing the value of a Scan-vs-BIM system. Journal of Computing in
+Civil Engineering, 28(4), 05014004.
+Bruno, S., De Fino, M., & Fatiguso, F. (2018). Historic Building Information Modelling:
+performance assessment for diagnosis-aided information modelling and management.
+Automation in Construction, 86, 256-276.
+Chen, J., Fang, Y., & Cho, Y. K. (2018a). Performance evaluation of 3D descriptors for object
+recognition in construction applications. Automation in Construction, 86, 44-52.
+Chen, K., Lu, W., Wang, H., Niu, Y., & Huang, G. G. (2017). Naming objects in BIM: A
+convention and a semiautomatic approach. Journal of Construction Engineering and
+Management, 143(7), 06017001.
+Chen, K., Lu, W., Xue, F., Tang, P., & Li, L. H. (2018b). Automatic building information
+model reconstruction in high-density urban areas: Augmenting multi-source data with
+architectural knowledge. Automation in Construction, 93(9), 22-34..
+Conn, A. R., Scheinberg, K., & Vicente, L. N. (2009). Introduction to derivative-free
+optimization (MPS-SIAM series on optimization), vol. 8, Philadelphia, PA, USA: SIAM.
+Díaz-Vilariño, L., Conde, B., Lagüela, S. & Lorenzo, H. (2015), Automatic detection and
+segmentation of columns in as-built buildings from point clouds. Remote Sensing, 7(11),
+15651-15667.
+Dimitrov, A., Gu, R. & Golparvar‐Fard, M. (2016), Non‐uniform B‐spline surface fitting from
+unordered 3D point clouds for as‐built modeling. Computer‐Aided Civil and Infrastructure
+Engineering, 31(7), 483-498.
+Eastman, C. M., Eastman, C., Teicholz, P., & Sacks, R. (2011). BIM handbook: A guide to
+building information modeling for owners, managers, designers, engineers and
+contractors, 2nd Edition. John Wiley & Sons, Hoboken, New Jersey, USA.
+Elseberg, J., Borrmann, D., & Nüchter, A. (2013). One billion points in the cloud–an octree for
+efficient processing of 3D laser scans. ISPRS Journal of Photogrammetry and Remote
+Sensing, 76, 76-88.
+
+30
+
+Hamledari, H., Rezazadeh Azar, E. & McCabe, B. (2017). IFC-based development of as-built
+and as-is BIMs using construction and facility inspection data: Site-to-BIM data transfer
+automation. Journal of Computing in Civil Engineering, 32(2), 04017075.
+Hansen, N., Auger, A., Ros, R., Finck, S. & Pošík, P. (2010). Comparing results of 31
+algorithms from the black-box optimization benchmarking BBOB-2009. In Proceedings
+of the 12th Annual Conference Companion on Genetic and Evolutionary Computation,
+1689-1696. doi:10.1145/1830761.1830790
+HKHA (Hong Kong Housing Authority) (2010). Building Information Modelling (BIM)
+Library Components Reference. Hong Kong.
+Jung, J., Hong, S., Jeong, S., Kim, S., Cho, H., Hong, S., & Heo, J. (2014). Productive modeling
+for development of as-built BIM of existing indoor structures. Automation in
+Construction, 42, 68-77.
+Kaveh, A., Kalateh-Ahani, M. & Masoudi, M. S. (2011). The CMA evolution strategy based
+size optimization of truss structures. International Journal of Optimization in Civil
+Engineering, 1(2), 233-56.
+Kim, C., Son, H., & Kim, C. (2013). Automated construction progress measurement using a
+4D building information model and 3D data. Automation in Construction, 31, 75-82.
+Koppula, H. S., Anand, A., Joachims, T. & Saxena, A. (2011). Semantic labeling of 3D point
+clouds for indoor scenes. In Advances in Neural Information Processing Systems 24, 244252. Available at: http://papers.nips.cc/paper/4226-semantic-labeling-of-3d-point-cloudsfor-indoor-scenes.pdf
+Lagüela, S., Díaz-Vilariño, L., Martínez, J. & Armesto, J. (2013). Automatic thermographic
+and RGB texture of as-built BIM for energy rehabilitation purposes. Automation in
+Construction, 31, 230-240.
+Lu, W., Chen, K., Wang, J., & Xue, F. (2017). Developing an open access BIM objects library:
+A Hong Kong study. In Lean and Computing in Construction Congress-Volume 1:
+Proceedings of the Joint Conference on Computing in Construction. Heriot-Watt
+University. doi:10.24928/JC3-2017/0254
+Lu, W., Peng, Y., Xue, F., Chen, K., Niu, Y., & Chen, X. (2018). The fusion of GIS and
+Building Information Modeling for big data analytics in managing development sites, in
+Comprehensive Geographic Information Systems, Elsevier, 345-359. doi:10.1016/B9780-12-409548-9.09677-9
+
+31
+
+Marsden, A. L., Feinstein, J. A., & Taylor, C. A. (2008). A computational framework for
+derivative-free optimization of cardiovascular geometries. Computer Methods in Applied
+Mechanics and Engineering, 197(21-24), 1890-1905.
+Martinovic, A., Knopp, J., Riemenschneider, H., & Van Gool, L. (2015). 3D all the way:
+Semantic segmentation of urban scenes from start to end in 3D. In the 2015 IEEE
+Conference on Computer Vision and Pattern Recognition (CVPR 2015), 4456-4465.
+Boston, MA, USA. doi: 10.1109/CVPR.2015.7299075
+National Institute of Building Sciences (NIBS). (2015). National Building Information
+Modeling Standard. Version 3, Retrieved from https://www.nationalbimstandard.org/
+Nguyen, C. H. P., & Choi, Y. (2018). Comparison of point cloud data and 3D CAD data for
+on-site dimensional inspection of industrial plant piping systems. Automation in
+Construction, 91, 44-52.
+Nguyen, T. H., Oloufa, A. A. & Nassar, K. (2005). Algorithms for automated deduction of
+topological information. Automation in Construction, 14, 59-70.
+Nicosia, G. & Stracquadanio, G. (2008). Generalized pattern search algorithm for peptide
+structure prediction. Biophysical Journal, 95(10), 4988-4999.
+Pătrăucean, V., Armeni, I., Nahangi, M., Yeung, J., Brilakis, I. & Haas, C. (2015). State of
+research in automatic as-built modelling. Advanced Engineering Informatics, 29(2), 162171.
+Perez-Perez, Y., Golparvar-Fard, M. & El-Rayes, K. (2016). Semantic and geometric labeling
+for enhanced 3D point cloud segmentation. In Proceedings of Construction Research
+Congress 2016, 2542-2552. doi:10.1061/9780784479827.253
+Quattrini, R., Malinverni, E. S., Clini, P., Nespeca, R., & Orlietti, E. (2015). From TLS to
+HBIM. High quality semantically-aware 3D modeling of complex architecture.
+International Archives of the Photogrammetry, Remote Sensing & Spatial Information
+Sciences, XL-5/W4, 367-374. doi: 10.5194/isprsarchives-XL-5-W4-367-2015.
+Quintana, B., Prieto, S. A., Adán, A. & Bosché, F. (2018). Door detection in 3D coloured point
+clouds of indoor environments. Automation in Construction, 85, 146-166.
+Rios, L. M., & Sahinidis, N. V. (2013). Derivative-free optimization: a review of algorithms
+and comparison of software implementations. Journal of Global Optimization, 56(3),
+1247-1293.
+Sacks, R., Ma, L., Yosef, R., Borrmann, A., Daum, S. & Kattel, U. (2017). Semantic
+enrichment for building information modeling: Procedure for compiling inference rules
+32
+
+and operators for complex geometry. Journal of Computing in Civil Engineering, 31(6),
+04017062.
+Schnabel, R., Wahl, R. & Klein, R. (2007), Efficient RANSAC for point-cloud shape detection.
+Computer Graphics Forum, 26(2), 214-226. doi:10.1111/j.1467-8659.2007.01016.x
+Shamir, A. (2008). A survey on mesh segmentation techniques. Computer Graphics Forum,
+27(6), 1539-1556
+Sharif, M. M., Nahangi, M., Haas, C., & West, J. (2017). Automated Model‐Based Finding of
+3D Objects in Cluttered Construction Point Cloud Models. Computer‐Aided Civil and
+Infrastructure Engineering, 32(11), 893-908.
+Snavely, N., Seitz, S. M. & Szeliski, R. (2008). Modeling the world from internet photo
+collections. International Journal of Computer Vision, 80(2), 189-210.
+Song, M., Shen, Z. & Tang, P. (2014), Data quality-oriented 3D laser scan planning. In
+Proceedings
+
+of
+
+Construction
+
+Research
+
+Congress
+
+2014,
+
+984-993.
+
+doi:10.1061/9780784413517.101
+Tang, P., Huber, D., Akinci, B., Lipman, R. & Lytle, A. (2010). Automatic reconstruction of
+as-built building information models from laser-scanned point clouds: A review of related
+techniques. Automation in Construction, 19(7), 829-843.
+Valero, E., Adán, A. & Cerrada, C. (2012). Automatic method for building indoor boundary
+models from dense point clouds collected by laser scanners. Sensors, 12(12), 1609916115.
+Varady, T., Martin, R. R., & Cox, J. (1997). Reverse engineering of geometric models—an
+introduction. Computer-Aided Design, 29(4), 255-268.
+Vezhnevets, A., & Buhmann, J. M. (2010). Towards weakly supervised semantic segmentation
+by means of multiple instance and multitask learning. In 2010 IEEE Conference on
+Computer Vision and Pattern Recognition (CVPR 2010), 3249-3256, San Francisco, CA,
+USA. doi:10.1109/CVPR.2010.5540060
+Volk, R., Stengel, J., & Schultmann, F. (2014). Building Information Modeling (BIM) for
+existing buildings—Literature review and future needs. Automation in Construction, 38,
+109-127.
+Wang, J., Wu, Q., Remil, O., Yi, C., Guo, Y., & Wei, M. (2018). Modeling indoor scenes with
+repetitions from 3D raw point data. Computer-Aided Design, 94, 1-15.
+Wang, Q., Cheng, J. C. & Sohn, H. (2017). Automated estimation of reinforced precast
+concrete rebar positions using colored laser scan data. Computer‐Aided Civil and
+Infrastructure Engineering, 32, 787-802.
+33
+
+Xiong, X., Adan, A., Akinci, B., & Huber, D. (2013). Automatic creation of semantically rich
+3D building models from laser scanner data. Automation in Construction, 31, 325-337.
+Xue, F., Chen, K., Liu, D., Niu, Y., & Lu, W. S. (2018a). An optimization-based semantic
+building model generation method with a pilot case of a demolished construction. In
+Proceedings of the 21st International Symposium on Advancement of Construction
+Management and Real Estate, 231-241. Springer, Singapore. doi:10.1007/978-981-106190-5_22
+Xue, F., Lu, W., & Chen, K. (2018b). Automatic generation of semantically rich as-built
+building information models using 2D images: A derivative-free optimization approach.
+Computer-Aided Civil and Infrastructure Engineering, In Press. doi: 10.1111/mice.12378
+Zhang, C., Kalasapudi, V. S. & Tang, P. (2016). Rapid data quality oriented laser scan planning
+for dynamic construction environments. Advanced Engineering Informatics, 30(2), 218232.
+Zhu, Q., Li, Y., Hu, H., & Wu, B. (2017). Robust point cloud classification based on multilevel semantic relationships for urban scenes. ISPRS Journal of Photogrammetry and
+Remote Sensing, 129, 86-102.
+Zhu, X. X. & Shahzad, M. (2014). Facade reconstruction using multiview spaceborne
+TomoSAR point clouds. IEEE Transactions on Geoscience and Remote Sensing, 52(6),
+3541-3552.
+Zou, C., Colburn, A., Shan, Q., & Hoiem, D. (2018). LayoutNet: Reconstructing the 3D Room
+Layout from a Single RGB Image. In the 2018 IEEE Conference on Computer Vision and
+Pattern Recognition (CVPR 2018), 2051-2059. Salt Lake City, USA. In press.
+Zou, C., Yumer, E., Yang, J., Ceylan, D., & Hoiem, D. (2017). 3D-PRNN: Generating shape
+primitives with recurrent neural networks. In 2017 IEEE International Conference on
+Computer Vision (ICCV), 2, 900-909. Venice, Italy. doi: 10.1109/ICCV.2017.103
+
+34
+
+

@@ -1,0 +1,2509 @@
+Multi-perspective assessment of greenery visibility from streets,
+windows, and drones using deep learning and CIM
+
+Siyuan Menga , Maosu Lib* , Jinfeng Xiec , Fan Xued
+a Department of Real Estate and Construction, The University of Hong Kong, Pokfulam,
+
+Hong Kong, China;
+b Thrust of Urban Governance and Design, The Hong Kong University of Science and
+Technology (Guangzhou), Nansha, Guangzhou, China;
+c Department of Urban Planning and Design, The University of Hong Kong, Pokfulam, Hong
+Kong, China;
+d Department of Real Estate and Construction, The University of Hong Kong, Pokfulam,
+Hong Kong, China.
+National Center of Technology Innovation for Digital Construction Hong Kong Branch, The
+University of Hong Kong, Pokfulam, Hong Kong, China
+
+ARTICLE HISTORY
+Compiled May 14, 2026
+
+ABSTRACT
+Urban greenery includes 3D volumetric greenery and provides visual benets to
+billions of urban dwellers. Although high-rise buildings and drones are expanding
+urban activities vertically, most greenery studies are limited to street-level observations, relying on 2D/2.5D view imagery. This paper presents a greenery volume
+visibility (GVV) assessment method by integrating 3D deep learning and city information model (CIM). A 3D GVV index (GV V I ) is dened for three groups of
+observing perspectives: street, window, and drone. Semantic segmentation using
+deep learning detects greenery volumes in photorealistic 3D models, then GV V I s
+are calculated across all perspective groups. Hot spot maps and disparity analysis
+comparing the three sub-indices reveal the urban greenery volumes overlooked in traditional ground-level studies. Experimental results on a 4.92 km2 area of Kowloon,
+Hong Kong, showcased the proposed method's eciency (23,490 GV V I s in 256.45
+hours); Comparative results between street and drone/window perspectives revealed
+37.6% and 31.7% greenery entirely overlooked in traditional ground-level spatial
+analysis. This paper contributes in three aspects: a 3D GVV index denition, an
+ecient deep-learning-based geospatial analysis method, and novel quantitative 3D
+evidence for informed urban greenery planning and maintenance, optimal building
+designs, and low-altitude drone route planning.
+
+KEYWORDS
+
+Urban green volumes; Visibility assessment; Deep learning; City information
+model; Greenery planning and maintenance
+
+Word Count: 6210
+* Corresponding author. Email: maosuli@hkust-gz.edu.cn
+
+This is the peer-reviewed author's version of the paper:
+Meng, S., Li, M., Xie, J., & Xue, F. (2026). Multi-perspective assessment of greenery visibility from streets, windows,
+and drones using deep learning and CIM. International Journal of Geographical Information Science, (in press).
+DOI: https://doi.org/10.1080/13658816.2026.2667807
+
+1
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+
+1. Introduction
+Urban greenery encompasses vegetation in green spaces within urban agglomerations,
+such as woodlands, parks, gardens, streets, and squares (Konijnendijk et al. 2006).
+Urban greenery provides a range of amenity values, e.g., leisure opportunities and aesthetic enjoyment for residents (Kong et al. 2007). Viewing urban greenery improves
+human health, well-being, life contentment, and productivity (Ulrich 1984, Jiang et al.
+2021), whether from walking on the street or from homes (Wang et al. 2022, Elsadek
+et al. 2020, Li et al. 2026). The value of dierent greenery types is associated with
+economic factors, such as housing prices (Panduro and Veie 2013). Spatial planning
+of green spaces integrated with greenery impact assessments (e.g., noise, air pollution, visual amenity value) on residents can enhance their life satisfaction (Neema and
+Ohgai 2010). Therefore, measuring greenery visibility supports evidence-based decisionmaking in maintaining urban green spaces, improving city image, and revitalizing city
+blocks.
+Urban greenery visibility is usually assessed at the street level, whereas new perspectives have recently emerged for its assessment. The expanding urban activities
+include drone-view-based activities and vertical living. Residents in high-rise, highdensity cities often experience less nature at street level but benet more from green
+views observable from high-rise windows (Elsadek et al. 2020, Ko et al. 2020). Dronelevel views oer a valuable means to capture and assess views from above-ground
+greenery visibility. They are increasingly used for collecting greenery information, exploring virtual environments, and experiencing urban sightseeing (Ecke et al. 2022,
+Perperidou and Kirgianis 2022, Zhang et al. 2024). However, a greenery visibility assessment method, including street, window, and drone perspectives, is limited in the
+current literature.
+Urban greenery visibility is often imbalanced in terms of spatial distribution (Cimburova et al. 2023), especially in high-rise, high-density cities. Given the importance of
+viewing greenery for comfort and general well-being, a quantitative assessment of this
+uneven spatial distribution from dierent perspectives is necessary. This assessment
+can further support applications such as greenery planning and maintenance, optimal
+building design, and low-altitude drone route planning.
+Traditional methods operate in 2D or 2.5D, neglecting the 3D nature of GVV. Manual assessment of GVV remains labor-intensive and cost-prohibitive. 2D and 2.5D data,
+such as street view imagery (SVI) and Digital Surface Models (DSM), were applied
+to estimate the perception of greenery from a specic observation point, i.e., green
+view index, or to assess the GVV (Yang et al. 2020, Cimburova et al. 2023). However, current methods focus on a single perspective, usually at street level, neglecting
+the multi-perspective GVV assessment. Besides, the 2D-based method failed to locate
+specic greenery, and viewshed-based methods using 2.5D data may be insucient to
+accurately represent the real physical environment and often require substantial computational costs due to the need for stacked computations for each GVV-observation
+pair.
+The emerging deep learning and CIM provide new opportunities for assessing 3D
+GVV. CIM, which originates from digitalized systems of urban elements and environment (Xue et al. 2021), integrates with photorealistic urban mesh models, virtual
+cameras from any perspective, and 3D rendering techniques for consistent color representation (Li et al. 2022, Liang et al. 2017). Deep learning has been widely employed
+to address many geographical issues, from semantic segmentation of SVI to 3D photorealistic mesh models, such as Stratied Transformer (Biljecki and Ito 2021, Lai et al.
+2
+
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+
+2022, Li et al. 2025). The integration of CIM and deep learning enables the ecient
+computation of GVV from any perspective.
+This paper, therefore, introduces a novel GVV assessment method using deep learning and CIM (Figure 1). The main focus includes assessing visibility from building
+windows for urban living, low-altitude drones, and traditional pedestrian perspectives.
+Firstly, the greenery volume visibility index (GV V I ) is dened. Secondly, a 3D semantic segmentation model detects dierent greenery volumes from photorealistic mesh
+models, and the Greenery Volume Layer (GVL) with a grid-level color index database
+is displayed in 3D CIM. Afterward, the GV V I of each volume is calculated using street,
+window, and drone-view images. Finally, the `hot spots' map and disparities of GV V I
+and three sub-indices are analyzed.
+Stage 1
+
+Stage 2
+
+For individual greenery volume Stage 3
+GVVID
+
+𝜸2
+
+Deep learning
+
+DVI
+
+Grid color index
+
+WVI
+
+… GVVIW
+
+𝜸1
+
+SVI
+
+CIM platform
+
+GVL generation
+
+View capture
+
+𝜸1 𝜸2 𝜸n
+
+GVVIS
+
+GVVI
+
+Figure 1.: Conceptual illustration of GVV assessment
+
+67
+
+The contribution of this paper is threefold. First, a metric GV V I is dened to
+measure GVV types, including street, park, and garden, from dierent perspectives
+(street, window, and drone levels). Second, an automatic three-step assessment method
+that is eective and ecient, utilizing deep learning and CIM. Third, GV V I hot spots
+and disparities highlight new quantitative 3D evidence for informing urban greenery
+planning and maintenance, optimizing building designs, and planning sightseeing 3D
+routes for low-altitude drones.
+
+68
+
+2. Literature Review
+
+69
+
+2.1. Traditional methods to measure greenery visibility
+
+61
+62
+63
+64
+65
+66
+
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+
+Greenery valuation methods established the monetary value of trees, including individual tree conditions and amenity functions such as visual contribution (Helliwell
+2008, Roberto Barbosa et al. 2010, Doick et al. 2018, Cimburova et al. 2023). The
+amenity value of greenery refers to the characteristics that contribute to the aesthetic
+appreciation of people, i.e., the visibility of greenery. Instead of the green view index,
+which assesses the residents' greenery exposure degree at street/building level (Li et al.
+2023b), greenery visibility highlights the visual contribution of greenery to surrounding
+residents (Cimburova et al. 2023). Thus, assessing the visibility of greenery is key to
+informed decision-making related to greenery maintenance, design, and renovation.
+Greenery assessment method is transitioning from traditional overhead views to
+relying more on human-centric visibility data sources. The Normalized Dierence Vegetation Index (NDVI) from satellite imagery eectively quanties large-scale greenery
+(Huang et al. 2021), but its urban application is limited by the lack of vertical greenery data and low resolution (Yu et al. 2022). Researchers, therefore, have turned to
+eye-level data, such as SVI, to assess the visual quality and amenity value of greenery
+3
+
+109
+
+(Li et al. 2015, Yu et al. 2016, Cimburova et al. 2023).
+Methods for assessing eye-level green view include eld surveys, image-based analysis, and geospatial modeling (Yu et al. 2016, Wang et al. 2023). Since eld surveys
+are labor-intensive, requiring excessive time to collect data (Doick et al. 2018), imagebased methods, such as SVI and CIM-based window view image (WVI), oer eye-level
+visual evidence (Li et al. 2015, Liu et al. 2023, Xie et al. 2025). However, the method
+is proven to have both building and greenery coverage bias (Fan et al. 2025, Huang
+et al. 2025). For example, SVI only provided information at photographic observation
+points and failed to consider the greenery within large green spaces (e.g., gardens and
+parks) (Huang et al. 2025). The issues of availability and data quality (e.g., camera
+pose variation, weather conditions, blurriness) have been reported in previous literature (Rui and Cheng 2023, Tang et al. 2023). Furthermore, the current CIM-based
+methods, which extract green view through 2D deep learning, are unable to locate
+greenery in images (Li et al. 2024). Thus, the image-based methods suer from quality, reliability, and coverage limitations, apart from locating greenery, which together
+make them unsuitable for GVV assessment.
+Several studies have employed the viewshed-based method to simulate greenery visibility using 3D data sources, such as DSM and point clouds. For instance, greenery
+assessments of street-level exposure and tree-level visibility were developed (Cimburova
+and Blumentrath 2022, Cimburova et al. 2023, Tang et al. 2023, Pyka et al. 2022).
+While viewshed simulations oer a human perspective in 3D, the accuracy of occlusion surfaces derived from 2.5D data sources is limited in reecting the real physical
+environment and require large amount of computation cost (Cimburova and Blumentrath 2022). Besides, the acquisition of point clouds for a large-scale GVV assessment
+is costly (Tang et al. 2023).
+
+110
+
+2.2. Recent advances in CIM and deep learning
+
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+
+A 3D CIM is a digital representation of the physical and functional attributes of a city,
+serving as a collaborative knowledge repository (Song et al. 2017, Xue et al. 2021). CIMbased research has demonstrated its ability to simulate human perspectives from the
+building level by leveraging its photorealistic texture and high-performance capability.
+Therefore, photorealistic mesh models demonstrate certain advantages in representing
+the 3D greenery volumes compared with traditional data sources.
+The high-performance capability of CIM makes it feasible for quick positioning and
+capturing virtual views from any location. Specically, WVI was generated to assess
+dierent urban view types using deep learning, quantify eye-level green view from
+upper-oor perspectives, and measure window view distance (Li et al. 2022, 2023b,
+2025). Moreover, the level of detail 2 CityGML-based model was employed to generate
+WVI and identify visible greenery (Bolte et al. 2024). Therefore, real-time greenery
+observation from higher elevation is promising, thanks to increasingly accurate and
+realistic urban environment datasets worldwide (Yu and Gong 2012, HKPlanD 2019,
+HKLandsD 2022).
+The advancing deep learning facilitates novel approaches for extracting data on urban greenery. Deep learning enables computational models with multiple processing
+layers to learn multiple-level abstracted representations of data (LeCun et al. 2015).
+Previous research achieved semantic segmentation in 2D (e.g., SVI) and 3D (e.g.,
+point cloud) urban-level data (Biljecki and Ito 2021, Li et al. 2025). Multi-view-based,
+volumetric-based, and point-based methods have been developed to segment 3D point
+4
+
+139
+
+clouds (Guo et al. 2021), such as Stratied Transformer (Li et al. 2023a). Thus, the
+Stratied Transformer can attach the photorealistic models with semantic information.
+In summary, GVV is warranted in its own right, but also critical for evaluating its
+impact on landscape and urban studies. Current literature lacks a quantitative assessment method of GVV from non-traditional perspectives, such as drones and windows.
+3D CIM represents a promising data source providing realistic views from drone, window, and street level observations. Deep learning, meanwhile, can be incorporated for
+the semantic segmentation of a CIM and in the analysis of greenery volumes.
+
+140
+
+3. GVV assessment method
+
+132
+133
+134
+135
+136
+137
+138
+
+141
+142
+143
+144
+145
+146
+
+Figure 2 shows an overview of the three-stage GVV assessment method in this paper.
+In the rst stage, the method applies 3D deep learning to the photorealistic mesh
+model to create a GVL of multi-class greenery. Then, street, window, and drone views
+are captured from the GVL-enriched CIM using road networks, windows on building
+footprints, and drone positions above DTM. Finally, the output GV V I values are
+calculated and analyzed for urban greenery maintenance and other purposes.
+Stratified
+Transformer
+
+CIM platform
+Cesium
+
+§ 3.3 Stage 1
+
+Getis-Ord Gi* Spearman
+
+Semantic segmentation
+
+Grid color index
+Photorealistic
+mesh model
+Road network
+Bldg footprint
+DTM
+
+CIM with GVL
+
+CIM with GVL
+
+§ 3.4 Stage 2
+SVIs generation
+
+WVIs generation
+
+DVIs generation
+
+𝐺𝑉𝑉𝐼𝑊
+
+𝐺𝑉𝑉𝐼𝐷
+
+SVI
+WVI
+DVI
+
+§ 3.5 Stage 3
+𝐺𝑉𝑉𝐼𝑆
+
+Linear weighted 𝐺𝑉𝑉𝐼
+Land use map
+
+Hot spots analysis
+
+Input
+
+Correlation analysis
+Proposed method
+
+Differentials analysis
+
+GVVI DTM and
+analysis
+Output
+
+Figure 2.: Flow chart of the proposed green volume visibility assessment method
+
+147
+148
+149
+150
+151
+
+3.1. GV V I denition
+γ
+γ
+For a given greenery volume γ ∈ Γ, the GV V I γ = [GV V ISγ , GV V IW
+, GV V ID
+] is a
+vector of three sub-indices. These sub-indices represent the aggregated visibilities of
+γ -th volume from three distinct observing perspectives: streets (S), windows (W), and
+drone positions (D), respectively. For each sub-index i ∈ {S, W, D}, Equation 1 shows
+
+5
+
+152
+
+the calculation for the total number of visible pixels (Niγ ) in all views (Vi ) in group i:
+
+Niγ = Σv∈Vi ||pixels(v, γ)||,
+153
+154
+155
+156
+
+where pixels represents the function that returns all the pixel set of γ -th volume in
+the view v , and || · || returns the cardinality of the set. Which means that, the pixels
+of the γ -th volume will be counted v times in each sub-index i, to evaluate GVV from
+all observation points. The GV V Iiγ is the normalized number of pixels in Equation 2.
+
+GV V Iiγ =
+157
+158
+159
+160
+161
+162
+
+(1)
+
+Niγ − Nmin
+Niγ − minj∈Γ (Nij )
+=
+.
+Nmax − Nmin
+maxj∈Γ (Nij ) − minj∈Γ (Nij )
+
+(2)
+
+Each i-th sub-index GV V Iiγ
+∈
+[0, 1], and the vector GV V I γ
+=
+γ
+γ
+γ
+3
+[GV V IS , GV V IW , GV V ID ] ∈ [0, 1] is well bounded value in the unit cube. Therefore,
+GV V I values of all green volumes Γ are a list of vectors [GV V I 1 , GV V I 2 , . . . , GV V I J ],
+where J = ||Γ|| is the cardinality of the greenery volumes.
+A weighted index GV V I aggregates the three sub-indices using observingperspective-specic weights, as depicted in Equation 3.
+γ
+
+GV V I =
+
+γ
+γ
++ wD · GV V ID
+wS · GV V ISγ + wW · GV V IW
+,
+wS + wW + wD
+
+(3)
+
+164
+
+where wS , wW , and wD are non-negative weights denoting the relative weights of each
+group of observing perspectives.
+
+165
+
+3.2. Stage 1: Greenery volume layer (GVL)
+
+163
+
+166
+167
+168
+
+In this stage, all grid-level greenery volumes are detected and highlighted within the
+input 3D CIM. This stage includes semantic segmentation, colorized indexing, and
+integration with the 3D CIM platform.
+
+Stratified
+Transformer
+
+Grid color index
+database
+
+Road
+Terrain
+Water
+Greenery
+Building
+Car
+Facility
+Photorealistic mesh Sampled point cloud
+
+Input:
+
+Segmented point cloud
+
+Semantic segmentation
+
+CIM platform
+Cesium
+
+Tiles
+Agg.
+Colored greenery mesh
+
+GVL
+
+Indexing GVV
+
+Output:
+
+Figure 3.: Creation of greenery volume layer (GVL) using 3D deep learning
+169
+170
+171
+172
+173
+
+Firstly, an urban point cloud is sampled on the photorealistic mesh model at a
+density of 10 points/m2 . Then, the Stratied Transformer is utilized for the 3D semantic
+segmentation. The Stratied Transformer is a deep learning model capable of capturing
+long-range contexts, showcasing robust generalization capabilities, and achieving high
+performance (Lai et al. 2022). This model has proven to be eective in segmenting
+6
+
+193
+
+large-scale urban point clouds (Li et al. 2023a). The HRHD-HK of high-rise, highdensity cities serves as the training dataset, encompassing seven classes (i.e., road,
+terrain, water, greenery, building, car, and facility), where the greenery class refers to
+vegetation such as trees, bushes, and grass. etc, as listed by Li et al. (2023a). The
+training is performed for 500 epochs with a batch size of 1 to balance computational
+cost and accuracy, while all other parameters follow the default settings of the Stratied
+Transformer. Semantic segmentation is validated using mean intersection over union
+(mIoU). One annotator manually assigned ground-truth labels for greenery to a random
+sample comprising 10% of the point cloud tiles in the study area. The selected tiles
+cover greenery within hillsides, parks, gardens, and streets that typically occur in highdensity cities.
+We assign a grid index to the greenery area based on the segmented point cloud.
+The size of the grid is set to 10m, corresponding to the average tree diameter in Hong
+Kong (Kong et al. 2017). The photorealistic mesh model is segmented based on the
+greenery point cloud and the grid index; simultaneously, a unique and opaque color,
+serving as an indexing ID, is randomly attached to each greenery grid mesh. The
+non-greenery mesh is colored white. The segmented mesh is converted into 3D tiles
+via CesiumLab and then displayed on the CIM Cesium platform. The colored mesh
+models are dierentiated by their tiles. The nal output of this stage is the city-scale
+3D CIM with GVL, as shown in Figure 3.
+
+194
+
+3.3. Stage 2: Automatic views capture and indices generation
+
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+
+195
+196
+
+All three groups of views, i.e., SVIs, WVIs, and DVIs, are captured based on the
+city-scale GVL enriched CIM and the sample points generated in this stage (Figure 4).
+GVL
+120°
+
+60°
+
+Grid color index database
+
+180°
+
+240°
+0°
+1.65m 300°
+
+Road network
+
+SVI
+
+𝐺𝑉𝑉𝐼𝑆
+
+(a)
+
+𝐺𝑉𝑉𝐼𝑊
+
+(b)
+
+𝐺𝑉𝑉𝐼𝐷
+
+(c)
+
+Eqs 1 - 2
+Bldg footprint
+
+WVI
+100m
+
+120°
+60°
+
+180°
+
+0°
+
+240°
+300°
+50m
+
+DTM
+
+Detecting visible
+greenery volume
+pixels (1,2....γ)
+
+300m
+limit.
+
+50m
+buffer
+
+Sample observer positions
+
+DVI
+Views capture Color decoding Calculation
+
+GVVI
+
+Figure 4.: The process of capturing views. (a) SVI; (b) WVI; and (c) DVI
+197
+198
+199
+200
+
+The sample points of SVIs are generated based on the road network to simulate
+both pedestrian and car eye-level perception simultaneously. We sample points at an
+interval of 30m, which is the average street length in the research area (Gong et al.
+2018). For each point, the z value is determined by adding 1.65m to the DTM (average
+7
+
+232
+
+height of adults in Hong Kong) (NCD Risk Factor Collaboration (NCD-RisC) 2016).
+The heading of the virtual camera is classied into six directions (0◦ , 60◦ , 120◦ , 180◦ ,
+240◦ , 300◦ ), with a 60-degree eld of view (FOV) (Meng and Zheng 2023).
+We generate the sample points of WVIs based on the building footprints. The midpoint of each simplied footprint edge is used as the sampling point. Three height
+levels-low, medium, and high-are sampled to simulate the window view from dierent
+building oors. Subsequently, a virtual camera with a 60-degree FOV is positioned at
+specied locations on the CIMs to capture the exterior window views, according to Li
+et al. (2022, 2023b).
+The sample points of DVIs are generated based on the DTM and the 3D building
+footprints. Firstly, the sample points' altitudes are set to mark a 50m buer away from
+buildings and terrain, because of the noise and privacy concerns of the residents. The
+upper limit of the altitude of DVI is set according to the local airspace classication.
+DVI was captured at 50 m vertical intervals, recording visibility changes caused
+by altitude while balancing computational cost and precision (Seifert et al. 2019). In
+addition, sampling is performed at intervals of 100m in the horizontal direction because
+of the high-ying speed of the drone, contrary to vehicles on the ground (Xiang et al.
+2024). The virtual camera is oriented in six directions (0◦ , 60◦ , 120◦ , 180◦ , 240◦ , and
+300◦ ) for capturing images. A 60-degree FOV is used to represent the central visual
+eld of a human (Meng and Zheng 2023, Tara et al. 2021).
+Mesh penetration artifacts occur in some images, particularly at sampling points
+close to the mesh surface and in regions where mesh fusion occurs (e.g., greenery and
+buildings) at the bottom of the photorealistic model. This leads to inaccuracies in the
+display of greenery volumes and, consequently, miscalculations of GVV. Hence, the
+images with model penetration are ltered using a Support Vector Machine based on
+the image deep feature (totaling 2,048 features) extracted by Inception V3 in Orange
+(version 3.36) (Szegedy et al. 2016). We used 400 views (200 true, 200 false), with 320
+for training and 80 for testing, as the dataset.
+Finally, we calculate the GV V IS , GV V IW , GV V ID , and GV V I using an automated
+Python script, based on captured and ltered views for analysis. Each color captured in
+the views represents the visible pixels of a unique GVV from the observing perspectives.
+The results are calculated using Equations 1, 2, and 3 with equal weight combination.
+
+233
+
+3.4. Stage 3: GV V I analysis
+
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+
+The Getis-Ord Gi∗ analysis within ArcGIS Pro is utilized to reveal the spatial cluster
+locations of high and low values, namely the greenery hot spot map. Each of the
+three sub-indices is visualized and analyzed using the greenery hot spot maps. In the
+statistical analysis, volumes within a 100m buer of the research area boundary are
+excluded due to insucient observations. A sensitivity analysis of weight adjustment
+is conducted to evaluate the impact of weight combinations on the distribution of
+greenery hot spots. Spearman's coecient was used to analyze the correlations and
+the independence of indices between the three sub-indices of GV V I and NDVI data
+from 2018.
+The dierentials between street and drones, street and windows, are calculated, as
+shown in Equation 4, where i ∈ {W, D}. Following this, hot spot maps of dierentials
+are computed. The identied hot spots are extracted to demonstrate the total number
+of identied dierential hot spots.
+
+8
+
+GV V Ii−S = GV V Ii − GV V IS = [GV V Ii1 − GV V IS1 , GV V Ii2 − GV V IS2 , . . . , GV V IiJ − GV V ISJ ]
+
+(4)
+
+252
+
+Greenery distribution across dierent land-use types has been shown to impact human well-being (Bahr 2024). Therefore, assessing the association between GV V I dierentials and land use type can further support such applications. The two dierentials
+GV V ID−S and GV V IW−S indicate the extent to which the proposed GV V I values
+could dierentiate themselves from the traditional studies based on land use type at
+street and ground levels.
+
+253
+
+4. Experimental setting
+
+254
+
+4.1. Study area
+
+247
+248
+249
+250
+251
+
+263
+
+The study area, located in Kowloon, Hong Kong, spans 4.92 km2 with an elevation
+range of approximately 100m (Figure 5). The study area is a well-developed urban area
+with small variations in buildings over the past 10 years, totaling 150 new buildings
+HKBD (2023). It comprises 6,294 buildings, with an average height of 25.6m (the lowest
+is 1.5m, and the highest is 229m). Natural landscapes (such as parks and gardens) are
+distributed in dierent locations in the study area, such as hillsides, residential areas,
+and along streets. Because of the line-of-sight blockage caused by terrain elevation
+changes and buildings, the amenity value of greenery to individuals varies considerably,
+making it an ideal location for this research.
+
+264
+
+4.2. Data
+
+255
+256
+257
+258
+259
+260
+261
+262
+
+272
+
+The photorealistic mesh model and land use map (Figures 5c and f) were provided by
+the Planning Department of Hong Kong (HKPlanD 2019, 2023). The road network used
+for SVI generation was produced by the Transport Department of Hong Kong (HKTD
+2019). Building footprints in the study area were extracted from the iB1000 digital
+map of Hong Kong (HKLandsD 2025), which has been continuously updated since
+2014. A 300m upper limit of DVI sampling point is set according to the uncontrolled
+airspace classication of China (CAAC 2023), given that Hong Kong has no ocial
+documentation specifying vertical airspace divisions.
+
+273
+
+4.3. Validation metrics
+
+265
+266
+267
+268
+269
+270
+271
+
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+
+The validation of the proposed method is conducted based on SVI and DVI. Realworld SVI captured over a span of three years (2014, 2017, 2023) is used to validate
+the eye-level green view from the street perspective. Real-world SVI is segmented using
+Mask2Former model with Swin Transformer backbone (Cheng et al. 2022) trained on
+the Cityscapes dataset. The analysis involves calculating the average greenery coverage
+at sample points along each street. Real-world DVI (totaling 48 DVIs covered eight
+sampling points and 60◦ × 6 headings) is collected using a drone (DJI Mini3 Pro) in a
+public garden within the study area. One annotator manually assigned ground-truth
+labels for greenery in the study area. Spearman's coecient between the normalized
+greenery ratio in DVI pairs is used to validate the drone-level accuracy.
+9
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+(f)
+
+Figure 5.: The study area is Kowloon, Hong Kong. (a) The location of the study area;
+(b) the 4.92 km2 study area; (c) 2D road network (111.6km in total); (d) 6,294 building
+footprints; (e) DTM indicating a mixture of hilly and at areas; (f) land uses map
+
+292
+
+A method-level validation with baseline methods was conducted to demonstrate
+eectiveness and eciency. Spearman's coecient was calculated to assess the eectiveness of the GVV results, comparing our method with that of Cimburova et al.
+(2023); and the street-level green view, comparing with Cimburova and Blumentrath
+(2022). The validation ground truth included 18 volumes manually annotated by one
+annotator, and the street-level green view, which was calculated based on real-world
+SVI (2017). The 18 greenery volumes were selected based on combinations of three
+distance levels to the road (close, middle, far) and three levels of surrounding building
+density (high, middle, low), with two samples for each combination.
+
+293
+
+4.4. Computational environment
+
+284
+285
+286
+287
+288
+289
+290
+291
+
+294
+295
+296
+297
+298
+299
+300
+301
+
+The deep learning training environment was set up as follows: a high-performance computing (HPC) server with Dual Intel Xeon 6226R (16-core), 384GB RAM, and NVIDIA
+V100 (32GB) SZM2 GPU. The training process was implemented using Pytorch (version 1.8) and Python (version 3.7). The view capture phase for GVV was completed
+by Cesium (version 1.99), the script for GV V I calculation was completed by Numpy
+(version 1.24) and Pandas (version 2.0.3), the GV V I analysis was completed in ArcGIS Pro (version 3.3) based on a desktop computer with 13th Gen Intel(R) Core(TM)
+i7-13700K 3.40 GHz, 128 GB RAM, and NVIDIA RTX A4000 GPU.
+
+10
+
+302
+
+303
+304
+305
+306
+307
+
+5. Results
+A total of 109,081 views were captured and ltered from the GVL-enriched 3D CIM
+(17,718 from streets, 73,939 from windows, and 17,424 from drones). The SVM used
+to lter penetrated views achieved 95% precision, recall, and F1-scores, and removed
+14% of views at the window and street levels. Figure 6 illustrates examples of captured
+SVIs, WVIs, and DVIs, respectively.
+
+VIs with:
+GVL
+
+VIs with:
+Photorealistic mesh
+(a)
+
+(b)
+
+(c)
+
+Figure 6.: Comparison of SVI, WVI, and DVI captured based on GVL CIM and the
+photorealistic model. (a) SVI; (b) WVI; (c) DVI
+308
+309
+310
+311
+312
+313
+
+The segmentation accuracy of greenery achieved IoU = 86.27%, while other classes
+achieved IoU = 95.94% (mIoU = 91.11%). The greenery types, such as street-side shrub
+and roof-top greenery, were often misclassied as classes such as facility, building, and
+road, after manual inspection. These may be caused by low precision at the bottom
+of the photorealistic models. A total of 23,490 greenery volumes were nally obtained.
+The greenery volumes within the buer zone were 20,655 (up to 2.06km2 ).
+Table 1.: Computational time of the proposed automated assessment method
+Stage
+
+Processing
+
+Software
+
+Time (h)
+
+1
+
+Semantic segmentation
+Grid color index
+GVL integrating
+View capture
+Visibility statistics
+GV V I computation and analysis
+Total
+
+Stratied Transformer
+Python
+CesiumLab
+Cesium
+Python, Orange 3
+ArcGIS Pro
+
+83.18
+11.03
+0.80
+147.03
+14.41
+0.00
+256.45
+
+2
+3
+
+317
+
+Table 1 lists the computational cost of each process in the proposed method. The
+rst stage, generating GVL, took 12.06 hours to process 4.92 km2 of CIM mesh with
+90 million triangles and 267 million sampled points. The most time-consuming stage
+was the view capturing process, taking up to 57% of the total processing time.
+
+318
+
+5.1. GV V I and three sub-indices
+
+314
+315
+316
+
+319
+320
+321
+322
+
+Figure 7 demonstrates the spatial distribution and hot spot map of GV V I and subindices. The highest GV V I value of 0.44 implied that a high amenity value level from all
+three perspectives (i.e., street, window, and drone) was uncommon to appear simultaneously. Greenery hot spots of GV V I value (7,056 in total) mainly comprised greenery
+11
+
+342
+
+located close to the major roads, areas with few surrounding high-rise buildings, and
+greenery with greater canopy height and elevation. The near-edge interiors of public
+green spaces exhibited moderate levels of GV V I . In contrast, cold spots of GV V I were
+concentrated in the grass, shrublands, and high-rise, high-density residential areas.
+Figure 7a, c, and d demonstrate the spatial distribution of GVVI sub-indices. The
+street-level greenery received higher visual attention along the major roads. Visibility
+was also obtained for street greenery scattered in residential areas though at lower
+values. This dierence can primarily be attributed to the challenge of distinguishing
+central plants when they are surrounded by edge greenery at lower eye levels, as illustrated in Figure 6a. The most visible greenery at the window level was typically
+located at the edges of natural green spaces or urban park areas, whereas the interior
+greenery in those areas was less visible. Along-street greenery exhibited lower visibility
+because of visual obstructions by surrounding buildings. At the drone level, the visible
+greenery was concentrated in the interior of large green spaces at high altitudes and in
+areas with fewer surrounding buildings that caused visual obstructions.
+Figure 7f, g, and h illustrate three hot spot maps of sub-indices. The hot spots
+(condence > 90%) of GV V IS and GV V IW were 5,427 (mean = 0.06) and 5,237
+(mean = 0.07), respectively. GV V ID obtained the largest number of hot spots, with
+ND = 7,922, mean = 0.17. This indicates that GV V ID had a higher continuity spatial
+clustering result because the aerial perspective was less visually obstructed.
+
+343
+
+5.2. Validation
+
+344
+
+5.2.1. Validation of eye-level green view from street perspective
+
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+
+345
+346
+347
+348
+349
+350
+351
+352
+353
+
+Table 2 presents a street-level comparison between CIM-based and real-world SVI captured in dierent years. All real-world SVIs exhibited strong and positive associations
+with CIM-based SVI (p-value < 0.001), indicating that the proposed method eectively simulated eye-level green view. The 2017 real-world SVI exhibited the highest
+coecient (0.93) and R2 (0.84), and the lowest root mean square error (0.06). The
+dierences in coecients between 2017 and the other two data sources were less than
+0.03, indicating that the greenery visibility simulated using CIM was relatively insensitive to temporal variation. Nonetheless, it is recommended to acquire up-to-date data
+to reduce the greenery change because of urban renovation and expansion.
+Table 2.: Comparison of eye-level green view between CIM-based SVI and real-world
+SVI captured in dierent years.
+Data source
+
+2014
+2017
+2023
+
+354
+355
+356
+357
+358
+359
+360
+
+Spearm. ρ
+
+0.90
+0.93
+0.92
+
+p-value
+
+<0.001
+<0.001
+<0.001
+
+MAE
+
+0.04
+0.04
+0.04
+
+RMSE
+
+0.07
+0.06
+0.07
+
+R2
+
+0.81
+0.84
+0.82
+
+The dierence between real-world SVI and CIM-based SVI was caused by the following reasons: (1) the roughness of the photorealistic mesh at the ground level; (2)
+the lack of thin objects in the photorealistic mesh, which are labeled in the Cityscapes
+dataset (e.g., car, person, pole, and trac sign), and (3) the assumption of GVL that
+all greenery is impenetrable, as shown in Figure 8, which is dierent from the realworld SVI. The impenetrable greenery will result in a higher average GVVI dierential
+of 0.002 according to density parameters and height classication criteria of dierent
+12
+
+Distribution
+
+Hot spot map
+
+j
+
+(i)
+
+0 0.44
+
+i
+
+𝐺𝑉𝑉𝐼
+
+(a)
+
+(j)
+
+(e)
+
+l
+
+0
+
+k
+
+(k)
+
+1
+𝐺𝑉𝑉𝐼 S
+
+(b)
+
+(f)
+
+(l)
+
+m
+n
+
+0
+
+(m)
+
+1
+𝐺𝑉𝑉𝐼 W
+
+(c)
+
+(g)
+
+(n)
+
+(o)
+
+o
+p
+0
+
+1
+𝐺𝑉𝑉𝐼 D
+
+(d)
+N
+
+(h)
+Hot Spots (99% Confid.)
+Hot Spots (95% Confid.)
+Hot Spots (90% Confid.)
+
+(p)
+Cold Spots (99% Confid.)
+Cold Spots (95% Confid.)
+Cold Spots (90% Confid.)
+
+Not Significant
+100m Buffer
+
+Figure 7.: Scaled distribution and hot spot map results with visible and non-visible
+areas. (a),(e) GV V I ; (b),(f) GV V IS ; (c),(g) GV V IW ; (d),(h) GV V ID ; (i), (k), (m),
+(o) non-visible areas; (j), (l), (n), (p) visible areas.
+13
+
+363
+
+greenery types provided by Li et al. (2025). Despite the above limitations, CIM can effectively simulate the perception of greenery as experienced by humans and can further
+be utilized for GVV computation.
+
+364
+
+5.2.2. Validation of eye-level green view above ground
+
+361
+362
+
+365
+366
+367
+368
+369
+370
+371
+
+Figure 9 shows the comparison between the eye-level green view of CIM and real-world
+DVI. The overall Spearman's coecient and R2 of totaling 48 DVI pairs reached 0.95
+(p-value < 0.001) and 0.92, respectively, demonstrating a satisfactory simulation result
+of ours. Outlier pairs are mainly caused by vegetation renewal (e.g., changes in height
+and pattern). Furthermore, due to dierences in camera FOV, some distant vegetation
+with fewer pixels may be obscured by buildings, leading to subtle variations between
+pairs.
+
+VIs with:
+Photorealistic Mesh
+
+VIs with:
+GVL
+
+1
+𝛾5 𝛾
+𝛾2
+𝛾3
+4 𝛾 10 12
+𝛾7 𝛾6 𝛾 11𝛾 𝛾13
+𝛾9 𝛾
+𝛾8
+𝛾14
+
+𝛾19
+
+𝛾16
+𝛾18
+
+𝛾15
+
+𝛾20
+
+𝛾22
+𝛾21
+
+𝛾23
+
+𝛾24
+
+𝛾25
+
+𝛾42
+𝛾53𝛾58
+𝛾39
+𝛾26
+𝛾52 𝛾59
+𝛾37
+𝛾44 46
+60
+𝛾55𝛾
+𝛾28 𝛾29𝛾34 36 38 𝛾41 𝛾43 𝛾45 𝛾𝛾48 𝛾50
+51
+𝛾
+𝛾30 33 𝛾 𝛾
+𝛾47 49 𝛾54
+𝛾 35 𝛾40
+𝛾
+𝛾56
+31
+𝛾
+𝛾
+𝛾27 𝛾32
+𝛾57
+
+𝛾17
+
+VIs with:
+Segmented greenery
+
+VIs with:
+Real-world
+Invisible objects
+
+Figure 8.: Illustration of Photorealistic-mesh-based, GVL-based, segmented-greenerybased, and real-world SVIs.
+
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+
+5.2.3. Method-level validation
+The proposed method exhibited high eciency, accuracy, and multi-perspective assessment (Table 3). Although the method of Cimburova and Blumentrath (2022) achieved
+higher eciency, it failed to compute GVV, while that of Cimburova et al. (2023) required signicant computational cost for viewshed analysis. Both methods lack multiperspective assessment. Our proposed method required 24.6h to calculate GV V IS ,
+leading to an approximately 40% saving in time. Our results showed a strong correlation with the real-world SVI for both GVV and eye-level green view, with Spearman's
+ρ = 0.89 and 0.93 (p-values < 0.01), and approximately 0.2 higher than previous methods, indicating enhanced assessment accuracy.
+
+14
+
+(a)
+
+(b)
+
+Real-world
+
+Photorealistic mesh
+
+Ground truth greenery
+
+GVL
+
+Validation area
+
+Figure 9.: Scatter plot and comparison between eye-level green view of CIM and realworld DVI. (a) Scatter plot; (b) illustrative examples.
+Table 3.: Validation of the proposed method with viewshed-based GVV assessment
+Method
+Cimburova and Blumentrath (2022)
+Cimburova et al. (2023)
+Ours
+
+Type
+Viewshed
+Viewshed
+CIM
+
+Time cost (h)
+1.3
+41.6
+24.6
+
+Spearm. ρ (GVV)
+\
+0.70
+0.89
+
+Spearm. ρ (eye-level)
+0.78
+\
+0.93
+
+(a) wS:wW :wD=1:2:3
+
+(b) wS:wW :wD=1:3:2
+
+(c) wS:wW :wD=2:1:3
+
+(d) wS:wW :wD=2:3:1
+Hot Spots (99% Confid.)
+Cold Spots (99% Confid.)
+Not Sigificant
+
+(e) wS:wW :wD=3:1:2
+Hot Spots (95% Confid.)
+Cold Spots (95% Confid.)
+100m Buffer
+
+(f) wS:wW :wD=3:2:1
+Hot Spots (90% Confid.)
+Cold Spots (90% Confid.)
+
+Figure 10.: Hot spot maps of greenery's GV V I with dierent weight combination
+15
+
+382
+
+5.3. GVVI analysis
+
+383
+
+5.3.1. Sensitivity of weight adjustment
+
+390
+
+The linear weighted GV V I , with dierent weight groups, identied 6,840 hot spots
+and 7,512 cold spots GVV on average, as shown in Figure 10a-f. Those groups that
+emphasize SVI and WVI exhibited lower GV V I on average; for example, about 0.04 in
+Figure 10d and f. This dierence indicates that GV V ID contributed more signicantly
+to GV V I . The clusters from dierent weights share a similar spatial distribution pattern, but vary in certain areas, e.g., greenery in open space with relatively high elevation
+or dense greenery along streets.
+
+391
+
+5.3.2. Correlations between the sub-indices
+
+384
+385
+386
+387
+388
+389
+
+392
+393
+394
+395
+396
+397
+398
+399
+
+The Spearman's correlation analysis is shown in Figure 11, with all p-values < 0.0001.
+The correlation between GV V IS and GV V IW (ρ = 0.34) was weak but signicant,
+indicating that a green volume more visible from streets was likely to be more visible
+from windows. The correlation between streets and drones was weaker (ρ = 0.19). This
+is because pedestrians mainly observe the greenery's bottom part, whereas a drone's
+perspective oers a clearer view of the tree canopy and less of the bottom part due
+to high elevation. The coecient between GV V IW and GV V ID was 0.40, indicating a
+moderate positive association between greenery visibility in WVI and DVI.
+
+ * 9 9 , 6                     
+ * 9 9 , :                    
+ * 9 9 , '                    
+
+ '
+
+   
+   
+   
+   
+   
+
+ 1 '
+ 9 ,
+
+ 9 ,
+
+ :
+
+ * 9
+
+ 9 ,
+
+ * 9
+
+ * 9
+
+ 9 ,
+
+ 6
+
+ 1 ' 9 ,                     
+
+   
+
+Figure 11.: Correlation metrics of the scaled GV V I sub-indices and NDVI, all p-values
+< 0.0001
+
+407
+
+The correlation between NDVI and the three sub-indices shows weak associations,
+especially at the street and window levels, as shown in Figure 11. The negligible correlation between NDVI and GV V IS (ρ = −0.09) and GV V IW (ρ = 0.08) indicates
+that greenery visibility of pedestrians and residents was signicantly dierent from traditional top-view data sources. Although the correlation between NDVI and GV V ID
+showed a moderate positive association (ρ = 0.51), greenery in areas such as open
+spaces, streets, and high-density residential areas displayed a notable dierential compared with NDVI (ranging from -0.88 to 0.39) according to manual validation.
+
+408
+
+5.3.3. Dierentials and the correlations to land use
+
+400
+401
+402
+403
+404
+405
+406
+
+409
+410
+411
+
+Figure 12a shows the number of clustered hot spots of GV V ID-S and GV V IW-S in
+dierent land use types. The government land areas had the highest number of hot
+spots of dierentials, mainly because of the larger area size and higher altitude (e.g.,
+16
+
+414
+415
+416
+417
+
+    
+
+ * 9 9 , '  6
+ * 9 9 , :  6
+
+    
+  D 
+
+ 
+ 
+ 
+
+  E 
+
+ 
+
+ E  
+
+ & R
+
+ 3 X
+
+ 3 U L
+
+   U H
+ V L 
+
+ * 9 9 ,  G L I I H U H Q W L D O V
+
+ 1 X P E H U  R I  + R W  V S R W V
+
+418
+
+ L 
+ P P
+ H
+ * R  U F L D O
+ Y H
+ U Q P
+ 2 S  H Q W 
+ H Q
+  V
+ 7 U D  S D F H
+ 
+ Q V S
+ R U W
+ D
+ 5 D  W L R Q
+ L O Z
+ D \
+ V
+ 8 W
+ L O L W
+ L H V
+ 9 D
+ F D Q
+ W  O D
+ Q G
+ 2 W  
+ K H
+ U V
+ : R
+ R G
+ O D Q
+ 6 K  G
+ U X E
+ O D Q
+ * U  G
+ D V V
+ O D
+ $ J  Q G
+ U L F
+ X O W
+ : D  X U H
+ U H K
+ R X
+ V H 
+
+413
+
+hilltops). GV V ID-S had 7,757 hot spots of 0.77km2 , equivalent to 37.6% of the total
+greenery area within the buer zone. Except for government areas, open spaces, private
+residential areas, utilities, and woodland contributed most signicantly to GV V ID-S
+(N≳800). Meanwhile, GV V IW-S had fewer hot spots (N = 6,539, 31.7% of the total
+greenery area), with government areas being the primary contributor, followed by private residential, open spaces, and transportation. Sensitivity analysis of DVI sampling
+parameters' impact on GV V ID-S hot spots is shown in Appendix C1.
+
+ U H V
+
+412
+
+ / D Q G  X V H  W \ S H
+
+Figure 12.: Hot spots number and dierentials distribution of GV V ID-S and GV V IW-S .
+(a) Number of hot spots; (b) dierential distribution.
+
+427
+
+Figure 12b demonstrates the GV V I dierentials distribution of GV V ID-S and
+GV V IW-S against land-use types. More than 81% and 76% of greenery volumes exhibited positive values for GV V ID-S and GV V IW-S , respectively. Not surprisingly, the
+transportation area was the primary land-use type with negative value dierentials.
+In contrast, other land-use types predominantly showed positive dierentials for both
+GV V ID-S and GV V IW-S , suggesting that greenery in these areas was more visible
+from residential buildings and drones. Furthermore, the dierentials of GV V IW-S were
+smaller than those for GV V ID-S , indicating that the contribution of GVV increased
+with elevation of the observing points.
+
+428
+
+6. Discussion
+
+429
+
+6.1. GVV assessment method and results
+
+419
+420
+421
+422
+423
+424
+425
+426
+
+430
+431
+432
+433
+434
+435
+436
+437
+438
+
+The proposed GV V I metric includes multi-perspective greenery visibility, street, window, and drone, compared with the previous GVV assessment, which was limited to
+street-level only. The proposed GVL based on deep learning and CIM can eciently
+capture views from any perspectives and assess GVV. GVL enables localizing greenery volume from remote observer points (e.g., windows, drone views). Besides, the
+proposed method can assess eye-level green view and GVVI simultaneously without
+complex coding using a reusable and customizable GVL. The proposed method reduces the time cost by 40% and increases the correlation by 0.19 compared to the
+viewshed-based method. Therefore, it enables ecient, eective, and multi-perspective
+17
+
+450
+
+GVV assessment.
+The analysis results conrmed the imbalanced spatial distribution of 3D GVV. A
+total of 37.6% dierentials from drone, and 31.6% from window, compared to traditional street-level studies, were identied. Correlation metrics highlight the necessity
+of assessing 3D greenery visibility, according to the correlation between GV V IS and
+GV V IW (0.34), as well as GV V IS and GV V ID (0.19). A multi-level strategy that balances ground-level experience with overhead landscape aesthetics is therefore required
+to ensure residents can access adequate and consistent visible greenery from dierent
+perspectives. The hot spots, distribution, and weight adjustment map can serve as a
+coarse-to-ne guide for greenery maintenance. The three sub-indices and NDVI can
+further be combined as a comprehensive, complementary, and down-to-top assessment
+strategy for assessing dierent levels of greenery visibility.
+
+451
+
+6.2. Potential applications
+
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+
+The GV V I and hot spot map identied the amenity value level of urban greenery
+and provided new insights into priority areas for maintenance. The proposed GV V I
+can serve as the foundational data for the government authorities to prioritize green
+areas with high GV V I value and to make informed decisions regarding urban green
+space management, including planting, removal, or maintenance activities. The multiperspectives GV V I provides a signicant reference framework across multiple elds,
+including urban planning, landscape architecture, forestry management, and dronebased environmental assessment.
+The application of GVL can be expanded. For instance, it can be used to determine
+how the height and canopy size of greenery can best serve surrounding areas by simulating greenery volumes in CIM. Reorganization of the three-dimensional pattern of
+the urban landscape may inuence the take-o, route trajectory, and landing of drones
+(Perperidou and Kirgianis 2022). GV V ID could help recommend optimal drone takeo and landing sites for cities, balancing aesthetic and cultural factors with other drone
+indicators, such as noise and wind speed (Wild 2024). The drone route planning can
+be optimized based on the GV V ID to balance the observed greenery resolution and
+cost (Ecke et al. 2022). The proposed method also inspires CIM-based simulations for
+multi-perspective visions for agents, i.e., physical assets (e.g., windows, lookouts, and
+surveillance), individuals (e.g., wheelchair users, children, and cyclists), and robotics
+(e.g., drones, unmanned cars, and vessels). This capacity thus enables applications in
+safety, urban accessibility, and potential conicts analysis in order to support a future
+human-machine society (Meng et al. 2025).
+The weights of GV V I can be determined through experts' experience, surveys, and
+local policies. Greenery managers can assign a personalized weighting to alter the emphasis of GV V I according to the focus of management, for example, by prioritizing
+greenery with higher GV V IW (Meng and Zheng 2023). Additionally, other indicators, such as surrounding air pollution, the noise impact of drones, greenery health
+condition, greenery maintenance cost, urban heat island, and global warming eect
+(Chauhan et al. 2025, Zheng et al. 2025), can be combined with GV V I to comprehensively evaluate the ecosystem value and maintenance priority of greenery in future
+research. Optimization-based multiple-criteria decision analysis can also be used for
+GV V I assessment to recognize the order of priority (Li et al. 2023b, Zhou and Xue
+2023).
+
+18
+
+485
+
+6.3. Limitations and future directions
+
+506
+
+This research has certain limitations. From the CIM perspective, the limitations include
+low precision at the bottom of the photorealistic models, the absence of realistic occlusion caused by the window frame, opaque GVL assumption against the permeability
+of greenery, and low eciency in view capture. From the view sampling perspective,
+the sampling parameter based on experience may lead to assessment bias, and the
+static views-capture approach failed to reect human-environment interactions. From
+the drone views perspective, limitations include over-reliance on simulated data and
+under-representation of actual trajectories of dierent types of drone views. Besides,
+model segmentation accuracy may be aected when applied to CIM across regions outside Hong Kong due to dierences in feature distribution. Finally, this paper excludes
+the impact factors (e.g., urban morphology, seasons, and temporal data availability)
+on GV V I across dierent perspectives.
+Therefore, future work can focus on several key aspects. These include the development of high-precision CIM models and the design of high-performance algorithms
+for OpenGL-based rendering. Additionally, evaluating sampling parameter bias, simulating viewpoints driven by diverse user types and video data, and modeling realistic
+drone trajectories are necessary to advance future research. Further, the applicability
+validation of datasets (e.g., HRHD-HK) across regions using transfer learning (Weiss
+et al. 2016) should be explored. Finally, systematic analyses of seasonality, transferability, and temporal data availability impact on GV V I assessment are required (Han
+et al. 2023).
+
+507
+
+7. Conclusion
+
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+
+This paper presents an eective, ecient, and automatic method to evaluate GVV. In
+theory, the proposed method denes a new GV V I metric to unify street, window, and
+drone-level GVV. In methodology, the proposed method introduces GVL for enabling
+the 3D CIM-based GVV assessment using deep learning and color index. In application,
+the proposed method is implemented through a case study in Hong Kong. Linearweighted GV V I values and hot spot clustering, covering 2.06 km2 of greenery volumes,
+provided an analysis of multi-perspective greenery visibility.
+The results conrmed the uneven contribution of greenery visibility. The identication of an additional 37.6% of greenery at the drone level, and 31.7% at the window
+leveloverlooked in traditional street-level studiesdemonstrates the value of the proposed method for greenery management. The Spearman's correlation between GV V IS
+and GV V IW (0.34), and that with GV V ID (0.19) highlighted the necessity of 3D
+greenery visibility. Greenery located closest to main roads, surrounded by a few highrise buildings, and with high canopy height, should be given priority for maintenance.
+The quantitative dierentials of hot spot distributions across land-use types provided
+a reliable reason for stakeholders to develop targeted maintenance strategies.
+The results of the proposed method demonstrate the utility of assessing 3D GV V I
+and can serve as foundational geospatial data for urban planners and managers to prioritize greenery design and maintenance. The GVL attached to the photorealistic mesh
+can represent a close-to-reality urban built environment, enhance the semantic representation of greenery in 3D CIM, simulate greenery visibility from any perspective,
+and provide ecient GVV assessment compared with previous methods, thereby further supporting applications such as drone route planning and greenery maintenance.
+19
+
+540
+
+Limitations of this study include model penetration, the time-consuming process for
+capturing views, a lack of simulation of human-environment interactions and drone
+trajectories, as well as the exclusion of factors such as urban morphology, seasons, and
+temporal data availability. Future research directions are needed, such as incorporating
+a higher precision photorealistic mesh/CIM, developing high-performance algorithms
+for OpenGL rendering, simulating real drone trajectories and human-environment interactions, evaluating sampling parameter bias, validating dataset applicability across
+regions, analyzing seasonality, transferability, temporal data availability of CIM impact on GV V I assessment, integrating additional assessment indicators, and exploring
+potential applications.
+
+541
+
+Acknowledgments
+
+531
+532
+533
+534
+535
+536
+537
+538
+539
+
+544
+
+The work presented in this paper was supported by the Hong Kong Research Grants
+Council (RGC) (No. T22-504/21-R), and in part by the Department of Science and
+Technology of Guangdong Province (GDST) (2023A1515010757).
+
+545
+
+Declaration of interests
+
+542
+543
+
+547
+
+The authors declare that they have no known competing nancial interests or personal
+relationships that could have appeared to inuence the work reported in this paper.
+
+548
+
+Data and codes availability statement
+
+546
+
+551
+
+The code and data are shared privately at https://gshare.com/s/46caea113650a8bfc03c
+for review purposes. The code and data will be made publicly available upon acceptance.
+
+552
+
+Declaration of generative AI in writing
+
+549
+550
+
+556
+
+A university self-hosted LLM GenAI was used to assist with proofreading the work to
+correct grammatical and connection errors in the main text, and to improve readability
+of Abstract, Introduction, and Conclusion sections. We declare no use of GenAI to
+produce any new content in the work.
+
+557
+
+References
+
+553
+554
+555
+
+558
+559
+560
+561
+562
+563
+564
+565
+
+Bahr, S., 2024. The relationship between urban greenery, mixed land use and life satisfaction: An examination using remote sensing data and deep learning. Landscape and Urban
+Planning, 251, 105174. doi:10.1016/j.landurbplan.2024.105174.
+Biljecki, F. and Ito, K., 2021. Street view imagery in urban analytics and GIS: A review.
+Landscape and Urban Planning, 215, 104217. doi:10.1016/j.landurbplan.2021.104217.
+Bolte, A.M., et al., 2024. The green window view index: automated multi-source visibility
+analysis for a multi-scale assessment of green window views. Landscape Ecology, 39 (3), 71.
+doi:10.1007/s10980-024-01871-7.
+
+20
+
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+
+CAAC, 2023. National airspace basic classication method. Civil Aviation Administration of
+China, Government of PR China. Available from: https://www.caac.gov.cn/XXGK/XXGK/
+TZTG/202312/P020231222621680839714.pdf.
+Chauhan, S., et al., 2025. Urban heat stress, air quality and climate change adaptation strategies in UK cities. Frontiers of Engineering Management, 117. doi:10.1007/s42524-025-4029y.
+Cheng, B., et al., 2022. Masked-attention mask transformer for universal image segmentation.
+In : Proceedings of the IEEE/CVF conference on computer vision and pattern recognition.
+12901299. doi:10.1109/CVPR52688.2022.00135.
+Cimburova, Z. and Blumentrath, S., 2022. Viewshed-based modelling of visual exposure to
+urban greeneryAn ecient GIS tool for practical planning applications. Landscape and
+Urban Planning, 222, 104395. doi:10.1016/j.landurbplan.2022.104395.
+Cimburova, Z., Blumentrath, S., and Barton, D.N., 2023. Making trees visible: A GIS method
+and tool for modelling visibility in the valuation of urban trees. Urban Forestry & Urban
+Greening, 81, 127839. doi:10.1016/j.ufug.2023.127839.
+Doick, K.J., et al., 2018. CAVAT (Capital Asset Value for Amenity Trees):
+valuing amenity trees as public assets. Arboricultural Journal, 40 (2), 6791.
+doi:10.1080/03071375.2018.1454077.
+Ecke, S., et al., 2022. UAV-based forest health monitoring: A systematic review. Remote Sensing, 14 (13), 3205. doi:10.3390/rs14133205.
+Elsadek, M., Liu, B., and Xie, J., 2020. Window view and relaxation: Viewing green space from
+a high-rise estate improves urban dwellers' wellbeing. Urban Forestry & Urban Greening,
+55, 126846. doi:10.1016/j.ufug.2020.126846.
+Fan, Z., Feng, C.C., and Biljecki, F., 2025. Coverage and bias of street view imagery in mapping the urban environment. Computers, Environment and Urban Systems, 117, 102253.
+doi:10.1016/j.compenvurbsys.2025.102253.
+Gong, F.Y., et al., 2018. Mapping sky, tree, and building view factors of street
+canyons in a high-density urban environment. Building and Environment, 134, 155167.
+doi:10.1016/j.buildenv.2018.02.042.
+Guo, Y., et al., 2021. Deep learning for 3D point clouds: A survey. IEEE
+Transactions on Pattern Analysis and Machine Intelligence, 43 (12), 43384364.
+doi:10.1109/TPAMI.2020.3005434.
+Han, Y., et al., 2023. Mapping seasonal changes of street greenery using multi-temporal streetview images. Sustainable Cities and Society, 92, 104498. doi:10.1016/j.scs.2023.104498.
+Helliwell, R., 2008. Amenity valuation of trees and woodlands. Arboricultural Journal, 31 (3),
+161168. doi:10.1080/03071375.2008.9747532.
+HKBD, 2023. Building information and age records. Building Department, Government of Hong Kong SAR. Available from: https://data.gov.hk/en-data/dataset/
+hk-bd-opendata-building-information.
+HKLandsD, 2022. 3D Photo-realistic Model. Lands Department, Government of Hong Kong
+SAR. Available from: https://3d.map.gov.hk/.
+HKLandsD, 2025. Digital topographic map iB1000. Lands Department, Government of
+Hong Kong SAR. Available from: https://www.hkmapservice.gov.hk/OneStopSystem/
+map-search?product=OSSCatB&series=iB1000.
+HKPlanD, 2019. 3D Photo-realistic Model. Planning Department, Government of Hong Kong
+SAR. Available from: https://www-pland-gov-hk.eproxy.lib.hku.hk/pland_en/info_
+serv/3D_models/download.htm.
+HKPlanD, 2023. Land utilization in Hong Kong. Planning Department, Government of
+Hong Kong SAR. Available from: https://www.pland.gov.hk/pland_en/info_serv/
+open_data/landu/.
+HKTD, 2019. Road Network. Transport Department, Government of Hong Kong SAR. Available from: https://static.data.gov.hk/td/road-network-v2/RdNet_IRNP.gdb.zip.
+Huang, S., et al., 2021. A commentary review on the use of normalized dierence vegetation
+index (NDVI) in the era of popular remote sensing. Journal of Forestry Research, 32 (1),
+
+21
+
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+
+16. doi:10.1007/s11676-020-01155-1.
+Huang, Y., et al., 2025. No "true" greenery: Deciphering the bias of satellite and street
+view imagery in urban greenery measurement. Building and Environment, 269, 112395.
+doi:10.1016/j.buildenv.2024.112395.
+Jiang, B., et al., 2021. Impacts of nature and built acoustic-visual environments on human's
+multidimensional mood states: A cross-continent experiment. Journal of Environmental Psychology, 77, 101659. doi:10.1016/j.jenvp.2021.101659.
+Ko, W.H., et al., 2020. The impact of a view from a window on thermal comfort, emotion, and cognitive performance. Building and Environment, 175, 106779.
+doi:10.1016/j.buildenv.2020.106779.
+Kong, F., Yin, H., and Nakagoshi, N., 2007. Using GIS and landscape metrics in the hedonic
+price modeling of the amenity value of urban green space: A case study in Jinan City, China.
+Landscape and Urban Planning, 79 (3), 240252. doi:10.1016/j.landurbplan.2006.02.013.
+Kong, L., et al., 2017. Regulation of outdoor thermal comfort by trees in Hong Kong. Sustainable Cities and Society, 31, 1225. doi:10.1016/j.scs.2017.01.018.
+Konijnendijk, C.C., et al., 2006. Dening urban forestry - A comparative perspective
+of North America and Europe. Urban Forestry & Urban Greening, 4 (3), 93103.
+doi:10.1016/j.ufug.2005.11.003.
+Lai, X., et al., 2022. Stratied transformer for 3D point cloud segmentation. March.
+doi:10.1109/CVPR52688.2022.00831.
+LeCun, Y., Bengio, Y., and Hinton, G., 2015. Deep learning. Nature, 521 (7553), 436444.
+doi:10.1038/nature14539.
+Li, M., et al., 2026. Inuence of objective and perceived exposures to urban nature on people's
+happiness. npj Urban Sustainability, 6 (1), 6. doi:10.1038/s42949-025-00306-9.
+Li, M., et al., 2023a. HRHD-HK: A benchmark dataset of high-rise and high-density urban
+scenes for 3D semantic segmentation of photogrammetric point clouds. In : 2023 IEEE International Conference on Image Processing Challenges and Workshops (ICIPCW), October.
+37143718. doi:10.1109/ICIPC59416.2023.10328383.
+Li, M., et al., 2022. A room with a view: Automatic assessment of window views for high-rise
+high-density areas using City Information Models and deep transfer learning. Landscape and
+Urban Planning, 226. doi:10.1016/j.landurbplan.2022.104505.
+Li, M., Xue, F., and Yeh, A.G.O., 2023b. Bi-objective analytics of 3D visual-physical nature
+exposures in high-rise high-density cities for landscape and urban planning. Landscape and
+Urban Planning, 233, 104714. doi:10.1016/j.landurbplan.2023.104714.
+Li, M., Xue, F., and Yeh, A.G., 2025. Ecient and accurate assessment of window view distance
+using City Information Models and 3D Computer Vision. Landscape and Urban Planning,
+260, 105389. doi:10.1016/j.landurbplan.2025.105389.
+Li, M., Yeh, A.G., and Xue, F., 2024. CIM-WV: A 2D semantic segmentation dataset of rich
+window view contents in high-rise, high-density Hong Kong based on photorealistic city
+information models. Urban Informatics, 3 (1), 12. doi:10.1007/s44212-024-00039-7.
+Li, X., et al., 2015. Assessing street-level urban greenery using Google Street View and
+a modied green view index. Urban Forestry & Urban Greening, 14 (3), 675685.
+doi:10.1016/j.ufug.2015.06.006.
+Liang, J., et al., 2017. Embedding user-generated content into oblique airborne
+photogrammetry-based 3D city model. International Journal of Geographical Information
+Science, 31 (1), 116. doi:10.1080/13658816.2016.1180389.
+Liu, D., et al., 2023. Establishing a citywide street tree inventory with street view images
+and computer vision techniques. Computers, Environment and Urban Systems, 100, 101924.
+doi:10.1016/j.compenvurbsys.2022.101924.
+Meng, S., et al., 2025. From 3D pedestrian networks to wheelable networks: An automatic
+wheelability assessment method for high-density urban areas using contrastive deep learning
+of smartphone point clouds. Computers, Environment and Urban Systems, 117, 102255.
+doi:10.1016/j.compenvurbsys.2025.102255.
+Meng, S. and Zheng, H., 2023. A personalized bikeability-based cycling route recommendation
+
+22
+
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+
+method with machine learning. International Journal of Applied Earth Observation and
+Geoinformation, 121, 103373. doi:10.1016/j.jag.2023.103373.
+NCD Risk Factor Collaboration (NCD-RisC), 2016. A century of trends in adult human height.
+eLife, 5, e13410. doi:10.7554/eLife.13410.
+Neema, M.N. and Ohgai, A., 2010. Multi-objective location modeling of urban parks and open
+spaces: Continuous optimization. Computers, Environment and Urban Systems, 34 (5), 359
+376. doi:10.1016/j.compenvurbsys.2010.03.001.
+Panduro, T.E. and Veie, K.L., 2013. Classication and valuation of urban green spacesA hedonic house price valuation. Landscape and Urban Planning, 120, 119128.
+doi:10.1016/j.landurbplan.2013.08.009.
+Perperidou, D.G. and Kirgianis, D., 2022. Urban air mobility (UAM) integration to
+urban planning. In : Conference on Sustainable Urban Mobility. Springer, 16761686.
+doi:10.1007/978-3-031-23721-8_130.
+Pyka, K., Piskorski, R., and Jasi«ska, A., 2022. LiDAR-based method for analysing landmark
+visibility to pedestrians in cities: case study in Kraków, Poland. International Journal of
+Geographical Information Science, 36 (3), 476495. doi:10.1080/13658816.2021.2015600.
+Roberto Barbosa, M., et al., 2010. Forest re alert system: a Geo Web GIS prioritization
+model considering land susceptibility and hotspotsa case study in the carajás national
+forest, brazilian amazon. International Journal of Geographical Information Science, 24 (6),
+873901. doi:10.1080/13658810903194264.
+Rui, Q. and Cheng, H., 2023. Quantifying the spatial quality of urban streets with open street
+view images: A case study of the main urban area of Fuzhou. Ecological Indicators, 156,
+111204. doi:10.1016/j.ecolind.2023.111204.
+Seifert, E., et al., 2019. Inuence of Drone Altitude, Image Overlap, and Optical Sensor
+Resolution on Multi-View Reconstruction of Forest Images. Remote Sensing, 11 (10).
+doi:10.3390/rs11101252.
+Song, Y., et al., 2017. Trends and opportunities of BIM-GIS integration in the architecture, engineering and construction industry: A review from a spatio-temporal statistical perspective.
+ISPRS International Journal of Geo-Information, 6 (12), 397. doi:10.3390/ijgi6120397.
+Szegedy, C., et al., 2016. Rethinking the inception architecture for computer vision. In : Proceedings of the IEEE conference on computer vision and pattern recognition. 28182826.
+doi:doi.org/10.48550/arXiv.1512.00567.
+Tang, L., et al., 2023. Assessing the visibility of urban greenery using MLS LiDAR data.
+Landscape and Urban Planning, 232, 104662. doi:10.1016/j.landurbplan.2022.104662.
+Tara, A., Lawson, G., and Renata, A., 2021. Measuring magnitude of change by high-rise buildings in visual amenity conicts in Brisbane. Landscape and Urban Planning, 205, 103930.
+doi:10.1016/j.landurbplan.2020.103930.
+Ulrich, R.S., 1984. View through a window may inuence recovery from surgery. Science, 224
+(4647), 420421. doi:10.1126/science.6143402.
+Wang, L., et al., 2022. Measuring residents' perceptions of city streets to inform better street
+planning through deep learning and space syntax. ISPRS Journal of Photogrammetry and
+Remote Sensing, 190, 215230. doi:10.1016/j.isprsjprs.2022.06.011.
+Wang, Z., et al., 2023. A view-tree method to compute viewsheds from digital elevation models. International Journal of Geographical Information Science, 37 (1), 6887.
+doi:10.1080/13658816.2022.2094385.
+Weiss, K., Khoshgoftaar, T.M., and Wang, D., 2016. A survey of transfer learning. Journal of
+Big Data, 3 (1), 9. doi:10.1186/s40537-016-0043-6.
+Wild, G., 2024. Urban aviation: The future aerospace transportation system for intercity and
+intracity mobility. Urban Science, 8 (4), 218. doi:10.3390/urbansci8040218.
+Xiang, S., et al., 2024. Autonomous eVTOL: A summary of researches and challenges. Green
+Energy and Intelligent Transportation, 3 (1), 100140. doi:10.1016/j.geits.2023.100140.
+Xie, J., et al., 2025. Semantic segmentation of building facade materials and colors for urban
+conservation. npj Heritage Science, 13 (1), 378. doi:10.1038/s40494-025-01888-4.
+Xue, F., Wu, L., and Lu, W., 2021. Semantic enrichment of building and city in-
+
+23
+
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+
+formation models: A ten-year review. Advanced Engineering Informatics, 47, 101245.
+doi:10.1016/j.aei.2020.101245.
+Yang, Y., et al., 2020. Urban greenery, active school transport, and body weight among Hong
+Kong children. Travel Behaviour and Society, 20, 104113. doi:10.1016/j.tbs.2020.03.001.
+Yu, L. and Gong, P., 2012. Google Earth as a virtual globe tool for Earth science applications
+at the global scale: progress and perspectives. International Journal of Remote Sensing, 33
+(12), 39663986. doi:10.1080/01431161.2011.636081.
+Yu, S., et al., 2016. View-based greenery: A three-dimensional assessment of city buildings'
+green visibility using Floor Green View Index. Landscape and Urban Planning, 152, 1326.
+doi:10.1016/j.landurbplan.2016.04.004.
+Yu, X., et al., 2022. Spatio-temporal monitoring of urban street-side vegetation greenery using Baidu Street View images. Urban Forestry & Urban Greening, 73, 127617.
+doi:10.1016/j.ufug.2022.127617.
+Zhang, J., et al., 2024. Exploring geospatial digital twins: a novel panorama-based
+method with enhanced representation of virtual geographic scenes in Virtual Reality
+(VR). International Journal of Geographical Information Science, 38 (11), 23012324.
+doi:10.1080/13658816.2024.2386064.
+Zheng, L., et al., 2025. Harnessing geographic information system and street view
+imagery for thermal gradient distribution auditing. Urban Climate, 59, 102248.
+doi:10.1016/j.uclim.2024.102248.
+Zhou, Q. and Xue, F., 2023. Pushing the boundaries of modular-integrated construction: A symmetric skeleton grammar-based multi-objective optimization of passive design for energy savings and daylight autonomy. Energy and Buildings, 296, 113417.
+doi:10.1016/j.enbuild.2023.113417.
+
+24
+
+752
+
+753
+754
+755
+756
+757
+758
+759
+
+Appendix A. GVVI sub-indices distribution and correlation
+Figure A1a illustrates the value distribution of GV V IS , GV V IW and GV V ID . The
+majority of greenery had a GV V IS of 0 (mean = 0.02, stdev. = 0.07), showing that
+the visual contribution of greenery volumes at the street level was highly imbalanced.
+The value of GV V IW predominantly fell within the range of 0 to 0.05 (mean = 0.04,
+stdev. = 0.06), suggesting that the majority of greenery had low visibility at the window
+level. The distribution of GV V ID was concentrated between 0 and 0.14 (mean = 0.10,
+stdev. = 0.12), which was reasonable because of the altitude change.
+
+(a)
+
+(b)
+
+Figure A1.: Distribution of GV V I sub-indices and correlation matrix among subindices with dierent sampling heights and NDVI. (a) Distribution; (b) correlation
+matrix, all p-values < 0.0001
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+
+The correlation of GV V I computed based on dierent height levels of WVI (low:
+0-24m, middle: 25-52m, and high: 53-137m, based on Natural Break) and DVI (50 to
+300m) is conducted to validate the spatial dependency of sub-indices. The correlation
+between GV V IW with increasing height levels and GV V IS showed a diminishing trend,
+which logically considers the proximity of the viewpoints at lower height for GV V IW
+and GV V IS . All coecients of GV V IW at dierent height levels with other indicators
+show positive but less moderate associations, indicating that GVV is less spatially
+dependent at near-ground level. The diverse height levels of GV V ID exhibit strong
+associations among themselves, meaning that the vertical disparity of greenery within
+the research area was under 100m. It is therefore recommended to reduce the number
+of DVI sampling intervals, especially in areas with small terrain height dierences, to
+reduce the computation cost.
+
+25
+
+773
+774
+775
+
+Figure B1 shows the drone views from FOVs equal to 60 and 120 degrees at dierent
+sample points' height levels. A total of 17,424 DVIs (FOV = 60) and 8,712 DVIs (FOV
+= 120) were captured. In general, the average visible pixel of FOV 120 was similar to
+that of FOV 60, which was lower by 923 only (maximum = 111,929).
+
+volume
+
+776
+
+Appendix B. Comparison of GVV with dierent DVI FOV
+
+(FOV=120)
+volume
+(FOV=120)
+Visible pixel per volume
+
+772
+
+(a)
+
+Visible pixel per volume (FOV=60)
+
+(b)
+FOV=60
+
+FOV=120
+
+Extra
+visible
+volumes
+(c)
+
+Figure B1.: Visibility dierence between FOV equal to 60 and 120 at dierent heights.
+(a) average visible pixel per volume; (b) scatter plot of visible pixel per volume's
+dierence; and (c) the DVIs at the same sample point with dierent FOV, which are
+displayed with GVL and photorealistic meshes, and DVI captured by real drone.
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+
+The result of the FOV of 60 degrees had a higher average visible pixel ND per
+volume at the height of 50m, with an average of 7,878 pixels, compared to the FOV
+of 120. However, the visibility of FOV 120 degrees exceeded that of FOV 60 with the
+increasing height, as shown in Figure B1a. This was because FOV of 120 degrees could
+capture greenery close to the bottom of the virtual camera as well as greenery further
+away (Figure B1c). The Spearman's coecient was 0.92 for visible pixels per volume
+at 50m height. The Spearman's coecient gradually stabilized at around 0.95 as the
+height increased, as depicted in Figure B1b. Hence, an FOV of 120 is suggested as the
+data source for calculating the drone-level visibility with high altitudes (e.g., altitude
+> 100m), as it can capture visible greenery with reduced computational expenses (only
+half the time required compared to an FOV of 60).
+
+26
+
+788
+
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+
+Appendix C. Sensitivity analysis of DVI sampling position parameters
+Figure C1 shows the sensitivity analysis of DVI sampling position parameters impact
+on GV V ID-S hot spot dierential. The horizontal and height intervals, as well as FOV
+changing caused less impact on GV V ID-S hot spot dierential, with an average value of
+36.3%. Dierent FOV mainly shared the similar trend on GV V ID-S , but FOV equal to
+120 showed a dramatic change curve. For FOV 120, the hot spot dierential increased
+with higher sampling heights and smaller horizontal intervals, while for FOV 60, it
+decreased as the height increased; both FOVs showed similar trends with respect to
+the horizontal interval, as shown in Figure C1c and d. This may be caused by the
+building obstruction demonstrated in Figure B1c. Therefore, the proposed method can
+robustly evaluate the dierential between dierent observer perspectives, and it is also
+suggested to evaluate GV V ID using multiple sampling height levels.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+Figure C1.: Sensitivity analysis of DVI sampling position parameters impact on
+GV V ID-S hot spot dierential, where (a) and (b) shows the horizontal, height interval
+comparison of FOV 60 and 120, (c) and (d) shows the horizontal, sampling height
+comparison of FOV 60 and 120.
+
+27
+
+

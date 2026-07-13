@@ -1,0 +1,496 @@
+Applications of 4D Point Clouds (4DPC) in Digital Twin Construction: A SWOT Analysis
+Dong Liang 1*, Fan Xue 2
+This is the authors’ version of the paper:
+Liang, D., & Xue, F. (2022). Applications of 4D point clouds (4DPC) in digital
+twin construction: A SWOT analysis. Proceedings of the 27th International
+Symposium on Advancement of Construction Management and Real Estate
+(CRIOCM2022), pp. 1231–1238, Springer, DOI:10.1007/978-981-99-3626-7_95.
+This file is shared for personal and academic use only, under the license CC
+BY-NC-ND 4.0 (Non-Commercial, No Derivatives, and with an Attributed
+citation when you use). The final published version of this paper can be found at:
+https://doi.org/10.1007/978-981-99-3626-7_95.
+
+5
+
+10
+
+15
+
+20
+
+Abstract: Digital twin construction (DTC), the virtual replica of physical construction,
+is an essential enabler for the promised Construction 4.0. Thanks to its real-time virtualphysical synchronicity, many uncertainty-tolerant functions, and applications, such as
+system integration, testing, monitoring, and maintenance, could be dynamically
+simulated and optimized through the DTC. The data foundation for creating or updating
+a DTC is real-time reality capture on construction sites. Despite a lot of efforts such as
+the Internet of Things (IoT) and AI cameras, so far, it is very challenging to capture the
+spatial-temporal information of the whole construction site. Time-dynamic 4D point
+cloud (4DPC) is an emerging sensing technology consisting of three-dimensional point
+cloud scans at a frequency, e.g., two frames per second. 4DPC has been successfully
+used in several industries, such as autonomous driving and motion analysis in sports
+science, due to its ability to capture dynamic objects and environments. This paper
+presents a strengths, weaknesses, opportunities, and threats (SWOT) analysis of the
+possible applications of 4DPC in DTC. In summary, 4DPC can effectively capture the
+dynamic feature of construction progress, with strengths in real-time information
+updating, covering more precise geometry dynamics, and providing localization and
+mapping information, etc., which are in line with the development of DTC. Meanwhile,
+the disadvantages include errors or noise in recognizing lign-permeable materials and
+water, enormous data volume, challenges in modeling spatial-temporal structure, and
+computation load in processing. The 4DPC receives several opportunities, such as
+establishing a dynamic data foundation for construction automation and modeling of
+workspace and integrating with 4D BIM for creating DTC; However, threats such as
+LiDAR-hostile weather and emerging competitors are also identified. Overall, 4DPC is
+a promising research direction that may interest DTC researchers and practitioners for
+
+Dong Liang
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR, China
+* Corresponding author, E-mail: leodong@connect.hku.hk
+1
+
+Fan Xue
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR, China
+E-mail: xuef@hku.hk
+
+2
+
+25
+
+various application situations in the construction industry.
+Keywords: 4D point cloud; Construction; Digital twin; Digitalization and automation;
+SWOT analysis.
+
+1 Introduction
+
+30
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+65
+
+Digital twin, representing a physical system or process by a real-time virtual system to
+enable simulations, analyses, and optimization, has been adopted by several industries,
+such as the aircraft and manufacturing industry. The digital twin has been introduced
+into construction to ensure more automatic, faster, and more collaborative processes in
+recent years[1]. The purpose of the construction digital twin (DTC) is to improve
+existing construction processes and enrich current building-related models (i.e.,
+building information modeling (BIM))[2]. Within the context of cyber-physical
+synchronicity, the digital twin models should have the ability to reﬂect the construction
+of physical assets in real-time. However, most current DTC models, such as BIM
+models, are static and cannot be updated in real-time, which cannot meet the demand
+of the modern construction projects with the increasing complexity and increasing
+number of involved parties. One of the main reasons is that current measures in
+construction site sensing for reality capturing are restricted to routine laser scanning,
+manual management updates. Some advanced digital modeling and simulation
+technologies could not be fully utilized if the dynamic feature of construction progress
+could not be effectively captured. Therefore, a real-time DTC modeling approach that
+is fast, inexpensive, reliable, and automated is required. The technique should be able
+to rapidly create and update accurate, comprehensive, semantically rich models in a
+master format that can be used to any engineering situation and is broadly applicable to
+all building projects.
+Sensors for spatial data have developed over the last several decades from basic
+range sensors based on sonar or IR, which provided a few bytes of information about
+the environment, to ubiquitous cameras and laser scanners[3]. Recent advances in
+LiDAR technology have made it possible for these sensors to produce high-quality 3D
+reconstructions of the world: point clouds[4]. Point clouds, a three-dimensional
+collection of data points or coordinates, provide more information than twodimensional pictures and are insensitive to light[5]. Compared to other geometric
+representations like grids, point clouds do not experience quantization mistakes as
+much[6]. In most cases, point clouds always refer to 3D point clouds, the phase that
+comes before creating an accurate 3D model of the actual environment. 3D point clouds
+have already been widely used in many research and industrial domains, such as
+surveying, electricity, construction, and industry, due to their excellent ability to
+represent our three-dimensional world. In the construction industry, the 3D point cloud
+is currently used for various aims such as as-built building reconstruction and geometry
+quality inspection[7-9]. It should be noted that the application of 3D point clouds is
+limited in capturing some static objects due to only spatial information contained in the
+data.
+
+70
+
+75
+
+80
+
+85
+
+90
+
+The advent of the 4D point cloud, consisting of three dimensions and time
+information, has expanded the application of the point cloud into a dynamic world[10].
+The most significant improvement of a 4D point cloud compared with a 3D point cloud
+is that temporal structure is added to data. The 4D point cloud, a window into the
+dynamics of the 3D world we live in, is a rich source of visual data that demonstrates
+how objects move against backdrops and what occurs when we take action[11]. There
+are some reasons why the 4D point cloud has gained popularity since it appeared. First
+of all, the ability to comprehend a changing 3D world is essential for robotic agents and
+a variety of other applications. In addition, various identification tasks, such as
+calculating a moving object's acceleration or identifying human activities, benefit from
+temporal data sequences longer than two frames[12]. The current popular 4D point cloud
+research and application fields include but are not limited to autonomous driving, robot
+vision, human-robotics interaction, simultaneous localization and mapping (SLAM),
+and motion analysis in sports science. For instance, autonomous agents need to use 4D
+point clouds to understand the dynamic 3D environment in many applications, such as
+robotic manipulation[13].
+As an effective sensing technology for dynamic environments, the 4D point cloud
+(4DPC) has the potential to promote the development of the digital twin of the
+construction industry. The 4DPC could help achieve the 4D modeling, making it
+possible to represent, examine, and evaluate all processes associated with construction,
+such as graphical models, management, resources, and safety concerns, from a temporal
+viewpoint. The dynamic digital twin model may provide a new way to view some
+applications such as lean construction, site monitoring, safety or environmental aspects.
+Given its great potential for application in construction, as briefly illustrated in
+Figure 1, this paper analyzes strengths, weaknesses, opportunities, and threats of 4DPC
+in construction application sceneries.
+
+Figure 1 Summary of key ﬁndings from SWOT analysis
+95
+
+3 Strength
+
+100
+
+105
+
+110
+
+As 4DPC data records the additional time dimension compared with the 3D point cloud,
+it can help update real-time environment information[12], which is essential for
+continuous and disorderly changing construction scene. To facilitate machine
+automation and digitalization management in construction site, it is crucial to
+understand dynamic 3D environments for robotics agents and many other applications.
+4DPC could offer an effective measure to construct and update the dynamic
+environment modeling, which could serve for the automation application.
+Compared with conventional videos that are widely used in monitoring and
+detection work, the 4DPC shows its advantages in covering more precise geometry
+dynamics[11]. The reason behind that is point clouds do not suffer as much from
+quantization errors compared to other geometric representations such as grids.
+Therefore, point cloud video is more suitable for some applications requiring dynamic
+detail detection, and typical instances include calculating the acceleration of a moving
+object or identifying human activities. For human action recognition, one typical
+application of 4DPC video is to analyze the technical action of the professional athlete,
+and another one is to help robotics understand human-to-robot gesture instructions in
+human-computer interaction.
+Another advantage of point cloud video compared with conventional video is good
+
+115
+
+120
+
+125
+
+130
+
+135
+
+adaptability in poor visibility environments[11]. Point cloud video exhibits its advantage
+over conventional image-based video for some applications, including low-light work
+environments at night, such as autonomous driving and construction site monitoring.
+The strength is that point cloud Lidar is an active system generating light, while
+conventional video requires an external light source.
+In addition, the 4DPC could provide localization and mapping information due to
+its principle of signal acquisition and the coordinate information contained[14].
+Specifically, it could serve for simultaneous localization and mapping (SLAM), an
+algorithmic effort to solve the issue of mapping an unknown area while navigating that
+environment using the map.
+It is easier and more efficient to acquire the full-view spatial-temporal data of the
+whole environment using a set of 4DPC LiDAR. On the construction site, mechanical
+equipment, material accumulation, and as-built buildings can cause visual blind spots
+if a single sensing device such as a camera or LiDAR is used. Therefore, multiple
+LiDARs must be combined to eliminate the visible bind spots. Compared with other
+video resources, such as image-based video, the alignment complexity for multi-source
+point cloud data is lower.
+Finally, compared with other sensing devices such as 360° virtual reality cameras,
+Internet of Things (IoT), and Real-time kinematic positioning (RTK), the cost of
+common 4D LiDAR Sensors such as Livox is low. For example, the price of a highperformance LiDAR designer for L3/L4 autonomous driving is about 1299 USD, while
+the price of the basic version of the virtual reality camera (Insta360 Pro 2) is around
+5280 USD. Therefore, the low cost and minimal infrastructure requirements could be a
+strength of the 4DPC to be used in the construction sector.
+
+3 Weaknesses
+140
+
+145
+
+150
+
+155
+
+For some building materials, such as glass, LiDAR waves may pass wholly or partially
+transmit through the material. The possible result is no reflected wave is collected or a
+large number of virtual points are collected, which depends on the light transmittance
+of the material[15]. If no point is generated, point cloud data cannot cover the object
+composed with a light-permeable material. If mobile robotics relying on LiDAR for
+navigation cannot recognize them as obstacles, some unexpected collision can happen.
+In addition, virtual points' reflection noise may negatively impact 3D reconstruction
+and other related techniques.
+In addition, LiDAR waves may experience refraction when meeting water bodies;
+thus, the acquired point cloud is not accurate in those locations[16]. The problem is first
+discussed in autonomous driving since the road's puddle is always considered an infinite
+black hole. Because there is often stagnant water after rain on the pavement or
+component surface in the construction site, the use of 4DPC also needs to be concerned
+about such issues. Otherwise, some unexpected errors may be caused without
+awareness.
+Enormous data volume is a critical issue in the 4DPC[17]. For LiDAR with higher
+scanning density and scanning frequency, the amount of data acquired per unit time is
+
+160
+
+165
+
+170
+
+175
+
+180
+
+185
+
+190
+
+195
+
+also more significant. Although much research on point cloud video systems focuses
+on data compression of the point cloud, the large size of 4DPC still puts higher
+requirements for storage systems and transmission systems.
+The processing of stationary 3D point clouds may be done using a variety of
+methods. However, 4DPCs have unique characteristics that cannot be handled by these
+conventional methods[18]. Modeling the Spatial-temporal structure, such as 3D action
+recognition or 4D semantic segmentation, in a 4DPC is highly challenging because
+random and unordered coordinate sets inconstant point cloud density of individual
+regions over time and inconsistent points emerging across different sets/frames.
+Meanwhile, achieving real-time processing of 4DPC is compute-intensive due to
+large data volumes and complex modeling processes[19]. For a disordered environment
+such as a construction site, even some basic processing procedures such as point cloud
+segmentation can be challenging to achieve real-time or near-real-time completion.
+
+4 Opportunities
+
+Digital 3D environments are already crucial components of construction and are on the
+critical route to complete end-to-end site autonomy, but existing solutions lack realtime functionality[20]. Using 4DPC, the digitalization construction environment could
+be real-time established and updated. Therefore, the 4DPC provides a chance to create
+a digital twin of the construction site. First, It may serve as a platform for the digitization
+and automation of the construction industry, which is necessary to encourage the use of
+automation and autonomy in the sector.
+Second, a series of 4DPC LiDAR could help establish dynamic workspace
+modeling of the construction site. The real-time updating modeling is crucial for giving
+operators of heavy equipment, such as cranes, real-time support, including danger
+identification, collision avoidance, and 3D visualization[21]. The real-time environment
+updating enables operators to quickly detect their surroundings and perform
+manipulation activities safely and effectively. In addition, a site safety alert system
+could be established using dynamic modeling based on a 4DPC, and it has the potential
+to help reduce the construction fatalities such as being struck by a moving vehicle.
+Third, the 4DPC could help create the 4D building information modeling (BIM),
+which enable users represent, evaluate, and analyze all aspects of the BIM process
+(graphical models, management, costs, resources, safety issues, etc.) from a temporal
+perspective[2]. The 4D BIM could help achieve dynamic management assignments such
+as progress monitoring and checking of construction projects. In recent years, although
+BIM models have been widely adopted in construction projects and have become
+necessary in the design stage in many countries and regions, they are not effectively
+used in the construction stage. One important reason is that there is no effective method
+to bridge the dynamic construction site with the BIM models. The use of 4D BIM will
+improve the current situation.
+In addition, by integrating with Unity3D, a versatile 3D engine to enable the user
+to view and interact with the environment, the 4DPC could provide a virtual reality (VR)
+platform for remote managers to have an immerse experience in the construction site.
+
+200
+
+205
+
+Such experience could help increase the collaboration efficiency of different parties and
+help them make optimal decisions according to the site's real-time situation.
+Finally, 4DPC records could be used for productivity assessment and optimization.
+Benefiting from full-view monitoring of construction sites, the movement path of
+workers and machine facilities could be extracted and analyzed. The productivity of
+different roles could be assessed, and optimization work could be conducted for a
+similar construction project in the future.
+
+5 Threats
+
+210
+
+215
+
+220
+
+225
+
+230
+
+235
+
+Point cloud Lidar is mainly used to detect environmental information in different
+scenarios in unmanned applications. However, point cloud lidar would have a poor
+performance in rain, fog, and dust environments due to its inherent characteristics of
+Lidar[22]. It will recognize rain, fog, and dust as physical things such as obstacles. The
+root cause of this problem is that there will be reflections when the beams of several
+Lidars hit rain, fog and dust, LiDAR observation would become noisy owing to the
+reflection and attenuation of raindrops, or even LiDAR will judge that the rain, fog, and
+dust are obstacles, resulting in misidentification. Misidentification caused by rain, fog,
+and dust has become problematic in Lidar applications. The above are the common
+problems of point clouds, which also occur in 4DPCs. On construction site, dust and
+rain may be the main threat that needs to be considered for 4DPC applications. In some
+special scenarios, such as the earth excavation stage or rainy day, 4DPCs should be used
+with caution, or other sensors need to be supplemented.
+Some other emerging technologies, such as AR cameras, maybe a potential
+competitor of 4DPC LiDAR for reality capturing. AR camera has already been used in
+many areas, such as navigation and education applications[23], and also has the potential
+to model the real-time digital twin of the construction site.
+In addition, there is no construction standard or policy for establishing a dynamic
+digital twin platform-based 4DPC in Hong Kong and mainland of China. The dynamic
+4DPC-based digital twin will revolute the traditional schedule-based construction
+management strategy. The benefit and necessity of the application of the 4DPC in the
+construction industry need to be further explored and discussed from economic and
+social aspects.
+Acceptance of workers and managers is also one of the factors that should be
+considered. In the process of 5G technology promotion, there have been civilian
+boycotts in many parts of the world. The main reason is that people worry about their
+health being affected by the signal radiation from the 5G infrastructure. A similar
+situation may also happen in the application of a 4DPC on the construction site since
+LiDAR would emit light waves toward workers.
+
+6 Summary
+
+240
+
+In summary, the 4DPC appears to be a promising applied technology to promote the
+development of digital twins for the construction sector. Due to its spatial-temporal data
+structure, the 4DPC could update the environmental information in real time and
+provide more precise geometry dynamics. In addition, the unique perception
+
+245
+
+250
+
+255
+
+mechanism of LiDAR provides a 4DPC with good adaptability in a poor visibility
+environment and localization and mapping functions. Meanwhile, low cost and minimal
+infrastructure requirements are potential advantages for application in the construction
+industry. However, practitioners and researchers should also be aware of the
+limitations, including the inaccurate result when meeting water and light permeable
+construction materials, large data volume, and the challenging and compute-intensive
+modeling process of the 4DPC. After fully understanding its advantages and
+disadvantages, potential opportunities are proposed from five aspects, i.e., for
+facilitating construction digitalization and automation, workspace assistance, 4D BIMbased construction management, virtual environment interaction, and productivity
+assessment and optimization. The final analyzes the possible threats of the 4DPC in
+construction scenarios in terms of the adaptability of the construction site, competitors'
+acceptance of workers and managers, and related policies.
+On the one hand, as stated by Düking[24], the SWOT analysis process is inherently
+subjective and has several inherent limitations. On the other hand, it is anticipated that
+the results of this work will aid researchers and practitioners in determining the
+suitability and feasibility of the 4DPC for various application situations in the
+construction industry.
+
+References
+260
+
+265
+
+270
+
+275
+
+280
+
+285
+
+[1] Opoku, D. G. J., Perera, S., Osei-Kyei, R., & Rashidi, M. (2021). Digital twin
+application in the construction industry: A literature review. Journal of Building
+Engineering, 40, 102726.
+[2] Boje, C., Guerriero, A., Kubicki, S., & Rezgui, Y. (2020). Towards a semantic
+Construction Digital Twin: Directions for future research. Automation in
+Construction, 114, 103179.
+[3] Salami, D., Palipana, S., Kodali, M., & Sigg, S. (2020, September). Motion pattern
+recognition in 4d point clouds. In 2020 IEEE 30th International Workshop on
+Machine Learning for Signal Processing (MLSP) (pp. 1-6). IEEE.
+[4] Xue, F., Lu, W., Chen, K., & Webster, C. J. (2019). BIM reconstruction from 3D
+point clouds: A semantic registration approach based on multimodal optimization
+and architectural design knowledge. Advanced engineering informatics, 42,
+100965.
+[5] Bhople, A. R., Shrivastava, A. M., & Prakash, S. (2021). Point cloud based deep
+convolutional neural network for 3d face recognition. Multimedia Tools and
+Applications, 80(20), 30237-30259.
+[6] Zhang, Y., Zhou, Z., David, P., Yue, X., Xi, Z., Gong, B., & Foroosh, H. (2020).
+Polarnet: An improved grid representation for online lidar point clouds semantic
+segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision
+and Pattern Recognition (pp. 9601-9610).
+[7] Xue, F., Lu, W., Webster, C. J., & Chen, K. (2019). A derivative-free optimizationbased approach for detecting architectural symmetries from 3D point clouds.
+ISPRS Journal of Photogrammetry and Remote Sensing, 148, 32-40.
+[8] Wu, Y., Shang, J., & Xue, F. (2021). Regard: Symmetry-based coarse registration
+of smartphone’s colorful point clouds with cad drawings for low-cost digital twin
+buildings. Remote Sensing, 13(10), 1882.
+
+290
+
+295
+
+300
+
+305
+
+310
+
+315
+
+320
+
+325
+
+330
+
+[9] Yuan, L., Guo, J., & Wang, Q. (2020). Automatic classification of common building
+materials from 3D terrestrial laser scan data. Automation in Construction, 110,
+103017.
+[10] Wen, H., Liu, Y., Huang, J., Duan, B., & Yi, L. (2022). Point Primitive
+Transformer for Long-Term 4D Point Cloud Video Understanding. arXiv preprint
+arXiv:2208.00281..
+[11] Fan, H., Yang, Y., & Kankanhalli, M. (2021). Point 4d transformer networks for
+spatio-temporal modeling in point cloud videos. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition (pp. 14204-14213).
+[12] Fan, H., Yu, X., Ding, Y., Yang, Y., & Kankanhalli, M. (2022). PSTNet: Point
+spatio-temporal convolution on point cloud sequences. arXiv preprint
+arXiv:2205.13713.
+[13] Shi, H., Lin, G., Wang, H., Hung, T. Y., & Wang, Z. (2020). Spsequencenet:
+Semantic segmentation network on 4d point clouds. In Proceedings of the
+IEEE/CVF conference on computer vision and pattern recognition (pp. 45744583).
+[14] Wang, Z., Li, W., Shen, Y., & Cai, B. (2020). 4-D SLAM: An efficient dynamic
+Bayes network-based approach for dynamic scene understanding. IEEE Access, 8,
+219996-220014.
+[15] Gao, R., Li, M., Yang, S. J., & Cho, K. (2022). Reflective Noise Filtering of LargeScale Point Cloud Using Transformer. Remote Sensing, 14(3), 577.
+[16] Chen, L., Yang, J., & Kong, H. (2017, May). Lidar-histogram for fast road and
+obstacle detection. In 2017 IEEE international conference on robotics and
+automation (ICRA) (pp. 1343-1348). IEEE.
+[17] Li, L., Li, Z., Zakharchenko, V., Chen, J., & Li, H. (2019). Advanced 3D motion
+prediction for video-based dynamic point cloud compression. IEEE Transactions
+on Image Processing, 29, 289-302.
+[18] Salami, D., Palipana, S., Kodali, M., & Sigg, S. (2020, September). Motion pattern
+recognition in 4d point clouds. In 2020 IEEE 30th International Workshop on
+Machine Learning for Signal Processing (MLSP) (pp. 1-6). IEEE.
+[19] Liu, Z., Li, Q., Chen, X., Wu, C., Ishihara, S., Li, J., & Ji, Y. (2021). Point cloud
+video streaming: Challenges and solutions. IEEE Network, 35(5), 202-209.
+[20] Walker, R., Smith, S., & Bosché, F. (2021). Enabling operational autonomy in
+earth-moving with real-time 3D environment modelling. In ISARC. Proceedings
+of the International Symposium on Automation and Robotics in Construction (Vol.
+38, pp. 145-152). IAARC Publications.
+[21] Fang, Y., Cho, Y. K., & Chen, J. (2016). A framework for real-time pro-active
+safety assistance for mobile crane lifting operations. Automation in Construction,
+72, 367-379..
+[22] Heinzler, R., Piewak, F., Schindler, P., & Stork, W. (2020). Cnn-based lidar point
+cloud de-noising in adverse weather. IEEE Robotics and Automation Letters, 5(2),
+2514-2521.
+[23] Chidsin, W., Gu, Y., & Goncharenko, I. (2021). AR-based navigation using RGBD camera and hybrid map. Sustainability, 13(10), 5585.
+[24] Düking, P., Holmberg, H. C., & Sperlich, B. (2018). The potential usefulness of
+virtual reality systems for athletes: a short SWOT analysis. Frontiers in Physiology,
+9, 128..
+
+

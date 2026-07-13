@@ -1,0 +1,1530 @@
+Using blockchain to improve information sharing accuracy in the onsite assembly of modular construction
+Liupengfei Wu, Weisheng Lu*, Rui Zhao, Jinying Xu, Xiao Li, and Fan Xue
+Dept. of Real Estate and Construction Management, Univ. of Hong Kong, Hong Kong, China.
+liupengfeiwu@connect.hku.hk, wilsonlu@hku.hk, ruizhao@hku.hk,
+u3004676@connect.hku.hk, xl1991@hku.hk, xuef@hku.hk
+This is the peer-reviewed, post-print version of the paper:
+Wu, L., Lu, W., Zhao, R., Xu, J., Li, X., & Xue, F. (2022). Using blockchain to improve
+information sharing accuracy in the onsite assembly of modular construction. Journal
+of Management in Engineering, 38(3), 04022014. Doi: 10.1061/(ASCE)ME.19435479.0001029
+This material is shared under the permission of ASCE, and may be downloaded for
+personal use only. Any other use requires prior permission of ASCE. The official version
+of this paper can be accessed at https://doi.org/10.1061/(ASCE)ME.1943-5479.0001029
+
+5
+
+10
+
+15
+
+Abstract
+Onsite assembly is a critical stage for modular construction. Its success or failure depends on
+accurate information sharing among numerous stakeholders who, unfortunately, often possess
+unsynchronized information. Owing to its decentralized consensus mechanism, blockchain
+has the potential to improve information-sharing accuracy on construction sites. However,
+little research has documented how this can be done. Adopting a design science research
+(DSR) method, this study aims to explore the use of blockchain technology to improve
+information-sharing accuracy in the onsite assembly of modular construction (OAMC).
+Firstly, an OAMC business process analysis is conducted to understand the issues leading to
+information sharing, in particular its accuracy. Then, a blockchain-based conceptual model is
+developed. Its components such as membership registration, information sharing-request,
+ordering service, consensus mechanism, and distributed storage are described. Finally, a
+prototype system is developed and validated in a mock-up OAMC. The results show that the
+prototype system can improve the accuracy of information sharing in OAMC by allowing
+project participants to endorse information about the modules and their assembly through the
+blockchain’s consensus mechanism. This study explores and implements blockchain
+technology in a specific construction area. It can serve as a valuable reference for future
+endeavors in harnessing the power of blockchain technology, particularly for mobilizing
+information endorsement mechanisms for various value-added applications.
+
+20
+
+Keywords: Blockchain; Accurate information sharing; Information endorsement/consensus
+mechanism; On-site assembly; Modular construction.
+
+1
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+Introduction
+Modular construction involves fabricating 3D-volumetric building “modules” under
+controlled offsite conditions and transporting them to a building site for assembly into a final
+construction product (Li et al., 2021). It can reduce construction time, save labor, improve
+worker safety, and help to achieve environmental sustainability goals (Gong et al., 2019).
+However, successful project delivery involves complex onsite assembly with myriad
+stakeholders (e.g., owners, contractors, subcontractors, and transporters) who interact
+frequently based on an array of information (Luo et al., 2020). Thus, onsite assembly in
+modular construction (OAMC) requires to share accurate information to minimize the issues
+related to assembly rework, labor, time, and occupational health and safety (Li et al., 2019a).
+There are several causes to inaccurate information sharing in OAMC. One is the widespread
+use of paper or paint labels (Li et al., 2018a). They are too ambiguous to guarantee the
+accuracy of OAMC information exchanged (e.g., assembly sequence, module type,
+installation location and orientation) (Demiralp et al., 2012). Another reason is the
+fragmented nature of construction organizations (Zhai et al., 2019). Project participants from
+different organizations may not have a unified information sharing platform, leading to
+asymmetric information sharing (Lee et al., 2021b). Inaccurate information sharing in OAMC
+could also be attributable to a lack of assurance mechanisms for checking updated
+information (Li et al., 2018b; Zhou et al., 2021). In current practice, incomplete or inaccurate
+change and scheduling information transmitted from previous processes (e.g., production,
+logistics) may be passed to the OAMC phase without endorsement or with serious latency
+(Wu et al., 2021).
+Emerging from the technology sphere, blockchain could bring about a paradigm shift in the
+information management practices of construction (Li et al., 2019b). A blockchain is a
+distributed ledger with cryptography and decentralized consensus mechanisms, which can
+effectively record and endorse transactions between participants in a shared, secure and
+traceable manner (Xue and Lu, 2020). Blockchain benefits include reinforced transparency,
+traceability, immutability, privacy, and automation (Perera et al., 2020), promotion of
+democratic decision-making through decentralization, and reduced costs through removal of
+intermediaries (Li et al., 2021). In construction, blockchain applications have been introduced
+for internal administration (Pradeep et al., 2021), self-executing transactions with smart
+contracts (Hamledari and Fischer, 2021), immutable records of transactions (Zhong et al.,
+2020), secure payment (Das et al., 2020), and combined applications with Internet of things
+(IoT) (Elghaish et al., 2021), building information modeling (BIM), and cloud computing (Li
+and Kassem, 2021). Although blockchain-based solutions (e.g., Wang et al., 2020; Sheng et
+al., 2020; Zhong et al., 2020; Hijazi et al., 2021; Tao et al., 2021) have been proposed for
+information management problems (e.g., information sharing, data traceability, and record
+
+2
+
+65
+
+70
+
+75
+
+80
+
+85
+
+90
+
+95
+
+100
+
+immutability) in construction, its applicability to the problem of improving informationsharing accuracy for OAMC has received little attention. For researchers, a clear theoretical
+model is needed to explain how blockchain can improve information sharing, while
+practitioners desire an operable system.
+The aim of this research is twofold: (a) to explore theoretical explanations for how
+blockchain can improve information-sharing accuracy; and based on that, (b) to provide
+empirical examples of mobilizing blockchain technology to improve information-sharing
+accuracy in the context of OAMC. It adopts a design science research (DSR) method
+involving a literature review, business process analyses (BPA), prototyping, onsite testing,
+validation, and interviews at construction project sites. The remainder of this paper is
+organized as follows. Subsequent to this introduction is a literature review of blockchain for
+assembly services and its applications in information sharing. The following section
+elaborates on the research methodology. Then the results of BPA are described, providing the
+basis for developing the theoretical model. After that, the components of this model are
+elaborated, based on which a prototype system is developed, validated, and reported.
+Research findings and the strengths and limitations of the study are discussed, and then
+conclusions are drawn in the last section.
+Literature Review
+Blockchain technology for assembly services
+Blockchain technology has been applied to assembly services in various industries. To ensure
+a tamper-proof history of product assembly, for example, Mondragon et al. (2018) adopted
+blockchain to record information related to composite materials. In the automotive industry,
+Dorri et al. (2017) proposed a blockchain-based architecture to immutably record vehicle
+assembly information. Similarly, Ravishankar et al. (2020) used blockchain to record
+information related to clutch lever assembly. Other studies have explored blockchain
+traceability and transparency in assembly services. For example, Kuhn et al. (2021) designed
+a blockchain architecture to enhance the traceability of automotive assembly materials.
+Huang et al. (2020) used blockchain to enhance information-sharing efficiency among
+participants during turbine assembly. However, little research has attempted to address
+blockchain potential for information endorsement in assembly services where efficient
+collaboration requires accurate shared information.
+In construction, numerous studies have focused on the use of blockchain in supply chain
+tracking. For example, Sheng et al. (2020) and Zhang et al. (2020) used blockchain to track
+prefabricated components from production to onsite assembly. Wang et al. (2020) explored
+blockchain for sharing information on component location for onsite assembly, while Zhong
+et al. (2020) and Wu et al. (2021) developed blockchain prototype systems to record
+3
+
+105
+
+110
+
+115
+
+120
+
+125
+
+130
+
+135
+
+140
+
+prefabricated component quality information. Although blockchain-based solutions have
+been proposed for data traceability, information sharing, and record immutability in
+construction, its applicability to improving OAMC information-sharing accuracy has not yet
+been systematically examined.
+Blockchain technology for information-sharing endorsement
+Blockchain protocol incorporates an endorsement (consensus) mechanism to verify the
+correctness of block contents (Xue and Lu, 2021). Only when blockchain network
+participants have verified the transaction information can it be included in the blockchain as a
+new block. Four common consensus algorithms are: proof of work (PoW), proof of stake
+(PoS), practical byzantine fault tolerance (PBFT), and crash fault tolerance (CFT) (Lu et al.,
+2021a). PoW is typical in finance (Chen et al., 2017), philanthropy (Sirisha et al., 2019), and
+democracy and governance (Diallo et al., 2018) because it is an open consensus algorithm
+that can ensure the transparency of transactions. However, it needs high computing power
+(Lu et al., 2021a). A relatively energy-saving mechanism, PoS assumes that participants with
+a greater stake (e.g., coins) display less opportunistic behavior, so they have more
+opportunities to endorse blocks. PoS is an open consensus algorithm with relatively low
+privacy. It has been adopted by Pop et al. (2018), for example, to verify information in the
+energy industry. PBFT is a permissioned network’s consensus protocol, a low-energy
+mechanism that requires three rounds of voting (Perera et al., 2020). It was selected by Wang
+et al. (2019), for instance, to verify education certificates. However, it is not a cost-effective
+choice for relatively small blockchain networks (Hyperledger Fabric, 2020). CFT is another
+low-energy mechanism. It does not, for example, require cryptocurrency participants to
+conduct expensive mining to verify transactions (Perera et al. 2020).
+In construction, blockchain conceptual models and proof-of-concept works related to
+information endorsement have recently been investigated in procurement (Yang et al., 2020),
+production (Li et al., 2021), quality (Sheng et al., 2020; Zhang et al., 2020; Zhong et al.,
+2020), and progress (Wang et al., 2020; Tezel et al., 2021). However, the effectiveness and
+efficiency of the consensus mechanism in ensuring accurate information-sharing remains to
+be studied. For example, while Pradeep et al. (2021) proposed a blockchain framework to
+verify design inputs, it was not evaluated in real-life cases. Das et al. (2020), Hamledari and
+Fischer (2021) and Hasan and Salah (2018) focused on blockchain-based payment
+verification, but on the security and transparency of payments rather than the effectiveness
+and efficiency of endorsement mechanisms. Dounas and Lombardi (2018), meanwhile,
+integrated computer-aided design (CAD) and blockchain to endorse CAD modifications, but
+their work only allows verifying operation-based transactions from CAD applications. Most
+frequently, blockchain is used in construction to verify changes in digital models, especially
+BIM (Hunhevicz and Hall, 2020). Lee et al. (2021a) developed and tested an integrated
+
+4
+
+digital twin and blockchain framework for sharing, verifying, and tracking project data, using
+a case study to show that the consensus mechanism could prevent hacked information from
+being shared. Nevertheless, whether such a mechanism could improve information-sharing
+accuracy in construction was largely unexplored.
+145
+
+150
+
+Table 1 summarizes the relevant research on the use of blockchain technology for
+endorsement in information sharing. The research gaps are summarized by analyzing the
+target problem and the adopted platform, consensus mechanism, and testing method,
+revealing lack of a model to guide the establishment of an endorsement mechanism for
+information sharing in OAMC. In addition, effectiveness of the consensus mechanism in
+improving accuracy of information sharing in OAMC has not been empirically evaluated.
+Table 1. Included studies related to information endorsement using blockchain technology
+ID Reference
+Target problem
+Blockchain
+Consensus
+Testing method
+platform
+mechanism
+Non-construction industry
+1
+Chen et al. (2017)
+Cryptocurrency
+Bitcoin
+PoW
+Prototype
+transaction endorsement
+development
+2
+Diallo et al. (2018)
+Bidding information
+A custom
+PoW
+Prototype
+endorsement
+blockchain
+development
+3
+Dounas and
+Design information
+Ethereum
+PoW or PoS Prototype
+Lombardi (2018)
+endorsement
+development
+4
+Pop et al. (2018)
+Energy information
+Ethereum
+PoS
+Simulation
+endorsement
+5
+Sirisha et al. (2019) Donation information
+Ethereum
+PoW
+Prototype
+endorsement
+development
+6
+Wang et al. (2019)
+Education certificate
+Hyperledger PBFT
+Case study
+endorsement
+Fabric
+Construction industry
+7
+Hasan and Salah
+Digital assets
+Ethereum
+PoS
+Prototype
+(2018)
+information endorsement
+development and
+security analysis
+8
+Das et al. (2020)
+Progress payment
+Ethereum
+PoS
+Comparative
+information endorsement
+analysis
+9
+Sheng et al. (2020) Quality information
+Hyperledger Kafka
+Prototype
+endorsement
+Fabric
+consensus
+development and
+case study
+10 Wang et al. (2020)
+Production and
+Hyperledger PBFT
+Case study
+transportation
+Fabric
+information endorsement
+11 Xue and Lu (2020) BIM modification
+A custom
+A custom
+Simulation
+endorsement
+blockchain
+consensus
+12 Yang et al. (2020)
+Design and Procurement Hyperledger PBFT
+Case study
+information endorsement Fabric
+PoS
+Ethereum
+13 Zhang et al. (2020) Quality information
+Hyperledger PBFT
+Interview
+endorsement
+Fabric
+14 Zhong et al. (2020) Quality information
+Hyperledger PBFT
+Prototype
+endorsement
+Fabric
+development
+15 Hamledari and
+Progress payment
+Ethereum
+PoW
+Case study
+Fischer (2021)
+information endorsement
+
+5
+
+16
+
+Li et al. (2021)
+
+17
+
+Lu et al. (2021a)
+
+18
+
+Lee et al. (2021a)
+
+19
+
+Wu et al. (2021)
+
+20
+
+Pradip et al. (2021)
+
+21
+
+Tezel et al. (2021)
+
+Module production
+information endorsement
+Project application
+information endorsement
+Project-related
+information sharing and
+endorsement
+Quality information
+endorsement
+Design information
+endorsement
+Progress payment
+information endorsement
+
+Hyperledger
+Fabric
+Hyperledger
+Fabric
+Ethereum
+
+PBFT
+
+Hyperledger
+Fabric
+Ethereum
+
+PBFT
+
+Ethereum
+
+PoW
+
+CFT
+PoW
+
+PoW
+
+Prototype
+development
+Prototype
+development
+Case study
+Prototype
+development
+Prototype
+development
+Focus group studies
+
+155
+
+Research Methodology
+This study adopts design science research (DSR) method, an analytical and creative approach
+that involves creating meaningful artifacts to solve identified problems (Pradeep et al., 2021).
+The four steps involved are shown in Fig. 1.
+160
+
+Fig. 1. Methodological steps
+6
+
+165
+
+170
+
+175
+
+180
+
+185
+
+190
+
+195
+
+200
+
+The first step was to understand the issues leading to sharing of inaccurate information. The
+research team conducted BPA of multiple modular construction projects, onsite assembly
+processes in particular, to identify problems related to information-sharing endorsement faced
+by key stakeholders (e.g., owners, transporters, contractors, and inspectors). The research
+team also introduced basic blockchain knowledge (e.g., encryption algorithm, consensus
+mechanism, distributed ledger) to project representatives and discussed how it might improve
+information-sharing endorsement in OAMC. A student residence modular construction
+project was selected for the study with the scope of the OAMC phases defined as: (1) the
+owner signs an agreement to confirm the start time of the site survey; (2) prefinished modules
+and their related detailed information are delivered (i.e., the inputs); (3) external systems are
+completed, and relevant inspections are passed; (4) structural towers are completed (the
+output).
+The second step involved developing a blockchain-based model. Four research meetings were
+carried out in January 2021. At the first meeting, the research team identified the stakeholders
+involved and confirmed the OAMC information that needed to be endorsed. At the second,
+team members brainstormed the model structures by analyzing and synthesizing the literature
+and knowledge obtained in the first step. The advantages and disadvantages of solutions were
+discussed in the third meeting, based on which the most promising was selected. The process
+was non-linear because, as some solutions were feasible but not the most promising, several
+comparison iterations were needed to select a promising solution. Finally, for this solution,
+the model was proposed and graphed in the fourth meeting.
+The third step included the three-phase development and testing of the prototype system.
+Firstly, blockchain type was determined by considering the strengths and weaknesses of
+public, private, and consortium blockchain (Perera et al., 2020). As Zhong et al. (2020)
+pointed out, consortium blockchain can provide complete functions such as authentication,
+authorization, and audit of participating members. This blockchain type was chosen as
+different parties may have different requirements for information and privacy control in
+OAMC. Hyperledger Fabric platform was adopted to develop the consortium blockchain
+since it provides developers with diverse security-enhanced alternatives, guidelines, resources
+and tools, and is suitable for complex information proof requirements in construction (Li et
+al., 2021). Next, a consensus algorithm was selected. Unlike other open consensuses such as
+PoW and PoS, CFT avoids cryptocurrency, reducing vital risks/attack vectors and requiring
+lower computational energy consumption from cryptographic mining processes (Perera et
+al., 2020). CFT is also relatively fast compared with PBFT and, compared with PoW, avoids
+crashes and network partitions (Hyperledger Fabric, 2020). It should be noted that these
+
+7
+
+consensus mechanisms are not mutually exclusive, and the proposed model can have
+pluggable consensuses supporting different applications or application requirements.
+
+205
+
+210
+
+215
+
+220
+
+225
+
+230
+
+In the next phase, front- and back-end prototypes were developed. The development
+environment was Linux version 5.4.0-58-generic-lpae (5.4.0-58.64~18.04.1) (Ubuntu 18.04.1
+LTS). The back-end prototype was achieved through SpringBoot (version 2.4) because it is a
+Java-based back-end framework for the fast and easy development of database management
+systems (MYSQL) and Web servers. AdminLTE was selected for the fast development of
+user interfaces as it is a bootstrap-based front-end framework that provides responsive,
+reusable, and commonly used components. Hyperledger Fabric Cello was used to provide
+members with access to browse the information on the blockchain. Also, JavaScript as an
+object-oriented and high-level language was adopted for smart contract writing. In
+Hyperledger Fabric, smart contracts are packaged as chaincode, which can automate the
+execution processes. Finally, two training workshops were provided for participants to test
+the prototype system in the mock-up onsite assembly phase of the surveyed project.
+In the fourth step, structured interviews were conducted to reveal reactions and opinions of
+the parties involved in the proposed prototype system test. Universally used in social
+sciences, the questions and often the answer categories are fully developed and placed in an
+interview schedule before the interview begins (Lewis-Beck et al., 2004). The four
+procedures suggested by Lewis-Beck et al. (2004) were implemented in the interviews.
+Firstly, the questions were asked as they were worded and in the pre-defined order according
+to the interview schedule. Secondly, if an interviewee failed to answer the question
+completely, follow-up questions were asked. Thirdly, the answers were recorded without
+discretion by the interviewer. Fourthly, the interviewer minimized personal judgment and
+feedback in order to obtain accurate answers. The interviewees met all three selection criteria.
+First, they participated in the blockchain introduction session at the BPA stage to ensure that
+they have basic blockchain knowledge. Second, they attended two system training workshops
+during the development and testing stage. Third, they were involved in the three testing
+scenarios. As a result, four participants from the owner organization, two from the contractor,
+one from the transporter, and one from the inspection organization were asked four preworded questions in the same order, as shown in Table 2. The interviewees’ answers were
+recorded and transcribed for further analysis.
+
+235
+
+ID
+OW1
+OW2
+OW3
+OW4
+MC1
+MC2
+
+Table 2. Information of interviewees and interview questions
+Organization
+Position
+Working Experience
+Owner
+Technical Manager
+6
+Owner
+Project Manager
+4
+Owner
+Site Engineer
+2
+Owner
+Site Engineer
+2
+Main Contractor
+Project Controls Manager
+4
+Main Contractor
+Site Engineer
+3
+8
+
+TR1
+Transporter
+INS1
+Inspector
+Interview questions
+
+Logistics Operator
+Inspector Manager
+
+4
+3
+
+Question 1: What are the advantages of the prototype system?
+Question 2: What are the disadvantages of the prototype system?
+Question 3: Would you use the prototype system? Why/Why not?
+Question 4: Do you have other suggestions to improve the prototype system?
+
+240
+
+Data Analyses, Results, and Findings
+Business Process Analysis of Onsite Assembly of Modular Construction
+The existing OAMC business process can generally be divided into the 10 main stages shown
+in Fig. 2 (Li et al., 2018a; Li et al., 2019c). Stages 2 and 3 can be carried out concurrently, as
+can Stages 4 to 5. Onsite assembly is most relevant to Stage 8.
+
+245
+
+Fig. 2. Onsite assembly processes of modular construction
+
+250
+
+As shown in Fig. 2, in Stage 1, the site surveyor inspects the area for the proposed
+construction project and collects information for the follow-up works. In Stage 2, the
+contractor can establish the site and excavate the land. Procedures for site establishment
+include protecting existing structures, boundary removal, clean-up of materials, construction
+of temporary accommodation, and connection of services (Li et al., 2018a). In Stage 3,
+construction stakeholders can formulate the assembly schedule according to the master plan.
+
+9
+
+Assembly mock-ups can be carried out in Stage 4 while conducting foundation works in
+Stage 5.
+255
+
+260
+
+265
+
+270
+
+275
+
+The construction works begin in Stage 6 and include temporary work (e.g., placing safety
+signs), crane installation (e.g., erecting a tower crane, material and passenger hoists), and
+core structure construction (e.g., applying the cast-in-situ method) (Zhai et al., 2019). In
+Stage 7, according to the plan, the logistics company transports the prefabricated modules to
+the site and, if the site is too congested to accommodate these massive modules, will
+temporarily store them in intermediate warehouses nearby. Upon arrival at the construction
+site, the site engineer will confirm the type, arrival time, quantity, and quality of the modules
+delivered and sign the delivery docket. In Stage 8, modules are assembled onsite after
+verification of assembly sequence, module type, installation position, and orientation. Module
+assembly follows Stages 8(a) to (g) (see Fig. 2). In Stage 9, utilities and building servicesrelated facilities are installed and connected, including plumbing, drainage, gas, electricity,
+lifts, and fire services. In Stage 10, the exterior system is completed, such as the finishing
+works (e.g., plastering and painting) for flats, common areas, and external walls.
+There are several problems in the OAMC business process. Firstly, accuracy of information
+sharing is not guaranteed due to ambiguity of paper-based documentation. Secondly, a
+unified OAMC information exchange platform is lacking, resulting in information
+asymmetry. Thirdly, the current practice lacks an endorsement mechanism to ensure the
+accuracy of the updated information (e.g., assembly sequence, module type, installation
+location, and orientation), leading to module misplacement and additional labor and time
+costs.
+A Blockchain-based Model for Improving Information-sharing Accuracy in Onsite Assembly of Construction
+Modules
+
+280
+
+The conceptual model
+
+285
+
+Based on the literature review and BPA, a conceptual model is proposed to explain how
+blockchain can be used to improve the accuracy of information shared, as shown in Fig. 3.
+The blockchain system functions by (1) allowing the owner, contractor, transporter, and
+inspector to endorse OAMC information; and (2) improving information-sharing accuracy by
+requiring participants to sign the endorsed information digitally.
+
+10
+
+Fig. 3. Blockchain-based model for improving information-sharing accuracy in the onsite assembly of modular
+construction. (a) membership registration; (b) information sharing; (c) ordering service; (d) consenus
+290
+
+295
+
+300
+
+mechanism; and (e) decentralized storage.
+
+The proposed conceptual model consists of five components (Fig. 3(a)–(e)). Specifically,
+OAMC participants should first register as members of a blockchain-based network (Fig.
+3(a)) and share relevant information among participants through the corresponding
+applications (user interfaces) (Fig. 3(b)). Defined OAMC information includes transportation,
+onsite construction and assembly, and inspection information. Every time information is
+shared, the smart contract converts it into a transaction and sends it to the ordering service
+through which transactions are packed as blocks (Fig. 3(c)). In the real-life onsite assembly, it
+is difficult to verify OAMC information among all stakeholders and also to verify
+information changes promptly. To enhance the OAMC information endorsement process, the
+proposed model uses a consensus algorithm. The model also requires participants to digitally
+sign each transaction when verifying OAMC information, thereby ensuring the completeness
+and accuracy of the information (Fig. 3(d)). Each participant configures a copy of the ledger
+
+11
+
+305
+
+to record endorsed transaction information, and the smart contract can invoke the stored
+transaction information from the ledgers when the participant requests (Fig. 3(e)).
+An operable blockchain-based model
+
+310
+
+315
+
+The components of the proposed model, such as membership registration, information
+sharing-request, ordering service, consensus mechanism, and distributed storage, are
+described as follows. Before joining the network, participants must verify their identity by
+sending a membership registration request to the owner. Those qualified are allocated
+Certificate Authorities (CAs) by the owner. Members can provide membership to submembers through their assigned CAs. The proposed model consists of a network with four
+registered organizations (members): transporter (T1), contractor (C2), inspector (I3), and
+project owner (P0), as shown in Fig. 4. All four organizations have a corresponding CA (1–4)
+authorized by the P0 (the P0 authorises its own CA). The network has a configuration, CC1,
+which lists the organizations’ definitions. The transporter, contractor and inspector can add
+managers as peers (sub-members), named TP1, CP2, and IP3, respectively, to the channel.
+Also, peers can add their corresponding operators to share operation information.
+
+320
+
+Fig. 4. Registered members of the blockchain-based network
+
+325
+
+330
+
+An information sharing-request mechanism is employed to drive transaction flow.
+Transportation, onsite construction and assembly, and inspection information are shared with
+the project owner by peers’ operators through applications A1 (transportation information
+sharing user interfaces), A2 (onsite construction and assembly user interfaces), and A3
+(inspection information sharing user interfaces), respectively. Transportation information
+contains data about the module name and ID, process name and ID, delivery date, quantity
+and quality status of modules (before loading, after loading, and on arrival), vehicle and
+driver information, location, speed and time records, pick-up time, and signature of the
+12
+
+335
+
+340
+
+345
+
+350
+
+355
+
+360
+
+365
+
+person in charge. Onsite construction and assembly information includes data about
+construction and assembly operations, while inspection information includes detailed
+inspection and quality test results for all control points. For example, before assembling
+modules onsite, the contractor’s operators can share module information (e.g., assembly
+sequence, module type, installation location, and orientation) with the managers (peers) of the
+inspector and owner in the network to verify its correctness. In turn, the owner can request
+the module information before assembly, and the corresponding contractor’s operator can
+then exchange module information with the owner in the blockchain. Adopting the same
+mechanism, the owner can build information sharing-request interactions with the transporter
+and inspector.
+The model uses an ordering service to build orderly blockchain. In this model, the owner
+serves as an ordering node that bundles transactions into new blocks. The ordering node
+cannot commit unverified blocks to the blockchain, and only passes ordered and bundled
+blocks to peer nodes for endorsement. The peers verify block orders by examining the current
+and previous blocks’ hash values.
+Peers (organization managers) in the network can verify the completeness and accuracy of
+transactions in the blocks they receive through the designed consensus mechanism. If the
+transactions are valid, managers can digitally sign them. The model adopts a CFT consensus
+algorithm to help managers crosscheck onsite assembly transactions and reach an agreement.
+Finally, each manager keeps a copy of the ledger (L1) of the channel where the information
+(transactions) is stored. In the proposed model, L1 is assigned to the managers of the
+transporter, inspector and contractor (TP1, CP2, and IP3, respectively), and each ledger
+comprises two different but related parts: a world state and a blockchain, as shown in Fig. 5.
+The ledger world state contains two states, namely key and value. The key provides operation
+information categories such as “Transportation”, “Onsite construction”, “Onsite assembly”,
+and “Inspection”. The value offers the information content, such as module ID. The second
+part, blockchain, is a historical record of how objects arrived at their current states. In the
+blockchain, each block has a block header and a set of transactions. The block header consists
+of an index (the serial number of the block in the chain), a timestamp, a signature validator,
+and the hash values of the current and the previous blocks. The data frame includes a
+timestamp, a signature, the hash values of the present and the previous transactions, and a
+key–value pair for each transaction. Users can always connect with other peers keeping the
+same ledger to restore or update the local ledger copy.
+
+13
+
+Fig. 5. Ledger: (a) world state; (b) blockchain (Adapted from Li et al. (2021))
+370
+
+375
+
+In summary, the proposed model has five main information endorsement processes:
+membership registration, information sharing-request, ordering service, consensus, and
+distributed storage. Together, they can ensure the accuracy of OAMC information. By
+requesting the status of any OAMC process, the project owner can achieve better information
+endorsement and make more effective decisions.
+Smart contract configurations
+
+380
+
+385
+
+The business logic that defines how peers interact with the ledgers is contained in smart
+contracts. In the proposed model, chaincode (S5) is installed on TP1, CP2, and IP3. S5
+contains two smart contracts, one used for the information sharing-request mechanism, and
+the other used for block ordering and endorsement. Table 3(a) shows the smart contract
+algorithm used for the information sharing-request interaction between the owner and the
+contractor’s operator. The owner can request the module information during the onsite
+assembly process in the blockchain using a hash value as a start signal. The smart contract
+will ask the contractor’s operator to upload the requested transaction information through
+user interfaces and exchange transaction information with the owner through the blockchain.
+14
+
+It can also help realize the information sharing-request interactions between the owner and
+the transporter’s and the inspector’s operators.
+390
+
+Table 3. Smart contract algorithms: (a) information sharing-request; (b) ordering and endorsement
+(a) Algorithm Information Sharing-Request
+Input: Requested hash value
+Output: Published transactions
+Step A1: Require the operation data of on-site assembly by sending a hash value signal
+Project owner.get (hash)
+Hash → Contractor operator
+Step A2: After the 1st operation finished, transfer the operation to data (operation, completion time)
+Assembly operation → Data ()
+Completion time → Data ()
+Step A3: Prdocuce a transaction in the blockchain
+Transaction.hash ← SHA256 (Data)
+Transaction.prehash ← Hash
+Transaction.signature ← Operator.signature ()
+Step A4: Publish transaction to the project owner
+Transaction → Project owner
+End
+(b) Algorithm Block Ordering and Endorsement
+Input: Transactions
+Output: Blockchain
+// Step B1: Owner recevies and orders transactions
+Project owner.get (transaction)
+// Step B2: Project owner receives assembly operation data from the contractor operator
+Project owner.get (Data)
+// Step B3: Project owner packs blocks and endorses the data correctness
+Project owner.packblock (header, transaction)
+If SHA 256 (Data) != transaction.hash
+Return False
+// Step B4: Project owner delivers the block to peers
+Block → Transporter manager
+Block → Contractor manager
+Block → Inspector manager
+// Step B5: Each peer endorsed the block with digital signature
+If Block.transporter manager_signature.error() OR Block.contractor manager_signature. error() OR
+Block.inspector manager_signature.error()
+Return False
+else
+Project owner.signature (Block)
+// Step B6: Project owner updates the endorsed block to the ledger
+Block → Blockchain
+End
+
+395
+
+Table 3(b) demonstrates the smart contract algorithm for block ordering and endorsement.
+This example shows that smart contracts are configured to self-collect transactions published
+by the contractor’s operator and then deliver them to the ordering node (the owner) for
+bundling into blocks. Next, smart contracts can deliver the blocks to peers for verification.
+After the blocks are endorsed and signed, smart contracts can commit these blocks to the
+ledgers.
+15
+
+400
+
+405
+
+Development and Testing
+Prototype system development
+Based on the surveyed modular construction project, a prototype system was developed to
+implement OAMC information endorsement. In the prototype system, there are four
+organizations: the owner (acting as the ordering node in the ordering service), the transporter,
+the contractor, and the inspector. Their configuration information is shown in Fig. 6(a). The
+cryptogen in Hyperledger Fabric was used to facilitate sub-member registration (e.g., peers
+and operators) through certificates in order to control access (Fig. 6(b)).
+
+Fig. 6. System configurations: (a) organization registrations; (b) certificates
+410
+
+415
+
+Through the developed applications (user interfaces) of the prototype, participants such as the
+contractor’s operators can request other organizations’ managers (peers) to endorse OAMC
+information. For example, before starting module installation, the operator of the contractor
+can ask the managers of the owner and inspector to verify the assembly sequence, module
+type, installation location, and module orientation, as shown in Fig. 7(a). The operators of the
+transporter and inspector have the same interfaces for submitting information endorsement
+requests. The endorsement request is converted into a JavaScript Object Notation (JSON) file
+16
+
+420
+
+using the JSON form plug-in. The file is hashed, and the smart contract sends the file to the
+ordering service. By setting the owner as an orderer in the network, the ordering service is
+initialized. Next, the CFT consensus mechanism is implemented based on the etcd library in
+Hyperledger Fabric. The correctness of the information can be established by reaching a
+consensus among members, and then the verified file is committed to the managers’ ledger
+copies as the latest blocks. For example, the owner can verify the module information
+through the manager interface before the installation starts, as shown in Fig. 7(b).
+
+425
+
+Fig. 7. User interfaces: (a) contractor’s interface for submitting endorsement request; (b) project owner’s
+interface for requesting past transactions
+17
+
+430
+
+435
+
+System testing and evaluating
+
+Testing was undertaken by the owner, the transporter, the contractor, and the inspector to
+demonstrate that the developed model operates as intended. In the test, eight modules (four
+different types) were delivered to the site in two batches (see Fig. 8(a)). Then, according to
+the module ID (see Fig. 8(b)), eight modules were installed in the predetermined locations
+(see Fig. 8(c)) of the construction site to complete the mock-up assembly task of the
+investigated student residence project.
+
+Fig. 8. Mock-up onsite assembly of the surveyed project: (a) module type; (b) module ID; (c) mock-up plan
+440
+
+Test scenarios
+
+445
+
+450
+
+Three test scenarios were used to test the performance of OAMC information endorsement
+processes, as shown in Fig. 9. In the first scenario, the transporter plans to deliver modules
+from the factory to the construction site (see Fig. 9(a)). The transporter’s operator sends out
+the request through the user interface to the managers (peers) of contractor, inspector, and
+owner to verify the quantity, quality, and type of the delivered modules. Each endorsement
+request is recorded as a new transaction, hashed, and uploaded to the blockchain. Once the
+contractor’s and inspector’s managers receive the new transactions, they verify the hash
+values of the transactions. If their digital signatures match the signature of the hash value,
+these managers can decrypt the transactions and verify the transaction information according
+
+18
+
+to the delivered modules. Then, the owner packs the transactions into a new block and adds
+the block to the blockchain. Each block generation is endorsed through the CFT consensus.
+
+455
+
+Fig. 9. Test scenarios: (a) module arriving; (b) pre-installation; (c) post-installation
+
+460
+
+465
+
+470
+
+In the second scenario, the operators of the contractor plan to install modules on the
+construction site (see Fig. 9(b)). The operator of the contractor sends out the request through
+the user interface to the managers of the inspector and the owner to verify the assembly
+sequence, type, location, and orientation of the modules before assembly starts. The managers
+of both the owner and the inspector crosscheck the transaction information with the assembly
+plan and endorse the transactions through digital signatures. After installation, in the third
+scenario, the inspector’s operator inspects installed modules on the construction site (see Fig.
+9(c)). The inspector’s operator sends out the request through the user interface to the
+managers of the contractor and the owner to endorse the information about installed modules
+such as type, location, and orientation. Similarly, the managers of the contractor and the
+owner crosscheck the transaction information with their assembly operations records and
+verify the transactions through digital signatures. In all case scenarios, any shared
+information in the system was endorsed by the designated managers of the corresponding
+organizations to ensure its accuracy.
+19
+
+Interview results
+
+475
+
+480
+
+Participants answered four interview questions after using the prototype system in the test.
+The responses are summarized in Table 4. In response to the first question on the advantages
+of the prototype system, all eight interviewees mentioned the potential of the prototype
+system to improve accuracy of information sharing. Three mentioned elimination or
+reduction of assembly rework issues. One participant from the contractor organization
+identified reduced labor costs due to reduced likelihood of re-installation. Three interviewees
+mentioned improved project performance. In addition, enhanced trust relationships among
+participants and increased motivation were mentioned as advantages of the prototype system
+by owner organization interviewees.
+Table 4. Responses from interviewees
+Interviewee Response
+Question 1: What are the advantages of the prototype system?
+OW1
+Enables a system for accurate and timely information sharing
+OW2
+May minimize inaccurate information sharing, which could decrease the
+chance of misplacement of modules
+The system improves onsite assembly performance in the project.
+OW3
+May minimize asymmetrical information exchange, which could improve the
+trust relationships among participants
+OW4
+Getting accurate information for the onsite assembly of modules will increase
+the motivation of the contractor.
+MC1
+Accurate information sharing may minimize onsite assembly rework issues,
+which could decrease labor costs for the contractor.
+MC2
+Would improve information flow and minimize module displacement
+TR1
+Enables accurate information sharing with project participants
+Would improve project performance
+INS1
+When assembly information is shared accurately, project performance could
+improve substantially.
+Question 2: What are the disadvantages of the prototype system?
+OW1
+The system may incur additional development and maintenance costs for all
+parties
+Without a mature legal infrastructure, I think the system cannot be widely used
+in current modular construction projects.
+OW2
+If there are loopholes in the smart contract, the security of the blockchain
+network cannot be guaranteed.
+OW3
+The system will bring additional training costs to all parties.
+OW4
+Compared with the existing process, the system takes extra time for relevant
+parties to endorse the information through digital signatures.
+MC1
+If the scale of the project is large, the endorsement process will take too long.
+MC2
+I think we have to bear the cost of the system.
+TR1
+The endorsers have the opportunity to disclose project information (I know this
+is a very low probability event, but the impact is very high).
+INS1
+If the cost is too high, I don’t think the participants will accept it.
+Question 3: Would you use the prototype system? Why/Why not?
+OW1
+I am not sure, maybe after the legal infrastructure for the system is ready.
+OW2
+Yes, as it could improve the accuracy of information sharing and reduce reinstallation issues.
+OW3
+Yes, we have inaccurate information sharing all the time. The system would
+improve the current asymmetrical information-sharing issue.
+20
+
+Category
+1
+1, 2
+4
+1, 5
+1, 6
+1, 2, 3
+1, 2
+1
+4
+1, 4
+
+7
+8
+10
+7
+9
+9
+7
+11
+7
+Conditionally
+Yes
+Yes
+
+OW4
+
+Yes, I would. The system could motivate all to achieve accurate information
+sharing for efficient OAMC.
+MC1
+No. The information endorsement process is time-consuming and privacy
+issues may occur.
+MC2
+If the cost is known, I would use the system.
+TR1
+Definitely, yes.
+INS1
+Yes I would, but the cost has to be low.
+Question 4: Do you have other suggestions to improve the prototype system?
+OW1
+The system can be linked with BIM to assist the information endorsement.
+OW2
+The system should provide mobile-based applications to make it easier for
+participants to use.
+OW3
+I recommend testing the system in more projects to ensure its scalability.
+OW4
+The total cost of the system should be determined before its actual
+implementation.
+MC1
+I suggest sending text messages to participants to remind them to endorse the
+information.
+MC2
+I suggest a rough cost estimate for the system.
+TR1
+I do not have any suggestions.
+INS1
+The system should be tested in different projects to determine cost.
+
+Yes
+No
+Conditionally
+Yes
+Conditionally
+12
+13
+14
+7
+15
+7
+7
+
+485
+
+490
+
+495
+
+500
+
+505
+
+Responses to the second question on disadvantages of the prototype system are summarized
+in Table 4. Four interviewees mentioned additional costs for users such as development,
+maintenance, and training costs. One interviewee from owner organization mentioned lack of
+legal infrastructure as a disadvantage. An interviewees from the owner and contractor
+organizations referred to the relatively long time taken for users to endorse the information.
+Cybersecurity of blockchain and privacy were highlighted as a disadvantage by one
+interviewee from the owner organization and one from transporter organization, respectively.
+In response to the third question about the users’ willingness to use the prototype system, four
+interviewees said they would use the system without condition. One (from the contractor
+organization) opposed using the system because it may be time-consuming for large projects
+and present privacy issues. One interviewee from the contractor and the inspector
+organization stated that they would only use the system if the cost was low. One interviewee
+(from the owner organization) said he might use it after the required legal infrastructure is
+ready.
+Interviewees made suggestions in response to the fourth question. Three interviewees
+suggested that the system cost should be determined before implementation. Interviewees
+from the owner organization suggested connecting the system with BIM to assist in
+information endorsement and developing mobile-based applications for the convenience of
+users. An owner organization interviewee also suggested testing the scalability of the system
+in more projects, while an interviewee from the contractor organization said that the system
+should be able to send text messages to participants reminding them to endorse information.
+
+510
+
+21
+
+515
+
+520
+
+525
+
+530
+
+535
+
+Discussion and Limitations
+The scientific contribution of this study is summarized as follows. First, this research
+explores how blockchain technology can improve the accuracy of information sharing for
+OAMC. In a previous study (Lee et al., 2021a), blockchain was used to share and endorse
+virtual positioning information of prefabricated bricks. However, the potential of the
+consensus mechanism (CFT) in improving the accuracy of information sharing in OAMC has
+not been evaluated in an empirical study. Here, a conceptual model is presented for the
+application of blockchain technology in OAMC information endorsement. In the proposed
+model, the assembly information of each module is shared in a transparent way and endorsed
+by relevant parties before release, reducing the likelihood of disputes and bringing about a
+decline in assembly reworks. The Hyperledger Fabric-based prototype system shows the
+feasibility of the proposed model. Thus, this study may provide construction stakeholders
+with an innovative tool for information endorsement in OAMC. In addition, it can enhance
+stakeholders’ understanding of the benefits of blockchain, which is an essential factor in the
+adoption of blockchain in actual modular construction projects. For practical
+implementations, configurable network components of the prototype system should be finetuned in terms of software (e.g., the endorsement policy) and hardware (e.g., CPU speed)
+aspects.
+Second, the opinions of test participants on the use of the consensus mechanism of
+blockchain in OAMC for information endorsement are presented in detail, with advantages
+and disadvantages of the prototype system and user attitudes and suggestions summarized
+through structured interviews. Such analysis can facilitate understanding of barriers to the
+adoption of blockchain. Most importantly, since it is not feasible to address all the
+disadvantages and implement the suggestions simultaneously, understanding the actual user
+opinions of the prototype system can help to increase research attention and facilitate actual
+implementation of blockchain. The interview results can be reused to evaluate critical barriers
+with quantitative analysis methods like the decision-making trial and evaluation laboratory
+methods.
+
+540
+
+545
+
+Third, the model provides a valuable reference for policy design of blockchain governance in
+construction, including relevant regulations, laws, policies, and standards. Policymakers can
+simulate information endorsement scenarios by using or further developing the prototype
+system. The proposed model is an adaptive structure that can expand in scope to facilitate
+supply chain management in construction projects and to include other participants, such as
+governmental supervision units, material suppliers, and manufacturers and subcontractors.
+Despite these advantages, this study still has limitations. First, the operation transactions
+recorded onto the blockchain are manually input by humans. Manual operations may limit
+22
+
+550
+
+555
+
+560
+
+565
+
+570
+
+575
+
+580
+
+585
+
+information sharing efficiency and introduce opportunistic behaviors (uploading tampered
+assembly information). Lee et al. (2021a) developed and tested an integrated digital twin and
+blockchain framework. The digital twin uses IoT sensors to update the BIM in near real-time,
+while the blockchain authenticates all transactions of the digital twin. Random errors and
+noise generated from IoT sensors can still result in a single point of failure for IoT networks,
+reducing data quality for BIM and negatively affecting the trustworthiness of the system. A
+recent study conducted by Lu et al. (2021b) explored smart construction objects (SCOs) as
+blockchain oracles to provide a data authenticity mechanism. Thus, future research can
+integrate the proposed model with BIM and the SCO-enabled blockchain oracles and test it in
+real-life projects. Second, the configured smart contracts have only been used for information
+exchange and block ordering services in the prototype system. Hamledari and Fischer (2020)
+and Das et al. (2020) adopted smart contracts to improve the certainty of construction
+contract payments. Therefore, future research can explore the combined application of the
+proposed model and smart contracts. Advanced technologies such as GIS (geographic
+information system) and 5G can also be integrated with the model to add more intelligence
+and autonomy to the OAMC management. Third, this study does not run a cost evaluation of
+running such a system, since the test scenario is limited to the mock-up stage of a modular
+construction project. Pradeep et al. (2021) suggested that cost and benefit analysis could be
+the next logical step when more empirical data is available. Fourth, only one pilot case study
+was carried out. Thus, testing results can only be perceived as a proof of concept of the
+model, rather than a final version for benchmarking performance or proof of compatibility to
+other OAMC projects. Future works are recommended to fine-tune the platform and test and
+evaluate it in other OAMC projects.
+Conclusions
+Successful delivery of onsite assembly in a modular construction (OAMC) project requires
+efficient communication and coordination by numerous stakeholders, who interact closely
+based on an array of information. However, sharing of inaccurate information may occur
+during OAMC, primarily owing to the widespread adoption of paper or paint labels,
+fragmented project-based organizations, and lack of information consensus mechanism. This
+study aimed to explore the use of blockchain technology to improve the situation of
+inaccurate information sharing in OAMC, starting with a theoretical exploration of how
+blockchain can truly help.
+This study developed a blockchain-based model for modular construction to improve the
+accuracy of information sharing for OAMC. The proposed model was developed using a
+design science research (DSR) strategy to help project participants to endorse shared OAMC
+information. The model realizes information sharing endorsement processes via membership
+registration, information sharing-request, ordering service, consensus mechanism, and
+
+23
+
+590
+
+595
+
+600
+
+605
+
+610
+
+distributed storage. After that, a prototype system was designed to demonstrate the proposed
+blockchain-based model. The three key OAMC processes of arriving, pre-installation, and
+post-installation verification, are included to test the prototype system in the mock-up on-site
+assembly phase of a modular construction project. Finally, structured interviews were
+conducted with test participants to discover their opinions on the prototype system. The
+results show that the proposed model can improve the accuracy of information sharing for
+OAMC by allowing project participants to endorse information about the modules and their
+operations through the consensus mechanism, thereby reducing the possibility of onsite
+assembly reworks.
+The limitations of this research provide opportunities for future research. One potential
+research direction is the blockchain “oracles” that connect the off-chain and on-chain world.
+For example, researchers can explore the use of decentralized smart construction objects to
+protect data uploaded to BIM and blockchain. In addition, future research can focus on the
+scalability evaluation of the proposed prototype system and its integration with smart contract
+payment, GIS, and 5G technologies. When more empirical data become available, the cost of
+the proposed system should be investigated in depth. Finally, the proposed model may extend
+to industries beyond the construction industry.
+Data Statement
+Some or all data, models, or code that support the findings of this study are available from the
+corresponding author upon reasonable request.
+Acknowledgments
+This work is funded by the Hong Kong Innovation and Technology Fund (ITF) (Project No.:
+ITP/029/20LP).
+
+615
+
+620
+
+References
+Chen, P. W., Jiang, B. S., and Wang, C. H. (2017). “Blockchain-based payment collection
+supervision system using pervasive Bitcoin digital wallet.” 2017 IEEE 13th
+International Conference on Wireless and Mobile Computing, Networking and
+Communications (139-146). IEEE. https://doi.org/10.1109/WiMOB.2017.8115844.
+Das, M., Luo, H., and Cheng, J. C. (2020). “Securing interim payments in construction
+projects through a blockchain-based framework.” Automation in Construction, 118,
+103284. https://doi.org/10.1016/j.autcon.2020.103284.
+
+625
+
+Dounas, T., and Lombardi, D. (2018). “A CAD-Blockchain Integration Strategy for
+Distributed Validated Digital Design”, In 36th International Conference on Education
+and Research in Computer Aided Architectural Design in Europe (Vol. 1, 223-230).
+eCAADe. http://papers.cumincad. org/data/works/att/ecaade2018_226.pdf.
+
+24
+
+630
+
+635
+
+Diallo, N., Shi, W., Xu, L., Gao, Z., Chen, L., Lu, Y., ... and Turner, G. (2018). “eGov-DAO:
+A better government using blockchain based decentralized autonomous organization.”
+2018 International Conference on eDemocracy & eGovernment ( 166-171). IEEE.
+https://doi.org/10.1109/ICEDEG.2018.8372356.
+Demiralp, G., Guven, G., and Ergen, E. (2012). “Analyzing the benefits of RFID technology
+for cost sharing in construction supply chains: A case study on prefabricated precast
+components.” Automation in Construction, 24, 120-129.
+https://doi.org/10.1016/j.autcon.2012.02.005.
+Elghaish, F., Hosseini, M. R., Matarneh, S., Talebi, S., Wu, S., Martek, I., ... & Ghodrati, N.
+(2021). Blockchain and the ‘Internet of Things' for the construction industry: research
+trends and opportunities. Automation in Construction, 132, 103942.
+https://doi.org/10.1016/j.autcon.2021.103942.
+
+640
+
+645
+
+Gong, P., Teng, Y., Li, X., and Luo, L. (2019). “Modeling constraints for the on-site
+assembly process of prefabrication housing production: a social network analysis.”
+Sustainability, 11(5), 1387.
+Heiskanen, A. (2017). “The technology of trust: How the Internet of Things and blockchain
+could usher in a new era of construction productivity.” Construction Research and
+Innovation, 8(2), 66-70. https://doi.org/10.1080/20450249.2017.1337349.
+Hasan, H. R., and Salah, K. (2018). “Proof of delivery of digital assets using blockchain and
+smart contracts.” IEEE Access, 6, 65439-65448.
+https://doi.org/10.1109/ACCESS.2018.2876971.
+
+650
+
+655
+
+Hamledari, H., and Fischer, M. (2021). “The application of blockchain-based crypto assets
+for integrating the physical and financial supply chains in the construction &
+engineering industry.” Automation in Construction, 127, 103711.
+https://doi.org/10.1016/j.autcon.2021.103711.
+Hunhevicz, J. J., and Hall, D. M. (2020). “Do you need a blockchain in construction? Use
+case categories and decision framework for DLT design options.” Advanced
+Engineering Informatics, 45, 101094. https://doi.org/10.1016/j.aei.2020.101094.
+Hyperledger Fabric. (2020). “Glossary.” Accessed April 15, 2020. https://hyperledgerfabric.readthedocs.io/en/latest/index.htm.
+
+660
+
+Huang, S., Wang, G., Yan, Y., and Fang, X. (2020). “Blockchain-based data management for
+digital twin of product.” Journal of Manufacturing Systems, 54, 361-371.
+https://doi.org/10.1016/j.jmsy.2020.01.009.
+
+665
+
+Hijazi, A. A., Perera, S., Calheiros, R. N., and Alashwal, A. (2021). “Rationale for the
+integration of BIM and blockchain for the construction supply chain data delivery: A
+systematic literature review and validation through focus group.” Journal of
+Construction Engineering and Management, 147(10), 03121005.
+https://doi.org/10.1061/(ASCE)CO.1943-7862.0002142.
+Kuhn, M., Funk, F., and Franke, J. (2021). “Blockchain architecture for automotive
+traceability.” Procedia CIRP, 97, 390-395. https://doi.org/10.1016/j.procir.2020.05.256.
+
+670
+
+Lee, D., Lee, S. H., Masoud, N., Krishnan, M. S., and Li, V. C. (2021a). “Integrated digital
+twin and blockchain framework to support accountable information sharing in
+construction projects.” Automation in Construction, 127, 103688.
+https://doi.org/10.1016/j.autcon.2021.103688.
+
+25
+
+Lee, D., and Lee, S. (2021b). “Digital Twin for Supply Chain Coordination in Modular
+Construction.” Applied Sciences, 11(13), 5909. https://doi.org/10.3390/app11135909.
+675
+
+Lewis-Beck, M., Bryman, A. E., and Liao, T. F. (2004). The Sage encyclopedia of social
+science research methods. Sage Publications. http://dx.doi.org/10.4135/9781412950589.
+Li, C. Z., Xue, F., Li, X., Hong, J., and Shen, G. Q. (2018a). “An Internet of Things-enabled
+BIM platform for on-site assembly services in prefabricated construction.” Automation
+in Construction, 89, 146-161. https://doi.org/10.1016/j.autcon.2018.01.001.
+
+680
+
+Li, X., Shen, G. Q., Wu, P., Fan, H., Wu, H., and Teng, Y. (2018b). “RBL-PHP: Simulation
+of lean construction and information technologies for prefabrication housing
+production.” Journal of Management in Engineering, 34(2), 04017053.
+https://doi.org/10.1061/(ASCE)ME.1943-5479.0000577.
+Li, X., Shen, G. Q., Wu, P., and Yue, T. (2019a). “Integrating building information modeling
+and prefabrication housing production.” Automation in Construction, 100, 46-60.
+
+685
+
+690
+
+Li, J., Greenwood, D., and Kassem, M. (2019b). “Blockchain in the built environment and
+construction industry: A systematic review, conceptual models and practical use cases.”
+Automation in Construction, 102, 288-307. https://doi.org/10.1016/j.autcon.2019.02.005.
+Li, X., Wu, C., Wu, P., Xiang, L., Shen, G. Q., Vick, S., and Li, C. Z. (2019c). “SWPenabled constraints modeling for on-site assembly process of prefabrication housing
+production.” Journal of Cleaner Production, 239, 117991.
+https://doi.org/10.1016/j.jclepro.2019.117991.
+Li, X., Wu, L., Zhao, R., Lu, W., and Xue, F. (2021). “Two-layer Adaptive Blockchain-based
+Supervision model for off-site modular housing production.” Computers in Industry,
+128, 103437. https://doi.org/10.1016/j.compind.2021.103437.
+
+695
+
+700
+
+Li, J., and Kassem, M. (2021). “Applications of distributed ledger technology (DLT) and
+Blockchain-enabled smart contracts in construction.” Automation in Construction, 132,
+103955. https://doi.org/10.1016/j.autcon.2021.103955.
+Lu, W., Wu, L., Zhao, R., Li, X., and Xue, F. (2021a). “Blockchain Technology for
+Governmental Supervision of Construction Work: Learning from Digital Currency
+Electronic Payment Systems.” Journal of Construction Engineering and Management,
+147(10), 04021122. https://doi.org/10.1061/(ASCE)CO.1943-7862.0002148.
+Lu, W., Li, X., Xue, F., Zhao, R., Wu, L., and Yeh, A. G. (2021b). “Exploring smart
+construction objects as blockchain oracles in construction supply chain management.”
+Automation in Construction, 129, 103816. https://doi.org/10.1016/j.autcon.2021.103816.
+
+705
+
+710
+
+Luo, L., Jin, X., Shen, G. Q., Wang, Y., Liang, X., Li, X., and Li, C. Z. (2020). “Supply chain
+management for prefabricated building projects in Hong Kong.” Journal of
+Management in Engineering, 36(2), 05020001. https://doi.org/10.1061/(ASCE)ME.19435479.0000739.
+Mondragon, A. E. C., Mondragon, C. E. C., and Coronado, E. S. (2018). “Exploring the
+applicability of blockchain technology to enhance manufacturing supply chains in the
+composite materials industry.” In 2018 IEEE International conference on applied
+system invention (ICASI) ( 1300-1303). IEEE. https://doi.org/10.1109/ICASI.2018.8394531.
+Perera, S., Nanayakkara, S., Rodrigo, M. N. N., Senaratne, S., and Weinand, R. (2020).
+“Blockchain technology: Is it hype or real in the construction industry?.” Journal of
+
+26
+
+715
+
+Industrial Information Integration, 17, 100125.
+https://doi.org/10.1016/j.jii.2020.100125.
+Pradeep, A. S. E., Yiu, T. W., Zou, Y., and Amor, R. (2021). “Blockchain-aided information
+exchange records for design liability control and improved security.” Automation in
+Construction, 126, 103667. https://doi.org/10.1016/j.autcon.2021.103667.
+
+720
+
+725
+
+Pop, C., Cioara, T., Antal, M., Anghel, I., Salomie, I., and Bertoncini, M. (2018).
+“Blockchain based decentralized management of demand response programs in smart
+energy grids.” Sensors, 18(1), 162. https://doi.org/10.3390/s18010162.
+Ravishankr, B., Shailaja, V. N., and Appaiah, M. (2020). “The Study of Blockchain
+Technology in Engineering Development: The Case of the Clutch Lever Assembly.” In
+2020 International Conference on Mainstreaming Block Chain Implementation
+(ICOMBI) (pp. 1-4). IEEE. https://doi.org/10.23919/ICOMBI48604.2020.9203079.
+Sheng, D., Ding, L., Zhong, B., Love, P. E., Luo, H., and Chen, J. (2020). “Construction
+quality information management with blockchain.” Automation in Construction, 120,
+103373. https://doi.org/10.1016/j.autcon.2020.103373.
+
+730
+
+735
+
+740
+
+745
+
+Sirisha, N. S., Agarwal, T., Monde, R., Yadav, R., and Hande, R. (2019). “Proposed solution
+for trackable donations using blockchain.” In 2019 International Conference on
+Nascent Technologies in Engineering (ICNTE) ( 1-5). IEEE.
+https://doi.org/10.1109/ICNTE44896.2019.8946019.
+Tezel, A., Febrero, P., Papadonikolaki, E., and Yitmen, I. (2021). “Insights into Blockchain
+Implementation in Construction: Models for Supply Chain Management.” Journal of
+Management in Engineering, 37(4), 04021038. https://doi.org/10.1061/(ASCE)ME.19435479.0000939.
+Tao, X., Das, M., Liu, Y., and Cheng, J. C. (2021). “Distributed common data environment
+using blockchain and Interplanetary File System for secure BIM-based collaborative
+design.” Automation in Construction, 130, 103851.
+https://doi.org/10.1016/j.autcon.2021.103851.
+Wang, Z., Wang, T., Hu, H., Gong, J., Ren, X., and Xiao, Q. (2020). “Blockchain-based
+framework for improving supply chain traceability and information sharing in precast
+construction.” Automation in Construction, 111, 103063.
+https://doi.org/10.1016/j.autcon.2019.103063.
+Wang, G., Zhang, H., Xiao, B., Chung, Y. C., and Cai, W. (2019). “EduBloud: A blockchainbased education cloud.” 2019 Computing, Communications and IoT Applications ( 352357). IEEE. https://doi.org/10.1109/ComComAp46287.2019.9018818.
+
+750
+
+Wu, H., Zhong, B., Li, H., Guo, J., and Wang, Y. (2021). “On-Site Construction Quality
+Inspection Using Blockchain and Smart Contracts.” Journal of Management in
+Engineering, 37(6), 04021065. https://doi.org/10.1061/(ASCE)ME.1943-5479.0000967.
+Xue, F. and Lu, W. (2020). “A semantic differential transaction approach to minimizing
+information redundancy for BIM and blockchain integration.” Automation in
+Construction, 118, 103270. https://doi.org/10.1016/j.autcon.2020.103270.
+
+755
+
+Xue, F., Wu, L., and Lu, W. (2021). “Semantic enrichment of building and city information
+models: A ten-year review.” Advanced Engineering Informatics, 47, 101245.
+https://doi.org/10.1016/j.aei.2020.101245.
+
+27
+
+760
+
+Yang, R., Wakefield, R., Lyu, S., Jayasuriya, S., Han, F., Yi, X., ... and Chen, S. (2020).
+“Public and private blockchain in construction business process and information
+integration.” Automation in Construction, 118, 103276.
+https://doi.org/10.1016/j.autcon.2020.103276.
+Zhang, Z., Yuan, Z., Ni, G., Lin, H., and Lu, Y. (2020). “The quality traceability system for
+prefabricated buildings using blockchain: An integrated framework.” Frontiers of
+Engineering Management, 1-19. https://doi.org/10.1007/s42524-020-0127-z.
+
+765
+
+770
+
+775
+
+Zhong, B., Wu, H., Ding, L., Luo, H., Luo, Y., and Pan, X. (2020). “Hyperledger fabricbased consortium blockchain for construction quality information management.”
+Frontiers of Engineering Management, 1-16. https://doi.org/10.1007/s42524-020-0128-y.
+Zhou, J. X., Shen, G. Q., Yoon, S. H., and Jin, X. (2021). “Customization of on-site assembly
+services by integrating the internet of things and BIM technologies in modular
+integrated construction.” Automation in Construction, 126, 103663.
+https://doi.org/10.1016/j.autcon.2021.103663.
+Zhai, Y., Chen, K., Zhou, J. X., Cao, J., Lyu, Z., Jin, X., ... and Huang, G. Q. (2019). “An
+Internet of Things-enabled BIM platform for modular integrated construction: A case
+study in Hong Kong.” Advanced Engineering Informatics, 42, 100997.
+https://doi.org/10.1016/j.aei.2019.100997.
+
+28
+
+

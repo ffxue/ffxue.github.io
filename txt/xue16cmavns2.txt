@@ -1,0 +1,139 @@
+CMA–VNS2: An efficient hyper-heuristic algorithm
+for combinatorial black-box optimization
+Fan Xue∗ and Geoffrey Q.P. Shen
+xuef@hku.hk; geoffrey.shen@polyu.edu.hk
+August 10, 2016
+
+1
+
+Introduction
+
+The CMA-VNS2 (Covariance Matrix Adaptation Variable Neighborhood Search, version
+2016) solver is a hyper-heuristic entry for the second Combinatorial Black-Box Optimization Competition (CBBOC 20161 ). A previous entry CMA-VNS [Xue and Shen, 2015]
+showed that a combination of the well-known CMA-ES (Covariance Matrix Adaptation
+Evolution Strategy) [Hansen et al., 2003] and an iterated VNS (variable neighborhood
+search) [Mladenović and Hansen, 1997] resulted in competitive results2 for expensive
+combinatorial black-box optimization problems.
+The no free lunch (NFL) theorems [Wolpert and Macready, 1997], however, find out
+that no algorithm can perform statistically better than any other algorithm on average,
+if no problem-specific information is considered (also known as the Black Box Optimization). Wolpert and Macready [1997] and Culberson [1998] proved the NFL theorems in
+different ways. Hence researchers developed at least two kinds of means to keep algorithms away from the pitfall of NFL theorems:
+• To become a well-designed domain-specific (ad-hoc) algorithm [Burke et al., 2003];
+and
+• To detect and to take advantage of instance-specific, problem data set-specific,
+and/or domain-specific features promisingly, from case to case,
+where most of the successful algorithms belong to the latter class [Poli and Graff, 2009].
+The development of CMA-VNS2 fell in this last one as well.
+
+2
+
+Main Procedure
+
+The searching behavior of CMA-VNS was a typical CMA-ES procedure followed by iterated tests of the VNS local search [Xue and Shen, 2015]. To enrich the library of searching
+strategies, CMA-VNS2 employs two new profiles as alternatives:
+∗
+
+Corresponding author. Tel.: (852) 2219 4377; Addr.: Department of Real Estate and Construction,
+The University of Hong Kong, Hong Kong S.A.R.
+1
+See http://web.mst.edu/~tauritzd/CBBOC/GECCO2016/.
+2
+See http://web.mst.edu/~tauritzd/CBBOC/GECCO2015/.
+
+1
+
+P1 The profile P1 is exactly copied from CMA-VNS.
+P2 The profile P2 is an intensification (or depth-emphasized) version of CMA-VNS.
+Particularly, the adaptive acceptance level [Kheiri et al., 2014] is maximized and
+the CMA-ES recommendations are minimized to suppress restarts of VNS; and the
+input solutions from backbone (common bits of elite sets) [Zhang and Looks, 2005]
+are considerably increased to pursue a promising start of VNS.
+P3 The profile P3 is, in the opposite direction, a diversification of P2. P3 introduces
+a much larger elite set (and hence a smaller backbone) and extends the range of
+possible construction of neighborhood for VNS to skip attractions of local optima.
+Three instance-specific features, i.e. the dimension (n), the maximum evaluations (m)
+and the best objective value (v), are available in the framework of CBBOC. CMA-VNS2
+perceives the features for the selection of a search profile for each CBBOC instance.
+A number of training instances were randomly generated from the CBBOC framework.
+Experiments were conducted on the instances to compare the average performances, regarding the mean best objective values, of the three profiles. Table 1 shows the best
+profile selection against different combinations of instance feature from experimental results. According to the results, P1 (CMA-VNS) was still competitive when dimension
+was huge enough. P2 (intensification) became the best profile for most of remaining instances. Whereas P3 (diversification) was helpful to escape from local optima for some
+cases, such as those with enough evaluations and small dimensions.
+Table 1: Best profile selection of CMA-VNS2 on the training instances
+Level of evaluations
+Dimension (n)
+(m/n2 )
+25.5
+26
+26.5
+27
+27.5
+28
+High
+P2† P3‡
+P3
+P3
+P2
+†
+Median
+P2
+P2
+P2
+P2 P3‡
+P2
+P2
+P2
+P2
+Low
+†: When v/n was lower than a threshold; ‡: Otherwise.
+
+P2
+P3
+P2
+
+P1
+P1
+P1
+
+28.5
+P1
+P1
+P1
+
+CMA-VNS2 adapted the profile selection strategy from above training results as the
+main procedure for the no-training track of CBBOC 2016. For the training track, an
+online comparison was conducted in the training phase at first, the profile selection could
+be overridden if the comparison showed a significant improvement over the preset profile.
+
+References
+Edmund Burke, Graham Kendall, Jim Newall, Emma Hart, Peter Ross, and Sonia Schulenburg. Hyper-heuristics: An emerging direction in modern search technology. In
+Handbook of metaheuristics, pages 457–474. Springer, 2003. ISBN 978-1-4020-7263-5.
+doi: 10.1007/0-306-48056-5 16.
+Joseph C Culberson. On the futility of blind search: An algorithmic view of no free lunch.
+Evolutionary Computation, 6(2):109–127, 1998. doi: 10.1162/evco.1998.6.2.109.
+
+2
+
+Nikolaus Hansen, Sibylle D. Müller, and Petros Koumoutsakos. Reducing the time complexity of the derandomized evolution strategy with covariance matrix adaptation
+(CMA–ES). Evolutionary Computation, 11(1):1–18, March 2003. ISSN 1063-6560.
+doi: 10.1162/106365603321828970.
+Ahmed Kheiri, Ender Özcan, and Andrew J Parkes. A stochastic local search algorithm
+with adaptive acceptance for high-school timetabling. Annals of Operations Research,
+pages 1–17, 2014. doi: 10.1007/s10479-014-1660-0.
+Nenad Mladenović and Pierre Hansen. Variable neighborhood search. Computers &
+Operations Research, 24(11):1097–1100, 1997. doi: 10.1016/S0305-0548(97)00031-2.
+Riccardo Poli and Mario Graff. There is a free lunch for hyper-heuristics, genetic programming and computer scientists. In European Conference on Genetic Programming,
+pages 195–207. Springer, 2009. doi: 10.1007/978-3-642-01181-8 17.
+David H Wolpert and William G Macready. No free lunch theorems for optimization. IEEE Transactions on Evolutionary Computation, 1(1):67–82, 1997. doi:
+10.1109/4235.585893.
+Fan Xue and Geoffrey QP Shen. Cma–vns: A short description. Technical report, The
+Hong Kong Polytechnic University, Hunghom, Kowloon, Hong Kong SAR, July 2015.
+URL http://dx.doi.org/10.13140/RG.2.1.5029.6564.
+Weixiong Zhang and Moshe Looks. A novel local search algorithm for the traveling salesman problem that exploits backbones. In Proceedings of the 19th International Joint
+Conference on Artificial Intelligence, IJCAI’05, pages 343–348, San Francisco, CA,
+USA, 2005. Morgan Kaufmann Publishers Inc. URL http://dl.acm.org/citation.
+cfm?id=1642293.1642348.
+
+3
+
+

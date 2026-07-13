@@ -1,0 +1,1026 @@
+An efficient approach for symmetry
+detection in point clouds of constructions
+建筑物点云中对称性识别的一类快速方法
+VCC, SZU 深圳大学 可视计算研究中心
+22 June 2018
+
+Frank Xue 薛帆
+Research Assistant Professor 助理教授（研究）
+Dept. of REC, HKU 香港大学 房地产及建设系
+iLab, HKURBANlab, HKU 香港大学 HKURBANlab – iLab
+
+Aim and scope
+ Aim of this presentation 目的
+ To introduce the HKURBANlab – iLab 自报家门
+ To share our recent work 分享若干新进展
+ To promote collaborations 促进合作
+ To share job/PhD opportunities 分享机会
+
+ Scope 范畴
+ Extension: 3D point cloud (BIM) 外延：三维点云（建筑）
+ Intention: Symmetry detection 内涵：对称性识别
+ Methods: Nonlinear optimization methods 方法：非线性优化方法
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+2
+
+Outline
+简介
+
+1
+
+Introduction to iLab
+
+背景
+
+2
+
+Background & Opportunity
+
+正文
+
+3
+
+DFO-based symmetry detection (Xue et al., 2018f)
+
+讨论
+
+4
+
+Discussion
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+3
+
+Section 1
+
+INTRODUCTION TO ILAB
+ILAB介绍
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+4
+
+1.1 HKURBANlab
+ Faculty of Architecture, HKU 建筑学院
+ 3 Departments: Arch., REC, DUPAD
+ 2 Divisions: Landscape Arch., Arch. Conservation
+
+ HKURBANlab 实验中心
+ Newly branded research arm of FoA
+ 1 Academician (CAS), 10 full professors
+ 12 labs on
+o Urban planning;
+
+Property rights;
+
+o Chinese architecture;
+
+Rural;
+Sustainability;
+Conservation;
+Virtual Reality; …
+
+o Health;
+o Fabrication and materials;
+o iLab (data and information);
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+www.arch.hku.hk
+
+5
+
+1.1 iLab: The urban big data hub
+ iLab 实验室
+ Urban big data hub
+ multi-dimensional and multi-disciplinary urban big data
+
+collection, storage, analysis, and presentation to inform decisionmaking in urban development
+
+iLabHKU
+fac.arch.hku.hk/iLab
+
+ Focusing on information technology (IT)
+o Geographical Information Systems (GIS)
+o Global Positioning Systems (GPS)
+o Urban Remote Sensing (URS)
+o Building Information Model (BIM)
+o Internet of Things (IoT)
+o virtual design and construction (VDC)
+o integrated project delivery (IPD)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+6
+
+1.1 The research team
+ Lab director 主任
+ Dr. Wilson Lu
+
+ Full-time team members 成员
+ 1 RAP, 1 PostDoc, 1 SRA, 3 RAs, 7 PhD candidates
+
+ Research themes 主题
+ Urban big data (BIM, GIS, IoT, …)***
+ Construction project management *
+ Construction waste management *
+
+Lunch-time gathering
+
+ International construction
+o Corporate social responsibility
+
+(***: involves CV; *: May involve CV)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+7
+
+1.2 About myself
+ A mixed background 背景
+
+ Engineering
+
+ BEng in Automation
+
+2004
+
+ MSc in Computer Science
+
+2007
+
+ Computer Science
+
+ PhD in System Engineering
+
+2012
+
+ AI, DFO, ML
+
+ PDF/RAP in Construction / BIM
+
+2016
+
+ Research interests 兴趣
+
+ ISE, CEM, EIE
+
+ Economics
+ SCM
+
+ Computation and urban semantics in BIM
+ Applied operations research
+ Machine learning and visualization for construction
+
+ On-going research projects 在研
+ PI: RGC (17201717), HKU (201702159013, 201711159016)
+ Co-I: NSFC (71671156), NSSFC (17ZDA062), HKU PTF
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+8
+
+1.3 Job vacancies
+ Research Assistant (2~4 openings)
+ $16,575/month + 5%/year 工龄
+ Transferable to PhD
+ Inquiry: Dr Frank Xue <xuef@hku.hk>
+
+ PhD 博士
+ 100% funded scholarship
+o $16,330/month
+
+ HKU PhD Fellowship (UPF)
+o Above + $70,000 (one time)
+
+Empty seats for you
+
+ HK PhD Fellowship Scheme (HKPF)
+o $20,000/month + $10,000/year conference + $42,100 (annual fee of 1st year)
+
+ Inquiry: Dr. Wilson Lu <wilsonlu@hku.hk>
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+9
+
+1.3 CV related research (e.g., GRF 17201717)
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+(Xue et al., 2018a; 2018b) Note: On RMSE (xyz) only, not using RGB
+
+Relevant work at VCC
+(image courtesy VCC)
+10
+
+1.3 CV related research (e.g., PTF)
+
+(Chen et al., 2018)
+
+Relevant work
+at VCC (image
+courtesy VCC)
+Walking
+Calculated value
+characteristic
+No. of steps
+0
+Slope grade*
+1:50.0~58.8
+Tilt grade†
+1:47.6~66.7
+Footway width‡ 45~199 cm
+Clearance
+Good
+Overall
+walkability
+(the worst)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+Wheelchair ♿
+OK
+OK
+OK
+Failed
+OK
+Failed
+
+Stroller
+OK
+OK
+OK
+Limited
+OK
+Limited
+
+Type of pedestrians
+Luggage 🛄🛄
+OK
+OK
+OK
+Limited
+OK
+Limited
+
+Senior 👴👴
+OK
+OK
+OK
+OK
+OK
+OK
+
+Exercise 🏃🏃
+OK
+OK
+OK
+OK
+OK
+OK
+
+(Xue et al., 2018e)
+
+11
+
+Section 2
+
+BACKGROUND & OPPORTUNITY
+背景和机遇
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+12
+
+2.1. Symmetry
+“The chief forms of beauty are order and symmetry and definiteness,
+which the mathematical sciences demonstrate in a special degree.”
+ Aristotle, Metaphysics, 3-1078b
+
+ Symmetry is fundamental, from quarks to animals to galaxies
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+Symmetry (Photo courtesy Mitra et al. (2013))
+
+13
+
+2.1 Symmetry in constructions
+ Universal
+ Across various eras, continents, and cultures
+
+(a) Reflection (Mirror)
+(The Taj Mahal, India)
+
+(b) Rotation
+(The Pentagon, USA)
+
+(e) Scaling × rotation
+(f) Rotation × translation
+(The Pantheon dome, Italy) (The Gherkin, UK)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+(c) Translation
+(The Great Wall, China)
+
+(d) Translation × scaling
+(Fractal-like) (Hindu temples
+
+(g) Translation × reflection
+(Sugar Hill Project, USA)
+
+(Note: Some photos are
+adapted from wikipedia.org,
+original work shared by
+Yann, Livioandronico2013,
+D. B. Gleason, Evancahill,
+Ashish Nangia, and Aurelien
+Guichard, licensed under
+CC-BY-SA 2.0/3.0/4.0)
+14
+
+2.1 Reasons for the symmetry in constructions
+ Not accidental, but the results of
+ Mechanics
+o e.g., vertical plane axis of reflection for loads and stability
+
+ Functions and climate
+ Economics and manufacture, and
+ Aesthetics, psychology, and cognition
+
+(a) Gravity (e.g., moment can(b) Local climate (e.g., tropical(c) Required functions
+pull down a leaning wall)
+roofs and stilts against rains) (e.g., strongholds for defense)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+(Note: Some photos are
+adapted from wikipedia.org,
+original work shared by Mr.
+Wabu and Mikehume,
+licensed under CC-BY-SA
+2.0/3.0)
+15
+
+2.2 Data: Point clouds of constructions
+ Increasingly affordable, large-scale urban point clouds (Xu et al., 2018)
+SAR
+(Synthetic Aperture Radar )
+
+Spaceborne
+Airborne
+
+Airborne
+Point
+Cloud
+Sensing
+
+LiDAR
+(Light Detection And
+Ranging)
+
+Terrestrial
+Central Western District around HKU, 4 points/m²
+Mobile
+Spaceborne
+
+Photogrammetry
+
+Airborne
+Mobile
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+The HHY Building, HKU, > 2,000 points/m² (Xue et al., 2018d)
+16
+
+2.3 Symmetry detection methods for point clouds
+ Three categories, according to the methodology
+ Pairwise voting-clustering
+o Hough-like transform parameter space
+
+ Heuristic feature matching
+ Parameter optimization
+
+Hough transform (image courtesy Wikipedia)
+
+o Hill climbing on the parameter space
+Category
+
+General methodology
+
+Accuracy (less Efficiency (Using
+less time)
+geometric error)
+
+Types of
+symmetries
+
+Pairwise votingclustering
+
+Collection of pairwise votes of all the
+points in the parameter space
+
++
+
+−
+
+All (++)
+
+Heuristic feature
+matching
+
+Matching features (e.g., lines, planes,
+spheres) to infer symmetries
+
+−
+
+++
+
+Limited by the
+features (−)
+
+Parameter
+optimization
+
+Solving abstracted optimization models
+over the parameter space
+
+++
+
++
+
+All (++)
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+++: Very satisfactory; +: satisfactory; −: not satisfactory.
+
+17
+
+2.3 Challenges
+ Pairwise voting-clustering
+ inherited proneness to noise of Hough-like (Brown, 1983),
+ ineffective recognition of local symmetries (Bokeloh et al., 2009),
+ low efficiency (exponential to the number of parameters), and
+ limited cardinality n (Berner et al., 2008)
+
+ Heuristic feature matching
+ availability of a priori rules of the point clouds, and
+ abundance of suitable features (Lipman et al., 2010)
+
+ Parameter optimization
+ very complex (e.g., n > 106) and expensive (time-consuming in
+
+evaluation) in the dense point clouds of real architectures
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+18
+
+2.4 Opportunity: Derivative-free optimization
+(DFO)
+ Derivatives are too expensive
+ Many known methods are not working
+
+ Where Derivative-free optimization
+(DFO) algorithms may help
+ Surrogate methods
+o CMA-ES and its variants are
+
+competitive
+ Trust-region methods
+o DIRECT, NEWUOA, etc.
+
+ Metaheuristics (GA, PSO, VNS, etc.)
+ Hyper-heuristics, data mining
+ … and Monte Carlo
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+Comparison of algorithms for BBOB-2009 (Black-Box Optimization
+Benchmarking, higher is better) (Auger et al., 2010) Image courtesy: Inria
+19
+
+2.5 Aim and contribution of this research
+ Aim
+ A novel DFO-based architectural symmetry detection (ASD)
+
+approach for processing large-scale point clouds of constructions
+
+ Contribution
+ A novel formulation of ASD
+o With effective approximation
+
+ Evaluated and benchmarked modern DFO algorithms
+o For ASD, and related disciplines
+
+ An open source scientific library libodas
+o On Github
+o (to be streamlined after paper submission)
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+20
+
+Section 3
+
+DFO-BASED SYMMETRY DETECTION (XUE ET AL.,
+2018F)
+
+基于無導數优化的对称性识别
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+21
+
+3.1 Preliminary formulas
+ Symmetry group
+
+G = ⟨ 𝒯𝒯, ∘ ⟩,
+𝒯𝒯 = {T | T (𝒞𝒞) = 𝒞𝒞, T is affine on ℝ³},
+𝒞𝒞 = {p1 , p2 , …, pn } ⊂ ℝ³, n > 0,
+
+G: the symmetry group
+∘ 复合算子
+𝒯𝒯: the set of all global symmetries
+𝒞𝒞: the cloud of n points in 3D (ℝ³)
+
+dT (p, 𝒞𝒞) = || T (p) – N (T(p), 𝒞𝒞) ||
+
+Distance to 𝒞𝒞 of p after a transform T (2)
+
+(1)
+
+ Practical descriptors for noisy clouds from real world
+(relaxed condition)
+
+1
+n
+
+|{p | p∈𝒞𝒞, dT (p, 𝒞𝒞) < ε diagonal 𝒞𝒞}|, or Correspondence
+
+[1n Σp∈𝒞𝒞 dT (p, 𝒞𝒞)²]½
+
+Root-mean-square distance (RMSD)
+
+(3)
+(4)
+
+ Architectural symmetry (a subgroup)
+𝒯𝒯A = {T | 𝒜𝒜g(T)+𝒜𝒜t(T) < εA, T ∈ 𝒯𝒯} ⊆ 𝒯𝒯, 𝒯𝒯A: the set of all architectural symmetries
+𝒜𝒜g(T) ≥ 0,
+𝒜𝒜g: the violations of geometric regularity (5)
+𝒜𝒜t(T) ≥ 0,
+𝒜𝒜t: the violations of topology
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+22
+
+3.2 The problem of ASD
+ ASD
+
+min f(x) = f𝒞𝒞 (x) + ω 𝒜𝒜(x)
+s.t. x = ( x1 , x2 , …, xm ) ∈ ℝm,
+f𝒞𝒞 : ℝm → ℝ+ ∪ {0}, see Eqn. (2) - (4),
+𝒜𝒜: ℝm → ℝ+ ∪ {0}, see Eqn. (5),
+ω ∈ ℝ+ ∪ {0},
+
+ Computational complexity
+
+f: the objective function to minimize
+x: the m parameters of a symmetry
+f𝒞𝒞: the penalty (or error) against 𝒞𝒞
+𝒜𝒜: the penalty against the style
+ω: the relative weight of 𝒜𝒜
+
+(6)
+
+ O(k n log n), still too high, e.g., n = 1M
+o k iterations, O(n log n) for each iteration (using kdtree-based FLANN)
+
+ Performance metrics of problem-solving
+f
+ Computational time
+ Correspondence (Eq. 3)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+23
+
+3.2 The approximated problem of ASD
+ ASD approximated by octree
+min f(x) = f𝒞𝒞o (x) + ω 𝒜𝒜(x)
+ Computational complexity
+ O(k 4𝛿𝛿 log n)
+
+o 𝛿𝛿: depth of octree, constant
+
+𝛿𝛿 = 1 (14)
+
+𝛿𝛿 = 2 (58)
+
+𝛿𝛿 = 6 (0.02M)
+
+𝛿𝛿 = 7 (0.07M)
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+3.85𝛿𝛿
+Octree (image courtesy Wikipedia)
+
+𝛿𝛿 = 3 (295)
+
+𝛿𝛿 = 8 (0.22M)
+
+𝛿𝛿 = 4 (1.3K)
+
+𝛿𝛿 = 5 (5.8K)
+
+𝛿𝛿 = 9 (0.57M)
+
+Original (1.2M)
+24
+
+3.3 The experimental settings
+ Detecting the global symmetry of 9 cases
+ 3 heritage buildings, 3 modern, and 3 infrastructures
+o From Hong Kong and Dublin
+o n from 0.01M to 1.4M
+o Density from 4 to 2,000 points/m²
+
+ With best-known correspondences (**%)
+ ε = 0.005
+
+Samuel Beckett Bridge,
+Dublin† (570,338; 97.52%)
+
+Seán O’Casey Bridge,
+Dublin† (223,213; 99.55%)
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+Two piers at Victoria
+Harbor, Hong Kong*
+(12,631; 94.84%)
+
+Main Building, University of
+Hong Kong* (29,756;
+86.56%)
+
+Dublin City Hall† (459,386;
+86.14%)
+
+Hung Hing Ying Building,
+University of Hong Kong‡
+(1,413,211; 96.04%)
+
+One George’s Quay Plaza,
+Dublin† (1,170,122; 95.50%)
+
+47-51 O’Connell Street
+Upper, Dublin† (395,818;
+97.18%)
+
+Western District Fruits
+Wholesale Market, Hong
+Kong (44,699; 96.97%)
+
+25
+
+3.3 The test DFO algorithms in libodas
+Algorithm library
+
+Algorithm
+
+Description
+
+Reference
+
+libnsga2 (version 0.2, available at:
+https://github.com/dojeda/nsga2-cpp)
+
+NSGA2
+
+Non Sorting Genetic Algorithm II
+
+(Deb et al., 2002)
+
+popot
+(version 2.13, available at:
+https://github.com/jeremyfix/popot)
+
+PSO
+
+Particle Swarm Optimization
+
+(Poli et al., 2007)
+
+ABC
+
+Artificial Bee Colony
+
+(Karaboga &
+Basturk, 2007)
+
+CMAES
+
+Covariance Matrix Adaptation
+Evolution Strategy
+
+(Hansen et al., 2003)
+
+sepaIPOP-CMA
+
+A variant of CMAES for noisy
+problems
+DIviding RECTangle
+Multi-Level Single-Linkage using
+Low-Discrepancy Sequence
+
+(Hansen, 2009)
+(Jones et al., 1993)
+(Kucherenko &
+Sytsko, 2005)
+
+Pairwise voting-clustering
+
+(Mitra et al., 2006)
+
+libcmaes
+(version 0.9.5, available at:
+https://github.com/beniz/libcmaes)
+
+nlopt
+(version 2.4.2, available at:
+https://github.com/stevengj/NLopt/)
+
+DIRECT
+MLSL-LDS
+
+(None)
+
+Voting-clustering
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+26
+
+3.4 Comparison of DFO methods (𝛿𝛿 = 4)
+ DIRECT is the best when k < 2,000
+ CMAES, sepaIPOP-CMA, ABC, MLSL are slightly better when k > 5,000
+
+(a) Average correspondence (higher is better)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+(b) Average computational time (lower is better)
+27
+
+3.4 Comparison with voting-clustering
+ DIRECT dominates
+voting-clustering
+ More accurate
+ When saving over
+
+99.9% time
+ For a satisfactory
+
+(90%) level of
+correspondence
+ Except for the very
+
+unsatisfactory part
+(e.g., < 75%
+correspondence)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+28
+
+3.4 Results
+ Segmentation by the detected
+global symmetry
+ Informative for building
+
+modeling
+
+86.29% (0.27%)
+
+85.09% (1.05%)
+
+95.95% (0.09%)
+
+95.44% (0.06%)
+
+97.11% (0.07%)
+
+95.25% (1.72%)
+
+97.51% (0.01%)
+
+99.32% (0.23%)
+
+94.60% (0.24%)
+
+ All correctly detected
+ 0.01~1.72% gap to best known
+ In 0.2~4.8s
+
+ Real objects are not perfectly
+symmetric, sometimes
+ As circled
+ Due to geo-location, vegetation,
+
+design, deformation, etc.
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+29
+
+3.5 Parameter sensitivity (k, 𝛿𝛿 ) (using DIRECT)
+ A favorable flat plateau when k ≥ 500, 𝛿𝛿 ≥ 4
+
+ Time cost perfectly matched the complexity
+ k = 1,000, 𝛿𝛿 = 4 is recommended
+
+(a) Correspondence (higher is better)
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+(b) Computational time (lower is better)
+30
+
+3.6 The next steps
+ From global symmetry to symmetry hierarchy (Xue et al., 2018d)
+ Emphasizing more on 𝒜𝒜(x) in Eq. (6)
+
+ Co-hierarchy analysis (collinear, perpendicular, symmetry of symmetry, etc.)
+
+ Applications
+
+ Modeling buildings
+o With semantics
+
+ As well as cities
+
+(b) The detected major reflections
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+(c) The symmetry hierarchy
+
+(d) A symmetry-guided rooftop model
+31
+
+3.7 Summary
+ Presented a new method for global ASD
+ For large-scale point clouds with certain noises
+ Implemented in an open source library
+
+ Accuracy
+ better than conventional voting-clustering
+ 0.01%~1.7% gap to best-known correspondence
+
+ Automation and efficiency
+ Fully, inexpensive (e.g., saving 99.9% time)
+ Very fast (s level)
+
+ Results
+ Useful for building/city modeling and beyond
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+32
+
+Section 4
+
+DISCUSSION
+展望
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+33
+
+4.1 Discussion
+Urban semantics
+(BIM)
+
+(spatial)
+
+BIM
+(temporal)
+
+Second
+
+Day
+
+Year
+
+GIS
+
+CIM
+Robotics/CV(real-time)
+Comp.
+
+Room
+
+Building
+
+Architecture/
+construction/
+industry users
+
+Uncontrolled
+real world data
+
+Area/city
+
+The spatial-temporal matrix of the interests of BIM, GIS, CIM, CV
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+Novel AI methods
+(e.g., ACM sigEvo,
+sigKDD, sigGrpah, …)
+
+The inter-disciplinary view of smart, resilient
+development for humanity
+34
+
+4.2 Potential collaborations
+ Inter-disciplinary inter-institutional research
+ BIM, GIS, CV, RS, AR, …
+
+ Joint research funding
+ Hong Kong
+o HK ITF Midstream Research Fund (MRF)
+
+$5~10 millions (<50% can go to Mainland)
+o HK RGC Collaborative Research Fund (CRF)
+o NSFC/RGC Joint Research Scheme
+
+~$1M + RMB 0.8M
+ Shenzhen
+o Guangdong - Hong Kong Technology Cooperation Funding Scheme (TCFS)
+
+ Greater Bay Area
+o 重点技术联合创新基金 (still inception)
+
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+35
+
+References
+ Auger, A., Finck, S., Hansen, N., and Ros, R. (2010). BBOB 2009: Comparison tables of all algorithms on all noisy functions,
+
+INRIA.
+ Chen, K., Lu, W., Xue, F., Tang, P., & Li, L. H. (2018a). Automatic building information model reconstruction in high-density
+urban areas: Augmenting multi-source data with architectural knowledge. Automation in Construction, 93, 22-34.
+ Chen, K., Lu, W. S. ., Xue, F, Zheng, L. Z., & Liu, D. D. (2018b). Smart Gateway for Bridging BIM and Building. In Proceedings of
+the 21st International Symposium on Advancement of Construction Management and Real Estate (pp. 1307-1316). Springer,
+Singapore.
+ Deb, K., Pratap, A., Agarwal, S. & Meyarivan, T.A.M.T., (2002). A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE
+transactions on evolutionary computation, 6(2), pp.182-97.
+ Hansen, N., (2009). Benchmarking a BI-Population CMA-ES on the BBOB-2009 Function Testbed. In Workshop Proceedings of the
+GECCO Genetic and Evolutionary Computation Conference., 2009. ACM.
+ Hansen, N., Müller, S.D. & Koumoutsakos, P., (2003). Reducing the time complexity of the derandomized evolution strategy with
+covariance matrix adaptation (CMA-ES). Evolutionary computation, 11(1), pp.1-18.
+ Hough, P.V., (1959). Machine analysis of bubble chamber pictures. In Proceedings of International Conference on High Energy
+Accelerators and Instrumentation (HEACC 1959). Geneva, 1959. CERN.
+ Jones, D.R., Perttunen, C.D. & Stuckman, B.E., (1993). Lipschitzian optimization without the Lipschitz constant. Journal of
+Optimization Theory and Applications, 79(1), pp.157-81.
+ Karaboga, D. & Basturk, B., (2007). A powerful and efficient algorithm for numerical function optimization: artificial bee colony
+(ABC) algorithm. Journal of global optimization, 39(3), pp.459-71.
+ Kucherenko, S. & Sytsko, Y., (2005). Application of deterministic low-discrepancy sequences in global optimization. Computational
+Optimization and Applications, 30(3), pp.297-318.
+F Xue: Symmetry detection in PCD, 22 June 2018, SZU
+
+36
+
+References (cont.)
+ Mitra, N.J., Guibas, J. & Pauly, M., (2006). Partial and approximate symmetry detection for 3D geometry. ACM Transactions on
+
+Graphics, 25(3), pp.560-68.
+ Mitra, N.J., Pauly, M., Wand, M. & Ceylan, D., (2013). Symmetry in 3D geometry: Extraction and applications. Computer Graphics
+Forum, 32(6), pp.1-23.
+ National Institute of Building Sciences. (2015). National Building Information Modeling Standard. Version 3, Retrieved from
+https://www.nationalbimstandard.org/
+ Poli, R., Kennedy, J. & Blackwell, T., (2007). Particle swarm optimization. Swarm intelligence, 1(1), pp.33-57.
+ Xu, J., Chen, K., Xue, F., & Lu, W. (2018). 3D point clouds for architecture, engineering, construction, and operation: A SWOT
+analysis. Working paper
+ Xue, F., Lu, W., Chen, K. (2018a). Automatic generation of semantically rich as-built building information models using 2D images:
+A derivative-free optimization approach. Computer-Aided Civil and Infrastructure Engineering, in press.
+ Xue, F., Lu, W., Chen, K. & Zetkulic, A. (2018b). From ‘semantic segmentation’ to ‘semantic registration’: A derivative-free
+optimization-based approach for automatic generation of semantically rich as-built building information models (BIMs) from 3D
+point clouds. Journal of Computing in Civil Engineering. Under review
+ Xue, F., Chen, K., Lu, W., Huang, GQ. (2018c). Linking radio-frequency identiﬁcation to Building Information Modeling: Status
+quo, development trajectory and guidelines for practitioners. Automation in Construction, in press.
+ Xue. F., Chen, K., Lu, W. (2018d). Architectural Symmetry Detection from 3D Urban Point Clouds: A Derivative-Free Optimization
+(DFO) Approach. CIB W78 2018, accepted.
+ Xue, F., Chiaradia, A., Webster, C., Chen, K., Lu, W. (2018e). Personalized Walkability Assessment for Pedestrian Paths: An Asbuilt BIM Approach Using Ubiquitous Augmented Reality (AR) Smartphone and Deep Transfer Learning. CRIOCM 2016. to
+appear.
+
+Xue, F.,
+Lu, W.inWebster,
+C., Chen,
+K. (2018f). An optimization-based approach for architectural symmetry detection in point
+F Xue: Symmetry
+detection
+PCD, 22 June
+2018, SZU
+37
+
+Thank You !
+谢 谢！
+
+

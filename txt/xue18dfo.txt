@@ -1,0 +1,1513 @@
+Computer-Aided Civil and Infrastructure Engineering
+
+Automatic generation of semantically rich as-built
+building information models using 2D images: A
+derivative-free optimization approach
+Fan Xue, Weisheng Lu* & Ke Chen
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong SAR
+This is the peer reviewed version of the following article:
+Xue, F., Lu, W., & Chen, K. (2018). Automatic Generation of Semantically Rich As‐Built Building Information
+Models Using 2D Images: A Derivative‐Free Optimization Approach. Computer‐Aided Civil and Infrastructure
+Engineering. 33(11), 926-942. Doi: 10.1111/mice.12378
+which has been published in final form at https://onlinelibrary.wiley.com/doi/abs/10.1111/mice.12378. This article may be use
+for non-commercial purposes in accordance with Wiley Terms and Conditions for Use of Self-Archived Versions.
+
+Abstract: Over the past decade a considerable number
+of studies have focused on generating semantically rich asbuilt building information models (BIMs). However, the
+prevailing methods rely on laborious manual segmentation
+or automatic but error-prone segmentation. In addition, the
+methods failed to make good use of existing semantics
+sources. This paper presents a novel segmentation-free
+derivative-free optimization (DFO) approach that
+translates the generation of as-built BIMs from 2D images
+into an optimization problem of fitting BIM components
+regarding architectural and topological constraints. The
+semantics of the BIMs are subsequently enriched by linking
+the fitted components with existing semantics sources. The
+approach was prototyped in two experiments using an
+outdoor and an indoor case, respectively. The results
+showed that in the outdoor case 12 out of 13 BIM
+components were correctly generated within 1.5 hours, and
+in the indoor case all target BIM components were
+correctly generated with a root-mean-square deviation
+(RMSD) of 3.9 cm in about 2.5 hours. The main
+computational novelties of this study are: (a) to translate
+the automatic as-built BIM generation from 2D images as
+an optimization problem; (b) to develop an effective and
+segmentation-free approach that is fundamentally different
+from prevailing methods; and (c) to exploit online open
+BIM component information for semantic enrichment,
+which, to a certain extent, alleviates the dilemma between
+information inadequacy and information overload in BIM
+development.
+
+*To whom correspondence should be addressed. E-mail: wilsonlu@hku.hk.
+
+1 INTRODUCTION
+This paper presents an effective approach for automatic
+generation of semantically rich as-built building
+information models (BIMs). According to the National BIM
+Standard of United States (NIBS, 2015), a BIM is the
+digital representation of physical and functional
+characteristics of a facility. BIM forms a shared knowledge
+resource for information about a facility, serving as a
+reliable basis for decisions making (NIBS, 2015). An asbuilt BIM refers to a digital representation of the facility as
+it was actually built or as it currently exists. Generally,
+there are two types of semantic information contained in a
+BIM (e.g., Eastman et al., 2011; NIBS, 2015; Belsky et al.,
+2016).
+1. Semantic information of individual construction
+components, including:
+a. Geometric information, such as size, position,
+shape and textures; and
+b. Non-geometric information, such as type,
+specifications of material, and meanings of
+functions.
+2. Semantic information of relationships between
+components, such as dependency, topology, and joint
+information.
+Some critical semantic information, such as actual building
+geometries, current functions, and real topology of
+facilities, are only embodied in as-built BIMs (Tang et al.,
+2010; Pătrăucean et al., 2015). Semantically rich as-built
+BIMs can enable many value-added applications, including
+facility management (Becerik-Gerber et al., 2011), building
+
+2
+
+Xue, Lu & Chen
+
+retrofitting and renovation (Ilter and Ergen, 2015), and
+energy consumption simulation (Cho et al., 2015).
+Generation of such BIMs has therefore attracted the interest
+of practitioners and academics in the architecture,
+engineering, construction, and operations industry.
+Only a few buildings currently have a digital
+representation of their as-built condition in the form of
+BIM. For a constructed facility, the BIM created at the
+design stage does not adequately represent the most updated
+condition of a building due to design changes, inadvertent
+deviations or errors, and renovation work; to do so, the asdesigned BIM needs to be updated into an as-built BIM
+(Chen et al., 2015; Hamledari et al., 2017). To manually
+label the semantic information onto a BIM is possible but
+extremely tedious and time-consuming. Researchers have
+thus endeavored to achieve such semantically rich as-built
+BIMs by developing various automatic modeling
+approaches over the past decade. Laser scanning and
+photogrammetry were adopted with a view to rapidly
+surveying digital measurements (e.g., point clouds or
+imagery) as the raw data that can be preprocessed for
+subsequent modeling. Considerable progress has also been
+made in enhancing data preparations (e.g., Song et al.,
+2014; Zhang et al., 2016), developing data preprocessing
+algorithms, exploring model generation methods (e.g.,
+Bosché et al., 2015; Díaz-Vilariño et al., 2015), and data
+transfer plan and rule-based inference for topological
+semantic enrichment (Hamledari et al., 2017; Sacks et al.,
+2017).
+However, significant difficulties remain in the field of asbuilt BIM generation. For example, apart from their
+relatively high cost, point clouds and imagery primarily
+represent the geometric data of surfaces, which makes it
+extremely difficult to reveal the volumetric components and
+discover non-geometric semantics from the surfaces.
+Although segmentation methods based on a priori heuristic
+rules and up-to-date object recognition methods, such as
+support vector machine (SVM) (Adan and Huber, 2011;
+Perez-Perez et al., 2016), are developed for semantic
+enrichment, the overall results are generally unsatisfactory.
+Much manual work is still required to model the
+measurement into components, and in turn, to fit into an asbuilt BIM (Jung et al., 2014). On the other hand, many
+commercial or non-commercial organizations have started
+to publish semantic BIM components online for users to
+retrieve. For instance, more than 200,000 parametric BIM
+components are freely available on BIMobjects.com. Some
+researchers also started to develop specific sets such as the
+historical architectural BIM components by Santagati and
+Turco (2017). Such BIM components are well designed,
+rich in semantic information, and maintained by their
+industrial manufacturers. Clearly, there is a dilemma
+between information inadequacy and information overload
+in generating as-built BIMs.
+
+It would constitute a novel proposition to recognize BIM
+components from the measured as-built conditions, and
+enrich their semantics by exploiting the information
+available in BIM components openly accessible online or
+elsewhere. Through this, it can also deal with the
+aforementioned information dilemma to a certain extent.
+The major difficulty is the BIM component recognition
+process, which involves burdensome manual segmentation,
+and huge amounts of computation, e.g., every component
+may have up to nine parameters of geometric degrees of
+freedom (position, scaling, and rotation in 3D) to determine
+regardless of topological and architectural requirements.
+The difficulty, nevertheless, can be controlled by
+harnessing powerful computational devices and advanced
+algorithms that have been successfully implemented to
+solve some extremely challenging scientific and
+engineering problems. Examples of such problems include
+the protein structure prediction (Nicosia and Stracquadanio,
+2008), aircraft wings design (Lee et al., 2008), and surgical
+planning and treatment design (Clancey and Witten, 2011).
+All these challenging problems can be modeled and solved
+as optimization problems, for which many off-the-peg
+evolutionary computations and derivative-free optimization
+(DFO) methods have been developed in applied
+mathematics and computer science and applied to solve
+many engineering problems (Eiben and Smith, 2003; Conn
+et al., 2009). Regarding as-built BIM generation,
+architectural knowledge such as building styles (e.g.,
+Baroque architecture) and structural regularity (e.g.,
+flatness, parallels, and symmetries) can also be applied as
+constraints to effectively reduce the search space of the
+formulated problem (Chen et al., 2017).
+This paper develops a DFO approach for the automated
+generation of semantically rich as-built BIMs using 2D
+images. The approach introduces three novelties that can
+significantly improve the field. Firstly, it formulates the asbuilt BIM generation as a constrained optimization
+problem, so that many established DFO algorithms can be
+applied to solve the problem. Secondly, the approach
+integrates the cutting-edge multidisciplinary instruments
+such as computer vision metrics and DFO algorithms to
+realize an effective and segmentation-free BIM generation
+approach. Thirdly, the approach makes good use of the
+architecture domain knowledge and rich semantics in BIM
+component libraries that are available on the Internet or
+elsewhere.
+The remainder of the paper is structured into five
+sections. Section 2 reviews the literature on as-built BIM
+generation and DFO applications in related problems.
+Section 3 presents the proposed methodology. Section 4
+describes the experimental tests of the proposed
+methodology wherein a BIM is rebuilt from a single picture
+of the building shot a considerable time ago and another
+one from two photos of a furniture store. Section 5
+comprehensively discusses the advantages, shortcomings,
+
+Automatic generation of semantically rich as-built BIMs using 2D images
+and future developments of the proposed method. Section 6
+concludes the study and provides recommendations for
+future research.
+2 LITERATURE REVIEW
+2.1 Generation of as-built BIMs
+Capturing the as-built conditions of a building is the
+foremost step for as-built BIM generation. This is
+traditionally
+conducted
+using
+conventional
+tape
+measurements by skilled persons. This manual process is
+extremely tedious, intensive, time-consuming, and at times,
+inaccurate. Nowadays, non-contact devices including
+ground-level simultaneous localization and mapping
+(SLAM) sensors (Nüchter, 2008), cameras on unmanned
+aerial vehicles (a.k.a. drones) (Dai and Lu, 2010; Nex and
+Remondino, 2014), ground and airborne laser scanners
+(Tang et al., 2010; Holgado-Barco et al., 2017), and satellite
+orbit-level synthetic aperture radars (Zhu and Shahzad,
+2014) have been adopted for rapid as-built geometry
+measurements. Data captured by such measurement
+technologies is usually in the form of point cloud or a set of
+images. Furthermore, imagery can be processed into 3D
+point clouds using Structure from Motion (SfM) by
+estimating camera parameters and 3D structural information
+of scenes (Snavely et al., 2008). Vice versa, 3D point
+clouds can also be converted to 2D images, e.g., for lossless
+data compression (Houshiar and Nüchter, 2015) and asbuilt surface patches (Henry et al., 2012).
+Methods for generating as-built BIMs from the
+measurement data can be categorized as either data-driven
+or model-driven. A data-driven method is to perform
+modeling based on the preprocessed measurement data.
+Valero et al. (2012) presented an automatic method that
+yields boundary representation models of indoor
+environments containing a variety of clutter; however, they
+estimate structural lines of indoor environments by the
+intersection of two adjacent planes, which is not a
+mathematically rigorous approach. Ad-hoc surface fitting
+heuristics such as improved random sample consensus
+(RANSAC) (Schnabel et al., 2007; Lagüela et al., 2013)
+and parametric curved surfaces (Zhang et al., 2015;
+Dimitrov et al., 2016) are employed to segment expected
+surfaces from real world noisy data. Object recognition and
+machine learning techniques such as SVM (Adan and
+Huber, 2011; Koppula et al., 2011; Perez-Perez et al., 2016;
+Wang et al., 2017) and convolutional neural networks
+(Babacan et al., 2017) are also adapted to identify semantic
+labels. Regarding directly generating BIM from images by
+using data-driven methods, Criminisi et al. (2000) applied
+projective geometrical techniques to create a 3D surface of
+the building shown in a single image. Wang et al. (2011)
+used hue, saturation, and value color space and red, green,
+and blue color segmentation to recognize and extract basic
+geometric information of house envelopes from the images
+
+3
+
+of the house. Quintana et al. (2018) combined color (RGB)
+from images and geometry (xyz) from point clouds to detect
+open, semi-open and closed doors.
+Model-driven methods have also been explored. They
+generally refer to comparing the known components against
+the datasets (e.g., point clouds or imagery), recognizing
+components, and fitting them in a BIM based on predefined rules. The pre-defined rules could be known
+knowledge of digital building models/components (e.g.,
+windows, doors, and beams) and their topographic
+constraints (e.g., a window should be embedded in the
+wall). Faber and Fisher (2002) considered the constrained
+surface optimization based on the mean square error
+(MSE) and employed a genetic algorithm (GA) to
+recognize parametric models from a doorway point cloud.
+Xiong and Huber (2010) encoded the point clouds into a
+voxel structure and detected planar patches by grouping
+neighboring points together using a region-growing
+method. This approach is further improved in Xiong et al.
+(2013), who introduced a context-based method to identify
+and model the structural components without projection of
+point clouds. Dore and Murphy (2014) presented a semiautomatic method for as-built BIM facade reconstruction.
+Their method first developed parametric facade template
+and estimated the position and size of the facade structure
+by classical architectural proportions. Then, users could
+manually edit the position, size, and other parameters of the
+generated facade.
+Acknowledging previous efforts on as-built BIM
+generation, both data-driven and model-driven methods rely
+heavily on segmentation of measurement data, which is
+extremely error-prone (Tang et al., 2010; Pătrăucean et al.,
+2015; Perez-Perez et al., 2016). For instance, Koppula et al.
+(2011) achieved an about 80% precision and 70% recall
+with SVM in segmenting ofﬁce scenes and an about 50%
+precision and 50% recall for home scenes. Babacan et al.
+(2017) found the precision of segmentation by deep
+learning varied from about 40% for beams to over 90% for
+walls and floors, recall varied from about 55% for doors to
+99% for floors. In general, the generalization of
+computerized object recognition methods in the
+uncontrolled environments of real-life scenarios can often
+be unsatisfactory (Andreopoulos and Tsotsos, 2013). As a
+result, the reliance on segmentation often undermines the
+semantic enrichment level of prevailing as-built BIM
+development methods (Pătrăucean et al., 2015) and could
+indirectly raise the requirements (e.g., sufficient coverage,
+accuracy, and details) on the measurement data (Anil et al.,
+2013; Zhang et al., 2016).
+In addition, a dilemma with as-built BIM generation is
+that on one hand there is a lack of semantic information in
+as-built BIMs, while on the other hand there is a plethora of
+semantic information on various BIM components that are
+available on the Internet or from other sources. This
+dilemma could be addressed by stitching the semantics in
+
+4
+
+Xue, Lu & Chen
+
+various BIM components onto the as-built BIMs for
+semantic enrichment.
+2.2 Derivative-free optimization applications in related
+problems
+Many problems in civil and infrastructural engineering,
+such as optimal design of a structure (Adeli and Kamal,
+1986) and fitting a parametric model to a point cloud
+(Fisher, 2004), can be modeled and solved as constrained
+optimization problems, in which there are constraints on the
+variables (Gill et al., 1981). Such a constrained
+optimization is a typical NP-hard (non-deterministic
+polynomial time hard) problem, which refers to a set of
+challenges whose solutions can be verified in polynomial
+time. Furthermore, fitting a single component (i.e., its
+multiple real parameters) with the measurement can be
+rather expensive in terms of the computational cost (see
+Aster et al., 2013); normally one will engage a third-party
+BIM platform to project a 3D BIM into 2D images, and
+mobilize the platform to perform the operations such as
+appending, relocating, scaling, and connecting until the best
+(or satisfactory) settlement of the BIM component is found.
+As these problems imply that traditional mathematical
+programs, such as IBM CPLEX and Gurobi Optimization,
+cannot be applied, a DFO solution is therefore demanded.
+Examples of DFO algorithms for the constrained
+optimization problem include GA and covariance matrix
+adaptation with evolution strategy (CMA-ES). GA is a
+well-known algorithm for solving both constrained and
+unconstrained optimization problems. GA relies on
+operators of selection, mutation, and crossover on
+‘chromosomes’ of independent variables, and mimics a
+natural selection process that drives biological evolution.
+Due to the complexity of real problems in civil engineering,
+parallel GAs were often employed, e.g., Adeli and Cheng
+(1994) demonstrated a parallel GA for 7.7 times of speed
+and Adeli and Kumar (1995) later used 512 CPUs for
+optimizing a structure consisting of 4,016 structural
+elements in parallel GAs. Some recent GA applications can
+be found as Li et al. (2017)’s optimal mountain railway
+alignment and Koo et al. (2016)’s optimal balances between
+time–cost–environment in vertical transportation for
+workers. CMA-ES (Hansen and Ostermeier, 2001; Hansen,
+2016) incorporates evolution processes like GA. The
+difference is that CMA-ES also concerns pairwise
+dependencies between variables, i.e., the covariance matrix.
+Adaptation of the covariance matrix generally leads to
+optimizing a meta-model of the objective function.
+Therefore, although both are established algorithms, CMAES usually finds better solutions than GA for expensive
+objective functions (Hansen et al., 2010). For instance,
+Kaveh et al. (2011) applied CMA-ES on the optimal truss
+structure design problem and reported considerable
+improvements than the results from GA, e.g., a 31%
+improvement on the optimal design of weight for a 26-
+
+story-tower space truss in less than one hour. Athanasiou et
+al. (2011) also applied CMA-ES in earthquake engineering,
+and obtained an improvement up to 53% compared to the
+previous solutions in the literature. In summary, the DFO
+methods have proven a strong capability in solving the
+challenging civil engineering problems.
+Nevertheless, only a few references have been applied
+DFO methods to the generation of as-built BIMs. Faber and
+Fisher (2002) and Fisher (2004) set up an MSE-based
+objective function on point clouds and adapted GA in
+solving the formulated problem. As far as is concerned, the
+formulation of image-based generation of as-built BIM and
+the application of modern DFO methods such as CMA-ES
+have not been reported in the literature.
+All these opportunities and challenges have engendered
+this study, which has developed an as-built BIM generation
+method that is segmentation-free, and can make use of
+existing information resources to generate a semantically
+rich BIM.
+3 METHODOLOGY
+3.1 Theoretical stance
+The theoretical foundation of this study is to perceive the
+as-built BIM generation as a process of fitting the BIM
+components (e.g., facades, doors, windows), whereby the
+fitting task of each component is equivalent to solving a
+small-scale constrained optimization problem. In this study,
+the variables of the constrained optimization problem are
+the parameters of location, scaling, rotation, and topology
+of the BIM components. The objective function is to
+maximize the similarity between the measurement of asbuilt conditions and the target BIM model (a combination
+of the fitted components per se). The constraints over the
+variables are derived from the topological requirements
+between the components and the reasonable ranges of the
+component’s parameters.
+3.2 Problem formulation
+Figure 1 illustrates how as-built BIM generation is
+translated in this research. There are two inputs of the
+constrained optimization problem: the measurement data of
+as-built conditions and the BIM components contained in
+libraries. The measurement data, in this paper, are 2D
+images that can be taken at a relatively low cost. These
+images should be meaningful, i.e., bird-view images are
+preferred for as-built rooftop modeling and front-view
+images for as-built facade modeling. Another input is the
+BIM components (e.g., facade, wall, windows, and doors)
+organized in one or multiple libraries. The semantics
+involved in this study come from two sources. One source
+is the optimized parameters of the digital BIM component,
+including the location, scaling, rotation, and topology,
+which are gradually obtained during the problem solving.
+
+Automatic generation of semantically rich as-built BIMs using 2D images
+
+5
+
+Figure 1 General framework of the DFO approach for as-built BIM generation
+We define them in a tuple Xi for the i-th component
+instance:
+Xi = (cl, l, s, rz),
+
+(1)
+
+where cl is the class of the component (e.g., a three-section
+window), l is the 3D location, s is the 3D scaling, and rz is
+the rotation around z-axis. Using mathematical language
+above, they are the variables of the constrained
+optimization problem. In view of the fact that not all
+components are relevant to a certain measurement, some
+rules based on architectural style and date of construction
+(e.g., Baroque architecture in 1910s) can be defined to filter
+irrelevant components. This filtering can significantly
+reduce the computational load. Another source of semantic
+information is the adoption of semantics from BIM
+component libraries. The categories of adopted semantics
+include surface pattern, architecture style, typical functions,
+materials, and mechanical properties.
+The similarity function is the objective function of the
+constrained optimization problem. A similarity function
+measures the level of resemblance between the
+measurements as the input and the generated BIM. The
+importance of the similarity function is easy to understand,
+as the rationale of the methodology is to fit existing BIM
+components (by optimizing Xi) to the input measurement
+until a maximum/satisfactory similarity is achieved. Thanks
+to previous research in computer vision and pattern
+recognition, many such functions have been developed. For
+example, given an input imagery measurement and a BIM,
+a well-known similarity function is Wang et al. (2004)’s
+structural similarity (SSIM) index, which integrates
+structure, luminance, and contrast to compare two 2D
+images:
+SSIM = structure ⋅ luminance ⋅ contrast
+
+=
+
+( 2 µ ˆ µ A +c1 )( 2σ ˆ +c1 )
+A
+AA
+,
+( µ 2ˆ+ µ 2A +c1 )(σ 2ˆ+σ 2A +c2 )
+A
+A
+
+(2)
+
+where A is the matrix of pixels in the input image, Â is the
+matrix of pixels in 2D projection of the BIM to be
+
+generated, μA and μÂ are the means of A and Â, σA and σÂ are
+the standard deviations, σÂA is the covariance, and c1 and c2
+are two constants. It should be noted that BIM components
+are in 3D format and need to be projected into 2D images
+before the similarity test. SSIM was proven more accurate
+than conventional metrics such as MSE in measuring
+similarity of images (Wang and Simoncelli, 2008), since it
+considers not only the value of individual pixels, but also
+the structural arrangement of these pixels.
+The optimization process to generate the semantically
+rich as-built BIM would be ineffective if the computations
+are not constrained. The constraints are derived from the
+topological requirements between components (e.g., a
+window must reside on a wall), the scale ranges of the
+components (e.g., the window should not be larger than the
+wall), as well as architecture conventions. Here,
+architectural conventions refer to the domain knowledge
+applied in the architectural design, such as building styles
+(e.g., Baroque architecture), geometrical or physical
+features (e.g., flatness, parallels, and symmetries) of
+building objects and their spatial relationships
+(Cantzler, 2003). Regardless of multiple appearances of
+architecture designs, there are only a limited types of
+topological relationships between building components in
+real life, including adjacency (e.g., above, below, and nextto), separation, containment, intersection, and connectivity
+(Nguyen et al., 2005). In this study, these types of
+topological relationships are employed to organize the
+constraints between components. The constraints C can be
+defined as a set of functions:
+C(X) = {CI(Xi)}∪{ CR(Xi, Xj), i≠j},
+
+(3)
+
+where CI indicates the constraints on the parameters Xi of
+any individual component, and CR is the constraints on the
+topological relationships between any pair of (i-th, j-th)
+components. Examples of the two groups of constraints can
+be found in Table 1.
+
+6
+
+Xue, Lu & Chen
+
+Figure 2 Modules, supporting software libraries, and the DFO-based problem-solving process of COBIMG
+Table 1
+Example of constraints on individual component and
+topological relationships
+C Example
+Example value Notes
+scaling_max
+[1.5, 1.5, 1.5] xyz coordinates
+scaling_min
+[0.8, 0.8, 0.8] Ibid.
+CI
+z_rotation_max π/2
+z_rotation_min 0
+on_top_of
+‘Ground’
+Adjacency,
+connectivity
+CR contains_on
+‘Wall’
+Containment or
+intersection
+min_separation ‘0.5 m’
+Separation
+When all the variables, objective functions, and
+constraints are defined, the constrained optimization
+problem of as-built BIM generation can be expressed in the
+general form as:
+(4)
+For researchers who tend to treat a minimization problem as
+the standard form, the objective function can be derived by
+negating the SSIM in Eq. (4).
+3.3 Problem solving with software implementation
+In order to implement the proposed method and solve the
+formulated problem in Sections 3.1 and 3.2, the authors
+developed an open-source software library constrained
+optimization-based BIM generator (COBIMG, source code
+and tutorials available at: https://github.com/ffxue/cobimg).
+As shown in Figure 2, COBIMG has three major modules.
+The first module is the DFO algorithm (e.g., CMA-ES) at
+the core. The second module is the similarity indexes (e.g.,
+SSIM) to compare the projected image with the input
+
+measurement. The third module is a set of plugins for
+manipulating components in different BIM platforms,
+including plugins for positioning, scaling, and projecting.
+The problem-solving of COBIMG is a fully automatic,
+repetitive trial-and-error procedure as illustrated in Figure
+2. The input BIM components could be Autodesk Revit’s
+(.rfa format) or Trimble SketchUp’s (.skp format), which
+provides the parameters and semantics, such as those listed
+in Table 1, of the components. Figure 3 shows the detailed
+operations and interactions between the modules of
+COBIMG in an individual trial for the i-th BIM component,
+using CMA-ES and SSIM as an example. At the start of the
+trial, the CMA-ES populates a feasible Xi that does not
+violate the constraints, e.g., the rotation rz may not exceed
+the preset range. The plugin decodes from Xi to the
+parameters (e.g., location, scaling, rotation, and topology)
+of the i-th BIM component. Then, the BIM platform is
+instructed to manipulate the component as specified by
+parameters and project the 3D component (or accumulated
+BIM) into 2D images, of which the number is same with the
+input photos. The image similarity is calculated as the
+SSIM index and returns CMA-ES as the objective value
+f(Xi). The objective values can update the covariance matrix
+of CMA-ES for succeeding trials. Although each trial may
+not necessarily guarantee a higher SSIM, the evolution
+strategy of CMA-ES will achieve a higher SSIM
+eventually.
+To scale up the trial-and-error procedure from one
+individual component to the overall as-built BIM
+generation, a two-stage strategy is adopted. Stage 1 aims to
+fit individual components into the as-built BIM one by one,
+following the topological relationships and constraints. The
+target BIM is thus incrementally generated by appending
+one component after another. Stage 2 is to refine the fitted
+
+Automatic generation of semantically rich as-built BIMs using 2D images
+
+7
+
+(a) Outdoor case: A demolished building of The School
+of Tropical Medicine and School of Pathology, The
+University of Hong Kong (640×360 pixels; source:
+Archives of HKU Estates Office)
+
+Figure 3 Message sequence chart of the operations and
+interactions between the modules of COBIMG in an
+individual trial
+BIM holistically by fine-tuning the available components,
+to achieve a higher similarity between the BIM and the
+measurement. Both call the similar trials of COBIMG but
+the former is at individual component level on incomplete
+models while the latter is on complete models and may
+involve inter-component operations (e.g., swapping two
+components). The trials will continue until some
+termination conditions (e.g., the maximum number of trials)
+are met. The parameters that result in the best similarity
+amongst the trials is the final output. The generated as-built
+BIM is semantically rich based on two sources of
+information, i.e., online open libraries (for standard
+geometry, materials, and details) and DFO-based
+component fitting (for as-built position, scaling, rotation,
+and topological relationships).
+4 EXPERIMENTAL TESTS
+4.1 Experimental setting
+In this study, the feasibility of the proposed as-built BIM
+generation method is validated through a somewhat
+extreme outdoor case and an indoor case (See Figure 4). In
+the outdoor case, the target building is The School of
+Tropical Medicine and School of Pathology of The
+University of Hong Kong (HKU), which used to be a
+baroque-style two-story building. As the building was built
+in 1919 and demolished more than two decades ago, it is
+almost impossible to collect the information of this building
+through laser scanning or other surveying technologies. The
+only information available is the photo provided by the
+HKU Estates Office, as shown in Figure 4(a). In this case,
+the proposed method is tested to generate the model from
+
+(b) Indoor case: A scene in a furniture store (384×512
+pixels; taken by a smart phone camera with 28mm
+effective focal length; resolution down sampled)
+Figure 4 An outdoor case and an indoor case for
+evaluating the proposed method
+the single image. Specifically, apparent components with
+both width and height greater than 1.0 meter were required
+to be recognized and fitted in the BIM. The target BIM thus
+demanded a set of component instances including one door
+portico, one tree, two storeys of walls, and nine windows.
+The camera was approximately located at the position (0,
+21.6, 4) (x, y, z in meter) pointing to (0, 0, 4) in SketchUp,
+based on a triangulation of the photo with the building
+footprint from a survey map of HKU in the period
+1969~1976. The categories and the numbers of BIM
+components were given in the experiments: 1 Baroque style
+building, 2 storeys, 4 windows (of unknown classes) and 1
+door on the G/F, 5 identical windows (of unknown classes)
+on the 1/F, 1 tree (of unknown classes) in front of the
+building. Except for the trees, the rotation parameters were
+omitted due to the photo having been properly shot from the
+front according to the triangulation.
+The indoor case was a furniture scene with a few chairs
+in the corner, as shown in Figure 4(b). In this case, the input
+was two photos taken from different directions, where the
+cameras were with 28mm focal length and located at (2.12,
+1.11, 1.50) pointing to (0, 1.06, 0.05) and (0.64, 2.69, 1.50)
+
+Xue, Lu & Chen
+
+8
+
+Component
+I
+d category
+class
+
+The outdoor case
+
+–
+
+Ground
+
+Ground
+
+Door
+
+Door portico
+
+Tree
+
+Wall
+
+The indoor case
+
+Window
+
+Chair
+
+Table 2
+BIM components adopted from SketchUp 3D Warehouse
+Original model from 3D
+Supplemented attributes of the component
+Warehouse (Contributor ID)
+As constraints
+Not as constraints
+–
+Door (3) Classical Ottoman
+Osmanli Colonial (Mohamed EL
+Shahed); Blenheim Orangery and
+Function Rooms (Richard)
+
+Oak tree
+
+Downy Oak (KangaroOz 3D)
+
+Palm tree
+
+Royal Palm Tree (Yoshi
+Productions)
+
+With h-sliding
+
+Salm Palace (3dolomouc)
+
+Smooth surface
+
+Salm Palace (3dolomouc)
+
+Three-section
+
+French Window (Architect)
+
+Traditional
+Armchair model
+Vedbo
+Armchair model
+Villstad
+Model Kaustby
+Model Nolmyra
+Model Norraryd
+
+Mahogany Framed Window (Ben)
+VEDBO (FRANKSON)
+
+–
+
+–
+
+Ranges of scaling; contains_on
+= Wall
+
+IFC type and function;
+Materials;
+
+Ranges of scaling; range of zrotation; on_top_of = Ground
+
+Ibid.
+
+Ibid.
+
+Ibid.
+
+Ranges of scaling; on_top_of =
+Ground
+Ranges of scaling; on_top_of =
+Wall
+Ranges of scaling; contains_on
+= Wall
+Ibid.
+Ranges of scaling; range of zrotation; on_top_of = Ground
+
+Ibid.
+Ibid.
+Ibid.
+Ibid.
+IFC type; Producer;
+Materials; Retail price;
+
+armchair (tako)
+
+Ibid.
+
+Ibid.
+
+IKEA - KAUSTBY (Laurent B.)
+Nolmyra chair (Jo E.)
+NORRARYD (Vera O.)
+
+Ibid.
+Ibid.
+Ibid.
+
+Ibid.
+Ibid.
+Ibid.
+
+point to (0, 0, 0.10), respectively. The ground truth included
+two armchairs (models Vedbo and Villstad) and a chair
+(model Nolmyra); the horizontal centers of the three chairs,
+measured by the authors with a tape, were (0.401, 0.524),
+(0.560, 1.343), and (0.381, 2.060), respectively. The task
+was to generate a BIM with three correct chairs and
+measure the error in terms of root-mean-square deviation
+(RMSD). The candidate BIM components were thus known
+as “chairs”, but neither the types nor the numbers of the
+chairs were given in this case. Therefore, unlike following
+the given clues in the outdoor case, the COBIMG had to
+repeatedly try to place possible chair components till no
+better SSIM index can be found.
+A set of BIM components, as listed in Table 2, were
+collected from 3D Warehouse of SketchUp with keyword
+filters “Baroque” and names of chair models. Topological
+constraints of the components listed in Table 1 were
+manually added as attributes in SketchUp. The attributes
+can be read and translated to the semantic constraints of the
+BIM components by the plugin of COBIMG. Some
+semantics that have not been associated with the constraints
+such as Industry Foundation Classes (IFC) types are also
+listed. The time of searching and downloading all the
+original models was about 24 minutes, the time of cleaning
+unnecessary parts from the components was about 45
+minutes, and the annotation of the constraints cost about 22
+minutes.
+The experiments were conducted on a laptop computer
+with Intel i7 CPU (2.60 GHz), 16 GB RAM, and the
+
+Windows 10 64-bit operating system. The adopted DFO
+algorithm was CMA-ES and the adopted image similarity
+was the SSIM index. In each case, the as-built BIM
+generation started from an empty model with only one
+invisible ‘Ground’ component (z = 0). The BIM was
+incrementally generated by attaching one component each
+time, starting from those eligible to connect to the ‘Ground’
+component. As a result, the ‘Wall’ components preceded
+the ‘Windows’ and ‘Doors.’ For fitting each component, a
+fixed number of trials of CMA-ES algorithm were allowed
+in the COBIMG. The number of trials was set from 10 to
+2,000 in a sequence of seven values increasing
+exponentially.
+4.2 The results of the outdoor case
+The results of similarity, overall time cost, and correctly
+generated components observed from the outdoor case by
+changing different number of trials are shown in Figure 5.
+In general, both the similarity and overall time cost
+monotonically increased when the number of trials
+increased from 10 to 2,000. The similarity increased from
+about 0.16 to over 0.24, the time cost increased from a
+couple of minutes to about three hours, and the number of
+correctly generated instances of components in the
+generated model varied from 4/13 to 12/13. It was
+interesting to observe that some components were wrongly,
+but reasonably, generated. For example, in the generated
+model from 200 trials for each component, the oak tree
+component was wrongly fitted into a similar presence of a
+
+Automatic generation of semantically rich as-built BIMs using 2D images
+
+9
+
+Figure 5 The trends of similarity, overall time cost, and correctly generated components in the outdoor case when changing the
+trials of CMA-ES for fitting each component
+
+Figure 6 The automated optimization process of the proposed method with annotated SketchUp models for the outdoor case
+with 500 trials for fitting each component
+potted plant in front of the door. By comparing the tradeoffs between the number of correctly generated components
+and the time cost, 500 trials are suitable for generating a
+satisfactory result under the given experimental settings.
+
+The number 500 also fell in the suggested range of
+evaluations (i.e., at least 100) of CMA-ES (Hansen, 2016).
+Figure 6 illustrates the detailed BIM generation
+procedure of the test in which the number of trials was set
+
+10
+
+Xue, Lu & Chen
+
+(a) Auto-generated front face (b) Manually completed
+by the proposed method in
+building model
+SketchUp
+
+Figure 7 The generated model in the test with 500 trials
+for fitting each component
+to 500. After the first 500 trials, the G/F wall was attached
+to the model, and after another 500 trials the 1/F wall was
+attached to the model. Then a group of five identical
+traditional windows were attached and later replaced by
+another group of five three-section windows, because the
+prior group's contribution was only f = 0.1921 whereas the
+later option's contribution was much better at f = 0.2165.
+The incremental generation phase stopped at the 11,000th
+trial. After another 3,500 trials of the fine-tuning phase, the
+final model achieved a fitness of f = 0.2335 by slightly
+changing the locations and scales of the components
+automatically. Although 12 out of 13 components were
+correctly generated, it can be seen that all 13 components
+were once correctly put together at the 10,500 of
+accumulated trials but that the leftmost window on G/F was
+replaced due to a slight 0.0005 improvement of similarity.
+The overall time was 1 hour 23 minutes and 32.6 seconds
+(5,012.6s). The result of the proposed method was saved as
+a 2.2 MB SketchUp file.
+As some components in the generated model did not
+perfectly match the given baroque architecture, such as a
+three-section window on the G/F, the authors made a few
+manual amendments to the auto-generated front face of the
+building. Figures 7(a) and 7(b) show the window example
+highlighted with red circles. The model of the whole
+building, as shown in Figure 7(b), was estimated based on
+the survey map of HKU and manually completed with
+replicas of the auto-generated facade.
+The resulting model integrated rich semantic information
+from two resources. The proposed method generated the
+geometric information of location, scaling, and rotation for
+each component, as well as topological relationships. Some
+other semantic information, such as functions and materials,
+was inherited from the component set. Figure 8 shows a
+screenshot of the semantics for a window component,
+including the IFC type, parent component (i.e., the exterior
+wall on 1/F), storey, as attributes in the generated model.
+
+Figure 8 Semantics as attributes of a window in the
+generated model
+4.3 The results of the indoor case
+Figure 9 shows the results of similarity, overall time cost,
+and correctly generated components observed from the
+indoor case by changing the number of trials in the indoor
+case: The similarity increased from about 0.62 to about 0.68
+when the number of trials per component changed from 10
+to 2,000. During the incremental of trials, the number of
+correctly generated instances of components in the
+generated model varied from 1/3 to 3/3, the error (i.e.,
+RMSD) reduced from over 40 cm to less than 5 cm, yet the
+time cost increased from less than 1 minute to over five
+hours. It can be found from Figure 9 that a very small part
+of the headrest of the Vedbo chair was buried in the wall in
+many resulting models, as highlighted by the circles. This
+was because the real chair was bendable when leaning on a
+wall, but the shapes of BIM components on SketchUp and
+most modern BIM platforms are rigid. Similar to the
+number of trials in the outdoor case, 500 are also suitable
+for a satisfactory result under the given settings.
+Figure 10 illustrates the details in the BIM generation
+procedure of the test in which the number of trials was set
+to 500. There were totally 11,500 trials, which consisted of
+10,000 trials in the incremental generation phase in four
+rounds and 1,500 trials in the fine-tune phase. In the first
+round, the best component was a Vedbo armchair with a
+fitness of f = 0.6437, and the next best one was a Villstad
+armchair with a fitness of f = 0.6185. Thereafter, the Vedbo
+armchair was placed in the model. In the second round, a
+Villstad armchair retuned the highest fitness f = 0.6694, and
+was thus placed next to Vedbo. The third chair was a
+Nolmyra chair with a slightly better fitness f = 0.6706. No
+better fitness (i.e., SSIM index) was found during the trials
+of attaching the fourth chair. Hence, the incremental
+
+Automatic generation of semantically rich as-built BIMs using 2D images
+
+11
+
+Figure 9 The trends of similarity, overall time cost, and correctly generated components in the indoor case when changing the
+trials of CMA-ES for fitting each component
+
+Figure 10 The automated optimization process of the proposed method with annotated SketchUp models for the indoor case
+with 500 trials for fitting each component
+generation phase of COBIMG ended and the model
+contains three chairs. In the fine-tune phase, the BIM was
+updated by a slightly better fitness f = 0.6744. The three
+chairs in the resulting BIM were all correct and with an
+
+RMSD of 3.9 cm. The error level was acceptable, because
+the downloaded component models including Vedbo and
+Nolmyra were not exactly the same as the latest chair
+models. The overall time was 2 hour 26 minutes and 32.9
+
+Xue, Lu & Chen
+
+12
+
+seconds (8,792.9s). The result of the proposed method was
+saved as a 13.0 MB SketchUp file.
+
+Figure 11 The linear relationship between overall time
+cost and the number of trials in both cases
+Table 3
+Computing resource consumption breakdown in the tests
+with 500 trials in both cases
+Used by
+
+Functions
+
+% of time
+Outdoor Indoor
+
+Manipulating components;
+97.67%
+3D to 2D projection
+Computing the image
+1.45%
+similarity index
+Optimizing the parameters
+0.00%
+of a component
+Reading/writing of logs
+0.88%
+System/disk
+and temporary image files
+SketchUp
+& plugin
+Similarity
+to the input
+DFO
+algorithm
+
+97.78%
+1.33%
+0.00%
+0.89%
+
+Figure 12 The strong correlation between the
+computational time spent by SketchUp and the number of
+‘faces’ in the BIM to manipulate and project (Note:
+Pearson’s cor. = 0.907, p < 0.0001, two-tailed)
+
+4.4 The computational time
+The overall time cost in both cases increased in a linear
+relationship with the number of trials per component, as
+shown in Figure 11. The linear relationship was more
+convincing (R² = 0.9993) in the outdoor case than that (R² =
+0.9592) in the indoor case, because the number of
+components was unknown in the tests of the latter case. In
+fact, the incremental procedure of component fitting also
+indicates that the overall time cost is in a linear relationship
+with the total number of candidate components in the
+libraries. Therefore, one can expect a linear increment on
+time cost when setting up more candidate components (e.g.,
+more models of chairs). Table 3 lists the breakdown of
+computational time spent by different modules of
+COBIMG. It can be found from Table 3 that over 95% of
+the time was, in both cases, spent by SketchUp
+manipulating components and projecting the model from
+3D to 2D. Further bivariate analysis of the experimental
+data showed that the computational time spent by SketchUp
+had a significant strong positive correlation (Pearson’s
+correlation = 0.907, p < 0.0001, two-tailed) with the
+number of ‘faces’ in the BIM to manipulate and project.
+Figure 12 illustrates the correlation and an equation by
+linear regression, which indicates about 30,000 more
+‘faces’ would increase the SketchUp time by one second
+under the experimental settings.
+5 DISCUSSION
+5.1 Advantages and shortcomings of the proposed
+method
+The proposed DFO approach has been identified through
+experimentation to have the following advantages over
+conventional laser scanning and photogrammetry based
+methods:
+1. The proposed approach does not engage in the
+burdensome task of preprocessing and segmenting
+the as-built measurement (e.g., point cloud or images
+captured by laser scanning or photogrammetry) but
+rather regards the measurement as an entity so that
+no explicit object recognition processes are
+introduced; it directly compares the similarity
+between the target measurement and the image from
+projecting the BIM model. Eliminating object
+recognition processes increases the computational
+load (owing to the larger solution space), but
+advanced algorithms and powerful computers can
+handle this.
+2. The data requirement is much more relaxed than
+developing a BIM model from laser scanning or
+photogrammetry. As illustrated in the experiment,
+
+Automatic generation of semantically rich as-built BIMs using 2D images
+the BIM of the building facade can be automatically
+developed from one single image.
+3. Compared with existing semi-automatic methods,
+which consist of automatic segmentation and manual
+semantics enrichment, the proposed method can
+make use of extensively available BIM object
+resources over the Internet so that less human
+intervention is needed. This capacity epitomizes the
+novel idea proposed in this paper of enriching BIM
+semantics by dealing with the dilemma of
+information inadequacy and information overload
+when generating a BIM.
+4. The proposed method adopts mature fitness function
+from the field of computer vision and pattern
+recognition; it has a high scalability to new
+environments
+even
+without
+adjusting the
+configuration of the fitness function.
+5. The innovative and interdisciplinary application of
+established DFO in semantically rich as-built BIMs
+opens a whole new avenue for the worldwide
+business of generating as-built BIMs.
+Although the method proposed in this study has many
+merits, it also has the following shortcomings:
+1. The quality of the outcome is highly dependent on
+the availability of components. For buildings that
+have irregular components, an extra manual effort is
+needed to tailor the specifically required
+components, such as historical BIM objects (Dore
+and Murphy, 2014; Santagati and Turco, 2017),
+before applying the proposed method. Thanks to
+online open BIM vendors, building modelers, and
+many industrial practitioners who contribute to the
+richness of the existing BIM component libraries, it
+can be expected that the availability of BIM
+components will not be a serious problem in
+implementing the proposed method.
+2. The proposed method allows BIM model generation
+from one single image, but the level of accuracy
+(e.g., centimeter-accuracy) may not be as high as a
+model generated from laser scanning or
+photogrammetry (e.g., millimeter-accuracy), and the
+building components that are not shown or invisible
+(e.g., joints or beams inside a wall) in the image
+cannot be automatically modeled. One way to
+compensate for this is to use multiple images taken
+from various angles for calibration.
+3. The computer program cannot compare with BIM
+modelers’ professional knowledge, experience, and
+insights in model generation. There is a tradeoff
+amongst the costs of data input, automation/human
+intervention level, and the level of semantic richness
+in as-built BIM generation.
+
+13
+
+5.2 Future developments
+Although this paper has focused on 2D imagery input
+using the SSIM as the similarity index measurement and the
+CMA-ES as the DFO solver, the proposed method can
+incorporate more inputs and computation. For example, in
+addition to individual images, the DFO approach can also
+accept point clouds or processed imagery, as long as their
+data collection costs are affordable. If the input is point
+clouds, the objective function/similarity measurement could
+be more complicated. For example, the MSE can be used to
+measure Euclidean distance and difference of color between
+an as-built BIM and an input point cloud. It has yet to be
+determined which similarity index is more effective than
+another for a certain type of data input.
+In solving the constrained optimization problem, many
+well-known computational algorithms, such as surrogate
+methods and trust region methods, can also be adopted with
+acceptable performance. The multimodality of optimal
+solutions was also observed in the experiments. However, it
+is so far unclear whether the performance of these DFO
+algorithms and other multimodal algorithms are satisfactory
+for constructing as-built BIMs.
+It is noteworthy that some simple architecture
+conventions have been translated into constraints such as
+building style, topological relationships, and feasible scale
+range, which can significantly improve the efficiency of the
+DFO approach for as-built BIM generation. These
+architecture conventions are not accidental, but often the
+result of economical, manufacturing, functional, or
+aesthetic considerations (Mitra and Pauly, 2008). Some of
+the conventions can be obtained from ordinances or
+standards, while others can be originated from general
+observation in real-world situations (e.g., Chen et al., 2017).
+These should be further explored and formalized for
+computer vision and pattern recognition, with a focus on
+their applications in as-built BIM generation.
+In this paper, as-built BIM generation is formulated as a
+constrained optimization problem. In solving the problem, a
+specific platform, Trimble SketchUp, and BIM components
+compatible with the platform are chosen. Other platforms
+such as Autodesk Revit should be explored in the future.
+Results of the experimental tests conducted in this study
+confirm that by consuming over 95% of the time, the
+current single-thread BIM platform is the bottleneck in
+applying the proposed method. Taking advantage of up-todate multi-threading and GPUs could lead to a
+breakthrough in the wide adoption of the proposed method.
+In addition, this research preliminarily explored generated
+BIMs with the IFC standard, but the actual interoperability
+has yet to be ascertained and could be the subject of future
+studies.
+In summary, the use of a derivative-free optimization
+(DFO) approach to the generation of semantically rich asbuilt BIMs is a seminal idea that this research has brought
+to fruition with satisfactory results. However, there are
+
+Xue, Lu & Chen
+
+14
+
+many areas such as required inputs, variable settings,
+objective functions, constraints, software platforms, output
+formats, and performance measurements of the constrained
+optimization problem that need further development.
+6 CONCLUSION
+This paper developed a novel DFO method for
+semantically rich as-built BIM generation. It started from
+the dilemma of information inadequacy and information
+overload in BIM generation: on the one hand, there is a lack
+of semantic information in the as-built BIMs, while on the
+other hand there is plenty of semantics in various openaccess BIM components to be fully exploited. The approach
+translated the as-built BIM generation into a constrained
+optimization problem, whereby advanced DFO algorithms,
+augmented with some architecture constraints, were applied
+to recognize the best combination of BIM components from
+the data input (i.e., measurement of as-built conditions).
+The recognized BIM was further linked with existing BIM
+component libraries as a cost-effective way to enrich the
+semantics. The originality of this research is in challenging
+prevalent practice by introducing the as-built BIM
+generation as a rigorous mathematical formulation with
+considerable computational complexity.
+The DFO method was prototyped in this study through a
+series of rigorous tests, which were conducted as an
+extreme experiment where a semantically rich as-built BIM
+was satisfactorily generated from a single photo of a
+demolished building. The experiment confirmed that the
+DFO approach is effective for as-built BIM generation
+regarding time efficiency and semantic richness.
+Limitations of the proposed method, including the
+dependency on BIM component libraries and the quality of
+the generated model, were also identified. The research
+team intends to undertake further research to validate other
+advanced algorithms, different input measurements, parallel
+computation, and more semantic-based constraints and
+reasoning.
+The research described in this paper is of theoretical and
+practical significance. It validates the theoretical foundation
+for transferring the generation of an as-built BIM to a
+nonlinear optimization problem, while challenging the
+segmentation of measurement data in prevailing
+approaches. Facility developers around the world are
+demanding as-built BIMs as a deliverable, and the current
+way of meeting this demand is by using expensive
+technologies such as laser scanning, photogrammetry, and
+SLAM. The DFO approach introduced in this paper could
+be a game changer in the competitive landscape of the BIM
+business. The approach can also make invaluable
+contributions to heritage conservation, smart city
+development, and environmental protection.
+
+ACKNOWLEDGEMENTS
+This study was supported by a grant from the Hong Kong
+Research Grant Council (GRF HKU17201717) and a grant
+from The Hong Kong University (201702159013). The
+authors would like to thank the Editor and anonymous
+reviewers for their valuable comments and suggestions.
+REFERENCES
+Adan, A. & Huber, D. (2011), 3D reconstruction of interior wall
+surfaces under occlusion and clutter. In 2011 International
+Conference on 3D Imaging, Modeling, Processing, Visualization
+and Transmission (3DIMPVT 2011), pp. 275-281, Hangzhou,
+China. doi:10.1109/3DIMPVT.2011.42
+Adeli, H. & Cheng, N. T. (1994). Concurrent genetic algorithms for
+optimization of large structures. Journal of Aerospace
+Engineering, 7(3), 276-296.
+Adeli, H. & Kamal, O. (1986). Efficient optimization of space
+trusses. Computers & Structures, 24(3), 501-511.
+Adeli, H. & Kumar, S. (1995). Concurrent structural optimization
+on massively parallel supercomputer. Journal of Structural
+Engineering, 121(11), 1588-1597.
+Andreopoulos, A. & Tsotsos, J. K. (2013), 50 years of object
+recognition: Directions forward. Computer Vision and Image
+Understanding, 117(8), 827-891.
+Anil, E. B., Tang, P., Akinci, B. & Huber, D. (2013), Deviation
+analysis method for the assessment of the quality of the as-is
+Building Information Models generated from point cloud
+data. Automation in Construction, 35, 507-516.
+Aster, R. C., Borchers, B. & Thurber, C. H. (2013). Parameter
+estimation and inverse problems. 2nd Ed. Academic Press,
+Oxford, UK.
+Athanasiou, A., De Felice, M., Oliveto, G. & Oliveto, P. S. (2011).
+Evolutionary algorithms for the identification of structural
+systems in earthquake engineering. In Proceedings of the
+International Conference on Evolutionary Computation Theory
+and Applications - Volume 1: ECTA, (IJCCI 2011), pp. 52-62.
+doi:10.5220/0003672900520062
+Babacan, K., Chen, L. & Sohn, G. (2017). Semantic Segmentation
+of Indoor Point Clouds Using Convolutional Neural Network.
+ISPRS Annals of Photogrammetry, Remote Sensing and Spatial
+Information Sciences, IV-4/W4, 101-108.
+Becerik-Gerber, B., Jazizadeh, F., Li, N. & Calis, G. (2011),
+Application areas and data requirements for BIM-enabled
+facilities management. Journal of Construction Engineering and
+Management, 138(3), 431-442.
+Belsky, M., Sacks, R. & Brilakis, I. (2016), Semantic enrichment
+for building information modeling. Computer‐Aided Civil and
+Infrastructure Engineering, 31(4), 261-274.
+Bosché, F., Ahmed, M., Turkan, Y., Haas, C. T. & Haas, R. (2015),
+The value of integrating Scan-to-BIM and Scan-vs-BIM
+techniques for construction monitoring using laser scanning and
+BIM: The case of cylindrical MEP components. Automation in
+Construction, 49, 201-213.
+Cantzler, H. (2003), Improving architectural 3D reconstruction by
+constrained modelling (PhD thesis, University of Edinburgh,
+Edinburgh, UK), Retrieved from http://hdl.handle.net/1842/319
+Chen, K., Lu, W., Peng, Y., Rowlinson, S. & Huang, G. Q. (2015),
+Bridging BIM and building: From a literature review to an
+
+Automatic generation of semantically rich as-built BIMs using 2D images
+integrated conceptual framework. International Journal of
+Project Management, 33(6), 1405-1416.
+Chen, K., Xue, F. & Lu, W. (2017), Development of 3D building
+models using multi-source data: A study of high-density urban
+area in Hong Kong. In Proceedings of Lean & Computing in
+Construction Congress (LC3 2017), pp. 609-616. Heraklion,
+Greece. doi:10.24928/JC3-2017/0252
+Cho, Y. K., Ham, Y. & Golpavar-Fard, M. (2015), 3D as-is building
+energy modeling and diagnostics: A review of the state-of-theart. Advanced Engineering Informatics, 29(2), 184-195.
+Clancey, O. & Witten, M. (2011), A memetic algorithm for
+dosimetric optimization in CyberKnife robotic radiosurgical
+treatment planning. In Proceedings of the 2011 IEEE Congress
+on Evolutionary Computation (CEC 2011), pp. 880-885.
+Conn, A. R., Scheinberg, K. & Vicente, L. N. (2009), Introduction
+to derivative-free optimization, SIAM, Philadelphia, PA, USA.
+Criminisi, A., Reid, I. & Zisserman, A. (2000), Single view
+metrology. International Journal of Computer Vision, 40(2),
+123-148.
+Dai, F. & Lu, M. (2010), Assessing the accuracy of applying
+photogrammetry to take geometric measurements on building
+products. Journal of Construction Engineering and Management,
+136(2), 242-250.
+Díaz-Vilariño, L., Conde, B., Lagüela, S. & Lorenzo, H. (2015),
+Automatic detection and segmentation of columns in as-built
+buildings from point clouds. Remote Sensing, 7(11), 1565115667.
+Dimitrov, A., Gu, R. & Golparvar‐Fard, M. (2016), Non‐uniform
+B‐spline surface fitting from unordered 3D point clouds for
+as‐built modeling. Computer‐Aided Civil and Infrastructure
+Engineering, 31(7), 483-498.
+Dore, C. & Murphy, M. (2014), Semi-automatic generation of asbuilt BIM facade geometry from laser and image data. Journal of
+Information Technology in Construction (ITcon), 19(2), 20-46.
+Eastman, C. M., Teicholz, P., Sacks, R. & Liston, K. (2011), BIM
+handbook: A guide to building information modeling for owners,
+managers, designers, engineers and contractors, 2nd Edition.
+John Wiley & Sons, Hoboken, New Jersey, USA.
+Eiben, A. E. & Smith, J. E. (2003), Introduction to evolutionary
+computing, Springer, Heidelberg.
+Faber, P. & Fisher, B. (2002), How can we exploit typical
+architectural structures to improve model recovery?.
+In Proceedings of First International Symposium on 3D Data
+Processing Visualization and Transmission, pp. 824-833.
+doi:10.1109/TDPVT.2002.1024167
+Fisher, R. B. (2004). Applying knowledge to reverse engineering
+problems. Computer-Aided Design, 36(6), 501-510.
+Gill, P. E., Murray, W. & Wright, M. H. (1981), Practical
+optimization. Academic Press, London.
+Hamledari, H., Rezazadeh Azar, E. & McCabe, B. (2017). IFCbased development of as-built and as-is BIMs using construction
+and facility inspection data: Site-to-BIM data transfer
+automation. Journal of Computing in Civil Engineering, 32(2),
+04017075.
+Hansen, N. (2016). The CMA evolution strategy: A tutorial. arXiv
+preprint, arXiv:1604.00772. https://arxiv.org/abs/1604.00772
+Hansen, N., Auger, A., Ros, R., Finck, S. & Pošík, P. (2010).
+Comparing results of 31 algorithms from the black-box
+optimization benchmarking BBOB-2009. In Proceedings of the
+12th annual conference companion on Genetic and evolutionary
+computation, pp. 1689-1696. doi:10.1145/1830761.1830790
+
+15
+
+Hansen, N. & Ostermeier, A. (2001), Completely derandomized
+self-adaptation
+in
+evolution
+strategies.
+Evolutionary
+Computation, 9(2), 159-195.
+Henry, P., Krainin, M., Herbst, E., Ren, X. & Fox, D. (2012). RGBD mapping: Using Kinect-style depth cameras for dense 3D
+modeling of indoor environments. The International Journal of
+Robotics Research, 31(5), 647-663.
+Holgado-Barco, A., Riveiro, B., González‐Aguilera, D. & Arias, P.
+(2017). Automatic inventory of road cross‐sections from mobile
+laser scanning system. Computer‐Aided Civil and Infrastructure
+Engineering, 32(1), 3-17.
+Houshiar, H. & Nüchter, A. (2015). 3D point cloud compression
+using conventional image compression for efficient data
+transmission. In Proceedings of the 2015 XXV International
+Conference on Information, Communication and Automation
+Technologies
+(ICAT),
+pp.
+1-8.
+IEEE.
+doi:10.1109/ICAT.2015.7340499
+Ilter, D. & Ergen, E. (2015), BIM for building refurbishment and
+maintenance: Current status and research directions. Structural
+Survey, 33(3), 228-256.
+Jung, J., Hong, S., Jeong, S., Kim, S., Cho, H., Hong, S. & Heo, J.
+(2014). Productive modeling for development of as-built BIM of
+existing indoor structures. Automation in Construction, 42, 6877.
+Kaveh, A., Kalateh-Ahani, M. & Masoudi, M. S. (2011). The CMA
+evolution strategy based size optimization of truss structures.
+International Journal of Optimization in Civil Engineering, 1(2),
+233-56.
+Koo, C., Hong, T., Yoon, J. & Jeong, K. (2016). Zoning‐based
+vertical transportation optimization for workers at peak time in a
+skyscraper
+construction.
+Computer‐Aided
+Civil
+and
+Infrastructure Engineering, 31(11), 826-845.
+Koppula, H. S., Anand, A., Joachims, T. & Saxena, A. (2011).
+Semantic labeling of 3d point clouds for indoor scenes. In
+Advances in Neural Information Processing Systems 24, pp. 244252. Available at: http://papers.nips.cc/paper/4226-semanticlabeling-of-3d-point-clouds-for-indoor-scenes.pdf
+Lagüela, S., Díaz-Vilariño, L., Martínez, J. & Armesto, J. (2013).
+Automatic thermographic and RGB texture of as-built BIM for
+energy rehabilitation purposes. Automation in Construction, 31,
+230-240.
+Lee, D. S., Gonzalez, L. F., Periaux, J. & Srinivas, K. (2008),
+Robust design optimisation using multi-objective evolutionary
+algorithms. Computers & Fluids, 37(5), 565-583.
+Li, W., Pu, H., Schonfeld, P., Yang, J., Zhang, H., Wang, L. &
+Xiong, J. (2017). Mountain railway alignment optimization with
+bidirectional distance transform and genetic algorithm.
+Computer‐Aided Civil and Infrastructure Engineering, 32(8),
+691-709.
+Mitra, N. J. & Pauly, M. (2008), Symmetry for architectural
+design. In Advances in Architectural Geometry (AAG2008), pp.
+13-16.
+Available
+at:
+http://www.architecturalgeometry.org/aag08/aag08proceedingspapers_and_poster_abstracts.pdf
+National Institute of Building Sciences (NIBS) (2015), National
+Building Information Modeling Standard. Version 3, Retrieved
+from https://www.nationalbimstandard.org/
+Nex, F. & Remondino, F. (2014), UAV for 3D mapping
+applications: A review. Applied Geomatics, 6(1), 1-15.
+
+16
+
+Xue, Lu & Chen
+
+Nguyen, T. H., Oloufa, A. A. & Nassar, K. (2005), Algorithms for
+automated deduction of topological information. Automation in
+Construction, 14, 59-70.
+Nicosia, G. & Stracquadanio, G. (2008), Generalized pattern search
+algorithm for peptide structure prediction. Biophysical Journal,
+95(10), 4988-4999.
+Nüchter, A. (2009), 3D robotic mapping: The simultaneous
+localization and mapping problem with six degrees of freedom,
+Springer-Verlag, Berlin, Heidelberg.
+Schnabel, R., Wahl, R. & Klein, R. (2007), Efficient RANSAC for
+point-cloud shape detection. Computer Graphics Forum, 26(2),
+214-226. doi:10.1111/j.1467-8659.2007.01016.x
+Pătrăucean, V., Armeni, I., Nahangi, M., Yeung, J., Brilakis, I. &
+Haas, C. (2015), State of research in automatic as-built
+modelling. Advanced Engineering Informatics, 29(2), 162-171.
+Perez-Perez, Y., Golparvar-Fard, M. & El-Rayes, K. (2016),
+Semantic and geometric labeling for enhanced 3D point cloud
+segmentation. In Proceedings of Construction Research
+Congress 2016, pp. 2542-2552. doi:10.1061/9780784479827.253
+Quintana, B., Prieto, S. A., Adán, A. & Bosché, F. (2018). Door
+detection in 3D coloured point clouds of indoor environments.
+Automation in Construction, 85, 146-166.
+Sacks, R., Ma, L., Yosef, R., Borrmann, A., Daum, S. & Kattel, U.
+(2017). Semantic enrichment for building information modeling:
+Procedure for compiling inference rules and operators for
+complex geometry. Journal of Computing in Civil Engineering,
+31(6), 04017062.
+Santagati, C. & Turco, M. L. (2017), From structure from motion to
+historical building information modeling: Populating a semanticaware library of architectural elements. Journal of Electronic
+Imaging, 26(1), 011007.
+Snavely, N., Seitz, S. M. & Szeliski, R. (2008), Modeling the world
+from internet photo collections. International Journal of
+Computer Vision, 80(2), 189-210.
+Song, M., Shen, Z. & Tang, P. (2014), Data quality-oriented 3D
+laser scan planning. In Proceedings of Construction Research
+Congress 2014, pp. 984-993. doi:10.1061/9780784413517.101
+Tang, P., Huber, D., Akinci, B., Lipman, R. & Lytle, A. (2010),
+Automatic reconstruction of as-built building information models
+from laser-scanned point clouds: A review of related
+techniques. Automation in Construction, 19(7), 829-843.
+Valero, E., Adán, A. & Cerrada, C. (2012), Automatic method for
+building indoor boundary models from dense point clouds
+collected by laser scanners. Sensors, 12(12), 16099-16115.
+Wang, C., Peng, Y., Cho, Y. & Li, H. (2011), As-built residential
+building information collection and modeling methods for energy
+analysis. In Proceedings of the 28th International Symposium on
+Automation and Robotics in Construction (ISARC), Seoul, Korea,
+pp.
+227-232.
+Available
+at:
+http://www.irbnet.de/daten/iconda/CIB_DC23633.pdf
+Wang, Q., Cheng, J. C. & Sohn, H. (2017). Automated estimation
+of reinforced precast concrete rebar positions using colored laser
+scan data. Computer‐Aided Civil and Infrastructure Engineering,
+32, 787-802.
+Wang, Z., Bovik, A. C., Sheikh, H. R. & Simoncelli, E. P. (2004),
+Image quality assessment: From error visibility to structural
+similarity. IEEE Transactions on Image Processing, 13(4), 600612.
+Wang, Z. & Simoncelli, E. P. (2008), Maximum differentiation
+(MAD) competition: A methodology for comparing
+
+computational models of perceptual quantities. Journal of Vision,
+8(12), 8.
+Xiong, X., Adan, A., Akinci, B. & Huber, D. (2013), Automatic
+creation of semantically rich 3D building models from laser
+scanner data. Automation in Construction, 31, 325-337.
+Xiong, X. & Huber, D. (2010), Using Context to Create Semantic
+3D Models of Indoor Environments. In Proceedings of the 21st
+British Machine Vision Conference (BMVC2010), pp. 1-11.
+Zhang, C., Kalasapudi, V. S. & Tang, P. (2016), Rapid data quality
+oriented laser scan planning for dynamic construction
+environments. Advanced Engineering Informatics, 30(2), 218232.
+Zhang, G., Vela, P. A., Karasev, P. & Brilakis, I. (2015), A
+Sparsity‐Inducing Optimization‐Based Algorithm for Planar
+Patches
+Extraction
+from
+Noisy
+Point‐Cloud
+Data.
+Computer‐Aided Civil and Infrastructure Engineering, 30(2), 85102.
+Zhu, X. X. & Shahzad, M. (2014). Facade reconstruction using
+multiview spaceborne TomoSAR point clouds. IEEE
+Transactions on Geoscience and Remote Sensing, 52(6), 35413552.
+
+

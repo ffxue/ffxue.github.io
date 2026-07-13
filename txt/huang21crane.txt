@@ -1,0 +1,4060 @@
+Optimization of multiple-crane service schedules in overlapping areas through consideration
+of transportation efficiency and operational safety
+1,2
+Chun Huang , Wenjie Li1,2, Weisheng Lu3, Fan Xue 3, Meng Liu1,2, Zhansheng Liu1,2*
+1
+
+College of Architecture and Civil Engineering, Beijing University of Technology,
+Chaoyang, Beijing 100124, China
+2
+The Key Laboratory of Urban Security and Disaster Engineering of the Ministry of
+Education, Beijing University of Technology, Beijing 100124, China
+3
+Department of Real Estate and Construction, Faculty of Architecture, The University of
+Hong Kong, Pokfulam, Hong Kong SAR, China
+*Corresponding author: Email: lzs4216@163.com
+This is the peer-reviewed post-print version of the paper:
+Huang, C., Li, W., Lu, W., Xue, F., Liu, M., & Liu, Z. (2021). Optimization of multiplecrane service schedules in overlapping areas through consideration of transportation
+efficiency and operational safety. Automation in Construction, 127, 103716. Doi:
+10.1016/j.autcon.2021.103716
+The final version of this paper is available at: https://doi.org/10.1016/j.autcon.2021.103716.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+Abstract
+Tower crane scheduling is a classic conundrum. It is further complicated to prevent collisions
+and reduce idle transportation time among multiple overlapping tower cranes. Unlike previous
+research attempts, this study aims to provide an optimal solution to this multiple crane service
+5
+
+scheduling problem (MCSSP). Firstly, the MCSSP was translated to a Mixed Integer Linear
+Programming (MILP) model. Then, the model was optimized by 1) distributing the lifting
+requests in overlapping areas to the proper tower cranes; 2) selecting the appropriate supply
+location to serve each lifting request; and 3) arranging the lifting sequences of each tower crane
+to complete the requests. Compared with previous methods, the proposed MILP model (solved
+
+10
+
+using GurobiTM) can result in the saving of 6.54%-18.07% of total operation costs meanwhile
+achieving the non-collision goal. The findings of this research can be deployed in optimizing
+efficiency and safety in the real-life scheduling of multiple overlapping tower cranes.
+Keywords: multiple tower cranes; service schedule optimization; overlapping site areas;
+transportation efficiency; collision free.
+
+15
+
+1
+
+1. Introduction
+Tower cranes are used to transport equipment and material on site and are thus some of
+the most essential facilities in contemporary construction work. When multiple tower cranes
+are deployed on site, the working radius of each crane is determined. For each pair of tower
+20
+
+cranes, if the distance between the cranes is smaller than the sum of the two radius, and larger
+than the absolute value of the difference between the two radius, then there is an area of overlap
+between the two cranes. This sort of overlap is inevitable when a site area is limited or the high
+lifting workload in a working area requires simultaneous crane operations. Such overlaps,
+however, mean that crane collisions become a potential hazard. Tower crane jibs are liable to
+
+25
+
+collide with the jibs or cables of other cranes, regardless of the cranes’ different heights [1].
+Irizarry and Karan [2] developed a system for minimizing areas of overlap but were not able to
+entirely remove the possibility of physical conflicts between cranes [3, 4]. On any site with
+overlapping cranes, therefore, crane-related lift planning and optimization (LPO) is a very
+critical task for planners so as to ensure operational efficiency and safety [5].
+
+30
+
+In practice, starting location and destination for each crane operation are always prescheduled based on the material requests. Having an efficient service schedule helps to prevent
+situations in which crane movements in overlapping areas are disturbed at random intervals by
+the movements of other tower cranes [6]. To prevent potential collisions, tower cranes make
+use of anti-collision systems. These consist of various sensors and devices, such as Ultra-Wide
+
+35
+
+Band (UWB) [1, 7], Radio Frequency Identifications (RFID) [8, 9], Global Positioning System
+(GPS) [7-9], Encoder [10, 11], and Inertial Measurement Unit (IMU) [10-12] to measure
+distances between moving jibs and their surroundings. When the distance is too close and a
+collision becomes imminent, the anti-collision system will trigger an alarm and slow down or
+stop the moving jibs. However, negatively suspending crane movements or tuning their velocity
+
+40
+
+can have a significant and negative impact on transportation efficiency. Site managers have
+expressed doubts about the usefulness of anti-collision systems, as these have been known to
+cause unnecessary stoppages and slow down work schedules.
+Preventing crane collisions in overlapping areas at the same time as reducing idle
+transportation time presents a difficult conundrum. To solve this conundrum, the present
+
+45
+
+research systematically studied the service schedules of multiple cranes. By determining
+starting locations and destinations for each crane operation service schedules can have a
+significant impact on improving transportation efficiency. For a single crane, devising effective
+2
+
+linkages among material requests and the locations of cranes and storage areas has been
+demonstrated to guarantee a high ratio of crane utilization [13]. For multiple tower cranes, this
+50
+
+research proposed an MILP model to optimize service schedules in a way that allows for the
+completing of lifting tasks with minimum energy costs. To avoid collisions in overlapping areas,
+simultaneous movements are forbidden in these areas. A crane is only permitted to enter an
+overlapping area after the other crane has moved out. Previous research has simulated the
+interactions between requests, cranes and supply points and has succeeded in proposing
+
+55
+
+operational methods that eliminate simultaneous movements in overlapping areas [3, 14].
+However, while this research has enhanced crane operations within the parameters of
+acceptable schedules, the simulations fail to lead to fully optimized results [3]. Formulated
+according to different linear constraints, the MILP model proposed in the present paper, on the
+other hand, is able to guarantee both operational safety and a method for ensuring optimally
+
+60
+
+efficient service schedules.
+Following this introductory section, the literature review in Section 2 provides an overview
+of existing techniques and methods in the study of crane operation safety and efficiency. Section
+3 presents the problem statement and the assumptions of the proposed model. Section 4 explains
+the objective function and the linear constraints of the optimization model. Section 5 details the
+
+65
+
+application of the model in numerical studies and compares the results of different methods to
+demonstrate the effectiveness of the model. Section 6 provides a summary of findings, draws
+conclusions and outlines the various contributions and limitations of this research.
+2. Literature review
+In general, there are three principal aspects that can significantly affect the efficiency and
+
+70
+
+safety of tower crane operations: (i) the selection and layout of tower cranes on construction
+sites; (ii) lifting path and motion planning; and (iii) the lifting schedule of each tower crane.
+During the preconstruction stage, the deployment of the proper types and quantities of tower
+cranes at appropriate locations can achieve sufficient on-site coverage for the conducting of
+safe and efficient operations. Location optimization studies account for the largest proportion
+
+75
+
+of research into crane-related LPO [5]. The optimization algorithms and simulation methods
+used to solve the problem in previous research include Genetic Algorithm (GA) [15-17], MixedInteger-Programming (MIP) [18-22], Agent-Based Simulation (ABS) [23] and Simulated
+Annealing (SA) [24]. Visualization tools such as CAD and BIM have also been profitably
+employed to assist in crane layout planning [2, 25, 26].
+3
+
+80
+
+To study lifting path planning in a simulated environment, the cranes are simulated as 3D
+virtual kinematical models by assigning different degrees-of-freedom (DOF) [27, 28]. The
+accuracy and efficiency of searches aimed at identifying the shortest and collision-free paths
+are highly dependent on the representations of space and objects and the searching algorithm.
+Configuration space (C-Space), in which each axis denotes a DOF, is widely used to represent
+
+85
+
+space without redundancy [29]. To prevent penetrations between objects, objects in complex
+geometric shapes can be wrapped by hierarchical bounding volumes such as Axis-aligned
+Bounding Box (AABB) [30], Oriented Bounding Box (OBB) [31] and Spheres [32]. Avoiding
+the overlap of the objects intervals along each axis, the searching algorithms used to search
+optimal lifting paths include GA [33], Rapidly-exploring Random Tree (RRT) [34] and
+
+90
+
+Probabilistic Road Map (PRM) [35]. The principal concern when path planning is to accelerate
+the searching process and improve efficiency. There have been pre-calculations proposed in
+previous research that attempt to reduce the feasible C-space [33, 35, 36]. Based on Multi-level
+Depth Map (MDM) representation, Cai et al. [37] proposed an image-space parallel collision
+detection algorithm and simplified a Master-Slave Parallel Genetic Algorithm (MSPGA) by
+
+95
+
+using parallel threads in a Graphics Processing Unit (GPU). To avoid obstacles in a dynamic
+environment, computer vision algorithms and laser scanners [10] have been used to identify
+and track the real-time locations of crane components [38], the moving objects [39], humans
+[40, 41] and heavy equipment [42]. There have been many algorithms proposed for the purpose
+of optimizing path planning. Examples include Extended RRT (ERRT) [43], Dynamic RRT
+
+100
+
+(DRRT) [44], hybrid GA [45], Simulated Annealing (SA) [46] and the Path Re-planner (PRP)
+[31]. In order to precisely control the motions of tower cranes operating in complex
+environments, adaptive [47, 48] and observer-based [49] controls can be used to avoid load
+swing and other undesired load movements involved in crane control.
+The lifting schedule, which involves accurate determinations of starting and destination
+
+105
+
+locations, is also of critical importance in ensuring the efficiency of material transportation.
+Zavichi et al. [50] defined the problem as the Crane Service Sequence Problem (CSSP) and set
+the material supply and demand locations as cities in the classic Traveling Salesman Problem
+(TSP). The problem was formulated as an integer programming problem, and the lifting
+schedule of a single crane was optimized to reduce total movement time. The additional
+
+110
+
+constraints, such as the deadline of material requests [51] and minimal waiting time of the
+service request [52], were also taken into account and solved using GA and improved harmony
+search, respectively. Releasing the fixed pairs of routes from supply to demand locations, Huang
+4
+
+et al. [13] formulated the CSSP as an MILP model that was solved using standard branch-andbound techniques for the global optimum solution. Nearest Neighbor First (NNF), one of the
+115
+
+heuristic methods widely applied in the TSP [53] and the Vehicle Routing Problem (VRP) [54],
+has been shown to obtain acceptable solutions in CSSP [13, 50]. However, the applicability of
+this research is limited due to its focus on only a single tower crane, and its findings cannot be
+employed in coordinating the operations of multiple tower cranes.
+Previous research into approaches to avoid crane collisions inside overlapping areas can
+
+120
+
+be classified as falling within two broad categories of research: (i) the optimization of path
+planning; and (ii) the optimization of lifting schedules. Theoretically, following a fixed schedule
+and properly arranging the lifting paths of multiple cranes can be an effective way to prevent
+potential collisions in an overlapping area. Practically, however, the use of anti-collision
+systems can only suspend cranes movements or tune movement velocity to ensure safety [55,
+
+125
+
+56]. Based on a given site layout and material requests, the optimization of lifting schedules
+aims to prevent collisions in overlapping areas guaranteed by the non-crossing spatial
+constraints [57]. Hattab et al. [14] proposed a simulation model for properly distributing lifting
+requests to two tower cranes to achieve balanced crane utilization and rearranging task
+sequences to prevent collisions in the overlapping area. Previous studies [14, 23, 24, 50, 58]
+
+130
+
+fixed the pairs of supply locations and demand locations, which may have had the effect of
+sacrificing continuity of tower crane operation [3]. Khodabandelu et al. [3] proposed an ABS
+simulation model for selecting an appropriate supply point for each task in a way that reduces
+total operation time while preventing collisions. Although this system predetermined the
+priority of each task to reduce the number of possible schedules, the nature of the simulation
+
+135
+
+process still cannot guarantee entirely optimal results.
+3. Problem statement and assumptions
+Given a construction site layout and lifting requests, the linkages between the requests
+and the locations of tower cranes and supply points can be used to determine optimized crane
+movements and transportation efficiency. For each single tower crane, the optimized selection
+
+140
+
+of a supply point for a request and the implementation of an effective lifting schedule can lead
+to a high ratio of crane utilization. For multiple, overlapping tower cranes, the schedule design
+must also consider the coordination of adjacent cranes movements in ways that avoid the
+potential for collision in overlapping areas. In the proposed MCCSP, the problem was
+formulated as an MILP optimization model. The model achieves collision-free scheduling by
+5
+
+145
+
+forbidding simultaneous crane movements inside overlapping areas. It also optimizes the
+schedules of crane movements at minimum time-weighted energy cost by automatically 1)
+distributing the material requests in overlapping areas to appropriate tower cranes; 2) selecting
+the appropriate supply location to serve each request; and 3) arranging the lifting sequences of
+tower cranes to complete the requests. The MILP model was solved using the commercial
+
+150
+
+software GurobiTM [59].
+The study provides various pieces of relevant engineering information. Specifically, the
+positions of all the supply and demand locations on-site are predetermined; information about
+material storage and requests are project-specific and given by contractors; the velocity of tower
+cranes is set based on specifications. Four assumptions were implemented in the proposed
+
+155
+
+optimization model:
+• Each crane movement selects the shortest path along the minor arc between two locations;
+• Each tower crane can only transport one type of material in each lifting;
+• Each tower crane initially stays at a demand location in a schedule before starting a material
+transportation task; and
+
+160
+
+• Each overlapping area is limited to a small area that can only accommodate supply or
+demand locations.
+4. The formulations of the proposed optimization method
+The following sections explain the variables and constraints in the model. The objective
+function is introduced in Section 4.1. Section 4.2 briefly describes the calculation of the hook
+
+165
+
+movement time between any two points using Eqs. (4)-(9) [13, 60]. In Section 4.3, the constraint
+sets (10) to (36) are introduced to formulate and control the material transportation process.
+4.1 Objective function
+The objective function of the proposed model is to minimize the time-weighted energy
+cost to complete all the given requests [61]. In Eq. (1), the energy cost comprises two parts, C
+
+170
+
+and C . C represents the energy cost of the empty-loaded lifting that all cranes with an empty
+hook consume when moving from demand locations to supply locations. Similarly, C signifies
+the energy cost of the fully-loaded lifting that all cranes with a fully loaded hook consume when
+moving from supply locations to demand locations. Table 1 lists explanation of the symbols
+6
+
+used in the objective function section.
+
+(
+
+Min C + C
+
+175
+
+)
+
+(1)
+
+In Eq. (2), a binary variable z s , j ,i ,k =1 represents that a tower crane at a location k with an
+empty-loaded hook moves from a demand location j to a supply location i in a lifting sequence
+s. Ti ,kj is the movement time between the two locations. The empty hook will be loaded with
+materials at supply location i, and TLoading is the material loading time. A parameter Ω stands
+180
+
+for the estimated unit energy cost of empty-loaded lifting movements in a minute.
+S
+
+I
+
+J
+
+K
+
+)
+
+(
+
+C =∑∑∑∑ Ti ,kj + TLoading ⋅ Ω ⋅ z s , j ,i ,k
+s =1 i =1 j =1 k =1
+
+(2)
+
+Similarly in Eq. (3), a binary variable y s ,i , j ,k ,m =1 indicates that a tower crane at a location k
+with a fully-loaded hook moves from a supply location i to a demand location j with material
+type m in a sequence s. The fully-loaded hook is unloaded at the demand location j, and
+185
+
+TUnloading is the material unloading time. Similarly, Ω indicates the estimated unit energy cost
+
+of fully-loaded lifting movements in a minute.
+S
+
+I
+
+J
+
+K
+
+M
+
+(
+
+)
+
+C = ∑∑∑∑∑ Ti ,kj + TUnloading ⋅ Ω ⋅ ys ,i , j ,k ,m
+s =1 i =1 j =1 k =1 m =1
+
+Table 1.
+Parameters and variables in the objective function section
+Symbol
+
+Type
+
+C
+
+Continuous variable
+
+C
+
+Continuous variable
+
+y s ,i , j , k , m
+
+Binary variable
+
+z s , j ,i , k
+
+Binary variable
+
+k
+i, j
+
+Continuous
+parameter
+Continuous
+parameter
+Continuous
+parameter
+Continuous
+parameter
+
+T
+
+TLoading
+TUnloading
+Ω
+
+Expression
+The total energy cost from material demand locations to material
+supply locations;
+The total energy cost from material supply locations to material
+demand locations;
+
+ys ,i , j ,k ,m =1 indicates a tower crane at a location k transports
+material type m from a supply location i to a demand location j
+in a work sequence s;
+
+z s , j ,i ,k =1 indicates a tower crane at a location k travels from a
+demand location j to a supply location i in a work sequence s;
+The hook movement time of a tower crane at location k between
+a supply location i and a demand location j;
+The time to load materials from a material supply location;
+The time to unload materials to a material demand location;
+The estimated unit energy cost of empty-loaded lifting
+movement in a minute;
+7
+
+(3)
+
+Continuous
+parameter
+
+Ω
+190
+
+The estimated unit energy cost of fully-loaded lifting movement
+in a minute.
+
+4.2 Estimate tower crane movement time between two locations
+In Fig. 1, the tower crane movement can be divided into a horizontal movement and a
+vertical hosting movement. Table 2 lists the explanations of the parameters used in the following
+Eqs. (4)-(9). In Eq. (4), the crane movement time Ti ,kj is calculated by the combination of
+horizontal movement time Thk( i , j ) and vertical movement time Tvk( i , j ) . Considering the
+
+195
+
+simultaneous hook movement in the horizontal and vertical directions, a continuous parameter
+
+βk ranging from 0.0 to 1.0 is introduced to realize the controller’s operation level. The user
+input parameter γ k ranging from 1.0 to 10.0 indicates the level of difficulty in operating a
+crane at a location k due to the different site conditions. To consider the constructed building
+on site or the heavy materials which might possibly lead to a longer and more complex
+200
+
+movement path, the coefficient µi,k j ranging between 1.0 and 10.0 is introduced. It denotes the
+complexity of the movement route between a supply location i and a demand location j while a
+crane sets up at a location k.
+
+[ ( (
+
+)
+
+(
+
+Ti ,kj = µik, j ⋅ γ k ⋅ max Thk(i , j ) , Tvk(i , j ) + β k ⋅ min Thk(i , j ) , Tvk(i , j )
+
+ρ ( D j , TC k )
+
+))]
+
+Tωk(i , j )
+
+( D jx , D jy )
+
+g
+
+ρ ( Si , D j )
+
+D jz − Siz
+
+(TC kx , TC ky )
+
+ρ ( Si , TC k )
+
+Tangent movement
+
+( Six , Siy )
+
+Siz
+
+Radial movement
+
+Hook position
+
+D jz
+
+Vertical movement
+
+Fig. 1. An example of hook movement routes in horizontal direction (left) and in vertical direction
+(right)
+205
+
+Table 2.
+Parameters in movement time estimation section
+Symbol
+
+Six , Siy , Siz
+
+Expression
+
+Coordinates of a material supply location i;
+8
+
+(4)
+
+y
+
+z
+
+D jx , D j , D j
+
+Coordinates of a material demand location j;
+
+TCkx , TCky , TCkz
+
+Coordinates of a tower crane setup at a location k;
+
+Tωk(i , j )
+
+The horizontal hook movement time of a tower crane at location k between a
+supply location i and a demand location j;
+The hook movement time of a tower crane at location k between a supply
+location i and a demand location j in the vertical direction;
+The hook movement time along a jib of a tower crane at location k between a
+supply location i and a demand location j;
+The tangent hook movement time of a tower crane at location k between a
+supply location i and a demand location j;
+
+Vrk
+
+The hook movement velocity along a jib of a tower crane at location k;
+
+Vωk
+
+The slewing velocity of a jib of a tower crane at location k;
+
+Vhk
+
+The hoisting velocity of a hook of a tower crane at location k;
+
+Thk(i , j )
+Tvk(i , j )
+Trk( i , j )
+
+ρ( Si , TCk )
+
+The distance between supply location i and a tower crane setup location k;
+
+ρ( D j , TCk )
+
+The distance between demand location j and a tower crane setup location k;
+
+ρ( S i , D j )
+
+The distance between a supply location i and a demand location j;
+
+αk
+βk
+γk
+
+The degree of simultaneous hook movement in vertical and horizontal planes;
+
+µ
+
+The complexity of the movement route between a supply location i and a
+demand location j while a crane sets up at a location k.
+
+k
+i, j
+
+The degree of simultaneous hook movement in radial and tangential directions;
+The level of difficulty in operating a crane at a location k;
+
+In Fig. 1.a, the horizontal movement can be split into the radial movement of a trolley and
+the slewing movement of a jib. Eq. (5) can calculate the simultaneous movement time by
+combining the movement time Trk( i , j ) and Tωk(i , j ) in radial and tangent directions. A high value
+210
+
+of a continuous parameter α k ranging from 0 to 1 represents a low synchronous movement in
+the two directions.
+
+Thk(i , j ) = max(Trk(i , j ) , Tωk(i , j ) ) + α k ⋅ min(Trk(i , j ) , Tωk(i , j ) )
+
+(5)
+
+Eqs. (6)-(7) refer to the time taken for the radial movement and slewing movement
+between pairs of supply and demand locations. Vrk and Vωk are the velocities in radial and
+215
+
+tangent directions. ρ( Si , TCk ) is the Euclidean distance between a supply location i and a
+tower crane at a location k, which is calculated in Eq. (8). ρ( D j , TCk ) is the distance between
+a demand location and a tower crane location, and ρ( Si , D j ) represents the distance between
+a supply location and a demand location, which is calculated using similar equations.
+
+Trk(i , j ) =
+
+ρ ( Si , TCk ) - ρ ( D j , TCk )
+Vrk
+
+9
+
+(6)
+
+k
+ω (i , j )
+
+T
+
+220
+
+ρ ( Si , TCk ) + ρ ( D j , TCk ) - ρ ( Si , D j )
+1
+)
+= k × arccos(
+2 × ρ ( S i , TCk ) × ρ ( D j , TCk )
+vω
+2
+
+2
+
+2
+
+(0 ≤ arccos(θ ) ≤ 180。) (7)
+
+ρ ( Si , TCk ) = ( Six − TCkx ) 2 + ( Siy − TCky ) 2
+
+(8)
+
+Illustrated in Fig. 1.b, the vertical movement distance from a supply location i to a demand
+location j includes the height difference represented by D jz - Siz and the double minimum
+225
+
+hoisting height g. The vertical movement time is calculated using Eq. (9), and Vhk is the crane
+velocity in vertical direction.
+Tvk( i , j ) =
+
+( D jz - Siz + 2 ⋅ g )
+
+(9)
+
+Vhk
+
+4.3 Constraints of the proposed optimization model
+To clarify the development of the proposed model, a general flowchart in Fig. 2 is given
+230
+
+to illustrate the decision variables and constraints in the formulations. Based on a given site
+layout and the material requests, the optimization proceeds through the following six steps. It
+is recognized that these six steps cannot represent the exact flow basis of the proposed algorithm.
+Table 3 lists explanations of the parameters and variables in the constraint sets (10)-(21).
+
+235
+
+Table 3.
+Parameters and variables in the constraints section
+Symbol
+
+Type
+
+Expression
+
+εr,j,m
+
+Binary parameter
+
+εr,j,m =1 indicates a material request r from a demand location j
+
+α'i,m
+
+Binary parameter
+
+δr,i,j,m
+
+Binary variable
+
+xr,s,k
+
+Binary variable
+
+πk
+
+Continuous parameter
+
+χ s , j ,k
+
+Binary variable
+
+τ j ,k
+
+Binary Parameter
+
+needing material type m;
+
+α'i,m =1 indicates material type m is available at material supply
+location i;
+
+δr,i,j,m =1 indicates a supply location i is selected to provide
+material type m for a request r from a demand location j;
+
+xr , s ,k =1 indicates a tower crane at a location k completes a
+material request r in a work sequence s;
+The crane coverage radius;
+
+χ s , j ,k =1 indicates a tower crane at a location k must unload
+materials at the demand location j in the sequence s;
+
+τ j ,k =1 indicates a tower crane at location k initially stays at a
+demand location j.
+10
+
+Section 4.3.1
+
+Section 4.3.2
+
+Start
+
+Generate all the possible
+combinations of δr,i,j,m.
+
+Generate all the possible
+combinations of xr,s,k.
+
+Step 1: Eliminate the infeasible
+combinations of δr,i,j,m.
+
+Choose the first combination.
+
+Choose the
+next
+combination
+
+A request r from a
+demand point j requires
+material type m？
+
+Choose the first combination.
+Step 2: Eliminate the infeasible
+combinations of xr,s,k.
+
+No
+
+Step 3: Identify all the feasible
+combinations of ys,i,j,k,m.
+
+Yes
+No
+
+A supply point i stores
+material type m?
+
+Step 4: Identify all the feasible
+combinations of zs,j,i,k.
+
+Yes
+Select one supply location i
+from all the feasible locations.
+δr,i,j,m=1
+
+No
+
+Each material request r
+is completed exactly
+once?
+Choose the
+Yes
+next
+combination.
+Each work sequence
+completes no more than one
+material request?
+
+xr,s,k = 1
+
+xr,s,k = 0
+
+δr,i,j,m= 0
+No
+
+Step 6: Minimize the timeweighted energy cost by Gurobi
+for the optimal schedule.
+
+This is the last combination?
+Yes
+Proceed to Step 3
+
+End
+
+Yes
+Proceed to Step 2
+
+Section 4.3.4
+
+Section 4.3.3
+Generate all possible
+combinations of ys,i,j,k,m
+
+The values of δr,i,j,m
+and xr,s,k are 1？
+
+Generate all the possible
+combinations of zs,j,i,k
+
+Section 4.3.5
+
+Choose the first combination.
+
+No
+
+Choose the first service
+schedule.
+
+Choose the first combination.
+
+Calculate the movement time
+to enter and leave the
+overlapping area in this
+combination.
+
+A crane at a location k
+arrives at a location j in a
+sequence s-1 ?
+
+Yes
+
+ys,i,j,k,m = 0
+
+This is the last combination？
+Yes
+Proceed to Step 4
+
+Simultaneous crane
+movements exist in an
+overlapping area？
+
+No
+
+Yes
+ys,i,j,k,m = 1
+
+No
+
+Yes
+
+A crane at a location k
+covers the locations i
+and j？
+
+No
+
+No
+
+Yes
+Step 5: Eliminate the
+simultaneous crane movements
+inside all the overlapping areas.
+
+This is the last combination?
+
+Choose the
+next
+combination
+
+No
+
+Choose the
+next
+schedule.
+
+No
+
+Yes
+Schedule is
+infeasible.
+Remove it.
+
+No
+
+Schedule is
+feasible.
+Keep it.
+
+This is the last schedule？
+
+A crane at a location k
+starts from a location i in a
+sequence s？
+Yes
+Choose the
+next
+combination
+No
+
+Yes
+Proceed to Step 6
+
+Fig. 2 General flowchart of proposed model
+240
+
+11
+
+No
+
+zs,j,i,k = 1
+
+zs,j,i,k = 0
+
+This is the last combination?
+Yes
+Proceed to Step 5
+
+4.3.1 Eliminate infeasible linkages between supply and demand locations
+In step 1, a binary variable δr,i,j,m is firstly introduced to link the pairs of supply and
+demand locations. In constraint set (10), if εr,j,m =1 and a material request r from a demand
+location j needs material type m, then
+245
+
+I
+
+∑δ
+i=1
+
+r,i,j,m=1
+
+indicates that one supply location storing the
+
+material m must be assigned to support the request r from demand location j. Otherwise, εr,j,m
+=0 and δr,i,j,m is forced to be 0. The constraint set (11) is set to identify whether a supply
+location i stores a material m, and this is determined by the given binary parameter α'i,m .
+I
+
+∑δ
+i=1
+
+∀r ∈ {1,2...., R},
+
+r,i,j,m=ε r,j,m
+
+∀j ∈ {1,2...., J } ∀m ∈ {1,2...., M } (10)
+α 'i,m ≥ δr,i,j,m
+
+250
+
+∀r ∈ {1,2...., R} ∀i ∈ {1,2...., I }
+∀j ∈ {1,2...., J } ∀m ∈ {1,2...., M } (11)
+
+4.3.2 Eliminate infeasible combinations of request-assignments to tower cranes
+In step 2, the binary variable xr,s,k represents the linkage of the request r and the lifting
+S
+
+K
+
+sequence s of a tower crane at location k. In constraint set (12), ∑∑xr,s,k = 1 indicates that
+s =1 k =1
+
+255
+
+each material request r must be assigned to only one optimized lifting sequence of one tower
+crane. For each tower crane, each lifting sequence s can only select one material request at most
+in constraint set (13).
+S
+
+K
+
+r,s,k
+
+=1
+
+∀r ∈ {1,2...., R} (12)
+
+r,s,k
+
+≤1
+
+∀s ∈ {1,2...., S }, ∀k ∈ {1,2...., K } (13)
+
+∑∑x
+s =1 k =1
+R
+
+∑x
+r =1
+
+260
+
+4.3.3 Generate feasible combinations of fully-loaded lifting movement
+In step 3, the binary decision variable y s ,i , j ,k ,m is used to mathematically identify fullyloaded crane movements from supply locations to demand locations. In constraint set (14), if
+both of the binary variables xr,s,k and δr,i,j,m are 1, it indicates that a material request r is
+assigned to a working sequence s of a tower crane at a location k, and the crane moves from a
+12
+
+265
+
+supply location i to a demand location j carrying material m. Then, y s ,i , j ,k ,m must be 1 to
+confirm that the fully-loaded crane movement is conducted.
+
+2 − xr , s ,k − δ r ,i , j ,m ≥ 1 − ys ,i , j ,k ,m , ∀r ∈ {1,2...., R}, ∀s ∈ {1,2...., S }
+∀i ∈ {1,2...., I }, ∀j ∈ {1,2...., J }, ∀m ∈ {1,2...., M } , ∀k ∈ {1,2...., K } (14)
+Constraint sets (15) and (16) are introduced to ensure that the supply and demand locations
+270
+
+in each fully-loaded movement are covered by the same tower crane. If either of ρ( D j , TCk )
+or ρ( Si , TCk ) is larger than the crane coverage radius π k , and the supply location or the
+demand location is out of the crane coverage, then, y s ,i , j ,k ,m must be 0 and the fully-loaded
+movement cannot be completed. Constraint set (17) forces each fully-loaded movement in a
+sequence s only from one supply location with one type of material to a demand location.
+
+275
+
+ys ,i , j ,k ,m ⋅ (ρ (D j , TCk ) − π k ) ≤ 0 , ∀s ∈ {1,2...., S }, ∀i ∈ {1,2...., I }
+
+∀j ∈ {1,2...., J }, ∀k ∈ {1,2...., K } , ∀m ∈ {1,2...., M } (15)
+ys ,i , j ,k ,m ⋅ (ρ (Si , TCk ) − π k ) ≤ 0 , ∀s ∈ {1,2...., S }, ∀i ∈ {1,2...., I }
+
+∀j ∈ {1,2...., J }, ∀k ∈ {1,2...., K } , ∀m ∈ {1,2...., M } (16)
+I
+
+J
+
+M
+
+∑∑∑ y
+i =1 j =1 m =1
+
+280
+
+s ,i , j , k , m
+
+= 1 ∀s ∈ {1,2...., S }, ∀k ∈ {1,2...., K } (17)
+
+4.3.4 Generate feasible combinations of empty-loaded lifting movements
+Step 4 aims to select the feasible empty-loaded lifting movements that are determined by
+the constraint sets (18) – (21). If εr , j ,m =1 and xr,s,k =1, which indicates that a request r from a
+demand location j requires material type m, and the request r is completed by a tower crane at
+a location k in a lifting sequence s, then the fully-loaded tower crane at a location k must unload
+
+285
+
+materials at the demand location j in the sequence s and χ s , j ,k =1.
+2 - ε r , j , m − xr , s , k ≥ 1 − χ s , j , k ,
+
+∀r ∈ {1,2...., R}, ∀s ∈ {1,2...., S }
+
+∀m ∈ {1,2...., M } , ∀k ∈ {1,2...., K } , ∀j ∈ {1,2...., J } (18)
+In constraint set (19), for two consecutive lifting sequences s and s+1, if χ s , j ,k =1 and
+y s +1,i ,o ,k ,m =1, which indicates that a fully-loaded crane movement stops at a demand location j
+290
+
+in the sequence s and the next fully-loaded crane movement in the sequence s+1 starts from a
+supply location i, then z s +1, j ,i ,k =1, which determines that the empty-loaded movement in the
+sequence s+1 must travel from the demand location j to the supply location i.
+13
+
+2 − χ s , j ,k − y s +1,i ,o ,k ,m ≥ 1 − z s +1, j ,i ,k , ∀s ∈ {1,2...., S − 1}, ∀i ∈ {1,2...., I }
+
+∀j , o ∈ {1,2...., J } , ∀k ∈ {1,2...., K } , ∀m ∈ {1,2...., M } (19)
+In the first sequence s=1, the empty-loaded lifting movement depends on the user-specified
+
+295
+
+initial location and the following fully-loaded movement. In constraint set (20), a binary
+parameter τ j ,k =1 signifies that the demand location j is the user-specified initial location where
+the first empty-loaded lifting movement starts. If ys =1,i ,o ,k ,m =1 and the following fully-loaded
+lifting movement begins from a supply location i, then z s =1, j ,i ,k =1 and the first hook movement
+300
+
+in the first working sequence travels from the user-specified demand location j to the supply
+location i. The constraint set (21) forces there to be only one empty-loaded movement that exists
+from a location j to a location i in each sequence s.
+2 − τ j , k − y s ,i , o , k , m ≥ 1 − z s , j ,i , k
+
+s = 1 , ∀i ∈ {1,2...., I }
+
+∀j , o ∈ {1,2...., J } , ∀k ∈ {1,2...., K } , ∀m ∈ {1,2...., M } (20)
+I
+
+J
+
+∑∑ z
+
+305
+
+i =1 j =1
+
+s , j ,i , k
+
+=1
+
+∀s ∈ {1,2...., S }, ∀k ∈ {1,2...., K } (21)
+
+4.3.5 Eliminate the service schedules of simultaneous movements inside overlapping areas
+Based on the possible crane movements identified in the previous section, the following
+Eqs. (22)-(28) can identify the intersection point that a crane passes in a movement to enter or
+leave an overlapping area. The time to reach the point is estimated by Eqs. (29)-(33). The
+310
+
+constraint sets (34)-(36) are introduced to eliminate any service schedules with simultaneous
+crane movements inside overlapping areas.
+(1) Identify the movement routes passing overlapping areas
+Given the positions of supply and demand locations, Figure 3 illustrates three typical
+
+315
+
+scenarios of crane movements. Several parameters are introduced to illustrate the movements
+and explained in Table 4. Firstly, two binary parameters ηi ,c and λ j ,c are used to denote
+whether the given locations are inside an overlapping area c. In Scenario 1, the demand location
+j is inside and a supply location i is outside. Then λ j,c is set to be 1 and ηi,c is 0. In Eq. (22),
+k
+
+k
+
+TP h (i , p ) and TP h ( j , p ) represent the movement time from the intersection point p to each supply
+320
+
+and demand location. The binary parameter θ i , j ,k ,c , p is used to identify whether a movement
+14
+
+passes through an intersection point p. When the crane enters the overlapping area from the
+k
+
+k
+
+intersection point p and stays inside, the sum of TP h ( i , p ) and TP h ( j , p ) is smaller than or equals
+
+Thk(i , j ) and this forces θ i , j ,k ,c , p to be 1. For the reverse movement starting from the demand
+location j, in Eq. (23), θ j ,i ,k ,c , p is set to equal θ i , j ,k ,c , p , which means the reverse movement
+325
+
+must pass the same intersection point p to leave the area.
+k
+k
+
+k
+1, TP h ( i , p ) + TP h ( j , p ) ≤ Th ( i , j )
+θ i , j , k ,c , p = 
+k
+k
+k
+
+0, TP h ( i , p ) + TP h ( j , p ) > Th ( i , j )
+
+∀c ∈ {1,2...., C}
+
+∀p ∈ {2c − 1,2c}, ∀i ∈ {1,2...., I }, ∀j ∈ {1,2...., J }, ∀k ∈ {1,2...., K } (22)
+∀c ∈ {1,2...., C} ,
+
+θ j ,i , k , c , p = θ i , j , k , c , p
+
+∀p ∈ {2c − 1,2c}, ∀i ∈ {1,2...., I }, ∀j ∈ {1,2...., J }, ∀k ∈ {1,2...., K } (23)
+330
+
+Table 4.
+Parameters used to identify the movement routes passing overlapping areas
+Symbol
+
+TPhk( c )
+
+Type
+Binary
+parameter
+Binary
+parameter
+Continuous
+parameter
+Continuous
+parameter
+Continuous
+parameter
+
+θ i , j ,k ,c , p
+
+Binary
+parameter
+
+θ j ,i , k , c , p
+
+Binary
+parameter
+
+θi , j , k , c
+
+Binary
+parameter
+
+ηi ,c
+λ j ,c
+k
+
+TP h (i , p )
+k
+
+TP h ( j , p )
+
+Expression
+
+ηi,c =1 indicates a supply location i exists in an overlapping area c;
+λ j,c =1 indicates a demand location j exists in an overlapping area c;
+The movement time of a tower crane at location k between a supply
+location i to an intersection point p;
+The movement time of a tower crane at location k between a demand
+location j to an intersection point p;
+The movement time of a tower crane at location k passes through the
+overlapping area c;
+
+θ i , j ,k ,c, p =1 indicates a tower crane at a location k moves from a supply
+location i to a demand location j by entering or leaving an overlapping
+area c through an intersection point p;
+
+θ j ,i ,k ,c , p =1 indicates a tower crane at a location k travels from a demand
+location j to a supply location i by entering or leaving an overlapping area
+c through an intersection point p;
+
+θi , j ,k ,c =1 indicates a movement of a tower crane at a location k between
+a supply location i and a demand location j passes through an overlapping
+area c.
+
+15
+
+p
+
+p
+
+i
+
+i
+TC1
+
+TC2
+
+TC1
+
+TC2
+
+j
+p+1
+Scenario 1
+
+i
+
+p+1
+
+j
+
+Scenario 2
+
+p
+
+TC2
+
+TC1
+
+p
+
+j
+
+i
+
+Material supply location
+
+j
+
+Material demand location
+Intersect point
+Jib movement
+
+p+1
+
+Scenario 3
+
+335
+
+Fig. 3 The selection of an intersection point for the movement path starting from a supply
+location
+In Scenarios 2 and 3, when the supply location and the demand location are out of the
+overlapping area, the parameters ηi,c and λ j ,c must be 0. In Scenario 2, the crane travels
+through the entire overlapping area. In Eqs. (24)-(25), θ i , j , k ,c , p and θ i , j ,k ,c , p +1 are used to
+identify the intersection point at which the crane enters the area. For the reverse movement
+
+340
+
+starting from the demand location j, the crane must follow the reverse route and enter the area
+from the other intersection point. The values of the binary parameters θ j ,i ,k ,c , p and θ j ,i ,k ,c, p +1
+are controlled by Eqs. (26)-(27).
+k
+k
+
+k
+k
+1, TP h ( i , p ) + TPh ( c ) + TP h ( j , p +1) ≤ Th ( i , j )
+θ i , j , k ,c , p = 
+k
+k
+k
+k
+
+0, TP h ( i , p ) + TPh ( c ) + TP h ( j , p +1) > Th ( i , j )
+
+∀c ∈ {1,2...., C} ,
+
+p = 2c − 1 , ∀i ∈ {1,2...., I }, ∀j ∈ {1,2...., J }(24)
+345
+
+k
+k
+
+k
+k
+1, TP h ( i , p +1) + TPh ( c ) + TP h ( j , p ) ≤ Th ( i , j )
+θ i , j , k ,c , p +1 = 
+k
+k
+k
+k
+
+0, TP h ( i , p +1) + TPh ( c ) + TP h ( j , p ) > Th ( i , j )
+
+∀c ∈ {1,2...., C} ,
+
+p = 2c − 1 , ∀i ∈ {1,2...., I }, ∀j ∈ {1,2...., J }(25)
+
+θ j ,i ,k ,c , p +1 = θ i , j ,k ,c , p
+16
+
+∀c ∈ {1,2...., C} ,
+
+p = 2c − 1 , ∀i ∈ {1,2...., I }, ∀j ∈ {1,2...., J }(26)
+∀c ∈ {1,2...., C} ,
+
+θ j ,i ,k ,c , p = θ i , j ,k ,c , p +1
+
+p = 2c − 1 , ∀i ∈ {1,2...., I }, ∀j ∈ {1,2...., J }(27)
+
+350
+
+In Scenario 3, the crane moves along the minor arc between the two locations without
+passing the overlapping area. Then, θ i , j ,k ,c , p and θ i , j ,k ,c , p +1 in Eqs. (24) and (25) must be 0.
+The binary parameter θi , j ,k ,c indicating whether a movement passes an overlapping area is also
+forced to be 0 in Eq. (28). Table 5 summarizes the values of the binary parameters to
+355
+
+mathematically illustrate the movements in the three scenarios.
+ 1, θ i , j , k ,c , p = 1 or
+θ i , j ,k ,c , p +1 = 1
+0, θ i , j ,k ,c , p = 0 and θ i , j ,k ,c , p +1 = 0
+
+∀c ∈ {1,2...., C} ,
+
+θ i , j , k ,c = 
+
+p = 2c − 1 , ∀i ∈ {1,2...., I }, ∀j ∈ {1,2...., J }(28)
+Table 5.
+
+The value of the binary parameters to identify the movements routes in the three scenarios
+The binary parameters
+Scenario
+
+Equations
+
+ηi ,c
+
+λ j ,c
+
+θ i , j , k ,c , p
+
+θ i , j ,k ,c , p +1
+
+θ j ,i , k , c , p
+
+θ j ,i ,k ,c , p +1
+
+θi , j , k , c
+
+1
+
+0
+
+1
+
+1
+
+0
+
+1
+
+0
+
+1
+
+22-23, 28
+
+2
+
+0
+
+0
+
+1
+
+0
+
+0
+
+1
+
+1
+
+24-28
+
+3
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+24-28
+
+360
+
+(2) Estimate the time of each movement to enter and leave an overlapping area
+Several parameters and variables are introduced in this section and explained in Table 6.
+In Eqs. (29-a)-(29-c), a continuous variable STk , s ,q is firstly introduced to represent the
+starting time of each movement. In Eq. (29-a), for the empty-loaded lifting movement (q=1) in
+365
+
+the first sequence (s=1), the starting time is set to be a given parameter BTk . For each fullyloaded lifting movement (q=2), STk , s ,q in Eq. (29-b) equals the sum of the starting time of the
+empty-loaded lifting movement (q=1) in the sequence s and the movement time Ti ,kj . For the
+empty-loaded lifting movement (q=1) in the rest sequences (s≥2), STk , s ,q in Eq. (29-c) equals
+17
+
+the sum of the starting time of the fully-loaded lifting movement (q=2) in the previous sequence
+370
+
+(s-1) and the movement time Ti ,kj . For each movement, the supply location i and demand
+location j are identified by ys ,i , j ,k ,m or z s , j ,i ,k . TLoading and TUnloading indicate the extra
+material loading and unloading time.
+q = 1 , s = 1 , ∀k ∈ {1,...K } (29-a)
+
+STk ,s ,q = BTk
+I
+
+(
+
+J
+
+STk , s , q = STk , s , q -1 + ∑∑ zs , j ,i , k ⋅ Ti ,kj + TLoading
+i =1 j =1
+
+q = 2 , ∀s ∈ {1,...S }, ∀k ∈ {1,...K } (29-b)
+
+375
+I
+
+J
+
+)
+
+(
+
+M
+
+STk , s , q = STk , s −1, q +1 + ∑∑∑ ys -1,i , j , k , m ⋅ Ti ,kj + TUnloading
+i =1 j =1 m =1
+
+380
+
+)
+
+q = 1 , ∀s ∈ {2,...S } , ∀k ∈ {1,...K } (29-c)
+
+Table 6.
+Parameters in estimating the time of each movement to enter and leave an overlapping
+area
+Symbol
+
+BTk
+
+STk , s ,q
+
+TI k , s ,q ,c
+TI s ,i , j ,k ,q ,c
+TOk , s ,q ,c
+TO s ,i , j ,k ,q ,c
+
+Type
+Continuous
+parameter
+Continuous
+variable
+Continuous
+variable
+Continuous
+variable
+Continuous
+variable
+Continuous
+variable
+
+Expression
+
+The starting time of each tower crane；
+The starting time of each movement；
+The time of a tower crane set up at location k entering an overlapping
+area c in a movement q of a work sequence s；
+The time from a supply location i or a demand location j to the selected
+intersection point of overlapping area c；
+The time of a tower crane set up at location k leaving an overlapping
+area c in a movement q of a work sequence s；
+The movement time from entering the overlapping area to leaving the
+area.
+
+In Eq. (30), the variable TI k , s ,q ,c is defined as the time for a crane to enter an overlapping
+I
+
+J
+
+area by reaching an intersection point. It is calculated by adding STk , s ,q with ∑∑ TI s ,i , j ,k ,q ,c
+i =1 j =1
+
+,
+
+which is the time from a supply location i or a demand location j to the selected intersection
+point of overlapping area c.
+I
+
+385
+
+J
+
+TI k , s ,q ,c = STk , s ,q + ∑∑ TI s ,i , j ,k ,q ,c
+i =1 j =1
+
+∀k ∈ {1,2...., K } , ∀s ∈ {1,2...., S }, ∀q ∈ {1,2} , ∀c ∈ {1,2...., C} (30)
+
+18
+
+In Eqs. (31-a)-(31-g), the variable TI s ,i , j ,k ,q ,c is calculated based on the classification of
+the crane movements. For the empty-loaded lifting movement (q=1) in the first sequence (s=1),
+when λ j,c =1 and the movement starts from a demand location j inside an overlapping area c,
+390
+
+the time to enter the area is set to be 0 in Eq. (31-a). In Eqs. (31-b) and (31-c), if a movement
+starts from a location inside the overlapping area c ( λ j,c =1 or ηi,c =1), then the crane must have
+already moved into the area in the last movement. TI s ,i , j ,k ,q ,c is set to be a negative arbitrary
+large number M. For the lifting movement (q=1 or q=2) starting from a demand location or a
+supply location out of the overlapping area c ( λ j,c =0 or ηi,c =0), the parameter θ i , j ,k ,c must be
+
+395
+
+1 if the crane enters the area. Then, in Eqs. (31-d) and (31-e), TI s ,i , j ,k ,q ,c equals the time from
+the starting location to the selected intersection point identified by the pair of θ i , j ,k ,c , p and
+
+θ i , j ,k ,c , p +1 or the pair of θ i , j ,k ,c , p and θ j ,i ,k ,c , p +1 . If a movement follows a route without passing
+through any overlapping area ( λ j,c =0 and ηi,c =0 and θ i , j ,k ,c =0), TI s ,i , j ,k ,q ,c is set to be a
+negative arbitrary large number M in Eqs. (31-f) and (31-g).
+400
+
+θ i , j , k ,c = 1 , s = 1 , q = 1 , λ j ,c = 1 , η i ,c = 0
+
+TI s ,i , j ,k ,c = 0
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K }(31-a)
+M
+
+TI s ,i , j ,k ,c = − M ⋅ ∑ y s ,i , j ,k ,m
+m =1
+
+θ i , j ,k ,c = 1 , ∀s ∈ {2,...S } , q = 1 , λ j ,c = 1 ,η i ,c = 0
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K }(31-b)
+405
+
+TI s ,i , j ,k ,c = − M ⋅ z s , j ,i ,k
+
+θ i , j ,k ,c = 1 , ∀s ∈ {1,...S }, q = 2 , λ j ,c = 0 ,η i ,c = 1
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K }(31-c)
+k
+k
+
+
+TI s ,i , j , k ,c = z s , j ,i , k ⋅ (θ j ,i , k ,c , p ⋅ TP h ( j , p ) ) + (θ j ,i , k ,c , p +1 ⋅ TP h ( j , p +1) )
+
+
+
+θ i , j ,k ,c = 1 , ∀s ∈ {1,...S }, q = 1 , λ j ,c = 0 , ∀ηi ,c ∈ {0,1}
+410
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K }(31-d)
+
+[
+
+M
+
+k
+
+k
+
+TI s ,i , j , k ,c = ∑ y s ,i , j , k , m ⋅ (θ i , j , k ,c , p ⋅ TP h ( i , p ) ) + (θ i , j , k ,c , p +1 ⋅ TP h ( i , p +1) )
+m =1
+
+]
+
+θ i , j ,k ,c = 1 , ∀s ∈ {1,...S }, q = 2 , ∀λ j ,c ∈ {0,1} ,η i ,c = 0
+19
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K }(31-e)
+M
+
+TI s ,i , j ,k ,c = − M ⋅ ∑ y s ,i , j ,k ,m
+m =1
+
+θ i , j , k ,c = 0 , ∀s ∈ {1,...S }, q = 2 , λ j ,c = 0 ,η i ,c = 0
+
+415
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K }(31-f)
+TI s ,i , j ,k ,c = − M ⋅ z s , j ,i ,k
+
+θ i , j , k ,c = 0 , ∀s ∈ {1,...S }, q = 1 , λ j ,c = 0 ,η i ,c = 0
+
+420
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K }(31-g)
+The time of a movement to leave an overlapping area is represented by TOk , s ,q ,c and
+I
+
+J
+
+calculated in Eq. (32). ∑∑ TO s ,i , j ,k ,q ,c consists of the movement time from entering the area
+i =1 j =1
+
+to leaving the area by reaching the intersection points.
+I
+
+J
+
+TOk , s ,q ,c = TI k , s ,q ,c + ∑∑ TO s ,i , j ,k ,q ,c
+
+∀k ∈ {1,2....K },
+
+i =1 j =1
+
+∀s ∈ {1,2....S }, ∀q ∈ {1,2} , ∀c ∈ {1,2....C}(29)
+425
+
+In Eq. (33-a), for the lifting movement (q=1) in the first sequence (s=1), when a crane
+moves out from a demand location j inside the area ( λ j ,c =1), TO s ,i , j ,k ,q ,c is the time from the
+location j to an intersection point identified by the pair of the parameters θ j ,i ,k ,c , p or θ j ,i ,k ,c , p +1 .
+For the lifting movement (q=2) in the last sequence (s=S) starting from the supply location in
+the outside ( ηi,c =0), if the crane finally stays inside the area ( λ j ,c =1 and θ i , j ,k ,c =1), then
+
+430
+
+TO s ,i , j ,k ,q ,c is set to be an arbitrary large number M in Eq. (33-b). For other pairs of two
+
+consecutive movements that must load or unload materials inside an overlapping area ( λ j,c =1
+or ηi,c =1), in Eqs. (33-c) and (33-d), TO s ,i , j ,k ,q ,c consists of the time for the previous movement
+from an intersection point to a location inside and the time for the following movement from
+the location to an intersection point to leave the area. Material loading TLoading and unloading
+435
+
+time TUnloading are also considered in this scenario. When the crane directly passes the entire
+area c ( θ i , j ,k ,c =1), TO s ,i , j ,k ,q ,c equals TPhk( c ) which is the movement time between the two
+,
+
+intersection points. In Eq. (33-f), for the lifting movement (q=1 or q=2) starting from the
+location outside the overlapping area ( λ j,c =0 or ηi,c =0) without passing any overlapping area
+20
+
+( θ i , j ,k ,c =0), TO s ,i , j ,k ,q ,c is set to be 0. A pseudo-code is attached in Appendix I to explain the
+440
+
+process used to calculate the time for a crane to enter and leave an overlapping area.
+k
+k
+
+
+ 
+TO s ,i , j , k ,c = z s , j ,i , k ⋅ θ j ,i , k ,c , p ⋅ TP h ( j , p )  + θ j ,i , k ,c , p +1 ⋅ TP h ( j , p +1) 
+
+ 
+
+θ i , j , k ,c = 1 , s = 1 , q = 1 , λ j ,c = 1 ,η i ,c = 0
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K } (30-a)
+M
+
+TO s ,i , j , k ,c = M ⋅ ∑ y s ,i , j , k , m
+m =1
+
+445
+
+θ i , j , k ,c = 1 , s = S , q = 2 , λ j ,c = 1 ,η i ,c = 0
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K } (31-b)
+k
+k
+TO s ,i , j , k ,c = z s , n ,i , k ⋅ (θ j , n , k ,c , p ⋅ TP h ( n , p ) ) + (θ j , n , k ,c , p +1 ⋅ TP h ( n , p +1) ) + TLoading 
+
+
+M
+
+[
+
+k
+
+k
+
++ ∑ y s ,i , j , k , m ⋅ (θ i , j , k ,c , p ⋅ TP h (i , p ) ) + (θ i , j , k ,c , p +1 ⋅ TP h (i , p +1) )
+m =1
+
+]
+
+θ i , j , k ,c = 1 , ∀s ∈ {1,...S }, q = 1 , λ j ,c = 0 ,η i ,c = 1
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K } (32-c)
+
+450
+
+M
+k
+k
+
+
+TO s ,i , j , k ,c = ∑ y s ,i , j , k , m ⋅ (θ i , j , k ,c , p ⋅ TP h ( j , p ) ) + (θ i , j , k ,c , p +1 ⋅ TP h ( j , p +1) ) + TUnloading 
+
+
+m =1
+k
+k
+
+
++ z s +1, j ,o , k ⋅ (θ j ,o , k ,c , p ⋅ TP h ( j , p ) ) + (θ j ,o , k ,c , p +1 ⋅ TP h ( j , p +1) )
+
+
+θ i , j , k ,c = 1 , ∀s ∈ {1,...S − 1}, q = 2 , λ j ,c = 1 ,η i ,c = 0
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K } (33-d)
+TO s ,i , j , k ,c = TPhk( c )
+
+θ i , j , k ,c = 1 , ∀s ∈ {1,...S }, ∀q ∈ {1,2} , λ j ,c = 0 ,η i ,c = 0
+
+455
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K } (34-e)
+TO s ,i , j , k ,c = 0
+
+θ i , j ,k ,c = 0 , ∀s ∈ {1,...S }, ∀q ∈ {1,2} , λ j ,c = 0 ,η i ,c = 0
+
+∀i ∈ {1,2....I }, ∀j ∈ {1,2....J }, ∀c ∈ {1,2....C}, ∀k ∈ {1,2....K }, (35-f)
+460
+
+(3) Forbid simultaneous movements inside overlapping areas
+Fig. 4 illustrates the possible movements of two tower cranes crossing over an overlapping
+area. In Scenario 1, the crane at the location k=1 moves from the supply location i=1 and firstly
+enters an overlapping area at the time TI1 from the intersection point p. Before it moves out
+from the point p+1 at the time TO1, the crane at the location k=2 moves into the area at the time
+21
+
+465
+
+TI2 from the intersection point p. A parameter TS is a user-input threshold time or area to provide
+additional security against simultaneous movements inside the area. A continuous variable
+WTkl,,su,,qh,c represents the time difference between the movements q and h of two cranes at
+
+locations k and l in the working sequences s and u to leave and enter the same overlapping area
+c. The time difference WT is calculated in Eq. (34). Specifically in Scenario 1, WT2-1 equal the
+470
+
+sum of TO2, and TS minus TI1. WT1-2 is the sum of TO1 with TS minus TI2. It is noted that the
+two positive values of WT2-1 and WT1-2 denote the simultaneous crane movements in an
+overlapping area.
+In Scenario 2, when the crane at the location k=3 leaves from the point p at the time TO3,
+the crane at the location k=4 cannot enter the threshold area. This is to enhance safety. The
+
+475
+
+opposite signs of the continuous variables WT3-4 and WT4-3 can ensure that an overlapping area
+is monopolized by one tower crane during its movement inside the area.
+∀k , l ∈ {1,....K } , k ≠ l ,
+
+WTkl,,su,,qh,c = TOl ,u ,h,c + TS − TI k ,s ,q ,c
+
+∀s, u ∈ {1,2....S } , ∀q, h ∈ {1,2}, ∀c ∈ {1,2....C}(36)
+
+p
+
+p+1
+
+TI 1
+
+TO 1 TS
+
+1
+
+2
+
+p
+
+1
+TC1
+
+k=1
+
+TC2
+
+p
+
+2
+TS
+
+1
+
+2
+
+p+1
+
+T
+
+p+1
+
+2
+
+TO 2 TS
+
+TI 2
+
+k=2
+
+1
+
+T
+
+WT1-2
+WT2-1
+
+a)
+
+p+1
+
+3
+
+5
+
+TC3
+
+k=3
+
+TC4
+
+3
+
+TS
+
+b)
+
+Scenario 1
+
+p
+
+k=4
+
+4
+
+4
+
+3 p+1
+
+p
+
+TI 3
+
+TO 3 TS
+4
+
+4
+
+Material supply location 1
+
+p
+
+p+1
+
+TI 4
+
+TO 4 TS
+
+5
+
+T
+
+b)
+1
+
+Scenario 2
+Material demand location
+
+TI1, TO1 The time to enter and leave an overlapping area
+480
+
+T
+
+WT3-4
+WT4-3
+
+a)
+1
+
+3
+
+p
+
+Intersection point p
+
+TS The threshold time
+
+Fig. 4 The possible movements of two adjacent tower cranes
+
+The constraint sets (35)-(36) are introduced to guarantee the opposite signs of any pairs of
+22
+
+WTkl,,su,,qh,c and WTl k,u, s,h,q,c to avoid simultaneous movements in any overlapping area. In constraint
+l ,u , h
+
+l ,u , h
+
+set (35), a positive value of WTk , s ,q,c forces a binary variable ψ k , s,q,c to be 1, and a negative
+l ,u , h
+
+l ,u , h
+
+value of WTk , s ,q,c forces ψ k , s,q,c to be 0. ψ kl ,,us ,,hq ,c =1 represents that the time difference between
+485
+
+the two crane movements q and h of two cranes at locations k and l in the working sequences s
+and u to enter or leave an overlapping area c cannot be negative. The constraint set (36) is used
+l ,u , h
+
+l ,u , h
+
+to ensure that the values of the binary variables ψ k , s,q,c and ψ k , s,q,c must be either 1 or 0 and
+cannot be 1 simultaneously.
+
+(
+
+)
+
+N ⋅ ψ kl ,,us ,,hq ,c − 1 ≤ WTkl,,su,,qh,c ≤ N ⋅ψ kl ,,us ,,hq ,c
+
+∀k , l ∈ {1,....K } , k ≠ l ,
+
+∀s, u ∈ {1,2....S } , ∀q, h ∈ {1,2}, ∀c ∈ {1,2....C}(37)
+
+490
+
+1 −ψ lk,u, s,,hq,c −ψ kl ,,us ,,hq ,c ≥ 0
+
+∀k , l ∈ {1,....K } , k ≠ l ,
+
+∀s, u ∈ {1,2....S } , ∀q, h ∈ {1,2}, ∀c ∈ {1,2....C}(38)
+The problem is formulated as an MILP model. The model is coded in Python 3.6 and
+solved using GurobiTM [59] to find the global optimum solution.
+495
+
+5. Numerical example
+The proposed optimization model was tested by a numerical example. As illustrated in Fig.
+5, the construction project involves three 8-12 story buildings. To accelerate the construction
+process, four tower cranes were deployed on-site during the construction stage. Fourteen
+demand locations and seven supply locations were predetermined on site. Four demand
+
+500
+
+locations and two supply locations were allocated inside the overlapping areas, including D2,
+D3, D4, D6, S3 and S4. Each supply location was able to store multiple types of material. Four
+types of material involved panel formwork, precast concrete facade units, and reinforcing bars
+and steels. Table 7 lists the coordinates of the supply locations and the different types of
+materials stored at each location. Table 8 gives the coordinates of the tower crane setup
+
+505
+
+locations. Table 9 specifies the coordinates and the material request of each demand location.
+Four tower cranes of 278 EC-B 12 Fibre Flat-Top were selected and deployed. Based on
+k
+
+the technical specifications, radial velocity Vrk =60 m/min, slewing velocity Vω =0.5 rad/min,
+hoisting velocity Vhk =136 m/min, and maximum radius π k =70 m. The parameters of operator
+23
+
+skills, α k and βk , were set to be 0 and 1.0. The coefficient γ k and µi,k j were set to be 1
+510
+
+based on the normal site conditions and low buildings. Material loading time TLoading and
+unloading time TUnloading were set to be 1.0 minute. Cost-weighted parameter Ω and Ω
+were set to be 3.0 and 6.0 CNY/min [19, 22] respectively.
+Table 7.
+Details of material supply locations in the numerical example.
+Material supply location, i
+
+Location coordinates
+x
+y
+z
+
+Types of material supply, m
+
+1
+
+135
+
+260
+
+1.5
+
+reinforcing bars (3),
+steels (4)
+
+2
+
+185
+
+235
+
+2
+
+large panel formwork (1),
+precast concrete facade units (2)
+
+3
+
+52
+
+146
+
+1
+
+large panel formwork (1),
+reinforcing bars (3),
+steels (4)
+
+4
+
+52
+
+106
+
+0
+
+5
+
+220
+
+125
+
+2
+
+6
+
+220
+
+75
+
+1.5
+
+7
+
+0
+
+170
+
+0
+
+precast concrete facade units (2)
+large panel formwork (1),
+steels (4)
+precast concrete facade units (2),
+reinforcing bars (3)
+large panel formwork (1),
+precast concrete facade units (2)
+
+515
+
+Table 8.
+The coordinates of tower crane setup locations in the numerical example.
+Crane setup location, k
+
+Location coordinates
+x
+
+y
+
+z
+
+1
+
+160
+
+215
+
+35
+
+2
+
+92
+
+130
+
+40
+
+3
+
+195
+
+115
+
+45
+
+4
+
+5
+
+125
+
+30
+
+24
+
+Fig. 5 The layout of the construction site
+
+520
+
+Table 9. Details of material demand locations and material requests in the numerical example.
+Material demand
+
+Location coordinates
+
+Material
+
+Material
+
+location, j
+
+x
+
+y
+
+z
+
+request, r
+
+type, m
+
+1
+
+110
+
+222.5
+
+20
+
+12
+
+2
+
+2
+
+120
+
+180
+
+20
+
+11
+
+4
+
+7
+
+3
+
+5
+
+1
+
+6
+
+2
+
+3
+
+150
+
+157.5
+
+20
+
+4
+
+187
+
+170
+
+20
+
+10
+
+4
+
+5
+
+210
+
+195
+
+20
+
+4
+
+3
+
+6
+
+142
+
+116
+
+20
+
+15
+
+1
+
+7
+
+80
+
+180
+
+20
+
+8
+
+4
+
+8
+
+115
+
+85
+
+20
+
+1
+
+2
+
+9
+
+158
+
+75
+
+20
+
+9
+
+3
+
+10
+
+220
+
+157.5
+
+20
+
+16
+
+4
+
+11
+
+-34
+
+157
+
+20
+
+14
+
+3
+
+12
+
+-48
+
+139
+
+20
+
+3
+
+4
+
+13
+
+-40
+
+114
+
+20
+
+13
+
+2
+
+14
+
+-30
+
+95
+
+20
+
+2
+
+1
+
+In the numerical example, the passive coordination strategy and two optimization models
+for CSSP and MCSSP were used, and the solutions are presented for comparison and discussion.
+A daily lifting schedule of sixteen material requests was given for the passive coordination
+525
+
+strategy. The crane signal man prioritized the requests and distributed them to each tower crane.
+25
+
+The lifting sequence of each tower crane is listed in Table 10. Columns 4 and 5 specify the
+starting locations and destinations of each movement. To avoid potential conflicts, the cranes
+at locations k=1 and k=2 are required to stop and wait for five times during the movements. The
+movements are detailed in Fig. 6. The movement cost and the cumulative cost are listed in
+530
+
+columns 8 and 9. Employing the passive coordination strategy, the four tower cranes required
+186.89 min (49.36+57.05+39.21+41.27) and 817.71 CNY to complete all the material requests.
+Table 10. Details of crane movements arranged by the passive coordination strategy
+Crane
+Lifting
+Material Hook movement Movement
+Movement Cumulative
+Waiting time, min
+location, k sequence, s request, r Start
+cost, min
+cost, CNY* cost, CNY
+End
+S1
+5.10
+18.30
+18.30
+D5
+1
+4
+S1
+D5
+5.10
+36.60
+54.90
+D5
+S1
+5.10
+18.30
+73.20
+2
+7
+S1
+D3
+5.11
+36.66
+109.86
+1
+D3
+S1
+5.11
+0.89(0.74+0.25)
+21.00
+130.86
+3
+11
+S1
+D2
+3.75
+28.50
+159.36
+D2
+S2
+6.38
+22.14
+181.50
+4
+12
+S2
+D1
+4.82
+34.92
+216.42
+D2
+S4
+5.44
+19.32
+19.32
+1
+1
+S4
+D8
+3.17
+25.02
+44.34
+D8
+S3
+5.00
+3.50(3.25+0.25)
+28.50
+72.84
+2
+5
+S3
+D3
+4.83
+4.56(4.31+0.25)
+62.34
+135.18
+2
+D3
+S4
+6.29
+3.04(2.79+0.25)
+30.99
+166.17
+3
+6
+S4
+D3
+6.29
+43.74
+209.91
+D3
+S3
+4.83
+17.49
+227.40
+4
+8
+S3
+D7
+2.10
+18.60
+246.00
+D6
+S6
+4.45
+16.35
+16.35
+1
+9
+S6
+D9
+2.76
+22.56
+38.91
+D9
+S5
+5.54
+19.62
+58.53
+2
+10
+S5
+D4
+2.85
+23.10
+81.63
+3
+D4
+S5
+2.85
+11.55
+93.18
+3
+15
+S5
+D6
+5.63
+39.78
+132.96
+D6
+S5
+5.63
+19.89
+152.85
+4
+16
+S5
+D10
+1.50
+15.00
+167.85
+D11
+S7
+1.67
+8.01
+8.01
+1
+2
+S7
+D14
+4.46
+32.76
+40.77
+D14
+S3
+5.82
+20.46
+61.23
+2
+3
+S3
+D12
+5.04
+36.24
+97.47
+4
+D12
+S7
+2.53
+10.59
+108.06
+3
+13
+S7
+D13
+3.52
+27.12
+135.18
+D13
+S3
+6.04
+21.12
+156.30
+4
+14
+S3
+D11
+4.19
+31.14
+187.44
+
+*: Movement cost includes operation cost, loading or unloading operation cost and waiting cost.
+
+Fig. 6 depicts the crane movements as arranged by the passive coordination strategy. Each
+26
+
+535
+
+line represents a crane movement, while the green lines represent crane waiting time. For
+example, the tower crane at location k=4 moved into the overlapping area c=4 at 11.32 min.
+Before it left the area at 16.03 min, the tower crane at location k=2 planned to enter the same
+area at 12.78 min. To avoid a possible collision, it was arranged for the tower crane at location
+k=2 to wait outside until after the other crane left. The waiting time was 3.25 min (16.03-12.78)
+
+540
+
+with an additional 0.25 min for the threshold distance. Then, the tower crane must enter the area
+c=4 no earlier than 16.28 min (16.03+0.25).
+
+4
+3
+2
+
+(11.32)
+(16.03)
+
+1
+(12.78)
+
+5
+
+10
+
+15
+
+(16.28)
+(33.74)
+
+20
+
+25
+Time/min
+
+(33.10)
+
+30
+
+35
+
+4
+
+(33.99)
+
+40
+
+2
+45
+
+50
+
+1
+
+3
+Tower crane k
+
+Movement of crane k=1 passes area c=1
+
+Movement of crane k=2 passes area c=1
+
+Movement of crane k=1 passes area c=2
+
+Movement of crane k=3 passes area c=2
+
+Movement of crane k=2 passes area c=3
+
+Movement of crane k=3 passes area c=3
+
+Movement of crane k=2 passes area c=4
+
+Movement of crane k=4 passes area c=4
+
+Waiting time
+
+Fig. 6 Scenario of overlapping area occupied by the passive coordination method
+The optimization model for the single CSSP [13] has been demonstrated to an effective
+545
+
+method for identifying the optimum schedule for a single crane to complete lifting tasks within
+a minimum timeframe. The model relaxes the fixed pairs of supply and demand locations and
+the lifting sequences as variables. Table 11 details crane movements with minimum operation
+times (149.76 min) and costs (687.84 CNY). However, four collisions occurred during the crane
+27
+
+movements. In Fig. 7, a solid line and a hollow line in the same color existing in the same period
+550
+
+indicates an instance of simultaneous crane movements inside an overlapping area. For example,
+the tower crane at a location k=2 and the tower crane at the location k=4 entered the same
+overlapping area c=4 at 2.48 min and 3.00 min. This might trigger a potential collision. There
+were also two other collisions that might possibly have occurred in the overlapping area c=1
+between the time 13.16 min and 18.89 min and in the area c=4 between the time 20.34 min and
+
+555
+
+26.40 min. Additionally, both of the tower cranes at locations k=1 and k=3 selected D3 as the
+destination location in their last movement and stayed inside the area c=2.
+Table 11. Details of cranes movements optimized by the optimization model for a single
+tower crane
+Crane
+location, k
+
+1
+
+2
+
+3
+
+4
+
+Optimized Material Hook movement
+sequence, s request, r
+Start
+End
+D5
+S2
+1
+12
+S2
+D1
+D1
+S1
+2
+11
+S1
+D2
+D2
+S1
+3
+4
+S1
+D5
+D5
+S2
+4
+6
+S2
+D3
+D2
+S3
+1
+8
+S3
+D7
+D7
+S3
+2
+7
+S3
+D3
+D3
+S3
+3
+15
+S3
+D6
+D6
+S4
+4
+1
+S4
+D8
+D6
+S6
+1
+9
+S6
+D9
+D9
+S5
+2
+16
+S5
+D10
+D10
+S5
+3
+10
+S5
+D4
+D4
+S5
+4
+5
+S5
+D3
+D11
+S3
+1
+14
+S3
+D11
+D11
+S7
+2
+2
+S7
+D14
+D14
+S3
+3
+3
+S3
+D12
+28
+
+Movement Movement cost, Cumulative cost,
+time, min
+CNY*
+CNY
+2.29
+9.87
+9.87
+4.82
+34.92
+44.79
+2.02
+9.06
+53.85
+3.75
+28.50
+82.35
+3.75
+14.25
+96.60
+5.10
+36.60
+133.2
+2.29
+9.87
+143.07
+5.02
+36.12
+179.19
+3.59
+13.77
+13.77
+2.10
+18.60
+32.37
+2.10
+9.30
+41.67
+4.83
+34.98
+76.65
+4.83
+17.49
+94.14
+6.22
+43.32
+137.46
+4.82
+17.46
+154.92
+3.17
+25.02
+179.94
+4.45
+16.35
+16.35
+2.76
+22.56
+38.91
+5.54
+19.62
+58.53
+1.50
+15.00
+73.53
+1.50
+7.50
+81.03
+2.85
+23.10
+104.13
+2.85
+11.55
+115.68
+4.19
+31.14
+146.82
+4.19
+15.57
+15.57
+4.19
+31.14
+46.71
+1.67
+8.01
+54.72
+4.46
+32.76
+87.48
+5.82
+20.46
+107.94
+5.04
+36.24
+144.18
+
+D12
+S7
+2.53
+10.59
+S7
+D13
+3.52
+27.12
+*: Movement cost includes the operation cost and loading or unloading operation cost.
+4
+
+154.77
+181.89
+
+13
+
+4
+3
+2
+
+(3.00)
+(6.25)
+
+1
+
+(21.69)
+(2.48)
+
+(26.40)
+
+(5.51)
+(13.16)
+
+5
+
+10
+
+(14.69)
+
+15
+
+(17.89)
+
+(18.89)
+(20.34) (23.37)
+
+20
+
+25
+Time/min
+
+560
+
+(30.09)
+
+2
+
+(33.43)
+
+30
+
+35
+
+4
+3
+
+1
+Tower crane k
+
+40
+
+Movement of crane k=1 passes area c=1
+
+Movement of crane k=2 passes area c=1
+
+Movement of crane k=1 passes area c=2
+
+Movement of crane k=3 passes area c=2
+
+Movement of crane k=2 passes area c=3
+
+Movement of crane k=3 passes area c=3
+
+Movement of crane k=2 passes area c=4
+
+Movement of crane k=4 passes area c=4
+
+Fig. 7 Scenario of overlapping area occupied by tower cranes using optimized method
+for a single tower crane
+Table 12 lists crane movements optimized by the proposed model. Crane movements
+passing through the overlapping areas are detailed in Table 13 and illustrated in Fig. 8.
+
+565
+
+Obviously, these demonstrate that the model succeeds in preventing simultaneous movements
+inside any overlapping area. Total operation cost was reduced to 692.55 CNY
+(183.27+179.94+146.82+182.52). It takes 23.01 seconds to solve the problem using Gurobi 9.0
+[45] with Intel Core i9-9900K @ 3.6 GHz and 32 GB RAM.
+
+570
+
+Table 12.
+Details of crane movements optimized by the proposed model
+Crane
+
+Optimized
+
+Material
+
+Hook movement
+29
+
+Movement Movement cost, Cumulative cost,
+
+location, k
+
+sequence, s request, r
+
+Start
+End
+time, min
+CNY*
+D5
+S2
+2.29
+9.87
+1
+6
+S2
+D3
+5.02
+36.12
+D3
+S1
+5.11
+18.33
+2
+4
+S1
+D5
+5.10
+36.60
+1
+D5
+S2
+2.29
+9.87
+3
+12
+S2
+D1
+4.82
+34.92
+D1
+S1
+2.02
+9.06
+4
+11
+S1
+D2
+3.75
+28.50
+D2
+S3
+3.59
+13.77
+1
+8
+S3
+D7
+2.10
+18.60
+D7
+S3
+2.10
+9.30
+2
+7
+S3
+D3
+4.83
+34.98
+2
+D3
+S3
+4.83
+17.49
+3
+15
+S3
+D6
+6.22
+43.32
+D6
+S4
+4.82
+17.46
+4
+1
+S4
+D8
+3.17
+25.02
+D6
+S6
+4.45
+16.35
+1
+9
+S6
+D9
+2.76
+22.56
+D9
+S5
+5.54
+19.62
+2
+10
+S5
+D4
+2.85
+23.10
+3
+D4
+S5
+2.85
+11.55
+3
+16
+S5
+D10
+1.50
+15.00
+D10
+S5
+1.50
+7.50
+4
+5
+S5
+D3
+4.19
+31.14
+D11
+S7
+1.67
+8.01
+1
+13
+S7
+D13
+3.52
+27.12
+D13
+S3
+6.04
+21.12
+2
+3
+S3
+D12
+5.04
+36.24
+4
+D12
+S3
+5.04
+18.12
+3
+14
+S3
+D11
+4.19
+31.14
+D11
+S7
+1.67
+8.01
+4
+2
+S7
+D14
+4.46
+32.76
+*: Movement cost includes the operation cost and loading or unloading operation cost.
+
+CNY
+9.87
+45.99
+64.32
+100.92
+110.79
+145.71
+154.77
+183.27
+13.77
+32.37
+41.67
+76.65
+94.14
+137.46
+154.92
+179.94
+16.35
+38.91
+58.53
+81.63
+93.18
+108.18
+115.68
+146.82
+8.01
+35.13
+56.25
+92.49
+110.61
+141.75
+149.76
+182.52
+
+Table 13.
+575
+
+Details of cranes movements passing overlapping areas optimized by the proposed model
+Overlapping
+area, c
+
+1
+
+2
+
+Tower crane setup
+location, k
+
+Movement path
+
+2
+1
+2
+2
+1
+1
+3
+3
+
+D2→S3
+S2→D3→S1
+S3→D3→S3
+S3→D6
+S1→D2
+S2→D3→S1
+S5→D4→S5
+S5→D3
+30
+
+Enter time, TI
+(cumulative time,
+min)
+0
+p1(7.78)
+p2(13.16)
+p2(24.82)
+p2(36.22)
+p4(5.68)
+p4(17.38)
+p4(30.09)
+
+Leave time, TO
+(cumulative time,
+min)
+p2(1.03)
+p2(11.68)
+p2(18.89)
+p1(27.54)
+-*
+p3(9.72)
+p4(20.64)
+-
+
+3
+2
+2
+3
+2
+2
+4
+2
+4
+2
+
+3
+
+4
+
+0
+p6(15.14)
+p6(26.80)
+p6(32.23)
+p8(2.48)
+p8(8.68)
+p8(12.04)
+p8(20.33)
+p8(24.13)
+p7(33.50)
+
+D6→S6
+S3→D3→S3
+S3→D6→S4
+S5→D3
+D2→S3→D7
+D7→S3→D3
+D13→S3→D12
+D3→S3→D6
+D12→S3→D11
+D6→S4→D8
+
+p5(1.21)
+p6(16.91)
+p5(30.88)
+p8(5.51)
+p8(11.72)
+p8(15.31)
+p8(23.37)
+p8(27.40)
+p7(36.32)
+
+*The tower crane stayed inside the overlapping area, and the time TO is set as an arbitrary large number.
+
+4
+3
+2
+1
+
+5
+
+10
+
+4
+15
+
+20
+
+25
+Time/min
+
+580
+
+30
+
+2
+35
+
+40
+
+1
+
+3
+Tower crane k
+
+Movement of crane k=1 passes area c=1
+
+Movement of crane k=2 passes area c=1
+
+Movement of crane k=1 passes area c=2
+
+Movement of crane k=3 passes area c=2
+
+Movement of crane k=2 passes area c=3
+
+Movement of crane k=3 passes area c=3
+
+Movement of crane k=2 passes area c=4
+
+Movement of crane k=4 passes area c=4
+
+Fig. 8 Scenario of overlapping area occupied by tower cranes using optimized method for
+multiple tower cranes
+Table 14 compares the operation costs of four tower cranes based on different scheduling
+strategies. Taking the cost optimized by the proposed model as the reference, the results show
+that the passive coordination method increased 18.07%. Although the model for CSSP saved
+0.68% of the total cost, four collisions were triggered following the schedule optimized by the
+
+585
+
+model. To demonstrate the effectiveness of the proposed model, the number of requests is
+increased from 16 to 32. Detailed in Table 15, the cost difference optimized by the two models
+31
+
+ranges between 0.6% and 1.01%. However, the computation time of the proposed model rises
+exponentially from 23.01 seconds to 2,599.79 seconds.
+
+590
+
+Table 14.
+Comparison of operation costs using different service strategies
+Scheduling method
+Total operation cost (CNY)
+The difference of the
+operation cost
+
+595
+
+The passive
+coordination method
+817.71
+
+The model for
+CSSP
+687.84
+
+The model for
+MCSSP
+692.55
+
+18.07%
+
+-0.68%
+
+-
+
+Table 15.
+Comparisons of the results optimized by the models for CSSP and MCSSP with different
+numbers of requests
+
+Cost, CNY
+
+687.84
+
+CSSP
+Computation time,
+second
+20.11
+
+692.55
+
+MCSSP
+Computation time,
+second
+23.01
+
+0.68%
+
+20
+
+861.97
+
+162.16
+
+870.71
+
+84.62
+
+1.01%
+
+24
+
+1047.45
+
+268.51
+
+1,055.07
+
+213.12
+
+0.73%
+
+28
+
+1,172.39
+
+299.87
+
+1,179.37
+
+438.68
+
+0.60%
+
+32
+
+1,373.78
+
+3,156.55
+
+1,382.54
+
+2,599.79
+
+0.64%
+
+Number of
+requests
+
+Cost, CNY
+
+16
+
+Gap
+
+The tower crane scheduling problem is an NP-hard problem [50, 58]. With the rise of the
+variable number, the nature of the problem will result in exponentially increased computation
+time. To obtain the absolute optimal solution as the reference to evaluate the quality of other
+600
+
+heuristic algorithms, this research proposed the MILP model, solved using Gurobi. The absolute
+optimal solution always requires a large amount of time. To speed up the solving process, the
+variable tolerance in the Gurobi solver was set from 10-5 to 10-2 (i.e., if a variable is between
+0.99 and 1.01, it will be transferred to be the integer 1). Practically, to obtain a near-optimal
+solution in a limited time, the optimization process can be terminated by setting the optimality
+
+605
+
+gap between the lower and upper objective bound or the upper CPU processing time. As shown
+in Table 16, by setting the optimality gap as 5% and the upper computation time as 2000
+seconds, the computation time can be significantly decreased from 12.9% to 78.6% while the
+optimality gap remains between 0.73% and 4.04%.
+
+610
+
+Table 16.
+Comparisons of the results optimized by the models on two parameter settings with different
+32
+
+numbers of requests
+Absolute optimal solution*
+
+Near-optimal solution**
+
+Number
+of
+requests
+
+Cost, CNY
+
+Computation time,
+second
+
+Cost, CNY
+
+Computation time,
+second
+
+Gap
+
+16
+
+692.56
+
+23.01
+
+697.63
+
+17.32
+
+0.73%
+
+20
+
+870.71
+
+84.62
+
+884.09
+
+55.89
+
+1.54%
+
+24
+
+1055.07
+
+213.12
+
+1079.67
+
+185.65
+
+2.33%
+
+28
+
+1179.37
+
+438.68
+
+1226.96
+
+244.62
+
+4.04%
+
+32
+
+1382.54
+
+2599.79
+
+1409.23
+
+556.01
+
+1.93%
+
+*: Variable tolerance=10
+**: Variable tolerance=10-2 & Gap=5% & Time limit=2000s
+-2
+
+The dynamic supply selection system [3] was also applied in the numerical example. In
+
+615
+
+the system, each supply location was set to provide all the materials. The lifting sequence
+followed the same priority of the 16 requests determined by the crane signal man. Table 17
+shows the operation cost and the crane movement routes optimized by the two models. The
+comparison shows that the dynamic supply selection system consumed 647.50 CNY of the
+operation cost, which is 6.54% more than the cost optimized by the proposed model.
+
+620
+
+Table 17.
+Details of hook movements of the tower cranes optimized by the dynamic supply selection
+system and proposed model
+Method
+Dynamic supply
+selection system
+
+Proposed method
+
+Tower
+crane, k
+1
+2
+3
+4
+1
+2
+3
+4
+
+Crane movement routes
+D5→S2→D5→S2→D3→S1→D2→S1→D1
+D2→S4→D8→S3→D3→S3→D7→S4→D6
+D6→S5→D3→S6→D9→S5→D4→S5→D10
+D11→S7→D14→S7→D12→S7→D13→S7→D11
+D5→S2→D5→S2→D3→S1→D1→S1→D3
+D2→S3→D2→S3→D7→S4→D8→S4→D6
+D6→S5→D4→S5→D10→S5→D3→S6→D9
+D11→S7→D13→S7→D12→S7→D11→S7→D14
+
+Total cost
+(CNY)
+647.50
+
+607.78
+
+6. Conclusions
+625
+
+This study aimed to improve the operation efficiency of multiple tower cranes by
+minimizing energy costs and eliminating movement interference in overlapping areas. The
+Multiple Crane Sequence Service Problem (MCSSP) is formulated as a Mixed Integer Linear
+Programming (MILP) problem. Various binary variables and linear governing constraints are
+introduced to model the crane operations and avoid simultaneous jib movements inside an
+
+630
+
+overlapping area. To prevent potential collisions, the model prevents simultaneous crane
+movements in an overlapping area efficiently and automatically by 1) distributing lifting
+requests in overlapping areas to the appropriate tower cranes; 2) selecting the appropriate
+33
+
+supply location to serve each lifting request; and 3) arranging the lifting sequence of a tower
+crane to complete the requests. The optimization problem is solved by using GurobiTM 9.0. The
+635
+
+results reveal that the proposed model can effectively balance safety with material
+transportation efficiency.
+However, the MCSSP has been demonstrated as an NP-hard problem, and the proposed
+model is very time-consuming. For complicated construction sites with multiple tower cranes,
+the model must be improved by introducing more efficient constraints or more effective
+
+640
+
+optimization algorithms (e.g., a parallel Genetic Algorithm). The model’s estimation of hook
+movement time is inaccurate. Through combination with a long-term position tracking
+technique, the present model might be improved and extended by the provision of accurate hook
+movement data. Large data collection and analysis can then be employed to reduce the impact
+of uncertainties during the material transportation to achieve just-in-time delivery.
+
+645
+
+Acknowledgements
+This work was supported by the Science & Technology Fund of Beijing Education Committee
+(No: KM202110005019).
+References
+
+650
+
+655
+
+[1] S. Hwang, Ultra-wide band technology experiments for real-time prevention of tower crane
+collisions, Automation in Construction 22 (2012) 545-553, https://doi.org/10.1016/
+j.autcon.2011.11.015.
+[2] J. Irizarry, E.P. Karan, Optimization location of tower cranes on construction sites through
+GIS and BIM integration, Journal of Information Technology in Construction 17 (2012) 351366, https://www.itcon.org/papers/2012_23.content.06091.pdf.
+[3] A. Khodabandelu, J. Park, C. Arteaga, Crane operation planning in overlapping areas
+through dynamic supply selection, Automation in Construction 117 (2020) 103253,
+https://doi.org/10.1016/j.autcon.2020. 103253.
+
+660
+
+[4] M.A. Hattab, E. Zankoul, M. Braakat, F. Hamzeh, Crane overlap and operational flexibility:
+balancing utilization, duration, and safety, Construction Innovation 18 (1) (2018) 43-63,
+https://doi.org/10.1108/CI-11-2016-0062.
+[5] Z. Zhang, W. Pan, Lift planning and optimization in construction: A thirty-year review,
+Automation in Construction 118 (2020) 103271, https://doi.org/10.1016/j.autcon.2020. 103271.
+
+665
+
+[6] X. Li, H. Chi, P. Wu, G.Q. Shen, Smart work packaging-enabled constraint-free path replanning for tower crane in prefabricated products assembly process, Advanced Engineering
+Informatics 43 (2020) 101008, https://doi.org/10.1016/ j.aei.2019.101008.
+34
+
+[7] C. Zhang, A. Hammad, S. Rodriguez, Crane pose estimation using UWB real-time location
+system, Journal of Computing in Civil Engineering 26 (5) (2012) 625-637,
+https://doi.org/10.1061/(ASCE)CP.1943-5487.0000172.
+670
+
+675
+
+[8] G. Lee, J. Cho, S. Ham, T. Lee, G. Lee, S. Yun, H.J. Yang, A BIM- and sensor-based tower
+crane navigation system for blind lifts, Automation in Construction 26 (2012) 1-10,
+https://doi.org/10.1016/j.autcon.2012.05.002.
+[9] H. Li, G. Chan, M. Skitmore, Integrating real time positioning systems to improve blind
+lifting and loading crane operations, Construction Management and Economics 31 (6) (2013)
+596-605, https://doi.org/10.1080/01446193.2012.756144.
+[10] Y. Fang, Y. K. Cho, J. Chen, A framework for real-time pro-active safety assistance for
+mobile crane lifting operations, Automation in Construction 72 (2016) 367-379,
+https://doi.org/10.1016/j.autcon.2016.08.025.
+
+680
+
+685
+
+[11] G. Lee, H.H. Kim, C.J. Lee, S.I. Ham, S.H. Yun, H. Cho, B.K. Kim, G.T. Kim, K. Kim,
+A laser-technology-based lifting-path tracking system for a robotic tower crane, Automation in
+Construction 18 (7) (2009) 865-874, https://doi.org/10.1016/ j.autcon.2009.03.011.
+[12] D.D. Liu, W.S. Lu, Y.H. Niu, F. Xue, K. Chen, Bridging the cyber and physical systems
+for better construction: A case study of construction machinery monitoring and utilization,
+International Symposium on Advancement of Construction Management and Real Estate.
+Springer, Singapore, 2018, https://doi.org/10.1007/978-981-10-6190-5_35.
+[13] C. Huang, C.K. Wong, Optimization of crane setup location and servicing schedule for
+urgent material requests with non-homogeneous and non-fixed material supply, Automation in
+Construction 89 (2018) 183-198, https://doi.org/10.1016/j.autcon.2018.01.015.
+
+690
+
+[14] M.A. Hattab, E. Zankoul, F.R. Hamzeh, Near-real-time optimization of overlapping tower
+crane operations: a model and case study, Journal of Computing in Civil Engineering 31 (4)
+(2017) 05017001, https://doi.org/10.1061/(ASCE)CP.1943-5487.0000666.
+[15] C. M. Tam, Thomas K.L. Tong, Wilson K.W. Chan, Genetic algorithm for optimizing
+supply locations around tower crane, Journal of Construction Engineering and Management
+127 (4) (2001) 315-321, https://doi.org/10.1061/(ASCE)0733-9364(2001)127:4(315)
+
+695
+
+700
+
+[16] M.A. Abdelmegid, K.M. Shawki, H. Abdel-Khalek, GA optimization model for solving
+tower crane location problem in construction sites, Alexandria Engineering Journal 54 (3) (2015)
+519-526, https://doi.org/10.1016/j.aej.2015.05.011.
+[17] M. Marzouk, A. Abubakr, Decision support for tower crane selection with building
+information models and genetic algorithms, Automation in Construction 61 (2016) 1-15,
+https://doi.org/10.1016/j.autcon. 2015.09.008.
+[18] C. Huang, C. K. Wong, C. M. Tam, Optimization of tower crane and material supply
+locations in a high-rise building site by mixed-integer linear programming, Automation in
+Construction 20 (5) (2011) 571-580, https://doi.org/10.1016/j.autcon.2010.11.023.
+
+705
+
+[19] Z.S.M. Nadoushani, A.W.A. Hammad, A. Akbarnezhad, Location optimization of tower
+crane and allocation of material supply points in a construction site considering operating and
+35
+
+rental costs, Journal of Construction Engineering and Management 143 (1) (2017) 04016089,
+https://doi.org/10.1061/(ASCE) CO.1943-7862.0001215.
+
+710
+
+[20] D. Briskorn, M. Dienstknecht, Mixed-integer programming models for tower crane
+selection and positioning with respect to mutual interference, European Journal of Operational
+Research 273 (1) (2019) 160-174, https://doi.org/10.1016/ j.ejor.2018.07.033.
+[21] Y. Ji, F. Leite, Optimized planning approach for multiple tower cranes and material supply
+points using mixed-integer programming, Journal of Construction Engineering and
+Management 146 (3) (2020) 04020007, https://doi.org/10.1061/(ASCE)CO.1943-7862.
+0001781.
+
+715
+
+720
+
+[22] J. K. W. Yeoh, D. K. H. Chua, Optimizing Crane Selection and Location for Multistage
+Construction Using a Four-Dimensional Set Cover Approach, Journal of Construction
+Engineering and Management 143 (8) (2017) 04017029, https://doi.org/10.1061/(ASCE)
+CO.1943-7862.0001318.
+[23] A. Younes, M. Marzouk, Tower cranes layout planning using agent-based simulation
+considering activity conflicts, Automation in Construction, 93 (2018) 348-360,
+https://doi.org/10.1016/j.autcon.2018.05.030.
+[24] K. Wu, B.G. de Soto, F. Zhang, Spatio-temporal planning for tower cranes in construction
+projects with simulated annealing, Automation in Construction 111 (2020) 103060,
+https://doi.org/10.1016/j.autcon.2018.05.030.
+
+725
+
+730
+
+[25] Y. Ji, F. Leite, Automated tower crane planning: Leveraging 4-dimensional BIM and rulebased
+checking,
+Automation
+in
+Construction
+93
+(2018)
+78-90,
+https://doi.org/10.1016/j.autcon.2018.05.003.
+[26] Y. Sugimoto, H. Seki, T. Samo, N. Nakamitsu, 4D CAD-based evaluation system for crane
+deployment plans in construction of nuclear power plants, Automation in Construction 71 (2016)
+87-98, https://doi.org/10.1016/j.autcon.2016.04.004.
+[27] S.C. Kang, E. Miranda, Planning and visualization for automated robotic crane erection
+processes in construction, Automation in Construction 15 (4) (2006) 398 – 414,
+https://doi.org/10.1016/j.autcon.2005.06.008.
+
+735
+
+[28] S.C. Kang, E. Miranda, Numerical methods to simulate and visualize detailed crane
+activities, Computer-Aided Civil and Infrastructure Engineering 24 (3) (2009) 169 – 185,
+https://doi.org/10.1111/j.1467-8667.2008.00579.x.
+[29] P. L. Sivakumar, K. Varghese, N. R. Babu. Automated path planning of cooperative crane
+lifts using heuristic search, Journal of Computing in Civil Engineering 17 (3) (2003) 197-207,
+https://doi.org/10.1061/(ASCE)0887-3801(2003) 17:3(197).
+
+740
+
+745
+
+[30] P. Cai, I. Chandrasekaran, Y. Cai, , J. Zheng, Y. Gong, T. S. Lim, P. Wong, Collision
+detection using axis aligned bounding boxes, Simulation, Serious Games and Their
+Applications, Springer, 2013, 1-14.
+[31] S. Dutta, Y. Cai, L. Huang, J. Zheng, Automatic re-planning of lifting paths for robotized
+tower cranes in dynamic BIM environments, Automation in Construction 110 (2020) 110:
+102998, https://doi.org/10.1016/j.autcon.2019.102998.
+36
+
+[32] J. W. Chang, W. Wang, M. S. Kim, Efficient collision detection using a dual OBB-sphere
+bounding volume hierarchy, Computer-Aided Design 42 (1) (2010) 50-57,
+https://doi.org/10.1016/j.cad.2009.04.010.
+750
+
+[33] M.S.A.D. Ali, N.R. Babu, K. Varghese, Collision free path planning of cooperative crane
+manipulators using genetic algorithm, Journal of Computing in Civil Engineering 19 (2) (2005)
+182-193, https://doi.org/10.1061/(ASCE)0887-3801 (2005)19:2(182).
+[34] C. Zhang, A. Hammad, Improving lifting motion planning and re-planning of cranes with
+consideration for safety and efficiency, Advanced Engineering Informatics 26 (2) (2012) 396410, https://doi.org/10.1016/j.aei.2012.01.003.
+
+755
+
+760
+
+[35] Y.C. Chang, W.H. Hung, S.C. Kang, A fast path planning method for single and dual crane
+erections, Automation in Construction 22 (2012) 468-480, https://doi.org/10.1016/
+j.autcon.2011.11.006.
+[36] H.R. Reddy, K. Varghese, Automated path planning for mobile crane lifts, ComputerAided Civil and Infrastructure Engineering 17 (6) (2002) 439–448, https://doi.org/10.1111/
+0885-9507.00005.
+[37] P. Cai, Y. Cai, I. Chandrasekaran, J. Zheng, Parallel genetic algorithm based automatic
+path planning for crane lifting in complex environments, Automation in Construction 62 (2016)
+133-147, https://doi.org/10.1016/j.autcon.2015.09.007.
+
+765
+
+[38] H. Kawai, Y. Kim, Y. Choi, Measurement of a container crane spreader under bad weather
+conditions by image restoration, IEEE Transaction on Instrumentation and Measurement 61 (1)
+(2012) 35-42, https://doi.org/10.1109/TIM.2011.2161830.
+[39] S. Chi, C.H. Caldas, Automated object identification using optical video cameras on
+construction sites, Computer-Aided Civil and Infrastructure Engineering 26 (2011) 368–380,
+https://doi.org/10.1111/j.1467-8667.2010.00690.x.
+
+770
+
+775
+
+[40] Z. Cai, M. Saberian, N. Vasconcelos, Learning complexity-aware cascades for deep
+pedestrian detection, The IEEE International Conference on Computer Vision (ICCV), IEEE,
+Santiago, 2015, https://doi.org/10.1109/ICCV.2015.384
+[41] T. Sutjaritvorakul, A. Vierling, J. Pawlak, K. Berns, Simulation platform for crane
+visibility safety assistance, Advances in Service and Industrial Robotics, Springer, Cham, 2020,
+https://doi.org/10.1007/978-3-030-48989-2_3.
+[42] J. Kim, S. Chi, M. Choi, Sequential pattern learning of visual features and operation cycles
+for vision-based action recognition of earthmoving excavators. International Conference on
+Computing
+in
+Civil
+Engineering,
+ASCE,
+Atlanta,
+2019,
+https://doi.org/10.1061/9780784482438.038.
+
+780
+
+[43] J. Bruce, M. Veloso, Real-time randomized path planning for robot navigation,
+International Conference on Intelligent Robots and Systems, IEEE, Lausanne, 2002,
+https://doi.org/10.1007/978-3-540-45135-8_23.
+[44] D. Ferguson, N. Kalra, A. Stentz, Replanning with RRTs, International Conference on
+Robotics and Automation, IEEE, Orlando, 2006, https://doi.org/10.1109/robot.2006.1641879.
+37
+
+785
+
+790
+
+[45] Y. Wang, I.P.W. Sillitoe, D.J. Mulvaney, Mobile robot path planning in dynamic
+environments, International Conference on Robotics and Automation, IEEE, Roma, 2007,
+https://doi.org/10.1109/robot.2007.363767.
+[46] H. Miao, Y. C. Tian, Dynamic robot path planning using an enhanced simulated annealing
+approach, Applied Mathematics and Computation 222 (2013) 420 – 437,
+https://doi.org/10.1016/j.amc.2013.07.022.
+[47] Y. Wu, N. Sun, H. Chen, Y. Fang, Adaptive output feedback control for 5-DOF varyingcable-length tower cranes with cargo mass estimation, IEEE Transactions on Industrial
+Informatics 17 (4) (2021) 2453 - 2464, https://doi.org/10.1109/TII.2020.3006179.
+
+795
+
+[48] T. Yang, N. Sun, Y. Fang, Adaptive Fuzzy Control for a Class of MIMO Underactuated
+Systems With Plant Uncertainties and Actuator Deadzones: Design and Experiments. IEEE
+Transactions on Cybernetics (2021) 1-14, https://doi.org/10.1109/TCYB.2021. 3050475.
+[49] T. Yang, N. Sun, H. Chen, Y. Fang, Observer-based nonlinear control for tower cranes
+suffering from uncertain friction and actuator constraints with experimental verification. IEEE
+Transactions on Industrial Electronics (2020), https://doi.org/10.1109/TIE. 2020.2992972.
+
+800
+
+805
+
+[50] A. Zavichi, K. Madani, P. Xanthopoulos, A.A. Oloufa, Enhanced crane operations in
+construction using service request optimization, Automation in Construction 47 (2014) 69-77,
+https://doi.org/10.1016/j.autcon.2014.07.011.
+[51] A. Tork, A real-time crane service scheduling decision support system (css-dss) for
+Cconstruction tower cranes, Ph.D. Thesis, College of Engineering and Computer Science,
+University of Central Florida, 2013, http://purl.fcla.edu/fcla/etd/CFE0005078.
+[52] S. Monghasemi, M.R. Nikoo, J. Adamowski, Sequential ordering of crane service requests
+considering the pending times of the requests: An approach based on game theory and
+optimization
+techniques,
+Automation
+in
+Construction
+70
+(2016)
+62-76,
+https://doi.org/10.1016/j.autcon.2016.06.006.
+
+810
+
+815
+
+[53] S. Hougardy, M. Wilde, On the nearest neighbor rule for the metric traveling salesman
+problem,
+Discrete
+Applied
+Mathematics
+195
+(2015)
+101-103,
+https://doi.org/10.1016/j.dam.2014.03.012.
+[54] L. Du, R. He, Combining Nearest Neighbor Search with Tabu Search for Large-Scale
+Vehicle
+Routing
+Problem,
+Physics
+Procedia
+25
+(2012)
+1536-1546,
+https://doi.org/10.1016/j.phpro.2012.03.273.
+[55] W. Ren, Z. Wu, Real-time anticollision system for mobile cranes during lift operations,
+Journal of Computing in Civil Engineering 29 (6) (2015) 04014100,
+https://doi.org/10.1061/(ASCE)CP.1943-5487.0000438.
+
+820
+
+[56] Y. Li, C. Liu, Integrating field data and 3D simulation for tower crane activity monitoring
+and
+alarming,
+Automation
+in
+Construction
+27
+(2012)
+111-119,
+https://doi.org/10.1016/j.autcon.2012.05.003.
+[57] Y. Zhu, A. Lim, Crane scheduling with non-crossing constraint, Journal of the Operational
+Research Society 57 (12) (2006) 1464-1471, https://doi.org/10.1057/ palgrave.jors. 2602110.
+38
+
+[58] H. Tarhini, B. Maddah, F. Hamzeh. The Traveling Salesman Puts-on a Hard Hat-Tower
+825
+
+Crane Scheduling in Construction Projects, European Journal of Operational Research (2020)
+https://doi.org/10.1016/j.ejor.2020.10.029.
+[59] Gurobi Optimization LLC, (2020), Gurobi optimizer reference manual. URL:
+http://www.gurobi.com.
+
+830
+
+[60] P. Zhang, F.C. Harris, P.O. Olomolaiye, A computer‐based model for optimizing the
+location of a single tower crane, Building research and information 24 (2) (1996) 113-123,
+https://doi.org/10.1080/09613219608727511.
+[61] P. Cai, I. Chandrasekaran, J. Zheng, Y. Cai, Automatic path planning for dual-crane lifting
+in complex environments using a prioritized multiobjective PGA, IEEE Transactions on
+Industrial Informatics 14 (3) (2017) 829-845, DOI: 10.1109/TII.2017.2715835.
+
+835
+
+Appendix I
+Algorithm 1 Pseudo-code of the process to calculate the time for a crane to enter or leave an
+overlapping area
+1.
+for each scheduling in all possible combinations do
+2.
+for each single tower crane route in scheduling do
+3.
+if a crane movement passes through an overlapping area then
+4.
+if the initial hook location is inside the overlapping area then
+5.
+TI ← 0 (Eq. 31-a)
+TO ← TI + T (the movement time from the start location to the selected
+6.
+intersection point) (Eq. 33-a)
+7.
+else if the start location is inside an overlapping area in the rest sequences then
+8.
+TI ← M (an arbitrary large number) (Eq. 31-b and Eq.31-c)
+TO ←TI + T (the movement time from entering the area to leaving the area)
+9.
+(Eq. 33-c and Eq. 33-d)
+10.
+else the start location is outside the overlapping area in the rest sequences then
+TI ← ST + T (the movement time from the start location to the selected
+11.
+intersection point) (Eq. 31-d and Eq.31-e)
+12.
+if the destination is inside the overlapping area in the last sequence then
+13.
+TO ← TI + M (An arbitrary large number) (Eq. 33-b)
+14.
+else if the destination is inside an overlapping area in the rest sequences then
+TO ← TI + T(the movement time from entering the area to leaving the
+15.
+area) (Eq. 33-c and 33-d)
+16.
+else the destination is outside an overlapping area in the rest sequences then
+TO ← TI + T(the movement time passes the entire overlapping area) (Eq.
+17.
+33-e)
+18.
+end if
+19.
+end if
+20.
+else a crane does not pass any overlapping area then
+21.
+TI ← M (An arbitrary large number) (Eq. 31-f and Eq. 31-g), TO ← M (Eq. 33-f)
+22.
+end if
+23.
+end for
+24.
+end for
+
+39
+
+

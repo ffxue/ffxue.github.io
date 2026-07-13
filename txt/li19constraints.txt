@@ -1,0 +1,4229 @@
+1
+
+Developing a Conceptual Framework of Smart Work Packaging for Constraints
+
+2
+
+Management in Prefabrication Housing Production
+
+3
+
+This is the peer-reviewed post-print version of the paper:
+Li, X., Shen, G. Q., Wu, P., Xue, F., Chi, H. L., & Li, C. Z. (2019). Developing a conceptual
+framework of smart work packaging for constraints management in prefabrication housing
+production. Advanced Engineering Informatics, 42, 100938. Doi: 10.1016/j.aei.2019.100938
+The final version of this paper is available at: https://doi.org/10.1016/j.aei.2019.100938. The use of this
+file must follow the Creative Commons Attribution Non-Commercial No Derivatives License, as
+required by Elsevier’s policy.
+
+4
+
+Highlights
+
+5
+6
+7
+8
+
+•
+•
+•
+
+9
+
+Abstract
+
+10
+
+Constraints management is the process of satisfying bottlenecks to facilitate tasks assigned to
+
+11
+
+crews being successfully executed. However, managing constraints is inherently challenging in
+
+12
+
+prefabrication housing production (PHP), due to the fragmentation of processes and information
+
+13
+
+during project delivery. Enlightened by the broadly accepted work packaging method and the
+
+14
+
+smart construction objects (SCOs) model, this study aims to define and implement smart work
+
+15
+
+packaging (SWP) for constraints management in PHP. Firstly, the framework of SWP-enabled
+
+16
+
+constraints management (SWP-CM) with three primary functions, including constraints modeling,
+
+17
+
+constraints optimization, and constraints monitoring, is established. In addition, this study
+
+18
+
+develops a layered abstract model as a prototype representation to elaborate on the implementation
+
+19
+
+of SWP for practitioners. Finally, a laboratory-based test is applied to validate the framework. It
+
+20
+
+can prove that SWP indeed opens new avenues for smart constraints management for PHP.
+
+•
+
+Smart work packaging in prefabrication housing production is investigated.
+A framework using smart work packaging is established for constraint management.
+A layered system is proposed to achieve modeling, optimization, and monitoring.
+The validity of the proposed framework is demonstrated by a lab-based simulation game.
+
+21
+
+Keywords: Smart Work Packaging (SWP), Prefabrication Housing Production (PHP), Constraints
+
+22
+
+Management, Building Information Modeling (BIM)
+
+23
+
+1. Introduction
+
+24
+
+Prefabrication housing production (PHP) is an innovative approach that the prefabricated material,
+
+25
+
+components, modules, and units are manufactured efficiently at different locations and then
+
+26
+
+converge at the site for installation. This approach could alleviate the labor shortage and swiftly
+
+27
+
+provide housings to mitigate the unbalanced housing supply and demand in Hong Kong (Li et al.,
+
+28
+
+2018a; Wu et al., 2017). Although PHP has proven to be useful in the supply of public rental
+
+29
+
+housing (PRH), it is still plagued by the pathological schedule delay which can lead to an adverse
+
+30
+
+impact on Hong Kong’s economic growth and competitiveness, particularly when manufacturing
+
+31
+
+plants have been moved to the Great Bay Area of Mainland China. For example, the government
+
+32
+
+planned to construct 13300 flat units of PRH in the financial year of 2016-2017. However, the
+
+33
+
+actual amount of PRH production is 11276 units, and 15.22% delay occurred (Housing Authority,
+
+34
+
+2018). Dominant drivers for such delays have proven to be the uncertainties and constraints (Li et
+
+35
+
+al., 2017a). Uncertainty means something that may occur, whereas constraint (e.g., limited space
+
+36
+
+and buffers) is something that will happen. The constraints are the obvious bottlenecks and are
+
+37
+
+more predictable than the uncertainties to be improved in task executions. Hence, reliable
+
+38
+
+constraint-free workflows are vital for achieving an industrialized PHP environment across design,
+
+39
+
+manufacturing, logistics, and on-site assembly so as to avoid schedule delays and cost overruns
+
+40
+
+(Wang et al., 2016a).
+
+41
+
+The reliability of PHP schedules can be enhanced via proactive constraints management, which is
+
+42
+
+the process of identifying, optimizing, and monitoring of bottlenecks to ensure that work package-
+
+43
+
+level tasks assigned to crews can be timely and accurately executed. They can be related to
+
+44
+
+technical sequencing, temporal/spatial limitations, and safety/quality concerns. Examples of such
+
+45
+
+constraints include incomplete BIM models, drawings and specifications, unavailability of
+
+46
+
+workforce, materials, prefabricated products, equipment and tools, shortage of temporary
+
+47
+
+structures, limited workspace, lack of work permits, unidentified safety and hazard issues,
+
+48
+
+uncontrolled environmental conditions (e.g., severe weather), untimely and inaccurate
+
+49
+
+transportation, and uncompleted quality control. Managing constraints in PHP processes is to
+
+50
+
+prepare more (e.g., on detailed and dynamic planning with lean solutions) and act fast (e.g., on
+
+51
+
+decision-making) using available information and knowledge. As such, the primary objective of
+
+52
+
+constraints management is to continually improve the reliability of workflow by guaranteeing that
+
+53
+
+accurate information is always available at the right time in the right format to the right person.
+
+54
+
+Currently, there have been numerous studies focusing on how to support decision makers and
+
+55
+
+collaborative workers with precise and timely information for task execution (Zhong et al., 2017;
+
+56
+
+Li et al., 2018b;). For instance, an internet of things (IoT)-enabled Building Information Modeling
+
+57
+
+(BIM) platform is developed with the support of smart construction objects (SCOs) by equipping
+
+58
+
+objects with information and communication technologies such as radio frequency identification
+
+59
+
+(RFID), and by using augmented reality (AR), and other sensing and tracking technologies (Li et
+
+60
+
+al., 2018c; Niu et al., 2016). Although Wang et al. (2016a) have made efforts to develop a
+
+61
+
+framework by considering the adoption of information technologies for constraints management
+
+62
+
+in oil and gas industry, there is so far no widely accepted approach for constraints management in
+
+63
+
+PHP.
+
+64
+
+The development of smart work packaging (SWP) in recent years seems to be adequate to address
+
+65
+
+the challenge. In PHP, there are a few studies which investigate the smart transformation of a group
+
+66
+
+of tasks (e.g., the lowest level in the work breakdown structure) based on the building systems of
+
+67
+
+product breakdown structure (PBS) by embedding the capabilities of visualizing, tracking, sensing,
+
+68
+
+computing, networking, and reacting. The smart transformation centers upon autonomy, adaptivity,
+
+69
+
+and sociability, which can facilitate better tasks execution by crews. For instance, the PHP
+
+70
+
+machinery (e.g., cranes) can be augmented with the autonomy to transport or hoist the
+
+71
+
+prefabricated products independently and without direct intervention from the surroundings (Chi
+
+72
+
+et al., 2012). In addition, the PHP planning approaches can be enhanced with adaptivity to be
+
+73
+
+capable of reacting resiliently through dynamic re-planning when constraints are not removed
+
+74
+
+(Abuwarda and Hegazy, 2016). SWP can also be strengthened with sociability to interact in a peer-
+
+75
+
+to-peer manner with other work packages or resources to collectively model the constraints
+
+76
+
+(Taghaddos et al., 2012).
+
+77
+
+This study proposes and validates a new framework of SWP for constraint management in PHP
+
+78
+
+based on the established theories of work packaging and SCOs (Isaac et al. 2017; Niu et al. 2016).
+
+79
+
+Work packaging can break down the PHP processes into manageable pieces to facilitate execution
+
+80
+
+of activities or tasks. SWP intends to improve the constraints during task executions in an
+
+81
+
+autonomous, adaptive, and optimal manner. e.g., automatic identification and analysis of
+
+82
+
+constraints and their interrelationships (Hamdi, 2013; Isaac et al. 2017), real-time sensing and
+
+83
+
+tracking constraints status (Liu et al. 2015), and optimal constraints improvement planning in a
+
+84
+
+dynamic manner (Abuwarda and Hegazy, 2016). SCOs are construction resources augmented with
+
+85
+
+smart characteristics of awareness, communicativeness, and autonomy using emerging
+
+86
+
+information technologies. However, SCOs are usually defined on single construction objects,
+
+87
+
+without considering construction project operations such as work packaging. Thus, the
+
+88
+
+development of SWP, as the integration of work packaging and SCOs, seems necessary and
+
+89
+
+imperative to improve constraints management in PHP. To improve the shortcomings in current
+
+90
+
+practices of constraints management, this study aims to develop a conceptual framework of SWP-
+
+91
+
+enabled constraints management (SWP-CM) in PHP. The concrete objectives of this research are
+
+92
+
+well explained below: (1) to define the SWP; (2) to establish the framework of SWP-CM; (3) to
+
+93
+
+propose a functional structure of SWP as a layered system model; and (4) to validate the SWP-
+
+94
+
+CM by a simulation game.
+
+95
+
+2. Background
+
+96
+
+2.1 Constraints Management
+
+97
+
+Constraints management (CM) is one of the critical strategies for production control and planning.
+
+98
+
+The concept of constraint was firstly introduced in 1984 as the theory of constraints (TOC) which
+
+99
+
+is a management philosophy for identifying the most critical bottleneck that prevents achieving a
+
+100
+
+goal and then systematically improving the constraint until it is no longer the bottleneck (Goldratt
+
+101
+
+and Cox, 1984). It assumes that each intricate system may comprise multi-connected activities,
+
+102
+
+there is at least one activity that acts as a constraint in the fully connected system, and the entire
+
+103
+
+process throughput can only be maximized when the constraint is improved. A corresponding
+
+104
+
+deduction is that spending more time on optimizing non-constraints activities cannot generate
+
+105
+
+significant benefits, and only improvements to the constraint will reach the goal. Thus, TOC aims
+
+106
+
+to offer an accurate and continuous focus on improving the current constraint until it no longer
+
+107
+
+confines the goal, at which point the focus moves to the next constraint. Constraints management
+
+108
+
+systems have proven to be more effective when compared to the reorder-point systems and material
+
+109
+
+requirements planning systems in the aspects of capacity management, inventory management,
+
+110
+
+and process improvement in the manufacturing industry. It is also argued that constraints
+
+111
+
+management can outperform the Just-in-time system owing to the more targeted nature of
+
+112
+
+improvement efforts in constraints (Boyd and Gupta, 2004). However, there is still no sound
+
+113
+
+approach to improve constraint management for achieving efficient collaborative working and
+
+114
+
+decision-making at crew-level task executions. It is mainly due to the fragmented process and
+
+115
+
+information in PHP, which may prevent the workers from agile constraints identification (Gong
+
+116
+
+et al. 2019), adaptive constraints improvement (Abuwarda and Hegazy, 2016), and real-time
+
+117
+
+constraints monitoring (Liu et al. 2015).
+
+118
+
+2.2 Work Packaging Method
+
+119
+
+TOC, to some extent, has similar philosophies as the Lean Construction. TOC uses its laser-like
+
+120
+
+focus to improve the capacity, while Lean Construction uses the broad-spectrum tools to eliminate
+
+121
+
+waste. In real practice, as PHP projects do not have infinite resources, an optimization process is
+
+122
+
+needed to identify and improve the most critical constraints. In this instance, TOC can work as an
+
+123
+
+efficient mechanism in prioritizing improvements for constraints, while Lean Construction can
+
+124
+
+offer a rich toolbox of improvement techniques. Thus, the combination of TOC and Lean
+
+125
+
+Construction may generate synergy on constraints management. The significance of integrating
+
+126
+
+Lean Construction with constraints management to issue executable work plans has also been
+
+127
+
+widely recognized by the construction industry. For example, work packaging is a planned,
+
+128
+
+executable process to strategically decompose the PHP scope into distinct and manageable pieces
+
+129
+
+with proper sizing and criteria. Each work package should be assigned to an individual supervisory
+
+130
+
+unit that is able to handle all its constraints. Therefore, the tasks should be separated into smaller
+
+131
+
+pieces (e.g., 500-2000 man-hours of work) so as the benefits outweigh the additional
+
+132
+
+administrative burden (Isaac et al., 2017). Additionally, the most frequently used criteria in work
+
+133
+
+packaging design include the type of prefabricated product, the workface in which the
+
+134
+
+prefabricated product is located, the specific physical location of the prefabricated product, and
+
+135
+
+the workflows (Ibrahim et al., 2009). The dependencies between tasks/activities included in
+
+136
+
+various work packages should also be considered. Whereas the PHP can be broken down into a
+
+137
+
+group of building systems (e.g., structure, envelope, partitions, services, and equipment) with a
+
+138
+
+hierarchical product structure (e.g., material, component, module, unit) in the design, the work
+
+139
+
+packaging in PHP can be defined by considering both product breakdown structure (PBS) and
+
+140
+
+work breakdown structure. One of the practical examples is advanced work packaging (AWP),
+
+141
+
+which was developed through the collaboration between the construction owners association of
+
+142
+
+Alberta (COAA) and the Construction Industry Institute (Hamdi, 2013). AWP uses a hierarchy of
+
+143
+
+engineering work packages (EWPs), construction work packages (CWPs) and installation work
+
+144
+
+packages (IWPs) to allow engineering and procurement planning to be driven by construction
+
+145
+
+sequencing. It breaks down the project processes into CWPs aligned with WBS. CWPs, in turn,
+
+146
+
+contain one or more IWPs. However, the direct implementation of AWP in PHP may be limited.
+
+147
+
+It works well in handling the complex mega project (e.g., oil and gas project), but its organizational
+
+148
+
+structure with CWP, EWP, and IWP is hierarchical and not flattened enough for PHP to improve
+
+149
+
+the efficiency of decision making and collaborative working (Li et al., 2019). Moreover, there are
+
+150
+
+also several significant limitations in the current work packaging methods for efficiently managing
+
+151
+
+constraints in PHP. Firstly, the process for identification and analysis of constraints and their
+
+152
+
+interrelationships is sluggish because the constraints are only discussed in look-ahead meetings
+
+153
+
+rather than in real-time manner (Hamdi, 2013; Isaac et al. 2017). In addition, constraints status is
+
+154
+
+untraceable and non-transparent due to the lack of sensing and tracking technologies for
+
+155
+
+monitoring (Liu et al. 2015). Constraints improvement planning is usually static without the
+
+156
+
+dynamic replanning ability (Abuwarda and Hegazy, 2016). Enlightened by the smartness of smart
+
+157
+
+construction object (SCO) (Niu et al., 2016), a more collaborative, autonomous, and adaptive
+
+158
+
+approach for constraints management through constraints modeling, monitoring, and optimization
+
+159
+
+may be possible.
+
+160
+
+2.3 Development of the Smart Work Packaging Method
+
+161
+
+Previous studies have made efforts to improve the smartness in the process management of
+
+162
+
+prefabricated construction. For instance, Wang et al. (2016a) developed a framework for total
+
+163
+
+constraints management in the oil and gas industry. However, information technologies were only
+
+164
+
+conceptually discussed in their framework, and there was no validation (e.g., a prototype system)
+
+165
+
+to demonstrate the smartness of the framework in constraints management implementation. In
+
+166
+
+addition, Li et al. (2018a) investigated the stakeholder-associated risks to improve the reliability
+
+167
+
+of phase-level scheduling. However, this study did not investigate constraints in the task-level plan,
+
+168
+
+which are more predictable than the risks at the phase level. The on-site assembly service,
+
+169
+
+developed by Li et al. (2018b), provided one of the services in the IoT-enabled BIM platform,
+
+170
+
+which is a critical part to support smart work packaging (SWP). However, the platform cannot
+
+171
+
+further divide the on-site assembly service into collaborative and manageable processes, therefore
+
+172
+
+providing relevant work packages in each of the processes. Li et al. (2017a) developed a simulation
+
+173
+
+game to test the learning effect of adopting information technologies and lean principles in
+
+174
+
+prefabrication housing production process. Based on Li et al. (2017a), this study tries to enhance
+
+175
+
+the work packaging method and constraints management in this simulation game to validate the
+
+176
+
+proposed conceptual framework.
+
+177
+
+Much effort has also been made in using cutting-edge information technologies to make work
+
+178
+
+packages smart (Ibrahim et al., 2009; Abuwarda and Hegazy, 2016). For example, Isaac et al.
+
+179
+
+(2017) developed algorithms for BIM which can be integrated with design structure matrix and
+
+180
+
+domain mapping matrix to automatically label relationships between prefabricated products and
+
+181
+
+their following sequence in which the prefabricated products should be assembled. Table 1
+
+182
+
+demonstrates a summary of the studies related to the development of SWP. As shown in Table 1,
+
+183
+
+the development of SWP has focused on the various aspects of constraints management, including
+
+184
+
+modeling, monitoring, and optimization. Some studies, although not directly using the name
+
+185
+
+“smart work packaging” or SWP, address the interaction between humans, resources, and the
+
+186
+
+environment with smartness using emerging technologies such as IoTs, wireless sensor networks,
+
+187
+
+big data, cloud computing, or other enabling technology to facilitate task execution.
+
+188
+
+189
+
+190
+
+Table 1 Studies related to Smart Work Packaging in Manufacturing Industry
+Research
+
+Function
+
+Zhang et al.
+(2018)
+
+Monitoring
+
+Wan et al.
+(2018)
+
+Optimization
+
+Luo et al.
+(2018)
+
+Modeling
+
+Kim (2018)
+
+Optimization
+
+Blanco-Novoa
+et al.(2018)
+
+Modeling
+
+Longo et al.
+(2017)
+
+Optimization/Mo
+deling
+
+Wang et al.
+(2017)
+
+Monitoring/Mode
+ling
+
+Peruzzini and
+Pellicciari
+(2017)
+
+Optimization
+
+Lu et al. (2017)
+
+Monitoring
+
+Ren et al.
+(2017)
+
+Modeling
+
+Wang et al.
+(2016b)
+
+Optimization
+
+Wang et al.
+(2016c)
+
+Optimization/Mo
+deling/Monitoring
+
+Ivanov et al.
+(2016)
+
+Optimization
+
+Seiger et al.
+(2015)
+
+Optimization/Mo
+deling/Monitoring
+
+Giner et al.
+(2012)
+
+Modeling
+
+Interpretations
+IoT-enabled active sensing system to assist
+operators in monitoring the real-time
+manufacturing process
+Cyber-physical production system (CPPS)enabled dynamic resource allocation for
+operators
+Using mobile intelligence to handle low-priority
+data to improve the data delivery efficiency
+Predefined jobs can be processed concurrently in
+different machines
+AR-based interface to assign tasks to the
+operators and assist them to interact with
+surroundings
+Smart operators have been proposed for
+complex human-machine-product interactions
+by integrating AR contents and intelligent
+tutoring systems
+Cloud-assisted industrial robots perform tasks
+with the capacity of interaction and negotiation.
+Cyber-physical system (CPS) and pervasive
+technologies are applied to improve the
+adaptivity of the machine behavior to the
+working conditions and the specific workers'
+skills, tasks, and cognitive-physical abilities are
+improved for aging workers
+An RFID-enabled positioning system in an
+automated guided vehicle for logistics
+automation
+A method on the perspective of both macro and
+micro level is developed for correctness analysis
+of cooperative behaviors among industrial
+devices
+A approach of facilitating the large-scale online
+multitask learning and decision-making is
+developed for operators to perform flexible tasks
+A multi-agent system with the autonomy can
+achieve big data-based feedback and
+coordination to assist the central coordinator
+A dynamic model for supply chain scheduling to
+solve simultaneous consideration of both
+machine structure selection and job assignments
+An object-oriented workflow language is
+developed for formalizing processes with the
+heterogeneous and dynamic environment in CPS
+The smart workflow is developed by the
+adoption of automatic identification
+technologies which can modeling and
+reengineering business processes
+
+Characteristics
+Auto
+nom Adap Socia
+y
+tivity bility
+√
+√
+√
+√
+√
+
+√
+√
+
+√
+√
+
+√
+√
+
+√
+√
+√
+
+√
+
+√
+
+√
+√
+
+√
+
+√
+
+√
+
+191
+
+Compared with traditional task execution process, SWP has many unique characteristics, including
+
+192
+
+traceability, value-added, and awareness. However, information communication, adaptive to
+
+193
+
+changes, autonomous actions during task executions have been identified as the necessary
+
+194
+
+requirements of SWP in previous studies (Lu et al.2017; Wang et al. 2016b; Ren et al. 2017; Lee
+
+195
+
+et al., 2009). Based on using simulated or historical data, SWP could achieve autonomy by
+
+196
+
+executing particular tasks when specific requirements are met (Lu et al., 2017). In addition, each
+
+197
+
+smart work package can gain sociability by communicating with its internal elements, as well as
+
+198
+
+other smart work packages (SWPs) to work as a distributed multi-agent system for collaborative
+
+199
+
+working (Ren et al., 2017). Most importantly, SWP must be adaptive and can react flexibly to
+
+200
+
+changes by learning from its own experiences, environment, and interaction with others (Wang et
+
+201
+
+al. 2016b; Lee et al., 2009). Thus, it is believed that the three critical characteristics of SWP are
+
+202
+
+autonomy, adaptivity, and sociability. The potential functions of SWP have also been introduced
+
+203
+
+and assessed in different scenarios including modeling (e.g., the understanding of the
+
+204
+
+interconnections among tasks), monitoring (i.e. the tracking and updating of real-time status), and
+
+205
+
+optimization (i.e. the planning and scheduling of tasks) (Luo et al. 2018; Wan et al. 2018; Zhang
+
+206
+
+et al. 2018).
+
+207
+
+However, it should be noted that SWP and its definition, characteristics, functions , applications,
+
+208
+
+and prospects in the PHP field have not yet been systematically explored for constraints
+
+209
+
+management. Although individual SWP studies have been investigated, they do not provide a
+
+210
+
+systematic view to explore the full potential of SWP, which is a necessity in driving toward a
+
+211
+
+sweeping and interconnected smartness in next-generation PHP practice, particularly in the field
+
+212
+
+of constraints management in PHP. This requires an investigation of the unique and inherent
+
+213
+
+characteristics of SWP from the manufacturing industry and the incorporation of PHP
+
+214
+
+characteristics.
+
+215
+
+3. Definition of SWP
+
+216
+
+In this study, SWP is defined as an approach to decompose the PHP workflows (e.g., technical
+
+217
+
+process) by product breakdown structure (PBS) of building systems, and integrate smartness
+
+218
+
+capabilities, such as visualizing, tracking, sensing, processing, networking, and reasoning into the
+
+219
+
+workflows so that they can be executed autonomously, adapt to changes in their physical context,
+
+220
+
+and interact with the surroundings to enable more resilient process.
+
+221
+
+The core characteristics of SWP, namely, adaptivity, sociability, and autonomy. Physical or
+
+222
+
+functional information, such as shape, dimension, products type, the layout of the work section,
+
+223
+
+work procedure, and positions of aids and resources, are not included because such information is
+
+224
+
+also required in traditional work packaging method.
+
+225
+
+Adaptivity, the most distinct feature of SWP compared with traditional PHP work packaging
+
+226
+
+method, denotes SWP’s ability to have a positive response to change, and learn from their own
+
+227
+
+experiences, environment, and interactions with others. This characteristic is based on the concepts
+
+228
+
+of smart workflows proposed by Wieland et al. (2008), which includes three dimensions, e.g.,
+
+229
+
+robustness, flexibility, and resilience (Husdal, 2010). Robustness is the fundamental feature level
+
+230
+
+that the SWP can process. With robustness, SWP can quickly regain stability by accepting goal-
+
+231
+
+directed initiatives when encountering constraints. It can be mainly applied to plan and control
+
+232
+
+primitive tasks, which refer to elemental motion with few steps or short durations. For instance,
+
+233
+
+the crane operator with the help of SWP can regain stable reaching, grasping, picking up, moving,
+
+234
+
+and eye travel in the lift operations when encountering static constraint such as obstacles.
+
+235
+
+Flexibility enables SWP to react to the foreseeable changes in a pre-planned manner. It is beneficial
+
+236
+
+for guarding tasks execution against threshold-breaking or exceeding a pre-programmed tolerance
+
+237
+
+range, and the SWP in this context primarily involves composite tasks such as to measure, connect,
+
+238
+
+navigate, select, align, record, and report. For example, SWP can help crane operators measure the
+
+239
+
+distance and report the parallax error when other tower cranes are approaching. Resilience is a
+
+240
+
+high-level adaptivity that facilitates SWP to survive unforeseeable changes (that have severe and
+
+241
+
+enduring impacts) in a dynamic replanning manner. The SWP tasks in this context include
+
+242
+
+operation-specific tasks such as assembly, examining workflow, buffer layout, equipment path
+
+243
+
+planning, and monitoring. For example, when an emergency occurs, SWP with resilience can offer
+
+244
+
+assembly guidance and perform the optimized working path planning by cross-validating the real-
+
+245
+
+time progress with as-planned workflow. Presently, SWP adaptivity can be achieved by advanced
+
+246
+
+optimization approaches when making full use of the information collected from the sensing and
+
+247
+
+tracking technologies.
+
+248
+
+Sociability ensures that SWP can communicate with the surroundings (e.g., other smart work
+
+249
+
+packages (SWPs), human/machine/products in SWPs). The communication can happen at pull,
+
+250
+
+push, or mixed modes. The pull mode occurs upon demand. For instance, the
+
+251
+
+deliverables/information, such as prefabricated products from the transportation driver, are
+
+252
+
+provided when requested by the SWP of the expeditor. In the push mode, SWP actively tracks and
+
+253
+
+updates the information and issues alerts at regular intervals or when an emergency occurs. For
+
+254
+
+example, the project manager of the SWP can obtain the traceability and visibility of the
+
+255
+
+prefabricated products in a real-time manner to ensure its Just-in-time delivery. The mixed mode
+
+256
+
+combines the pull and push to request and deliver information in a peer-to-peer manner. Apart
+
+257
+
+from the three interaction modes of SWP, there are four relationships between SWPs, namely,
+
+258
+
+composition, interface realization, inheritance, and dependency, which can enhance the sociability
+
+259
+
+of SWP in handling the modular products/processes in PHP (Ramaji et al., 2016). Composition
+
+260
+
+refers to the relationship of one SWP and its relevant SWPs. For instance, the work package of
+
+261
+
+schedule management usually includes planning, progress checking, monitoring, and risk control.
+
+262
+
+Interface realization refers to a group of work packages which support or rely on the behavior that
+
+263
+
+is defined in an interface. Inheritance exists between a parent smart work package and its
+
+264
+
+succeeding sub-SWPs. Dependency is the most popular relationship where the downstream SWPs
+
+265
+
+are dependent on the upstream SWPs. To achieve the sociability of SWP, there are many
+
+266
+
+communication and networking technologies to enhance the awareness of SWP such as
+
+267
+
+active/passive RFID, ultrawideband (UWB), ZigBee, electromagnetic, Bluetooth, ultrasound,
+
+268
+
+infrared (IR) proximity, Wi-Fi, near-field communication (NFC), laser, conventional radio
+
+269
+
+frequency (RF) timing, wireless local area network (WLAN), received signal strength (RSS), and
+
+270
+
+assisted GPS (A-GPS) (Niu et al. 2016; Zhang and Hammad, 2011).
+
+271
+
+Autonomy proposed in this study is based on the concept of SCOs (Niu et al., 2016). It refers to
+
+272
+
+the capability of intelligent resources (e.g., machinery/tools/devices) in SWP to achieve autonomy
+
+273
+
+through a pre-programmed method of decision making. There are three types of autonomy,
+
+274
+
+including proactive autonomy, passive autonomy, and a mixed mode. Proactive autonomy aims to
+
+275
+
+act in advance of a future situation. For instance, the autonomous crane tower can generate a lift
+
+276
+
+plan in accordance with the dynamic construction environment. It can sense and monitor the
+
+277
+
+dynamic constraints in the environment to predict and execute the plan in advance, without human
+
+278
+
+interventions. Passive autonomy, on the other hand, can only perform instant reaction by a
+
+279
+
+triggering mechanism, particularly triggered by the emergent situation due to the delays of
+
+280
+
+personnel reactions. For example, the anti-heat stress uniform encapsulated in the SWP can issue
+
+281
+
+an alert to the workers and help to reduce heat and humidity when they exceed a certain threshold
+
+282
+
+(Yi et al., 2016). The mixed mode of autonomy may execute complex tasks involving multi-
+
+283
+
+autonomy stages that can both control activities without intervention and act in a preset manner.
+
+284
+
+For instance, the path planning in SWP of a crane operator can firstly be pre-programmed with
+
+285
+
+optimal paths and collisions can be detected in the operation process with the dynamic autonomy.
+
+286
+
+The three core characteristics of SWP are interrelated. Each subclass of the adaptivity, sociability,
+
+287
+
+and autonomy is not a bijection. Instead, various subclasses of characteristics can be integrated to
+
+288
+
+address specific constraints. In more complicated scenarios, it is also possible that the integration
+
+289
+
+of characteristics that are more advanced than these three features is needed. However, this is
+
+290
+
+currently beyond the scope of this study.
+
+291
+
+4. Research Method
+
+292
+
+The development of the conceptual framework started with the definition of the SWP after a
+
+293
+
+comprehensive review of the work packaging method, constraints management, and the smartness
+
+294
+
+concept. Afterward, a draft paradigm, as shown in Figure 1, was proposed as the backbone of the
+
+295
+
+framework. Constraint modeling is included in the SWP to facilitate the identification and
+
+296
+
+interrelationship mapping of the constraints at the activity level (e.g., on-site assembly process).
+
+297
+
+Then, the most influential constraint at the activity level to the goal (e.g., schedule performance)
+
+298
+
+is isolated for further improvement, and this constraint often also contains many constraints at the
+
+299
+
+task level (i.e., specific onsite operational activities). The constraints optimization service in SWP
+
+300
+
+can help develop the optimal task executions by optimizing the constraints at the task level.
+
+301
+
+Tracking, updating, and predicting the statuses of the constraints at the task level are also included
+
+302
+
+in the framework.
+
+Constraint at the activity level
+(e.g., on-site assembly process )
+
+Constraint at the task level
+(e.g., crane path planning)
+
+Identify the critical one
+
+Constraint Modeling
+
+Constraint Optimization
+
+Identify the critical one
+
+Constraint Monitoring
+
+Fig. 1. The paradigm of SWP-enabled constraints management
+
+303
+
+<Insert Figure 1 here>
+
+304
+
+In addition, a layered system model, as the functional structure of SWP in PHP, was also proposed
+
+305
+
+to instantiate the conceptual framework. Its development is based on previous studies on IoT-
+
+306
+
+enabled BIM platforms for PHP (e.g., Li et al. 2017a; Li et al. 2018b), in order to take advantage
+
+307
+
+of both smart BIM platforms and smart construction objects in PHP.
+
+308
+
+Subsequently, the proposed framework and the layered system model were examined and finalized
+
+309
+
+by 14 PHP industry professionals, who were the primary stakeholders of PHP in Hong Kong. All
+
+310
+
+14 experts investigated the framework and provided their comments on the potential application
+
+311
+
+scenarios and functions based on their expertise. As shown in Table 2, the invited professionals
+
+312
+
+included stakeholders from the client, contractor, manufacturer, transportation company, and
+
+313
+
+consultancy. All industry professionals had more than 10 years of experience in the development,
+
+314
+
+operation, and management of PHP projects and related technologies. It is therefore expected that
+
+315
+
+these PHP professionals did provide an unbiased and constructive assessment of the framework.
+
+316
+Table 2 The Background of the 14 Interviewees and Their Contribution
+
+317
+No.
+1
+2
+
+Organization
+(Stakeholder)
+Housing Authority
+(Client)
+
+3
+
+Expertise
+
+Years of
+Experience
+
+Main Contribution
+
+Construction
+Management
+
+20+
+
+Constraints Identification
+
+Supply Chain
+Management
+
+20+
+
+Applications of Functions
+
+Lean Construction
+
+20+
+
+Example Scenarios
+
+Production Management
+
+20+
+
+Constraints Monitoring
+
+Construction
+Management
+
+15+
+
+BIM
+
+10+
+
+Construction
+Management
+
+15+
+
+Housing Society (Client)
+4
+5
+6
+7
+
+Gammon Construction
+(Contractor)
+Aggressive (Contractor)
+
+Constraints Modeling in On-site
+Assembly Process
+The system model of SWP
+Constraints Optimization in Onsite Assembly Process
+
+8
+
+BIM
+
+10+
+
+The function model of SWP
+
+9
+
+Prefabrication Production
+
+10+
+
+Production Breakdown System
+
+10
+
+Process Operations
+
+10+
+
+Constraints Optimization in
+Production Process
+
+11
+
+Supply Chain
+Management
+
+15+
+
+Constraints Modeling in Supply
+Chain Process
+
+Logistics and Positioning
+Technologies
+
+10+
+
+Constraints Monitoring in the
+Logistics Process
+
+WHS (Manufacturer)
+
+MDM (Logistics)
+12
+
+318
+
+13
+
+CIC (Consultancy)
+
+Lean Construction
+
+20+
+
+Framework
+
+14
+
+TSL (IT Consultancy)
+
+IoTs Solutions
+
+15+
+
+Properties of SWP
+
+319
+320
+
+In order to validate the proposed framework of SWP-CM, a laboratory test was also conducted by
+
+321
+
+using a simulation game (named RBL-PHP, RFID/BIM/Lean-PHP, a role-playing game)
+
+322
+
+developed by the authors (Li et al., 2017a). The following questions were raised:
+
+323
+
+•
+
+Can the constraints in PHP workflow be intelligently identified, improved, and monitored?
+
+324
+
+•
+
+Can the framework reduce project duration to improve the reliability of PHP workflow?
+
+325
+
+•
+
+Can productivity be increased in the implementation of this framework?
+
+326
+
+The aim of the game was to simulate a real-world PHP environment by building LegoTM houses.
+
+327
+
+The task goals were to construct four buildings with the shortest duration, the highest accuracy,
+
+328
+
+and the maximum percentage of the plan complete (PPC). Figure 2 shows the roles and the number
+
+329
+
+of people needed in this simulation game. All the 32 volunteers were postgraduate students with
+
+330
+
+limited knowledge of SWP and constraints management, and ten of them had more than three years
+
+331
+
+of working experience in the construction industry. Such an arrangement can help collect
+
+332
+
+comments, suggestions, and insights from the perspectives of both academic scholars and industry
+
+333
+
+practitioners. The volunteers were divided into two groups, who played in two separate rounds.
+
+334
+
+The first round was related to the use of traditional planning and control (without SWP techniques),
+
+335
+
+and the second round was related to the implementation of SWP-CM. These two rounds were then
+
+336
+
+comparatively analyzed to demonstrate the benefits and differences in implementing the proposed
+
+337
+
+framework. In order to reduce the influence by learning curve issues, there was a briefing session
+
+338
+
+for both rounds, and the participants were also instructed to play before the game.
+
+339
+
+<Insert Figure 2 here>
+
+340
+
+5. The Framework of SWP-enabled Constraints Management (SWP-CM)
+
+341
+
+This section outlines the framework of SWP-CM, which aims to improve the workflow of PHP.
+
+342
+
+After the review from selected industry experts, the client of HK Housing Society with the
+
+343
+
+background of Lean Construction agreed that there are two levels of constraints in the PHP process,
+
+344
+
+namely activity-level and task-level constraints, but he also pointed out that the framework should
+
+345
+
+not only reflect the concurrent and continuous improvements of constraints from a perspective of
+
+346
+
+Lean principles but also clarifies the process to the goal by identifying the critical chain of the
+
+347
+
+constraints based on the theory of constraints. An expert from the contractor emphasized the
+
+348
+
+alignment of work packaging stage among activity-level planning, task-level planning, and task
+
+349
+
+executions. In addition, the expert from CIC highlighted the implementation of the three
+
+350
+
+constraints management steps in this framework could help analyze the constraints and their
+
+351
+
+interrelationships systematically in the whole activity process, along with providing the executable
+
+352
+
+plan to remove the constraint at a more detailed level. However, the three steps of the framework
+
+353
+
+should be well-defined in SWP. The IT consultancy mentioned the capabilities of IoT and
+
+354
+
+emerging technology solutions and the integration of these technologies into the framework. A
+
+355
+
+project manager from the client emphasized that the fusion of SWP and constraints management
+
+356
+
+under a clear application scenario should be well considered.
+
+SWP1
+
+SWP6
+
+SWP10
+
+SWP7
+
+SWP14
+SWP13
+
+SWP2
+
+SWP3
+SWP8
+
+SWP4
+
+SWP5
+
+SWP9
+SWP11
+
+Fig. 2 Roles and layout of the simulation game
+
+SWP12
+
+357
+
+Figure 3 presents the final version of the SWP-CM framework. The work packaging method with
+
+358
+
+lean principles is designed as the basis to outline the workflow of the activity or task execution in
+
+359
+
+PHP. In addition, the framework shows the three core modules of constraints management,
+
+360
+
+followed by the detailed process of SWP-CM.
+
+361
+
+<Insert Figure 3 here>
+
+362
+
+To achieve the successful implementation of this framework, three functions, including constraints
+
+363
+
+modeling, constraints optimization, and constraints monitoring must be well combined with the
+
+364
+
+core characteristics of SWP for constraints management in PHP.
+
+365
+
+5.1 Constraints Modeling
+
+366
+
+Constraint modeling is a critical function with the sociability to allow a thorough understanding
+
+367
+
+of interconnections among tasks or activities. There are three steps within this function. The first
+
+368
+
+step is the constraints identification. The traditional process for constraints identification is static
+
+369
+
+and usually executed once. The SWP can enhance this step in a passive autonomy manner by pre-
+
+370
+
+programming the list of constraints and their classification with an open-data integration approach
+
+371
+
+for constraints instantiation. Although each PHP project is unique, they share some similar types
+
+372
+
+of constraints at the operational level (Li et al., 2018a), and it is possible to develop a database for
+
+373
+
+organizing the potentially significant amount of constraints. Table 3 demonstrates the one example
+
+374
+
+of constraints classification in the PHP process, which was sourced from the literature review and
+
+375
+
+the on-site survey. These constraints are classified into manufacturing, logistics, and site
+
+376
+
+constraints. Constraints such as incomplete design drawings/BIM models, approvals, and
+
+377
+
+specifications are manufacturing constraints, which restrict the subsequent activities in logistics
+
+378
+
+and on-site assembly. Logistics constraints contain limited weight and height for vehicles on the
+
+379
+
+road, unavailable production schedule, and transportation schedule. Without JIT deliveries, the site
+
+Fig. 3 The proposed framework of SWP-enabled constraints management in PHP
+
+380
+
+buffer may be congested, or underutilized and on-site assembly cannot be efficiently executed.
+
+381
+
+Site constraints include inadequate buffer and workspace, unavailable and unassigned labor
+
+382
+
+resources, lack of collision-free crane path planning, lack of optimal installation sequence, and
+
+383
+
+adverse weather conditions. The reason for this classification is that Manufacturing, logistics, and
+
+384
+
+on-site assembly are the most critical stages in PHP, which can facilitate crews to identify the
+
+385
+
+constraints in their stages. Once the list is embedded into the SWP, a set of pre-defined constraints
+
+386
+
+and their relationships will be available for critical constraints identification.
+
+387
+
+Table 3 List of Constraints and Their Classification
+
+388
+Classification
+Manufacturing
+
+Constraints
+Availability of mould, machinery, storage space, approvals, drawings, BIM
+models, specifications
+Adverse weather conditions; unavailable production and transportation schedule;
+
+Logistics
+
+bad conditions of transportation vehicle and route; road/vehicle limitation in
+weight and height; Lack of real-time vehicle location; Lack of optimal
+transportation route
+Availability of prefabricated products and temporary structures; safety
+&occupational health training; workspace; buffer space
+
+On-site Assembly
+
+Availability of labor, shop drawings, instructions, quality, inspection hold-points,
+transportation planning, safety checkpoints, installation sequence, crane lift and
+place location, collision-free crane path planning; Adverse weather conditions
+
+389
+390
+
+391
+
+The second step is the constraints relationship mapping. In real PHP projects, constraints are
+
+392
+
+usually not independent and may have dynamic interrelationships. As such, a thorough
+
+393
+
+understanding of these relationships is necessary. Figure 4 shows a simple example that includes
+
+394
+
+only one crew with SWP in each selected trade (e.g., manufacturing worker, transportation driver,
+
+395
+
+expeditor, buffer foreman, crane operator, installation worker). The constraints for production (e.g.,
+
+396
+
+drawings, BIM models, specifications, machinery) can be handled in the SWP of manufacturing
+
+397
+
+worker. The development of SWP for expeditor needs to rely on well-satisfied constraints of
+
+398
+
+vehicle locations, production, and transportation schedule in SWP of transportation driver.
+
+399
+
+Therefore, any failure of constraints improvement in each SWP may lead to subsequent SWP delay
+
+400
+
+in task executions. The control theory-based system dynamics (SD) model have the capacity to
+
+401
+
+analyze the interactions (e.g., casual loop) and structures (e.g., stock and flow) of the project
+
+402
+
+environments due to their perfect representation of feedback effects. SD models are primarily
+
+403
+
+linked to strategic level context, such as the satisfaction level of the tasks, level of worker fatigue,
+
+404
+
+level of worker skill. The Discrete Event Simulation (DES) can simulate sequential operation
+
+405
+
+details and offer detailed information for execution. Taking the on-site assembly process as an
+
+406
+
+example, the DES model may include detailed information such as the capacity and number of
+
+407
+
+project resources, the duration of on-site assembly tasks, and the lifting distance of the crane tower.
+
+408
+
+Thus, the hybrid SD-DES model can be an alternative to be incorporated into SWP to facilitate the
+
+409
+
+constraints relationship mapping. The last step is the constraints scenario analysis, which can be
+
+410
+
+presented in the interface of SWP for both project managers and workers to show the different
+
+411
+
+simulation results on the schedule performance by evaluating the influence of different critical
+
+412
+
+constraints. The most influential one will be selected for further optimization and monitoring.
+
+413
+
+<Insert Figure 4 here>
+
+Fig. 4 An example of constraint relationship mapping
+
+414
+
+5.2 Constraints Optimization
+
+415
+
+5.3 Constraints Monitoring
+
+416
+
+In PHP projects, the latest constraints information is essential for the superintendent or workers to
+
+417
+
+check the progress and issue constraint-free SWPs. As such, real-time constraints monitoring is
+
+418
+
+needed. There are three processes within the function of constraints monitoring. The first process
+
+419
+
+is constraints tracking, which focuses on tracking each individual constraint. For tracking purposes,
+
+420
+
+a mixed type of autonomy is preferred. For instance, the availability of prefabricated products can
+
+421
+
+be tracked by both active and passive RFID (or IoT systems) and visualized in the BIM as the
+
+422
+
+interface of SWP (Li et al., 2018b). The second process is constraints status updating, which
+
+423
+
+concentrates on computing the maturity of a task. The maturity index can be used to support short-
+
+424
+
+term decision-making in a mixed type of sociability. As shown in Fig.5, Fig.6, and Fig.7, it is the
+
+425
+
+interface of a smart work package for the site expeditor. Firstly, it can enable site expeditor with
+
+426
+
+the ability to update the status of the prefabricated products’ locations in a real-time manner. Fig.5
+
+427
+
+shows each prefabricated product with their ID, status (produced, arrived, or erected), time,
+
+428
+
+latitude, and longitude measured by GPS. At the same time, the digital twins (e.g., BIM models)
+
+429
+
+of smart objects (e.g., prefabricated products mounted with RFID and GPS) can be visualized at
+
+430
+
+regular intervals or via ad-hoc networking on the expeditor interface of SWP for monitoring (as
+
+431
+
+shown in Fig.6). Additionally, it can display locations of trucks in the google map and reveals the
+
+432
+
+task maturity of logistics associated smart work packages for each truck and driver by three status
+
+433
+
+(truck loading, cross-border, arrived) in Fig.7. This can guarantee the prefabricated products being
+
+434
+
+transported to achieve JIT delivery, i.e., the pull perspective. The final process within this function
+
+435
+
+is constraints predicting and alerting. The constraints alerting aims to warn the variations by
+
+436
+
+comparing as-planned constraints improvement plan and real-time constraints status. Historical
+
+437
+
+variation can be used to train and predict the next variation in a robust manner.
+
+438
+
+<Insert Figure 5 here>
+
+439
+
+<Insert Figure 6 here>
+
+440
+
+<Insert Figure 7 here>
+
+441
+
+6. The Functional Structure of SWP: Layered System Model
+
+442
+
+To achieve the characteristics and functions of SWP, a three-layered system is proposed (See
+
+443
+
+Fig.8).
+
+444
+
+<Insert Figure 8 here>
+
+445
+
+The context provisioning layer (CPL) is capable of managing the context information of PHP
+
+446
+
+processes, which is often referred as both physical and functional information (e.g., dimension,
+
+447
+
+quantity, specifications, location, resources status). For CPL, BIM platforms can be adopted
+
+448
+
+because it has proven to be an effective digital platform to offer users with the ability to generate,
+
+449
+
+integrate, analyze, simulate, visualize and manage the physical and functional information of a
+
+450
+
+facility (Li et al., 2017b). In addition, it can also support the development of various context-aware
+
+451
+
+applications through application programming interfaces (APIs). The BIM models can also be
+
+452
+
+used to integrate context from multiple sources (e.g., dynamic sensor data, smart construction
+
+453
+
+objects, internet of things) for value-added services. The BIM models can be utilized to break
+
+454
+
+down the design into many units, and each unit comprises various materials, components, and
+
+455
+
+modules. All the prefabricated products within a unit can be grouped into a product work package
+
+456
+
+(PWP), which is in accordance with the product breakdown structure of building systems. The
+
+ID
+
+Latitude
+
+Longitude
+
+Method
+
+Status
+
+Time
+
+B5-37F-01-TX8
+
+22.414649
+
+113.975509
+
+GPS
+
+Arrived
+
+21/04/2016 10:30:20 GMT +0800 (HKT)
+
+B5-37F-03-TX4
+
+22.414266
+
+113.975537
+
+GPS
+
+Arrived
+
+21/04/2016 10:30:28 GMT +0800 (HKT)
+
+B5-37F-03-TX8
+
+22.414235
+
+113.975537
+
+GPS
+
+Arrived
+
+21/04/2016 10:30:40 GMT +0800 (HKT)
+
+B5-37F-03-TX9
+
+22.414519
+
+113.975143
+
+GPS
+
+Arrived
+
+21/04/201610:30:58 GMT +0800 (HKT)
+
+B5-37F-04-TX8r
+
+22.414175
+
+113.975421
+
+GPS
+
+Arrived
+
+21/04/2016 10:31:14 GMT +0800 (HKT)
+
+B5-37F-04-TX9r
+
+22.414276
+
+113.975421
+
+GPS
+
+Arrived
+
+21/04/2016 10:31:29 GMT +0800 (HKT)
+
+B5-37F-05-TX8
+
+22.414576
+
+113.975485
+
+GPS
+
+Arrived
+
+21/04/2016 10:31:48 GMT +0800 (HKT)
+
+B5-37F-05-TX9A
+
+22.414602
+
+113.975483
+
+GPS
+
+Arrived
+
+21/04/2016 10:31:59 GMT +0800 (HKT)
+
+B5-37F-06-TX2r
+
+22.414641
+
+113.975514
+
+GPS
+
+Arrived
+
+21/04/2016 10:32:10 GMT +0800 (HKT)
+
+Fig. 5 Location status of each prefabricated product (Status Tracking)
+
+Fig. 6 Visualized status of each prefabricated product in BIM (Status Monitoring)
+
+Truck Loading
+
+Cross-border Clearance
+
+Driver1_Truck_No.KX9038
+
+100%
+
+Driver2_Truck_No.WJ6809
+
+100%
+67%
+
+Driver3_Truck_No.LX5537
+
+Driver4_Truck_No.TY0842
+
+Arrived
+
+33%
+
+Fig. 7 Visualized location status of each truck and the task maturity of each driver (Status Updating)
+
+SWPL
+
+SWPi-1
+
+Issue an SWP
+
+Execution of
+SWP
+
+Wait for
+Completion
+
+SWPi+1
+
+Context Integration Processes
+Functions
+
+Query resources
+
+Transport Complete Event
+
+Query algorithms
+
+Query location
+
+Domain
+specific
+CIPs
+
+Query sequence
+
+CIL
+Location-based Workflow Engine
+Integration of PWPs with
+Location-based workflow
+
+Context Query
+
+CPL
+
+Context Insert
+
+Context
+Manipulation
+
+Core
+CIPs
+Context Event
+
+BIM Platform: Assignment of components to product work packages (PWPs)
+
+Fig. 8 Layered System Model of SWP
+
+457
+
+PWP will then be decomposed into SWPs by integrating the context of the workflows (process),
+
+458
+
+work faces (location), duration, and resources.
+
+459
+
+The context integration layer (CIL) adopts the output of CPL to accommodate information,
+
+460
+
+algorithms, and functions into more advanced representations and provide domain-specific
+
+461
+
+functions needed by SWPs. Compared with CPL, there is no off-the-shelf system for CIL. The
+
+462
+
+primary contribution of this model is to present the concept of how to design this layer. There are
+
+463
+
+two context integration processes (CIPs) for CIL, namely (1) Core CIPs, and (2) Domain-specific
+
+464
+
+CIPs. Within a location-based workflow engine, the former can help map the physical products,
+
+465
+
+data, and services into the specific location-based workface to integrate the necessary elements for
+
+466
+
+work packages, while the latter can help workers with different domain knowledge extract well-
+
+467
+
+formatted work packages from Core CIPs and access different functions. In the core CIPs, the BIM
+
+468
+
+model can be decomposed into various prefabricated products with both physical and functional
+
+469
+
+information, which can form different product work packages (PWPs). Then, these PWPs can be
+
+470
+
+integrated into the workflow of the PHP process (e.g., on-site assembly process). At this moment,
+
+471
+
+the process-oriented information, e.g., the location of workface, technical procedure, required
+
+472
+
+resources, can be integrated with PWPs to generate the work packages by introducing advanced
+
+473
+
+algorithms (e.g., partitioning algorithms). The integration of PWPs with workflow by CIPs serves
+
+474
+
+an autonomous pattern. A Core CIP receives a call from the workflow (a higher-ranking Core CIP
+
+475
+
+of upstream SWPs) and remodels the request to the required format of the service including context
+
+476
+
+query, insert, manipulation, and event. Context queries facilitate the query to be synchronized with
+
+477
+
+context information, e.g., with a query language. The query result can serve as a variable to be
+
+478
+
+injected into the complex workflow. If the query language allows data manipulation, a workflow
+
+479
+
+can enable the function of context insert and change. The second process is related to domain-
+
+480
+
+specific CIPs and can offer context information at various semantical levels for SWPs. The
+
+481
+
+domain-specific CIPs include two primary functions: one is to merge specific functional elements
+
+482
+
+to the well-formatted work packages from core CIPs to form SWPs; the other is to simplify the
+
+483
+
+interfaces (e.g., web service interface) of SWPs for accessing their functionality.
+
+484
+
+Finally, the SWP layer (SWPL) can not only issue a smart work package with mobile, wearable,
+
+485
+
+and executable capacity but also provide a platform to interact with other SWPs. In addition, any
+
+486
+
+execution failure can trigger the dynamic re-planning function to provide more adaptive SWP. The
+
+487
+
+experts also evaluate the proposed layered system model by their expertise and project experience,
+
+488
+
+and the comments are summarized as follows: “This functional structure of SWP fully utilizes the
+
+489
+
+capabilities of existing BIM platforms and smart construction objects to help equip the workers
+
+490
+
+with more value-added information and make them more skillful on task executions.” (senior IoTs
+
+491
+
+engineer, TSL) “It is feasible to embed this layered system model into the service-oriented
+
+492
+
+architecture of the previous project ‘IoT-enabled BIM Platforms for Prefabrication Housing
+
+493
+
+Production.’” (senior BIM system architect, Gammon Construction)
+
+494
+
+7. Validation
+
+495
+
+7.1 Validation Design
+
+496
+
+A simulation game following the real processes of PHP projects (e.g., a Subsidized Sale Flats
+
+497
+
+project owned by the Hong Kong Housing Society and locates at 48 Chui Ling Road, Tseung
+
+498
+
+Kwan O Area 73A) is conducted through a workshop to assess the validity of the proposed
+
+499
+
+framework. According to the role setting and the proposed framework of SWP-CM, 14 SWPs were
+
+500
+
+developed for the simulation game (See Figure 2 and Table 4). There are three connected scenarios
+
+501
+
+(manufacturing, logistics, and on-site assembly) in this game. A process map was provided to the
+
+502
+
+participants to understand the simulation game. In this study, 13 constraints, including lack of
+
+503
+
+approvals from site manager, design drawings, BIM models, specifications, tools, production
+
+504
+
+schedule, transportation schedule, prefabricated products (e.g., material, components, modules,
+
+505
+
+units), buffer space, assembly instructions, quality and inspection hold-points, crane lift and place
+
+506
+
+location, and vehicle limitation in weight and height, were included. If the project team cannot
+
+507
+
+improve these constraints in an efficient manner, the game may suffer delay.
+
+508
+
+Table 4 Trade-associated SWP
+
+509
+SWP_No.
+1
+2
+3
+4
+5
+
+Trade
+Manufacturing Worker
+Manufacturing Worker
+Manufacturing Worker
+Manufacturing Worker
+Manufacturing Worker
+
+SWP_No.
+6
+7
+8
+9
+10
+
+Trade
+Plant Manager
+Project Manager
+Truck Driver
+Logistics Manager
+Expeditor
+
+SWP_No.
+11
+12
+13
+14
+
+Trade
+Crane Operator
+Site Worker
+Site Manager
+Buffer Foreman
+
+510
+511
+512
+
+The first round of the game focused on the SWP-CM framework. The constraints identification
+
+513
+
+process was conducted to synchronize the constraints list and the constraint relationship map to
+
+514
+
+the SWP, which could be accessed by each participant through mobile devices. This process was
+
+515
+
+achieved at the beginning of the game in the social network analysis (SNA) service of SWP, which
+
+516
+
+included three primary steps: (1) The participants registered in the SNA service of their own SWP
+
+517
+
+and accessed the full list of constraints; (2) The participants scored and evaluated the constraints
+
+518
+
+interrelationships; (3) The participants visualized the constraint network and identified critical
+
+519
+
+constraints and constraint interactions. After the identification, a hybrid system dynamic (SD)-
+
+520
+
+discrete event simulation (DES) model service was adopted to assess and simulate the potential
+
+521
+
+effect of the identified constraints on the schedule performance. DES was adopted to measure the
+
+522
+
+operation level of game and SD was related to the strategic level consideration, including resource
+
+523
+
+availability, operation efficiency, and schedule performance. Finally, the constraints analysis
+
+524
+
+results were also demonstrated to participants by embedding the results in specific SWP buttons.
+
+525
+
+As shown in Figure 9, when clicking “Expeditor_SWP,” the expeditor could find all related
+
+526
+
+constraints and other interactional SWPs. After clicking the specific constraint in each SWP, the
+
+527
+
+simulation results can be presented. Apart from the constraints modeling, the detailed task
+
+528
+
+execution plans for improving each constraint are also presented. Lean principles, such as pull
+
+529
+
+methods, Just in time delivery, and standardized work, served as the optimization strategies in this
+
+530
+
+simulation game. For instance, the pull method can be used to improve the constraints “lack of
+
+531
+
+production schedule” in the SWP_11 (See Figure 9) for expediting the production process.
+
+532
+
+Furthermore, the status of each constraint was also tracked and visualized through the use of RFID
+
+533
+
+tracking technology and BIM visualization interface (see 10.2 “prefabricated products traceability”
+
+534
+
+in Figure 9). With SWP-CM implementation, Group A was able to detect and analyze all
+
+535
+
+constraints in the first 9 minutes and adopt relevant optimization strategies. The first round took
+
+536
+
+35 minutes, and the performance of Group A was evaluated by the percentage of plan complete
+
+537
+
+(PPC), productivity index, and extra cost. The definition of these three indicators and their
+
+538
+
+calculations are shown in Table 5.
+
+539
+
+<Insert Figure 9 here>
+
+540
+
+Step No.1
+
+13. Site
+Manager_SWP
+
+Current
+Production
+Status
+
+14. Buffer
+Foreman_SWP
+
+Step No.2
+
+Step No.5
+
+Step No.3
+
+Step No.4
+
+Step No.7
+
+Step No.6
+
+8.
+Transportation
+Driver_SWP
+
+Unit
+Red1
+Red2
+Red3
+Red4
+
+Maturity
+30%
+20%
+10%
+10%
+
+Unit
+White1
+White2
+White3
+White4
+
+Maturity
+50%
+40%
+30%
+10%
+
+Unit
+Blue1
+Blue2
+Blue3
+Blue4
+
+Maturity
+100%
+70%
+50%
+30%
+
+Unit
+Maturity
+Yellow1
+90%
+Yellow2
+80%
+Yellow3
+70%
+Yellow4
+60%
+
+Step No.8
+
+10.
+Expeditor_SWP
+If 10.1_delay =
+1min ; Schedule
+_ delay = 2 min
+
+If 10.3_delay =
+1min ; Schedule
+_ delay = 3min
+
+10. 1
+
+Production Schedule
+
+10. 3 Transportation Schedule
+Production
+If 10.2_delay =
+1min ; Schedule
+_ delay = 4min
+
+10. 2
+
+Prefabricated Products
+Traceability
+
+Red 1
+Red 2
+Red 3
+Red 4
+
+Delivery to Site
+
+Arrive at Buffer
+
+100%
+75%
+50%
+25%
+
+Fig. 9 Detailed constraints improvement in Expeditor_SWP
+
+Assembly
+
+541
+
+Table 5 The description of indicators for validation
+
+542
+Indicator
+
+PPC
+
+Extra Cost
+
+Description
+To measure the actual completion
+at the end of each time interval.
+(1) time interval = 9 min in this
+study. (2) A total number of units
+to be constructed = 20.
+This may result from the overly
+produced units that are
+transported to the construction
+site, the defective units that need
+rework, and the manufactured-inprocess (MIP) units that cause
+delay.
+
+Formula
+
+Remark
+
+PPC = Qa / Qt
+
+Where Qa = the number of assembled
+units, Qt = the total number of units (20).
+
+The cost of each
+unit can be
+found in the
+authors’
+previous work
+(Li et al., 2017a)
+
+The cost of each component contains the
+cost of material, labor, equipment, and
+transportation.
+
+a. Pm = (Qp –
+Qd1) / (Tf1 – Ts1)
+
+Productivity
+Index
+
+This is a measurement of the
+ability to manufacture, transport,
+and assemble.
+
+b. Pl = (Ql –
+Qd2) / (Tf2 – Ts2)
+
+c. Pa = (Qa –
+Qd3) / (Tf3 – Ts3)
+
+where Pm = the productivity index of
+manufacturing; Qp = number of produced
+units in the plant; Qd1 = number of
+defective units in the plant; Tf1 = finish
+time of the production of the last unit;
+and D1 = duration from Ts1 to Tf1 and D1
+= Tf1 – Ts1.
+where Pl = the productivity index of
+logistics; Ql = number of transported
+units; Qd2 = number of defective units in
+the logistics; Tf2 = finish time of the
+transportation of the last unit; and D2 =
+duration from Ts2 to Tf2 and D2 = Tf2 – Ts2.
+where Pa = the productivity index of onsite assembly; Qd3 = number of defective
+units in the assembly process; Tf3 = finish
+time of the assembly of the last unit; and
+D3 = duration from Ts3 to Tf3 and D3 = Tf3
+– Ts3.
+
+543
+544
+545
+
+The second round game focused on the traditional constraints improvement method. The following
+
+546
+
+changes were made, while other conditions remained the same.
+
+547
+
+(1) Constraints modeling, including the relationship map and analysis results, were not provided
+
+548
+
+to Group B. Based on the inputs of the 14 industry professionals, constraints identification,
+
+549
+
+relationship mapping, and analysis were conducted informally on the basis of experience.
+
+550
+
+(2) Constraints optimization strategies were only developed when the constraints happened. The
+
+551
+
+participants could discuss optimal solution strategies in a meeting when constraints occurred.
+
+552
+
+(3) The players were not allowed to directly monitor others who have geographical barriers in real
+
+553
+
+situations. In this simulation, they can arrange regular coordination meetings to report their own
+
+554
+
+progress.
+
+555
+
+As there was no implementation of SWP-CM, the 13 constraints had not been timely identified
+
+556
+
+until the second 9-minute interval. The game suffered delay due to the late removal of the
+
+557
+
+constraints (e.g., shortage of tools and prefabricated products) and the performance was also
+
+558
+
+measured by the same indicators.
+
+559
+
+7.2 Validation Results
+
+560
+
+The results are shown in Tables 6-8, respectively. Table 6 demonstrates the actual duration and
+
+561
+
+the PPC values of the two rounds. A total of 35 min was recorded in the first round while the
+
+562
+
+second round took 45 min, which suggests that 22.2% reduction in project duration was achieved
+
+563
+
+through the implementation of SWP-CM. The main underlying reason was the late identification
+
+564
+
+and improvement of the constraints in the second round, and participants spent more time
+
+565
+
+understanding the constraints and identifying optimization strategies. Table 7 shows the results of
+
+566
+
+the simulation game at extra cost. An extra cost of $7460 was recorded in the second round while
+
+567
+
+there was no extra cost in the first round. In the second round, as the push system without
+
+568
+
+constraints monitoring was adopted, two additional units were produced, and one unit was
+
+569
+
+manufacturing-in-process (MIP). Table 8 shows the productivity index of the two rounds. The
+
+570
+
+productivity is significantly improved in all three phases, including manufacturing (Pm : 0.53 →
+
+571
+
+0.67; 26% increase), logistics (Pl : 0.88 → 1; 14% increase), and on-site assembly (Pa : 0.49 →
+
+572
+
+0.65; 33% increase). Efficient information sharing and communication in the first round
+
+573
+
+demonstrated the effectiveness of the real-time constraints modeling, optimization, and monitoring,
+
+574
+
+which can be considered as the main contribution to the increase in productivity.
+
+575
+
+Table 6 The Percentage of Plan Complete
+
+576
+Round
+
+Actual
+Duration
+(min)
+
+PPC at the
+end of the first
+9 min (%)
+
+PPC at the
+end of the
+second 9 min
+(%)
+
+PPC at the
+end of the
+third 9 min
+(%)
+
+PPC at the
+end of the
+fourth 9 min
+(%)
+
+PPC at the
+end of the
+fifth 9 min
+(%)
+
+Round 1
+
+35
+
+20
+
+45
+
+75
+
+100
+
+-
+
+Round 2
+
+45
+
+10
+
+30
+
+55
+
+75
+
+100
+
+577
+
+Table 7 The Extra Cost in the Simulation Game
+
+578
+Round
+
+Overproduced units (Qty)
+
+Defective Units (Qty)
+
+R
+
+W
+
+R
+
+1
+
+1
+
+B
+
+Y
+
+W
+
+B
+
+Y
+
+Total
+Extra
+Cost
+($)
+0
+
+1
+
+7460
+
+MIP(Qty)
+
+Y
+
+R
+
+W
+
+B
+
+Round 1
+Round 2
+
+1
+
+1
+
+Note: R = “Red Unit”, W=“White Unit”, B=“Black Unit”, Y=“Yellow Unit”
+
+579
+580
+
+Table 8 The Productivity Index in the Simulation Game
+
+581
+Round
+
+Qp
+
+Qd1
+
+Ql
+
+Qd2
+
+Qa
+
+Qd3
+
+D1(min)
+
+D2(min)
+
+D3(min)
+
+Pm
+
+Pl
+
+Pa
+
+Round 1
+
+20
+
+0
+
+20
+
+0
+
+20
+
+0
+
+30
+
+20
+
+31
+
+0.67
+
+1
+
+0.65
+
+Round 2
+
+22
+
+1
+
+22
+
+0
+
+20
+
+1
+
+39
+
+25
+
+40
+
+0.54
+
+0.88
+
+0.49
+
+582
+583
+
+In summary, the round with SWP-CM outperforms the traditional round. The results also answer
+
+584
+
+the previously raised questions with the following evidence: (1) Several intelligent techniques (e.g.,
+
+585
+
+SNA, DES, SD, Lean tools, BIM) have been used in constraints modeling, optimizing, and
+
+586
+
+monitoring to achieve the certain level of sociability, adaptivity, and autonomy in the SWP-CM
+
+587
+
+round; (2) The duration was reduced by 22.2% in in the SWP-CM round and $7460 extra cost
+
+588
+
+occurred in the traditional round; (3) The productivity in the phases of manufacturing, logistics,
+
+589
+
+and on-site assembly was increased with 26%, 14%, and 33%, respectively.
+
+590
+
+8. Discussion
+
+591
+
+Constraints management in modern PHP projects is essential because PHP processes are separated
+
+592
+
+into different stages. Existing approaches to constraints management have several shortcomings,
+
+593
+
+including low transparency of constraints status, and non-optimal or inflexible constraints
+
+594
+
+improvement planning (Wang et al. 2016a). The previous manual and people-centric approaches
+
+595
+
+in constraints management disregard the potential of IT to accurately, timely, and agilely in
+
+596
+
+managing constraints, thus enabling the reliable workflow in PHP scenarios. With smart
+
+597
+
+characteristics, including adaptivity, sociability, and autonomy, SWP can strengthen constraints
+
+598
+
+modeling, monitoring, and even optimization. Accordingly, SWP can improve human deficiencies
+
+599
+
+or skills in tasks execution to save time and cost. SWP can identify and analyze the latest
+
+600
+
+constraints in a pull or push manner, provide optimal constraints improvement planning at different
+
+601
+
+levels such as robustness, flexibility, resilience, and track, update, and predict the constraints status
+
+602
+
+autonomously.
+
+603
+
+SWP provides an immense opportunity to improve workflow management in the global
+
+604
+
+modular/prefabricated construction industry. SWP can significantly enhance the power of object-
+
+605
+
+oriented BIM, which has been broadly recognized as a potential of integrating physical objects of
+
+606
+
+product-oriented PHP and informational components to form situation-integrated analytical
+
+607
+
+systems which can respond intelligently to the dynamic changes of real-world scenarios and offer
+
+608
+
+data-oriented lean solutions (Li et al. 2017b). Current BIM models are mostly created in an as-
+
+609
+
+designed condition, with updates in the subsequent stages including construction and maintenance.
+
+610
+
+To make BIM a handy information hub in tasks execution with data-oriented lean solutions, as-
+
+611
+
+built information is urgently needed to timely exchange with BIM. Presently, as-built data updates
+
+612
+
+are primarily based on manual site survey or fragmented information technologies adoptions,
+
+613
+
+which are time-consuming, error-prone, and non-value added information (Shrestha and Behzadan,
+
+614
+
+2018). To some extent, BIM development for physical project execution has come to a bottleneck
+
+615
+
+with as-built information being synchronizing between BIM and tasks execution in a real-time and
+
+616
+
+value-added manner to support constraints management. SWP can be adopted to bridge the value-
+
+617
+
+added information gap between BIM and information technologies supported objects (e.g., smart
+
+618
+
+PHP objects). The sociability of SWP means that they can interact with other SWPs or synchronize
+
+619
+
+as-built information with BIM in a pull or push manner, and the adaptivity of SWP can make them
+
+620
+
+respond to changes in a robust, flexible and resilient manner. The characteristic of autonomy
+
+621
+
+enables SWP to respond in a proactive or passive manner.
+
+622
+
+Given the capacity of SWP to interact with other platforms, SWP can also benefit from the
+
+623
+
+development of the Internet of Things (IoT), an emerging paradigm that has attracted considerable
+
+624
+
+attention in the lifecycle of PHP (Li et al., 2018b), In the IoT paradigm, the constraints status can
+
+625
+
+be connected at any time and anywhere. The gateway, an IoT-enabled industrial computer, can
+
+626
+
+provide a communication link between physical sensors and SWPs. Thus, IoT can enable the
+
+627
+
+SWPs to be a loosely coupled, decentralized, multi-agent system. The adaptivity held by SWP is
+
+628
+
+a core property in the IoT ecosystem, as the flexible and resilient actions can make the planning
+
+629
+
+and control of constraints more dynamic. With the characteristic of autonomy, SWP can connect
+
+630
+
+with and handle the autonomous objects (e.g., vehicle, crane, robotics, 3D printer) based on
+
+631
+
+specific protocols, e.g., a fill-up based trigger (Wu et al., 2016). Once the smart workflow is
+
+632
+
+established, information sensed by each autonomous object can be shared with SWP in a proactive
+
+633
+
+manner. These all contribute to the underpinning philosophy of construction industry 4.0 (Longo
+
+634
+
+et al., 2017).
+
+635
+
+Furthermore, a smart work package can be generated from BIM by decomposing the BIM models
+
+636
+
+and integrating the functional information such as tasks sequence, workflow, resources, location
+
+637
+
+with the decomposed physical information including building systems and prefabricated products.
+
+638
+
+Its information can be pulled out from context provision layer for assisting constraints modeling
+
+639
+
+(e.g., automatic analysis of the topological constraints and their interrelationships), optimization
+
+640
+
+(e.g., visual guidance and interactive representation of the work sequence can be obtained by
+
+641
+
+applying optimal lean solutions), and monitoring (e.g., the resource requests can be evaluated and
+
+642
+
+monitored in a real-time manner). The functions of SWP are developed and integrated into the
+
+643
+
+context integration layer in a specific format (e.g., ifcXML), which can be connected to BIM. Files
+
+644
+
+using the IFC schema can be interoperated on BIM platforms, which facilitates better information
+
+645
+
+sharing and exchange (Lee et al. 2016). SWP also reduces manual operations, including
+
+646
+
+reformating or reinterpreting information (e.g., constraints status) when using BIM, thus
+
+647
+
+eliminating the possibility of the error caused by human intervention during data processing. It is
+
+648
+
+envisaged that the proposed SWP can address the bottleneck that limits BIM expansion and present
+
+649
+
+opportunities to make BIM a genuinely dynamic workflow management system rather than the
+
+650
+
+static model management system.
+
+651
+
+It can be envisaged that SWP will progressively override conventional PHP constraints
+
+652
+
+management to develop into an effective workflow management approach in the future. However,
+
+653
+
+there are still numerous challenges to face. Firstly, from an organizational perspective, there will
+
+654
+
+probably be resistance to diverge from the current constraints management practices in order to
+
+655
+
+embrace smartness. Meanwhile, although SWP can help simplify interface management between
+
+656
+
+tasks/activities carried out by different sub-contractors, the adoption of SWP for constraints
+
+657
+
+management is more challenging in PHP projects with multiple tiers of subcontractors. Secondly,
+
+658
+
+from a technical perspective, the interoperability of SWP will also be a challenge. The smartness
+
+659
+
+of SWP relies on efficient data exchange. Without a universal standard for SWPs, there will be no
+
+660
+
+smartness (though presently SWP can be operated based on BIM interfaces which are interoperated
+
+661
+
+through ifcXML). The PHP industry is also fragmented. No individual can drive the industry
+
+662
+
+toward fully integrated advanced technologies development and adoptions (Niu et al., 2016). The
+
+663
+
+third challenge, from an economic perspective, is the expense of developing and deploying SWP.
+
+664
+
+The PHP industry is comparatively slow-moving to embrace the new wave in the adoption of new
+
+665
+
+technologies, and organizations within the industry would be very sensitive to expand on new
+
+666
+
+technologies.
+
+667
+
+9. Conclusion
+
+668
+
+PHP has fragmented processes, which may generate various constraints in the critical chain of
+
+669
+
+PHP. If the constraints cannot be timely improved, the reliability of workflow may be affected,
+
+670
+
+and schedule delay and cost overrun will occur. The primary contributions of this study to the body
+
+671
+
+of knowledge are threefold. Firstly, Inspired by the theories of work packaging and SCOs, SWP
+
+672
+
+is defined as PHP workflows which are decomposed in accordance with PBS of building systems
+
+673
+
+that are made smart by augmenting with the capacities of visualizing, tracking, sensing, processing,
+
+674
+
+networking, reasoning so that they can be executed autonomously, adapt to changes in their
+
+675
+
+physical context, and interact with surroundings to enable more resilient process. Secondly,
+
+676
+
+equipped with three characteristics sociability, adaptivity, and autonomy, a continuous
+
+677
+
+improvement framework for constraints management with three functions, including constraints
+
+678
+
+modeling, constraints optimization, and constraints monitoring is proposed and illustrated by
+
+679
+
+several examples and scenarios.The rationale and methodology in the framework of SWP-CM can
+
+680
+
+be generalized because the development of the framework does not rely on identifying and
+
+681
+
+removing specific types of constraints.Thirdly, a formal structured SWP representation is proposed
+
+682
+
+by developing a layered system model involving context provisioning layer (CPL), context
+
+683
+
+integration layer (CIL), and smart work packaging layer (SWPL) to realize these three functions.
+
+684
+
+Results from the validation process signify the benefits when implementing the framework of
+
+685
+
+SWP-CM in PHP. 22.2% reduction of project duration was achieved, and no defective units were
+
+686
+
+generated in the round of SWP-CM. Productivity was also improved, particularly in the
+
+687
+
+manufacturing and on-site assembly stage. Thus, it can be concluded that SWP provides enormous
+
+688
+
+opportunities to improve constraints management in PHP, particularly in conjunction with BIM.
+
+689
+
+It can extract the context information (both physical and functional information) of product work
+
+690
+
+packages from CPL (BIM platforms integrating with IoT). It can also insert the value-added as-
+
+691
+
+built information into the BIM platforms in a pull or push manner. SWP can also be combined
+
+692
+
+with the IoT-enabled gateway to act as a loosely coupled, decentralized, multi-agent system to
+
+693
+
+make the status of the constraints be connected at any time and anywhere.
+
+694
+
+However, It should be noted that SWP for constraints management is in the early stage of its
+
+695
+
+development. There are several barriers to the development and implementation. For example,
+
+696
+
+there are technical difficulties related to the integral approach in constraints identification and
+
+697
+
+interrelationship mapping, the efficient algorithms for dynamic re-planning in constraints
+
+698
+
+optimization, and robustness hardware (e.g., autonomous robots, vehicles, cranes) and software
+
+699
+
+(location-based workflow engine, interoperability of connected system) for constraints monitoring.
+
+700
+
+There are also challenges related to technology acceptance, organizational changes, and cost issue.
+
+701
+
+By overcoming these challenges, it is believed that SWP can help establish safer, more adaptive,
+
+702
+
+more proactive, more efficient, and more sustainable PHP workflows.
+
+703
+
+Acknowledgments
+
+704
+
+This research was funded by the Australian Research Council Discovery Project (grant number No.
+
+705
+
+DP180104026), the Linkage Project (grant number No. LP180100222) and the National Key R&D
+
+706
+
+Program of China (No.2016YFC070200504). It was also supported by the Research Institute for
+
+707
+
+Sustainable Urban Development of the Hong Kong Polytechnic University, National Natural
+
+708
+
+Science Foundation of China (No. 71801159), and Natural Science Foundation of Guangdong
+
+709
+
+Province (No. 2018A030310534).
+
+710
+
+Glossary
+
+711
+
+Product Breakdown Structure (PBS): It is a product-oriented planning approach to analyze,
+
+712
+
+document and communicate the outcomes of a project, which offers a comprehensive
+
+713
+
+understanding of the physical deliverables. (Highlights: showing the physical deliverables)
+
+714
+
+Work Breakdown Structure (WBS): It is a deliverable-oriented planning tool to hierarchically
+
+715
+
+decompose the entire scope of work into the combination of product, data, and service that are
+
+716
+
+required in a project. (Highlights: showing the work required to produce deliverables)
+
+717
+
+Advanced Work Package (CWP): It is a planned, executable process that encompasses the work
+
+718
+
+on an EPC project, beginning with initial planning and continuing through detailed design and
+
+719
+
+construction execution. (Highlights: showing the framework of construction execution)
+
+720
+
+Construction Work Package (CWP): It is an executable construction deliverable with the well-
+
+721
+
+defined (e.g., budget and schedule) work scope which cannot overlap with another construction
+
+722
+
+work package.
+
+723
+
+Engineering Work Package (EWP): It is an engineering deliverable with preparation-oriented
+
+724
+
+work scope, which includes drawings, procurement deliverables, specifications, and vendor
+
+725
+
+support to be consistent with the sequence and schedule of CWPs.
+
+726
+
+Installation Work Package (IWP): It is a detailed execution plan that ensures all necessary
+
+727
+
+elements used to complete the scope of the IWP are well organized and delivered before executions
+
+728
+
+to enable workers to perform quality work in a safe, effective and efficient manner.
+
+729
+
+Smart Work Packaging (SWP): It is defined as an approach to decompose the PHP workflows
+
+730
+
+(e.g., technical process) by product breakdown structure (PBS) of building systems that are made
+
+731
+
+smart with augmented capacities of visualizing, tracking, sensing, processing, networking, and
+
+732
+
+reasoning so that they can be executed autonomously, adapt to changes in their physical context,
+
+733
+
+and interact with the surroundings to enable more resilient process.
+
+734
+
+Reference
+
+735
+
+Abuwarda, Z., & Hegazy, T. (2016). Work-Package Planning and Schedule Optimization for Projects with Evolving
+
+736
+
+Constraints. Journal of Computing in Civil Engineering, 30(6), 04016022.
+
+737
+
+Blanco-Novoa, O., Fernández-Caramés, T. M., Fraga-Lamas, P., & Vilar-Montesinos, M. A. (2018). A practical
+
+738
+
+evaluation of commercial industrial augmented reality systems in an industry 4.0 shipyard. IEEE Access, 6,
+
+739
+
+8201-8218.
+
+740
+741
+742
+743
+744
+745
+
+Boyd, L., & Gupta, M. (2004). Constraints management: what is the theory?. International Journal of Operations &
+Production Management, 24(4), 350-371.
+Chi, H. L., Chen, Y. C., Kang, S. C., & Hsieh, S. H. (2012). Development of user interface for teleoperated cranes.
+Advanced Engineering Informatics, 26(3), 641-652.
+Giner, P., Cetina, C., Lacuesta, R., & Palacios, G. (2012). Enabling Smart Workflows over Heterogeneous IDSensingTechnologies. Sensors, 12(11), 14914-14936.
+
+746
+
+Gong, P., Teng, Y., Li, X., & Luo, L. (2019). Modeling Constraints for the On-Site Assembly Process of Prefabrication
+
+747
+
+Housing Production: A Social Network Analysis. Sustainability, 11(5), 1387.
+
+748
+
+Goldratt, E. M., & Cox, J. (1984). The Goal, Croton-on-Hudson. NY: North River Press Inc.
+
+749
+
+Hamdi, O. (2013). Advanced Work Packaging from project definition through site execution: driving successful
+
+750
+
+implementation of workforce planning (Doctoral dissertation, The University of Texas at Austin). Retrieved
+
+751
+
+from https://repositories.lib.utexas.edu/handle/2152/21384
+
+752
+
+Housing Authority (2018), Number of Applications and Average Waiting Time for Public Rental Housing,
+
+753
+
+https://www.housingauthority.gov.hk/en/about-us/publications-and-statistics/prh-applications-average-
+
+754
+
+waiting-time/
+
+755
+756
+
+Husdal, J. (2010). A conceptual framework for risk and vulnerability in virtual enterprise networks. In Managing risk
+in virtual enterprise networks: implementing supply chain principles (pp. 1-27). IGI Global.
+
+757
+
+Ibrahim, Y. M., Lukins, T. C., Zhang, X., Trucco, E., & Kaka, A. P. (2009). Towards automated progress assessment
+
+758
+
+of work package components in construction projects using computer vision. Advanced Engineering
+
+759
+
+Informatics, 23(1), 93-103.
+
+760
+
+Isaac, S., Curreli, M., & Stoliar, Y. (2017). Work packaging with BIM. Automation in Construction, 83, 121-133.
+
+761
+
+Ivanov, D., Dolgui, A., Sokolov, B., Werner, F., & Ivanova, M. (2016). A dynamic model and an algorithm for short-
+
+762
+
+term supply chain scheduling in the smart factory industry 4.0. International Journal of Production Research,
+
+763
+
+54(2), 386-402.
+
+764
+
+Lee, K., Paton, N. W., Sakellariou, R., Deelman, E., Fernandes, A. A., & Mehta, G. (2009). Adaptive workflow
+
+765
+
+processing and execution in Pegasus. Concurrency and Computation: Practice and Experience, 21(16),
+
+766
+
+1965-1981.
+
+767
+
+Lee, Y. C., Eastman, C. M., & Solihin, W. (2016). An ontology-based approach for developing data exchange
+
+768
+
+requirements and model views of building information modeling. Advanced Engineering Informatics, 30(3),
+
+769
+
+354-367.
+
+770
+
+Li, C. Z., Xu, X., Shen, G. Q., Fan, C.,Li, X., Hong, J. (2018a). A model for simulating schedule risks in prefabrication
+
+771
+
+housing production: a case study of six-day cycle assembly activities in Hong Kong. Journal of Cleaner
+
+772
+
+Production, 165, 10
+
+773
+
+Li, C. Z., Xue, F., Li, X., Hong, J., & Shen, G. Q. (2018b). An Internet of Things-enabled BIM platform for on-site
+
+774
+
+assembly services in prefabricated construction. Automation in Construction, 89, 146-161.48-1062.
+
+775
+
+Li, X., Shen, G. Q., Wu, P., Fan, H., Wu, H., & Teng, Y. (2017a). RBL-PHP: Simulation of Lean Construction and
+
+776
+
+Information Technologies for Prefabrication Housing Production. Journal of Management in Engineering,
+
+777
+
+34(2), 04017053.
+
+778
+779
+780
+781
+782
+
+Li, X., Wu, P., Shen, G. Q., Wang, X., & Teng, Y. (2017b). Mapping the knowledge domains of Building Information
+Modeling (BIM): A bibliometric approach. Automation in Construction, 84, 195-206.
+Li, X., Yi, W., Chi, H. L., Wang, X., & Chan, A. P. (2018c). A critical review of virtual and augmented reality (VR/AR)
+applications in construction safety. Automation in Construction, 86, 150-162.
+Li, X., Shen, G. Q., Wu, P., & Yue, T. (2019). Integrating building information modeling and prefabrication housing
+
+783
+784
+785
+
+production. Automation in Construction, 100, 46-60.
+Liu, H., Al-Hussein, M., & Lu, M. (2015). BIM-based integrated approach for detailed construction scheduling under
+resource constraints. Automation in Construction, 53, 29-43.
+
+786
+
+Longo, F., Nicoletti, L., & Padovano, A. (2017). Smart operators in industry 4.0: A human-centred approach to enhance
+
+787
+
+operators’ capabilities and competencies within the new smart factory context. Computers & Industrial
+
+788
+
+Engineering, 113, 144-159.
+
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+
+Lu, S., Xu, C., Zhong, R. Y., & Wang, L. (2017). An RFID-enabled positioning system in an automated guided vehicle
+for smart factories. Journal of Manufacturing Systems, 44, 179-190.
+Luo, Y., Duan, Y., Li, W., Pace, P., & Fortino, G. (2018). Workshop Networks Integration Using Mobile Intelligence
+in Smart Factories. IEEE Communications Magazine, 56(2), 68-75.
+Niu, Y., Lu, W., Chen, K., Huang, G. G., & Anumba, C. (2016). Smart construction objects. Journal of Computing in
+Civil Engineering, 30(4), 04015070.
+Peruzzini, M., & Pellicciari, M. (2017). A framework to design a human-centered adaptive manufacturing system for
+aging workers. Advanced Engineering Informatics, 33, 330-349.
+Ramaji, I. J., & Memari, A. M. (2016). Product architecture model for multistory modular buildings. Journal of
+Construction Engineering and Management, 142(10), 04016047.
+Ren, G., Hua, Q., Deng, P., Yang, C., & Zhang, J. (2017). A Multi-Perspective Method for Analysis of Cooperative
+Behaviors Among Industrial Devices of Smart Factory. IEEE Access, 5, 10882-10891.
+Seiger, R., Keller, C., Niebling, F., & Schlegel, T. (2015). Modeling complex and flexible processes for smart cyberphysical environments. Journal of Computational Science, 10, 137-148.
+
+803
+
+Shrestha, P., & Behzadan, A. H. (2018). Chaos Theory–Inspired Evolutionary Method to Refine Imperfect Sensor
+
+804
+
+Data for Data-Driven Construction Simulation. Journal of Construction Engineering and Management,
+
+805
+
+144(3), 04018001.
+
+806
+807
+808
+809
+810
+811
+
+Taghaddos, H., Hermann, U., AbouRizk, S., & Mohamed, Y. (2012). Simulation-based multiagent approach for
+scheduling modular construction. Journal of Computing in Civil Engineering, 28(2), 263-274.
+Yi, W., Chan, A. P., Wang, X., & Wang, J. (2016). Development of an early-warning system for site work in hot and
+humid environments: A case study. Automation in Construction, 62, 101-113.
+Wan, J., Chen, B., Imran, M., Tao, F., Li, D., Liu, C., & Ahmad, S. (2018). Toward Dynamic Resources Management
+for IoT-Based Manufacturing. IEEE Communications Magazine, 56(2), 52-59.
+
+812
+
+Wang, J., Shou, W., Wang, X., & Wu, P. (2016a). Developing and evaluating a framework of total constraint
+
+813
+
+management for improving workflow in liquefied natural gas construction. Construction Management and
+
+814
+
+Economics, 34(12), 859-874.
+
+815
+
+Wang, J., Sun, Y., Zhang, W., Thomas, I., Duan, S., & Shi, Y. (2016b). Large-Scale Online Multitask Learning and
+
+816
+
+Decision Making for Flexible Manufacturing. IEEE Transactions on Industrial Informatics, 12(6), 2139-
+
+817
+
+2147.
+
+818
+819
+
+Wang, S., Wan, J., Zhang, D., Li, D., & Zhang, C. (2016c). Towards smart factory for industry 4.0: a self-organized
+multi-agent system with big data-based feedback and coordination. Computer Networks, 101, 158-168.
+
+820
+821
+
+Wang, S., Zhang, C., Liu, C., Li, D., & Tang, H. (2017). Cloud-assisted interaction and negotiation of industrial robots
+for the smart factory. Computers & Electrical Engineering, 63, 66-78.
+
+822
+
+Wieland, M., Kaczmarczyk, P., & Nicklas, D. (2008, March). Context integration for smart workflows. In Pervasive
+
+823
+
+Computing and Communications, 2008. PerCom 2008. Sixth Annual IEEE International Conference on (pp.
+
+824
+
+239-242). IEEE.
+
+825
+826
+827
+828
+829
+830
+
+Wu P, Wang J, Wang X. A critical review of the use of 3-D printing in the construction industry. Automation in
+Construction. 2016;68:21-31.
+Wu P, Song Y, Shou W, Chi H, Chong HY, Sutrisna M. A comprehensive analysis of the credits obtained by LEED
+2009 certified green buildings. Renewable and Sustainable Energy Reviews. 2017;68:370-9.
+Zhang, C., & Hammad, A. (2011). Multiagent approach for real-time collision avoidance and path replanning for
+cranes. Journal of Computing in Civil Engineering, 26(6), 782-794.
+
+831
+
+Zhang, Y., Wang, W., Du, W., Qian, C., & Yang, H. (2018). Coloured Petri net-based active sensing system of real-
+
+832
+
+time and multi-source manufacturing information for the smart factory. The International Journal of
+
+833
+
+Advanced Manufacturing Technology, 94(9-12), 3427-3439.
+
+834
+
+Zhong, Ray Y., Yi Peng, Fan Xue, Ji Fang, Weiwu Zou, Hao Luo, S. Thomas Ng, Weisheng Lu, Geoffrey QP Shen,
+
+835
+
+and George Q. Huang. "Prefabricated construction enabled by the Internet-of-Things." Automation in
+
+836
+
+Construction 76 (2017): 59-70.
+
+

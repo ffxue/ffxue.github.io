@@ -1,0 +1,1451 @@
+Two-layer Adaptive Blockchain-based Supervision model for off-site modular housing production
+Xiao Li 1, Liupengfei Wu 2, Rui Zhao 3, Weisheng Lu 4, and Fan Xue 5*
+This is the peer-reviewed post-print version of the paper:
+Li, X., Wu, L., Zhao, R., Lu, W., & Xue, F. (2021). Two-layer adaptive blockchainbased supervision model for off-site modular housing production. Computers in
+Industry, 128, 103437, in press. Doi: 10.1016/j.compind.2021.103437
+The final version of this paper is available at https://doi.org/10.1016/j.compind.2021.103437.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+Abstract
+
+5
+
+10
+
+15
+
+By manufacturing housing products off-site and assembling on-site, modular construction can
+significantly improve the housing supply efficiency, particularly for high-density cities.
+However, off-site modular housing production (OMHP) supervision is currently problematic.
+The production parties are reluctant to provide detailed private data; Even worse, the
+submitted operation records can be easily fabricated, tampered with, or hard to trace the
+responsibility. This study develops an innovative Two-layer Adaptive Blockchain-based
+Supervision (TABS) model for OMHP. The ﬁrst layer includes the adaptive private
+sidechains of participants. The second layer is the main blockchain for communication and
+‘trading’ among all participants. Benefitted from the unique adaptive two-layer structure,
+TABS can avoid tampering with operation records by the main blockchain and drive the
+participants to publish their operation records promptly without privacy leaks. A system
+prototype was also developed to evaluate the performance of the TABS model. The results
+indicated that the TABS model could enhance privacy and reduce storage costs at an
+acceptable latency level. This study's findings can pave the avenue for a tamper-proof and
+privacy-preserving supervision mechanism in the architecture, engineering, and construction
+industry.
+Keywords: Two-layer adaptive blockchain; Off-site construction; Modular construction;
+Production and quality inspection
+
+1
+
+Postdoctoral Fellow, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+
+SAR. Email: xl1991@hku.hk, Tel.: (852) 5537 0842,
+ORCiD: 0000-0001-9702-4153;
+Ph.D. student, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR.
+
+2
+
+Email: u3545425@connect.hku.hk, Tel.: (852) 6930 8019,
+ORCiD: 0000-0002-3768-9142
+Research Assistant, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+
+3
+
+ORCiD: 0000-0003-1993-3129
+SAR. Email: ruizhao@hku.hk, Tel.: (852) 6998 6845,
+Professor, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR. Email:
+
+4
+
+wilsonlu@hku.hk, Tel.: (852) 3917 7981,
+ORCiD: 0000-0003-4674-0357;
+Assistant Professor, Department of Real Estate and Construction, The University of Hong Kong, Hong Kong
+
+5
+
+SAR. Email: xuef@hku.hk, Tel.: (852) 3917 4174, Fax: (852) 2559 9457,
+*: Corresponding author
+
+ORCiD: 0000-0003-2217-3693
+
+1
+
+20
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+55
+
+1. Introduction
+The construction industry will continue to be one of the main driving forces leading the
+economic recovery and social development after the coronavirus lockdown (Stefani and
+Coulton, 2020; Tapsfield, 2020). With contact-restrict in the pandemic, modular construction
+involving less labor is an innovative approach that employs freestanding volumetric modules
+manufactured off-site and then transported to a construction site for assembly (Gao et al.,
+2020). As the most value-added process of modular construction, off-site modular housing
+production (OMHP) involves various materials, participants, and steps.
+However, there are several practical concerns with quality assurance in factories for OMHP.
+For example, there is usually a lack of real-time progress information and plan display in the
+production preparation stage (Li et al., 2019a; 2019b). When entering productions, the
+absence of systematic records of operations (e.g., structure works, electrical and mechanic
+works, testing, and commissions) aroused construction stakeholders’ attention (Xu et al.,
+2020). Manual recording (e.g., progress and inspection records) often leads to input errors,
+file loss, and even data manipulation during the production inspection (Zhong et al., 2020).
+All the issues mentioned above in the OMHP significantly hinder supervision. These issues
+can be further deteriorated in Hong Kong, mainly due to the coronavirus pandemic. As the
+high construction costs, aging problems, and labor shortages, the construction industry in
+Hong Kong outsources OMHP to the factories in nearby Guangdong Province, Mainland
+China. The cross-border supervision of OMHP has become a conundrum due to the travel
+restrictions during the coronavirus pandemic. Thus, there is an urgent need for technologies
+to build trust and promise OMHP information’s authenticity.
+Blockchain, emerging from the technology sphere recently, promises to provide the desired
+strategy to build trust in the industry. A blockchain refers to a cryptographically immutable
+distributed database within a decentralized consensus mechanism (Risius and Spohrer 2017).
+From the Institution of Civil Engineers, Penzes et al. (2018) reported blockchain technology
+promises, such as augmented transparency, boosted traceability, enhanced immutability,
+increased decentralization, improved privacy, and extended smartness. Many scholars are
+actively studying blockchain applications in construction: integration of Building Information
+Modeling (BIM) and blockchain (Xue and Lu, 2020), construction business processes (Yang
+et al., 2020), transaction automation with smart contracts (Hamledari and Fisher, 2020),
+payment in construction projects (Das et al., 2020), and immutable records of transactions,
+assets, and ownership (Zhong et al., 2020).
+A growing number of blockchain studies on the supply chain and information management
+for OMHP has also gained attention recently. These studies focused on supply chain
+traceability and quality management. For example, Wang et al. (2020) proposed a
+blockchain-based framework for improving supply chain traceability and information
+sharing. Similarly, Zhang et al. (2020) developed a quality traceability system for building
+components based on blockchain. Zhong et al. (2020) and Sheng et al. (2020) proposed
+2
+
+60
+
+65
+
+70
+
+blockchain prototypes for construction quality information management. Nevertheless, the
+construction companies naturally wish to keep their business data private and, therefore,
+reluctant to make data accessible to all participants. Moreover, migrating historical data of all
+processes stored in traditional systems to the chain will cause high costs and require larger
+storage space. Thus, previous studies have not developed a sound solution to supervise each
+operation in OMHP while protecting related enterprises’ data privacy.
+This paper aims to present a novel blockchain-based supervision model to enhance the
+supervision of OMHP. This research has three specific objectives:
+1) to review and comb the current business process of OMHP;
+2) to develop a two-layer adaptive blockchain-based supervision (TABS) model for offsite modular housing production; and
+3) to analyze the performance of the TABS model by developing a prototype system.
+The rest of this paper is organized as follows. Section 2 reviews and combs the current
+business process of OMHP. Section 3 is a literature review of blockchain technology. Section
+4 presents the details of TABS. Section 5 analyzes the performance of the TABS model.
+Section 6 offers our discussion, and Section 7 concludes this research.
+
+75
+
+2. Problem Statement
+The current practice of OMHP in factories generally has three sub-processes, i.e., production
+preparation, production, and inspection. The scope of the OMHP process has been identified
+as follows:
+
+80
+
+85
+
+90
+
+95
+
+1) the entry criteria are that the project manager signs the contract to confirm the
+production;
+2) the input is the master plan and the design drawings;
+3) the exit criteria are that the project manager confirms the delivery order; and
+4) the output is the quality assured modular housing products.
+As shown in Fig. 1(a), the contractor coordinates with subcontractors and manufacturers to
+propose the production plan after placing an order. The manufacturer’s design department
+develops detailed production shop drawings after the confirmation of design drawings. Once
+the production shop drawings are ready, they should be approved by the contractor and
+owner. Upon approval, the manufacturer can make an overall production plan. The material
+list will be made based on the production execution plan. The order of 2D panels, rebar, and
+other material will be sent to the supplier by the manufacturer’s procurement department.
+These materials will be inspected and only be used if they pass the inspections and tests. For
+example, in the rebar inspection, results with the color are marked on the rebar. Green means
+the rebar passes the inspection, yellow means unchecked, and red means disqualification.
+After inspection, materials will be transported to the factory. The production department will
+organize the production if required material ready.
+3
+
+Figure 1. The business process of off-site modular housing production (Source: Authors). (a)
+Production preparation; (b) MiC standard room and bathroom production and inspection
+100
+
+105
+
+Fig. 1(b) shows that the standard modular room is produced by following a sequential
+procedure from the structure, door/window, wall, print, electrical & mechanic service to test
+& commission. Numerous inspection and test methods are involved for quality control and
+quality assurance in each hold point and witness point. For example, the check of hot-dip
+galvanized thickness, cladding sub-frame alignment, dimension, and water test for chassis
+enclosure are conducted in 3D assembly welding of structure production. Several processes
+are adjusted for the toilet module, such as the wet trades (e.g., bathroom wall and floor tiles
+installation, waterproof layer, and flood test) are involved.
+Blockchain has several advantages that may address the issues in the current business process
+of OMPH for supervising the information of material, production, and inspection:
+
+110
+
+•
+
+Transparency: Current records may not be available to all stakeholders. Blockchain
+can require confirmation from all parties.
+4
+
+•
+
+Traceability: Current records may not be tracked in the whole OMHP process.
+Blockchain can provide the status of modular housing products with a timestamp.
+
+•
+
+Immutability: Current records can be modified without rigorous supervision.
+Blockchain can offer a tamper-proof solution.
+
+•
+
+Decentralization: Current records are managed in a centralized manner. Blockchain
+can prevent them entirely controlled by one party.
+
+•
+
+Privacy-preserve: Current records may involve privacy issues. Blockchain can
+encrypt them by using hashing algorithms.
+
+•
+
+Smartness: smart contracts facilitate the automatic execution process in transparency,
+traceability, immutability, decentralization, and privacy.
+
+115
+
+120
+
+3. Literature Review
+3.1 Blockchain Technology
+
+125
+
+130
+
+135
+
+Blockchain is supported by three core components: cryptography, consensus mechanisms,
+and distributed storage (Crosby et al., 2018). Hash algorithms and Merkle trees are typical in
+cryptography, ensuring that the data cannot be tampered with (Kosba et al., 2016). In the
+blockchain, transaction data can be bundled into blocks, as shown in Fig. 2, and each block is
+a package data structure containing headers and transaction data (Nakamoto, 2008; Gupta,
+2017). The header contains metadata, including index, previous block hash, current block
+hash, nonce, timestamp, and Merkle root. Blocks are connected in sequence, starting with the
+genesis block. Hashing sequentially interlinked blocks implies that the verified transaction
+data is adopted as input to a hash algorithm that converts the data into a fixed-length string.
+As each data in the block is hashed, then united and hashed again, this process creates the
+Merkle tree and the final root hash. A hash value of a block can be regarded as a unique
+digest of the current block data. The previous block hash in the current block is used to
+enable the blocks to build a chain. Thus, any small alteration to data, hash values in the entire
+chain need to be altered.
+
+5
+
+Figure 2. An example of a blockchain (Adapted from Nakamoto (2008))
+140
+
+145
+
+150
+
+155
+
+160
+
+165
+
+Consensus mechanisms are protocols for endorsing the order and correctness of data (Cachin
+and Vukolić, 2017). Only when a consensus is reached can transaction data be added to the
+blockchain as a new block. There are many consensus algorithms, among which the five most
+common are: Proof of Authority (PoA), Proof of Work (PoW), Proof of Stake (PoS),
+Delegated Proof of Stake (DPoS), and Practical Byzantine Fault Tolerance (PBFT) (Xiao et
+al., 2020).
+The distributed data storage of blockchain, principally constituted by ledgers, is realized
+through a decentralized network (Perera et al., 2020). The word “distributed” means that
+ledgers are scattered in many places in a shared manner to log transaction data. Nodes are
+network participants who hold copies of the ledger and/or execute smart contracts to query
+from or submit transactions to ledgers. Together, these components promise that the status of
+tangible assets or intangible events to be endorsed, stored, and shared with the smallest
+chance of tampering. Simply put, blockchain stores immutable, verifiable, and transparent
+information.
+Smart contracts are digital contracts that can self-execute when preset conditions are met
+(Luu et al., 2016). Smart contract scripts can indicate a blockchain’s maturity level at 2.0 or
+above (Angelis and da Silva, 2019). Once the smart contract is successfully installed in the
+blockchain network, no one can change the execution rules. Smart contracts can continuously
+monitor data changes on the blockchain or external data sources and automatically respond
+when conditions are met. Therefore, smart contracts can help disintermediation (e.g., banks),
+thereby reducing related costs and shifting normative trust (e.g., trust in people) to naturalistic
+trust (e.g., trust in coding). Fig. 3 shows the structure of smart contracts. A smart contract
+contains two key components: preset conditions and actions that need to be carried out when
+the preset conditions are met. Smart contracts can digitize and automate business processes,
+allowing the development of blockchain 3.0 decentralized applications (DApps) (Christidis
+and Devetsikiotis, 2016; Angelis and da Silva, 2019).
+
+6
+
+Figure 3. Schematic of the smart contract (Adapted from Bragagnolo et al. (2014))
+3.2 Blockchains in the Construction Industry
+170
+
+175
+
+180
+
+185
+
+190
+
+Although many industries have developed different blockchain prototypes and applications,
+the construction industry is only in the initial stage of blockchain implementation. The
+loosely-coupled and project-based structures in the construction industry (Dubois and Gadde,
+2002) require numerous stakeholders to communicate over time with various incentives.
+These structures' nature brings coordination difficulties such as lack of trust, poor information
+exchange, and fragmented system records (Hunhevicz and Hall, 2020). Theoretically, the
+promises of secured transactions that blockchain can give are in line with these coordination
+difficulties. Even so, there are few implementations of blockchain in construction. Instead,
+most literature to date provides a sketch of the potential use cases for blockchain in
+construction. For instance, early literature views the prospect of blockchain as a
+supplementary technology to BIM and Internet of Thing (IoT) (Mathews et al., 2017)
+because BIM and IoT are again limited by problems of trust and liability encountered
+throughout the industry. Therefore, Ye et al. (2018) suggested using blockchain to store data
+generated by IoT in a transparent and safe environment and BIM as a tool for digital
+processing construction project data. DeLa Peña and Papadonikolaki (2019) proposed that
+using the blockchain as an immutable ledger, the combination of blockchain and IoT can
+build trust among construction companies.
+Starting in 2017, many researchers and consulting firms have identified potential use case
+scenarios to employ blockchain in construction. Hunhevicz and Hall (2020) noted that the
+construction industry’s potential blockchain use cases mainly include seven categories.
+Blockchain can help notarize and synchronize documents in the construction administration
+7
+
+195
+
+200
+
+process (Wang et al., 2017). Combined with smart contracts, blockchain can realize
+transaction automation for payment (Hamledari and Fisher, 2020), business process and
+information integration (Yang et al., 2020), and compliance checking (Nawari and
+Ravindran, 2019). Also, blockchain can be used as immutable track-records, for example, to
+track BIM changes (Xue and Lu, 2020), quality of prefabricated construction (Li et al., 2021),
+semantic city objects (Xue et al., 2020; 2021), track supply chain, project progress, and
+worked hours (Wang et al., 2020). Similarly, blockchain can record assets and ownership
+(Raslan et al., 2020). Das et al. (2020) reported the use of blockchain cryptocurrency for
+payment and incentive schemes. In summary, blockchain does bring exciting opportunities to
+the construction industry. However, the use cases of using blockchain to supervise OMHP are
+largely unexplored.
+3.3 Blockchains for Production Supervision
+
+205
+
+210
+
+215
+
+220
+
+225
+
+In literature, a few studies using blockchain technology have been observed for production
+supervision. Peng et al. (2020) showed that vaccine production records could be protected
+from tampering through an effective double-level blockchain method while maintaining
+enterprises’ privacy. Yong et al. (2020) demonstrated a “vaccine blockchain”, organizing
+production inspection records into a hash table structure with timestamps to achieve
+traceability, security, and trust. In the food industry, Tao et al. (2019) proposed a food safety
+supervision system based on a hierarchical multi-domain blockchain network with a
+secondary-check mechanism. Liang et al. (2020) designed a blockchain system architecture
+to supervise the production safety of special equipment (e.g., pressure vessels and elevators)
+and record the corresponding producers’ responsibilities. Blockchain-based supervision also
+covers the production quality management of textiles (ElMessiry and ElMessiry, 2018),
+agricultural products (Wang, 2019), and energy (Ferrag and Maglaras, 2019).
+Many solutions have been provided to strengthen the supervision of the OMHP. Relying on
+quality assurance schemes and regulations, Hong Kong’s Buildings Department requires
+authorized personnel and registered structural engineers to assign their respective quality
+control teams to supervise OMHP in assembly factories (BD, 2017). Technology adoption is
+also an essential strategic research field for OMHP supervision. BIM, as a digital
+representation of a facility’s physical and functional characteristics and a shared knowledge
+resource for information (Li et al., 2017), is commonly utilized for production planning and
+management (Lu et al., 2020; Li et al., 2020). Progress and quality assurance of OMHP are
+also focused on the IoT, a networked interconnection of everyday objects, often equipped
+with ubiquitous intelligence via embedded systems (Li et al., 2018). Through integration with
+the BIM and enterprise resource planning system, IoT can enhance visualization and manage
+production processes, thereby enabling communication and collaboration between all parties
+(Razkenari et al., 2020). Nevertheless, merely relying on BIM, IoT, or traditional information
+management systems is not enough to truly achieve trust. These technologies are susceptible
+to a single point of failure and cybersecurity issues, which blur the responsibility level
+8
+
+230
+
+235
+
+240
+
+245
+
+250
+
+between different participants (Zhai et al., 2019). For example, the shared cloud BIM model
+and its data can be tampered with without tracing the responsibility of changes, and IoT
+sensors (e.g., RFID, GPS) may suddenly run out of power or report noises to reduce the
+quality of data.
+In construction, especially OMHP, only minimal studies have focused on the uses of
+blockchains to supervise production. To improve the transparency of information between
+steel production companies, logistics, and consumers, and eliminate the security issues of
+existing IoT platforms, Cao et al. (2019) claimed a quality traceability system based on
+blockchain. Zhang et al. (2020) proposed a blockchain-based quality traceability system to
+ensure the components’ quality in production, transportation, and construction. It is found
+that more research has focused on the use of blockchain to improve the traceability of the
+construction supply chain (e.g., Wang et al., 2020; Zhang et al., 2020) and the overall
+management of information (e.g., Sheng et al., 2020; Zhong et al., 2020).
+Nevertheless, once OMHP has flaws in the production process, it is almost impossible to
+prevent inferior housing products from reaching consumers. Besides, due to high technical,
+learning, and training costs, it is not feasible to completely replace the existing information
+system with a blockchain. Privacy is another major issue when implementing blockchain in
+production, as producers and related enterprises wish to keep design data and plan internally.
+In short, the existing blockchain studies have not given in-depth investigations on OMHP
+supervision, nor have they provided sufficient consideration for the privacy protection of
+production data and effective data storage. With the harness of these capacities in blockchain,
+the supervision process of OMPH can be enhanced. Thus, this study proposes a model to
+explain how to realize the off-site production supervision for quality assurance, progress, and
+cost efficiency.
+4. The Two-layer Adaptive Blockchain-based Supervision Model for OMHP
+
+255
+
+260
+
+265
+
+This section presents a novel Two-layer Adaptive Blockchain-based Supervision (TABS)
+model for resolving the supervision and privacy problems encountered in OMHP. As shown
+in Fig. 4, four main participants, i.e., supplier, manufacturer, contractor, and owner, are
+involved in TABS for the OMHP business process. Suppliers first deliver the 2D panel, rebar,
+and other material to the OMHP factory by the manufacturer’s orders. Next, the manufacturer
+will schedule the production and execute it according to the due time. The contractor will also
+organize the inspection and test activities for each production process in every hold and
+witness point. The project owner can supervise and monitor the whole process via the timely
+information in the OMHP processes, including material information, production information,
+inspection information, and supervision information. Material information includes data for
+material ID, production, and inspection results. Production information records the detailed
+production processes of modular products. Inspection information contains detailed
+inspection and test results of each hold and witness point. Supervision information comprises
+primary information of material, production, and inspection for each modular product.
+9
+
+270
+
+275
+
+280
+
+Figure 4. Two-layer adaptive blockchain-based supervision (TABS) model for OMHP
+(Source: Authors)
+In the actual supervision process, the responsibilities of quality defects, production delays,
+and cost overrun are not easily determined. TABS model allows each participant to access the
+status and records of material supply, production, and inspection with preserving the data
+privacy of material supplier, manufacturer, and contractor. Four participants are involved in
+the main blockchain. Each participant receives a copy of the main blockchain, facilitating
+them to supervise each transaction. In the main blockchain, each transaction indicates an
+operation, such as delivery 2D panel, structure production, concrete test, window/door
+production, and dimension check. An operation can be verified when all participants agree on
+its authenticity by reaching a consensus. The operations are stored in the supplier,
+10
+
+manufacturer, and contractor’s sidechains and retrieved via the main blockchain's smart
+contracts. The self-execution functions are embedded in smart contracts that can be triggered
+by the owner. The details of the TABS model are illustrated in the following sections.
+4.1 Two-Layer Adaptive Blockchain Structure
+285
+
+290
+
+295
+
+300
+
+305
+
+310
+
+315
+
+The key to OMHP supervision is monitoring the authentic OMHP operations in the entire
+process, and the blockchain structure can directly affect supervision performance. However,
+in the traditional blockchain structure, there are two limitations to OMHP supervision.
+Firstly, the OMHP participants wish to keep their business data private and may be reluctant
+to make data accessible to all participants. In addition, there is a conflict between full backup
+and storage capacity in traditional blockchain for massive operation oriented OMHP. Thus,
+the TABS model adopts a two-layer adaptive blockchain structure, including mainchain and
+sidechain (See Fig. 4). OMHP process has numerous operations, which may vary in different
+modular products, such as standard rooms and toilets. Each operation can be treated as a
+transaction. Each transaction holds the detailed data of the operation. Thus, a particular
+modular product's specific operation can be matched to a specific transaction. The design of
+mapping operation with transaction ensures the two-layer adaptive blockchain structure can
+handle various modular products produced by different operations.
+Private operation transactions can be stored in each participant’s sidechain, and other
+participants in the main blockchain can not access it. The private transaction structure can be
+shown in Fig. 5. Each transaction includes a timestamp (transaction time), the signature of the
+person in charge, the hash, the previous hash (previous operation), and the data. The data are
+formed as a hash table, a dictionary-like data structure with unique keys and values. These
+hash tables’ keys present the operation categories, including “material,” “production,” and
+“inspection.” These hash tables’ values show in the form of an object containing the content
+of data, such as inspection operation, inspection time. With the data frame structure, the
+operation transactions can be format-free when uploaded into the sidechain. The sidechain
+layer consists of the material supply, module production, and inspection. These three
+sidechains are maintained by the supplier, manufacturer, and contractor, which can not only
+provide authentic operations and but also ensure their data privacy by using hashing data.
+
+Figure 5. Data frame structure in the sidechain (Source: Authors)
+Each block in the main blockchain comprises two parts: header and transactions. Block
+header mainly consists of the index (block number in the chain), timestamp, the signature of
+the supplier, manufacturer, contractor, owner, the hash value of the current the previous
+block. There are three types of transactions retrieved from the sidechains of the supplier,
+manufacturer, and contractor, as shown in Fig. 6. The project owner can access OMHP
+operation records from the main blockchain, and smart contracts are deployed into the main
+11
+
+320
+
+325
+
+blockchain, subscribe to the operation records from the sidechain, which can publish the
+operation records at a specific time period for modular product supervision. Compared with
+the traditional blockchain structure, the two-layer adaptive blockchain structure has
+signiﬁcant advantages in cross-participant data privacy and flatten supervision.
+The adaptability of this blockchain structure can be reflected in two perspectives. First, the
+sidechains layer can be adaptive to full life cycle stakeholders of modular housing products,
+such as designers, logistics companies, and property management companies, to record
+information on design, transportation, and facility management. Second, the main blockchain
+layer can be extended to government and industry regulators and even can go public.
+
+Figure 6. Block data structure in the main blockchain (Source: Authors)
+4.2 Supervision Processes in Two-Layer Adaptive Blockchain Structure
+330
+
+Once disputes, e.g., quality defects, delays, or cost overrun, occur, the TABS model can help
+trace whether the qualified material is manufactured in rigorous production processes with
+timely progress and consistent inspection. Similar functions can help conduct random checks
+of material supply, production, and inspection. The TABS model employs a consortium
+12
+
+335
+
+blockchain architecture for the main blockchain to enable OMHP supervision in a publishsubscribe manner. The supervision process includes registration, publish-subscribe, ordering,
+and consensus. Fig. 7 demonstrates the detailed supervision processes in the TABS.
+
+Figure 7. Sequence diagram of interactions in TABS (Source: Authors)
+4.2.1 Registration
+340
+
+345
+
+The participants’ identities should be verified through their registration request to the owner.
+The owner holds the certificate authority and then issue certiﬁcates for each participant to
+join the main blockchain. The registration process offers both authority and privacy to
+participants, and a participant without registration cannot participate in the sequent processes
+of publish-subscribe and consensus. After registration, the participants can get an enrollment
+certiﬁcate (e.g., ID) and a transaction certiﬁcate for signatures.
+4.2.2 Publish-subscribe
+
+350
+
+The publish-subscribe mechanism is adopted to generate the transaction flow proactively. For
+example, the owner can subscribe to the supplier’s material record when the supplier starts to
+deliver the material to the manufacturer. And the supplier records and hashes each operation
+in its sidechain. The supplier then publishes the transaction hash to the owner, protecting the
+supplier’s data privacy. Following the same mechanism, the owner can establish this publishsubscribe interaction patterns with the manufacturer and contractor in the off-site production
+stage.
+
+13
+
+4.2.3 Ordering Service
+355
+
+360
+
+The owner serves as the ordering node (leader), receives transactions from different
+participants, and conducts the ordering service to form an ordered blockchain. All
+transactions from participants during a specific period are ordered. The ordering service can
+order transactions in sequence and packages them into new blocks. However, the ordering
+service cannot access the data in these transactions and has no permission to update the
+unverified block to each participant. It can only send the ordered blocks consecutively to the
+participants for verification. Once participants received the blocks ordered by the owner, they
+can evaluate whether these blocks are in the right sequence by checking the current block’s
+hash value and the previous block’s hash value.
+4.2.4 Consensus Mechanism
+
+365
+
+370
+
+375
+
+380
+
+All participants in the main blockchain can verify the authenticity of transactions in their
+received blocks. Each participant can determine whether it is valid or not by signing in the
+block and holding the copy of the data on-chain. All transactions can be saved in the blocks,
+even though they are not authentic. However, only verified transactions could be broadcast
+and updated in each participant’s copy. For example, suppose the concrete test in inspection
+operation is verified. In that case, the status of this related modular product (e.g., modular
+standard room MSR0001) in the world state can be updated to “concrete test qualified,” and
+the inspection time is also saved. If a participant does not receive an updated blockchain or
+stores an inaccurate copy of the blocks, it can link to the owner and then download the right
+one. To facilitate the verification results from each participant reaching a consensus, the
+PBFT is used as the consensus protocol (Castro et al., 1999). Compared with the Crash Fault
+Tolerant (CFT), which is typically used in the consortium blockchain, PBFT can not only
+tolerate failures of ordering nodes but also withstand malicious participants (Sousa et al.,
+2018). In TABS, it can tolerate one malicious participant (f) as there are four participants (n =
+4) in total, given f = (n − 1) / 3. Typically, the owner is suggested to make several copies of
+the blockchain in the owner’s sidechain for recovering from failures of the owner’s node,
+such as the loss of data. Under this situation, the main blockchain owner can interact with its
+sidechain to request a consistent copy of the blockchain.
+4.3 Smart Contracts for OMHP Supervision
+
+385
+
+390
+
+Smart contracts in TABS allow encrypted data shared across the different participants, both
+on-chain and cross-chain. The business logic of publish-subscribe in TABS is a cross-chain
+interaction shown in Algorithm A.1 in Appendix. For example, the main blockchain owner
+can generate a hash as a start signal to the manufacturer for subscribing to each operation data
+of the production process. It then triggers the cross-chain interactions between the main
+blockchain and sidechain of the manufacturer to store operation data, generates transactions
+in the sidechain, and finally publish the transactions from the sidechain to the owner via the
+main blockchain.
+14
+
+395
+
+400
+
+405
+
+The smart contracts for ordering and verification are conducted on the main blockchain (See
+Algorithm A.2 in Appendix). For example, the owner gets and orders transactions by
+recognizing the previous hash in each transaction. The owner creates the blocks and checks
+the production operation data provided by the manufacturer. They also need to hash the
+submitted data and check whether it is identical to the block’s transaction hash. Then the
+owner broadcast the blocks to the participants for their further verification and signature. If
+all signatures are successful, the owner can update the blocks to all participants’ copies of
+blockchain data.
+5. Performance Analysis of the TABS
+This section presents the performance analysis of the TABS model through a case study.
+HKU Wong Chuk Hang Students Residence is a representative modular construction project
+in Hong Kong, including two 17-story student residence tower buildings on top of a 3-story
+podium structure. A total of 1,224 modular products (e.g., room and toilet) will be
+transported from Foshan, Mainland China, to Hong Kong island for assembly. A prototype
+system is developed, and the related evaluation is conducted based on this case study.
+5.1 Prototype and Experimental Settings
+
+410
+
+415
+
+420
+
+425
+
+The TABS model was implemented on Hyperledger Fabric (version 2.2), and Javascript was
+used for writing the smart contracts in the chaincode. The development environment was in
+Ubuntu 18.04, and compared with virtual machines, docker with isolated containers use
+fewer resources can facilitate system prototype development. In the prototype, four
+participants are involved: (1) the owner, who serves as the orderer in the ordering service; (2)
+the contractor; (3) the manufacturer; (4) the supplier. Fig. 8 (a) presents the configuration
+information for these participants, and cryptogen in Hyperledger Fabric is used to facilitate
+the registration process by issuing the certificates, such as admincert (for each participant’s
+administrator), cacert (for the owner), and tlscacert (for establishing connections), which can
+be seen in Fig. 8(b).
+Each participant in Fig. 8(a) has an administrator registered in both the main blockchain and
+sidechain. The participants can receive certiﬁcates and public-private key from the Fabric CA
+module of the main blockchain. The administrator can also send requests to the Fabric CA of
+the sidechain for offering certificates and the public-private key to operators in the affiliated
+organization, which is responsible for adding operation records in the sidechain. The main
+blockchain’s genesis block is conﬁgured, including information of ordering service,
+consortium, and each participant (See Fig. 8(c)). An anchor peer is devised in each
+participant for cross-participant communication in the main blockchain and cross-chain
+interactions between the main blockchain and sidechain (See Fig. 8(d)). Also, the
+Hyperledger Explorer can provide the visual details of the main blockchain. As shown in Fig.
+9, graphical interfaces of Hyperledger Explorer list the detailed network composition,
+participants information, block, and certificate details.
+15
+
+430
+
+Figure 8. System conﬁguration for: (a) participant; (b) certiﬁcate; (c) genesis block; and (d)
+anchor peer (Source: Authors)
+
+16
+
+435
+
+440
+
+445
+
+450
+
+455
+
+Figure 9. Main blockchain details. (a) network details; (b) participant details; (c) block
+details; and (d) certificate details (owner) (Source: Authors)
+We developed the backend and frontend prototypes, including frameworks, tools, and
+components, as shown in Fig. 10, for each participant using SpringBoot (ver. 2.4.0) and
+AdminLTE (ver. 3). SpringBoot is a Java-based backend framework for developing web
+server and MySQL. AdminLTE is a bootstrap-based frontend framework that provides
+responsive, reusable, and commonly used components for fast development. Fig. 11 (a) and
+(b) show the prototype’s interfaces for operation data publishing and subscribing. For
+example, when reaching the concrete cube test's inspection operation after the production
+operation of rebar fixing and pouring concrete, the test report with the inspection details and
+responsibilities must be uploaded to the contractor’s sidechain as shown in Fig. 11 (a). The
+test report can be transformed into the JavaScript Object Notation (JSON) ﬁles by the JSON
+form plug-in and saved in the sidechain, and then it will be hashed and published to the
+owner in the main blockchain. After publishing the transaction and obtaining the consensus
+from each participant in the main blockchain, the operation of the concrete cube test is
+updated into the latest block.
+The subscribing interface shows that each sidechain’s historical operations can be traced, as
+shown in Fig. 11 (b). Moreover, the corresponding block details can also be seen on the main
+blockchain by clicking one of the transactions. These details include an index, timestamp, the
+participants’ signatures, the hash value of the current and the previous block. After the
+operator uploads the operation data to the sidechain, the sidechain’s backend will interact
+with the chaincode in the main blockchain. The chaincode veriﬁes the signature and checks
+the hash before it can be published to the main blockchain.
+17
+
+Figure 10. Frameworks, tools, and components involved in this prototype development
+
+460
+
+Figure 11. Prototype interfaces for the TABS. (a) Contractor’s interface for publishing
+inspections; (b) Owner’s interface for subscribing sidechain’s historical operations
+
+18
+
+5.2 Evaluation and Analysis
+
+465
+
+470
+
+475
+
+480
+
+This section introduces the performance metrics of storage cost, latency, and privacy to
+evaluate the TABS prototype in the case study. There are two assumptions: (1) 100 modular
+products are under production synchronously per day; (2) an average of 5 operations are
+conducted per modular product per day. The block time can be set as Tblock = 0.5 h/block, that
+is, a new block is generated per half hour for recording operation information. Thus, each
+block includes an average of 10 operations through rough calculation.
+5.2.1 Storage Cost
+According to the OMHP workflow, the number of operations in material supply, production,
+and inspection is 85 (for a standard room) and 102 (for a toilet). In previous studies, all the
+detailed information is stored in the blockchain. For example, an quality information form
+can be around 14.82 KB (Sheng et al., 2020) and may lead to each block size being 148.86
+KB. In our study, one transaction’s size is around 1 KB, and all the details are saved in the
+sidechain. The total number of modular products in this project is 1,224 and may only
+generate 121.92 MB (102 × 1 × 1,224) at the largest case in the main blockchain for the
+whole project. It is an acceptable size for current blockchain storage capacity. Storage loads
+can be released from the two-layer adaptive blockchain structure, particularly when some
+valuable large ﬁles, such as video and model data, to track.
+5.2.2 Latency
+
+485
+
+490
+
+The latency performance in this study was evaluated by measuring the time of publishing
+transactions. The publishing time refers to the time it takes for a participant to publish a
+transaction from a sidechain to the main blockchain, and the owner receives the transaction
+conﬁrmation from the main blockchain network. We tested the time of publishing each
+transaction from the contractor to the owner. The result of the first 14 transactions is
+presented in Fig. 12. It can be seen from the result that the latency of the system is at a
+millisecond level. In the real OMHP inspection process, each transaction may be published a
+day apart. Some operations for material supply and production are also lengthy processes that
+can last for a few days. Thus, the latency of the prototype can be negligible.
+
+19
+
+70
+
+62.6
+
+Latency (ms)
+
+60
+45.2
+
+50
+
+55.8
+
+50.5 51.2
+44.2
+
+46.9 45.8
+
+4
+
+5
+
+56.6
+
+54.2
+
+47.4 47.0
+
+53.8
+46.3
+
+40
+30
+20
+10
+0
+
+0
+
+1
+
+2
+
+3
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+Transaction Number
+Figure 12. The latency of the prototype system
+5.2.3 Privacy
+
+495
+
+500
+
+In the TABS design, detailed operation records are stored in the sidechains of participants,
+and hash values of these records, together with other operation data, can be published in the
+main blockchain. The published transaction data and operation data for a modular standard
+room (MSR) can be found in Table 1 (See Appendix). The detail of the operation record is
+protected by hash encryption (See Fig. 9 (b)). It ensures the private operation data not
+revealed to other participants.
+6. Discussion
+Compared with the previous studies, three aspects of novelty to the proposed TABS model
+are summarized in the following.
+•
+
+505
+
+510
+
+•
+
+515
+
+First, the supervision processes in aspects of transparency, traceability, and
+immutability have seldom been investigated in the stage of modular housing
+production, where massive off-site operation records could be generated.
+Furthermore, the failure of supervision may lead to adverse effects in quality,
+progress, and cost for the subsequent logistics and on-site assembly stage. Thus, this
+study defines the supervision scope on three types of spatial-temporal operation
+records, including material, production, and inspection, based on the OMHP business
+process analysis with Lean thinking.
+Secondly, previous studies using blockchain in the construction industry make all
+participants’ data stored and traded on one blockchain (Wang et al., 2020; Sheng et
+al., 2020; Zhang et al., 2020). Compared with the existing blockchain systems in
+construction, this study proposes a two-layer adaptive blockchain supervision
+(TABS) model that includes two advantages: (1) Storage cost reduction. TABS
+allows the detailed operation records stored in the participants’ sidechain, which can
+help reduce the storage cost in the main blockchain, particularly when some valuable
+20
+
+large ﬁles, such as video and model data, are captured in the operation processes; (2)
+Privacy-preserving. TABS only trades the hash value of detailed operation records
+and other operation data (e.g., timestamp, signature, operation name) among the
+main blockchain. Thus, private operation data can not be revealed to other
+participants.
+
+520
+
+•
+525
+
+530
+
+535
+
+540
+
+Thirdly, the TABS model is an adaptive structure that can extend and add sidechains
+from other participants, such as designers, logistics companies, property management
+companies. Moreover, the publish-subscribe pattern designed in smart contracts can
+be more proactive than the request-response mode, facilitating the comparison of the
+transaction hash publish time and operation completion time. It ensures the
+participant to be diligent in publishing transactions when punishment mechanisms are
+involved for any delay.
+
+Despite these innovations, our study still has several limitations.
+• First, the supervision of each OMHP operation can increase the workloads in each
+participant and may reduce their interests. Thus, an effective incentive mechanism
+devised in the TABS may drive them to offer accurate operation data.
+• Secondly, the operation data of current OMHP processes are input by humans, and
+there is no guarantee that malicious data are stored. Thus, reliable blockchain oracles
+can be the solution, such as the decentralized IoT sensors for operation data
+uploading.
+• Thirdly, the TABS model is a project-based blockchain network, which may need to
+be adaptive when the related project is completed, and modular products’ warranty
+expired. For example, the cropping mechanism can be an alternative for reducing data
+redundancy and keeping reliable storage.
+7. Conclusion
+
+550
+
+Blockchain is a disruptive technology that can save the current collaboration from the trust
+crisis in the construction industry, particularly for fragmented off-site modular housing
+production (OMHP). Disputes, such as quality defects, delays, cost overrun, always occur
+without authentic records for checking the responsibility. The current blockchain prototypes
+in the construction industry have been proved to record tamper-proof operation data.
+However, the construction companies wish to keep their business data private and may be
+reluctant to make data accessible to other participants, needless to say, their competitors and
+the public.
+
+555
+
+This study presents a two-layer adaptive blockchain-based supervision (TABS) model for
+OMHP. Firstly, a two-layer adaptive blockchain structure is designed. The ﬁrst layer is
+sidechains of OMHP participants, including operation records and matched hash. The second
+layer is the main blockchain for communication and trading among OMHP participants,
+including operation records hash, and block information. Thus, the TABS model can avoid
+
+545
+
+21
+
+560
+
+565
+
+570
+
+575
+
+tampering with operation records by the main blockchain and drive the participants to
+promptly publish their operation records without fear of privacy leaks. Secondly, the TABS
+model realizes OMHP supervision processes, including registration, publish-subscribe,
+ordering service, and consensus mechanism. To implement the supervision process, smart
+contracts are created to achieve on-chain and cross-chain interactions. Thirdly, a prototype
+system is developed to realize the TABS model, and the related performance evaluation is
+conducted based on a case study. The experiment-based performance evaluation indicates
+that the TABS model can enhance privacy, reduce storage cost, and have an acceptable
+latency for modular housing production supervision.
+Future research work can enrich and improve the presented TABS model. For example, the
+incentive and cropping mechanisms designed for the TABS model can improve the data
+authenticity in the sidechain and reduce the storage redundancy in the main blockchain. Also,
+integrating BIM and IoT for blockchain can solving the single point of failure in operation
+data collection. To make TABS more robust and easy to use, TABS will be integrated into a
+new BaaS (BlockchainBIM as a Service) architecture to work with stakeholders’ existing
+ERP systems; the BaaS architecture will be gauged in more scenarios of modular
+construction, long-range cross-border logistics, infrastructure projects, and underground work
+in the real settings. It will also be interesting to expand the TABS model to other
+manufacturing industries beyond the domain of construction.
+Acknowledgments
+The work presented in this paper was financially supported by the Hong Kong Innovation and
+Technology Commission (ITC) with the Innovation and Technology Fund (ITF) (No.
+ITP/029/20LP). This funding source had no role in the design and conduction of this study.
+References
+
+580
+
+Angelis, J., & da Silva, E. R. (2019). Blockchain adoption: A value driver perspective.
+Business Horizons, 62(3), 307-314. https://doi.org/10.1016/j.bushor.2018.12.001
+BD. (2017). Practice Note for Authorized Persons, Registered Structural Engineers, and
+Registered Geotechnical Engineers. Hong Kong SAR: Buildings Department, The
+Government of the Hong Kong Special Administrative Region. Retrieved October 15,
+
+585
+
+2020, from https://www.bd.gov.hk/en/resources/codes-and-references/practice-notesand-circular-letters/index_pnap.html
+Bragagnolo, S., Rocha, H., Denker, M., & Ducasse, S. (2018, March). SmartInspect: solidity
+smart contract inspector. In 2018 International Workshop on Blockchain Oriented
+Software Engineering (IWBOSE) (pp. 9-18). IEEE.
+
+590
+
+https://doi.org/10.1109/IWBOSE.2018.8327566
+22
+
+Cachin, C., & Vukolić, M. (2017, October). Blockchain Consensus Protocols in the Wild.
+In 31 International Symposium on Distributed Computing.
+https://arxiv.org/abs/1707.01873
+Cao, Y., Jia, F., & Manogaran, G. (2019). Efficient traceability systems of steel products
+595
+
+using blockchain-based industrial Internet of Things. IEEE Transactions on Industrial
+Informatics. 16(9), 6004-6012. https://doi.org/10.1109/TII.2019.2942211
+Christidis, K., & Devetsikiotis, M. (2016). Blockchains and smart contracts for the internet of
+things. IEEE Access, 4, 2292-2303. https://doi.org/10.1109/ACCESS.2016.2566339
+Crosby, M., Pattanayak, P., Verma, S., & Kalyanaraman, V. (2016). Blockchain technology:
+
+600
+
+Beyond bitcoin. Applied Innovation, 2(6-10), 71. https://j2-capital.com/wp-content/uploa
+ds/2017/11/AIR-2016-Blockchain.pdf
+Castro, M., & Liskov, B. (1999). Practical Byzantine fault tolerance. In OSDI (Vol. 99, No. 1
+999, pp. 173-186). https://dl.acm.org/doi/10.5555/296806.296824
+Das, M., Luo, H., & Cheng, J. C. (2020). Securing interim payments in construction projects
+
+605
+
+through a blockchain-based framework. Automation in Construction, 118, 103284.
+https://doi.org/10.1016/j.autcon.2020.103284
+De La Peña, J., & Papadonikolaki, E. (2019, July). From relational to technological trust:
+How do the IoT and Blockchain technology fit in?. In Proceedings of 2019 European
+Conference on Computing in Construction (EC3). European Council on Computing in
+
+610
+
+Construction (EC3). https://discovery.ucl.ac.uk/id/eprint/10076428/
+Dubois, A., & Gadde, L. E. (2002). The construction industry as a loosely coupled system:
+implications for productivity and innovation. Construction Management & Economics,
+20(7), 621-631. https://doi.org/10.1080/01446190210163543
+ElMessiry, M., & ElMessiry, A. (2018, June). Blockchain framework for the textile supply
+
+615
+
+chain management. In International Conference on Blockchain (pp. 213-227). Springer,
+Cham. https://doi.org/10.1007/978-3-319-94478-4_15
+Ferrag, M. A., & Maglaras, L. (2019). DeepCoin: A novel deep learning and blockchainbased energy exchange framework for smart grids. IEEE Transactions on Engineering
+Management. https://doi.org/10.1109/TEM.2019.2922936
+
+620
+
+Gao, S., Jin, R., & Lu, W. (2020). Design for manufacture and assembly in construction: a re
+view. Building Research & Information, 48(5), 538-550. https://doi.org/10.1080/096132
+18.2019.1660608
+
+23
+
+Gupta, S. S. (2017). Blockchain. John Wiley & Sons, Inc. https://www.isical.ac.in/~debrup/sli
+des/Bitcoin.pdf
+625
+
+Hamledari, H., & Fischer, M. (2020). Role of blockchain-enabled smart contracts in
+automating construction progress payments. Journal of Legal Affairs and Dispute
+Resolution in Engineering and Construction, 13(1), 04520038.
+https://doi.org/10.1061/(ASCE)LA.1943-4170.0000442
+Hunhevicz, J. J., & Hall, D. M. (2020). Do you need a blockchain in construction? Use case
+
+630
+
+categories and decision framework for DLT design options. Advanced Engineering
+Informatics, 45, 101094. https://doi.org/10.1016/j.aei.2020.101094
+Kosba, A., Miller, A., Shi, E., Wen, Z., & Papamanthou, C. (2016, May). Hawk: The
+blockchain model of cryptography and privacy-preserving smart contracts. In 2016 IEEE
+symposium on security and privacy (SP) (pp. 839-858). IEEE.
+
+635
+
+https://doi.org/10.1109/SP.2016.55
+Li, C. Z., Xue, F., Li, X., Hong, J., & Shen, G. Q. (2018). An Internet of Things-enabled BIM
+platform for on-site assembly services in prefabricated construction. Automation in
+construction, 89, 146-161. https://doi.org/10.1016/j.autcon.2018.01.001
+
+640
+
+Li, C. Z., Chen, Z., Xue, F., Kong, X. T., Xiao, B., Lai, X., & Zhao, Y. (2021). A blockchainand IoT-based smart product-service system for the sustainability of prefabricated
+housing construction. Journal of Cleaner Production, 286, 125391.
+https://doi.org/10.1016/j.jclepro.2020.125391
+Li, X., Wu, P., Shen, G. Q., Wang, X., & Teng, Y. (2017). Mapping the knowledge domains
+of Building Information Modeling (BIM): A bibliometric approach. Automation in
+
+645
+
+Construction, 84, 195-206. https://doi.org/10.1016/j.autcon.2017.09.011
+Li, X., Shen, G. Q., Wu, P., & Yue, T. (2019a). Integrating building information modeling an
+d prefabrication housing production. Automation in Construction, 100, 46-60. https://doi.
+org/10.1016/j.autcon.2018.12.024
+
+650
+
+Li, X., Shen, G. Q., Wu, P., Xue, F., Chi, H. L., & Li, C. Z. (2019b). Developing a conceptual
+framework of smart work packaging for constraints management in prefabrication
+housing production. Advanced Engineering Informatics, 42, 100938.
+https://doi.org/10.1016/j.aei.2019.100938
+Li, X., Chi, H. L., Wu, P., & Shen, G. Q. (2020). Smart work packaging-enabled constraintfree path re-planning for tower crane in prefabricated products assembly
+
+655
+
+process. Advanced Engineering Informatics, 43, 101008.
+https://doi.org/10.1016/j.aei.2019.101008
+24
+
+Lu, W., Xu, J., & Söderlund, J. (2020). Exploring the Effects of Building Information
+Modeling on Projects: Longitudinal Social Network Analysis. Journal of Construction
+Engineering and Management, 146(5), 04020037.
+660
+
+https://doi.org/10.1061/(ASCE)CO.1943-7862.0001823
+Luu, L., Chu, D. H., Olickel, H., Saxena, P., & Hobor, A. (2016, October). Making smart
+contracts smarter. In Proceedings of the 2016 ACM SIGSAC conference on computer and
+communications security (pp. 254-269). https://doi.org/10.1145/2976749.2978309
+Liang, Z., Zhou, K., Gao, R., & Gao, K. (2020). Special Equipment Safety Supervision
+
+665
+
+System Architecture Based on Blockchain Technology. Applied Sciences, 10(20), 7344.
+https://doi.org/10.3390/app10207344
+Mathews, M., Robles, D., & Bowe, B. (2017). BIM+ blockchain: A solution to the trust
+problem in collaboration?. Retrieved October 16, 2020, from CITA BIM Gather:
+https://arrow.dit.ie/bescharcon/26
+
+670
+
+Nakamoto, S. (2008). A peer-to-peer electronic cash system. Bitcoin.
+https://bitcoin.org/bitcoin.pdf
+Nawari, N. O., & Ravindran, S. (2019). Blockchain and building information modeling
+(BIM): Review and applications in post-disaster recovery. Buildings, 9(6), 149.
+https://doi.org/10.3390/buildings9060149
+
+675
+
+Penzes, B., Kirkup, A., Gage, C., Dravai, T., & Colmer, M. (2018). Blockchain technology in
+the construction industry: Digital transformation for high productivity. Institution of Civil
+Engineers.
+https://www.academia.edu/38193166/Blockchain_Technology_in_the_Construction_Ind
+ustry_ICE_pdf
+
+680
+
+Perera, S., Nanayakkara, S., Rodrigo, M. N. N., Senaratne, S., & Weinand, R. (2020).
+Blockchain technology: Is it hype or real in the construction industry?. Journal of
+Industrial Information Integration, 17, 100125. https://doi.org/10.1016/j.jii.2020.100125
+Peng, S., Hu, X., Zhang, J., Xie, X., Long, C., Tian, Z., & Jiang, H. (2020). An efficient
+double-layer blockchain method for vaccine production supervision. IEEE Transactions
+
+685
+
+on NanoBioscience, 19(3), 579-587. https://doi.org/10.1109/TNB.2020.2999637
+Raslan, A., Kapogiannis, G., Cheshmehzangi, A., Tizani, W., & Towey, D. (2020, July). A
+Framework for Assembling Asset Information Models (AIMs) through Permissioned
+Blockchain. In 2020 IEEE 44th Annual Computers, Software, and Applications
+
+25
+
+Conference (COMPSAC) (pp. 529-534). IEEE.
+690
+
+https://doi.org/10.1109/COMPSAC48688.2020.0-198
+Razkenari, M., Fenner, A., Shojaei, A., Hakim, H., & Kibert, C. (2020). Perceptions of offsite
+construction in the United States: An investigation of current practices. Journal of
+Building Engineering, 29, 101138. https://doi.org/10.1016/j.jobe.2019.101138
+Risius, M., & Spohrer, K. (2017). A blockchain research framework. Business & Information
+
+695
+
+Systems Engineering, 59(6), 385-409. https://doi.org/10.1007/s12599-017-0506-0
+Sheng, D., Ding, L., Zhong, B., Love, P. E., Luo, H., & Chen, J. (2020). Construction quality
+information management with blockchains. Automation in Construction, 120, 103373.
+https://doi.org/10.1016/j.autcon.2020.103373
+Sousa, J., Bessani, A., & Vukolic, M. (2018, June). A byzantine fault-tolerant ordering
+
+700
+
+service for the hyperledger fabric blockchain platform. In 2018 48th annual IEEE/IFIP
+international conference on dependable systems and networks (DSN) (pp. 51-58). IEEE.
+https://doi.org/0.1109/DSN.2018.00018
+Stefani, M., & Coulton, B. (2020). Construction Sector to Play Important Part in Post-Lockdo
+wn GDP Recovery. Retrieved October 16, 2020, from FichRatings: https://www.fitchrati
+
+705
+
+ngs.com/research/sovereigns/construction-sector-to-play-important-part-in-post-lockdow
+n-gdp-recovery-22-06-2020
+Tapsfield, J. (2020). Is Britain bouncing back? Construction industry starts growing again at
+fastest rate for two years after suffering worst plunge EVER during coronavirus
+lockdown. Retrieved October 15, 2020, from Mail Online:
+
+710
+
+https://www.dailymail.co.uk/news/article-8493985/Construction-industry-startsgrowing-lockdown-eases.html
+Tao, Q., Cui, X., Huang, X., Leigh, A. M., & Gu, H. (2019). Food Safety Supervision System
+Based on Hierarchical Multi-Domain Blockchain Network. IEEE Access, 7, 5181751826. https://doi.org/10.1109/ACCESS.2019.2911265
+
+715
+
+Wang, J., Wu, P., Wang, X., & Shou, W. (2017). The outlook of blockchain technology for
+construction engineering management. Frontiers of Engineering Management, 67-75.
+https://doi.org/10.15302/J-FEM-2017006
+Wang, K. (2019, September). Design of Agricultural Product Quality and Safety Big Data
+Fusion Model Based on Blockchain Technology. In International Conference on
+
+720
+
+Advanced Hybrid Information Processing (pp. 216-225). Springer, Cham.
+https://doi.org/10.1007/978-3-030-36402-1_23
+26
+
+Wang, Z., Wang, T., Hu, H., Gong, J., Ren, X., & Xiao, Q. (2020). Blockchain-based
+framework for improving supply chain traceability and information sharing in precast
+construction. Automation in Construction, 111, 103063.
+725
+
+https://doi.org/10.1016/j.autcon.2019.103063
+Xiao, Y., Zhang, N., Lou, W., & Hou, Y. T. (2020). A survey of distributed consensus
+protocols for blockchain networks. IEEE Communications Surveys & Tutorials, 22(2),
+1432-1465. https://doi.org/10.1109/COMST.2020.2969706
+Xu, J., Ye, M., Lu, W., Bao, Z., & Webster, C. (2020). A four-quadrant conceptual
+
+730
+
+framework for analyzing extended producer responsibility in offshore prefabrication
+construction. Journal of Cleaner Production, 124540.
+https://doi.org/10.1016/j.jclepro.2020.124540
+Xue, F. & Lu, W. (2020). A semantic differential transaction approach to minimizing
+information redundancy for BIM and blockchain integration. Automation in
+
+735
+
+Construction, 118, 103270. https://doi.org/10.1016/j.autcon.2020.103270
+Xue, F., Lu, W., Chen, Z., & Webster, C. J. (2020). From LiDAR point cloud towards digital
+twin city: Clustering city objects based on Gestalt principles. ISPRS Journal of
+Photogrammetry and Remote Sensing, 167, 418-431.
+https://doi.org/10.1016/j.isprsjprs.2020.07.020
+
+740
+
+Xue, F., Wu, L., & Lu, W. (2021). Semantic enrichment of building and city information
+models: A ten-year review. Advanced Engineering Informatics, 47, 101245.
+https://doi.org/10.1016/j.aei.2020.101245
+Yang, R., Wakefield, R., Lyu, S., Jayasuriya, S., Han, F., Yi, X., ... & Chen, S. (2020). Public
+and private blockchain in construction business process and information
+
+745
+
+integration. Automation in Construction, 118, 103276.
+https://doi.org/10.1016/j.autcon.2020.103276
+Yong, B., Shen, J., Liu, X., Li, F., Chen, H., & Zhou, Q. (2020). A Blockchain-based System
+for Safe Vaccine Supply and Supervision. Faculty of Engineering and Information
+Sciences - P apers: Par t B . 3488. https://ro.uow.edu.au/eispapers1/3488
+
+750
+
+Zhai, Y., Chen, K., Zhou, J. X., Cao, J., Lyu, Z., Jin, X., ... & Huang, G. Q. (2019). An Intern
+et of Things-enabled BIM platform for modular integrated construction: A case study in
+Hong Kong. Advanced Engineering Informatics, 42, 100997. https://doi.org/10.1016/j.ae
+i.2019.100997
+
+27
+
+Zhang, Z., Yuan, Z., Ni, G., Lin, H., & Lu, Y. (2020). The quality traceability system for
+755
+
+prefabricated buildings using blockchain: An integrated framework. Frontiers of
+Engineering Management, 1-19. https://doi.org/10.1007/s42524-020-0127-z
+Zhong, B., Wu, H., Ding, L., Luo, H., Luo, Y., & Pan, X. (2020). Hyperledger fabric-based
+consortium blockchain for construction quality information management. Frontiers of
+Engineering Management, 1-16. https://doi.org/10.1007/s42524-020-0128-y
+
+760
+
+28
+
+Appendix
+Algorithm A.1. Algorithm of publish-subscribe
+Algorithm 1 Publish-subscribe
+Input: Subscribed hash
+Output: Published transaction
+Step 1: Subscribe the operation data of production by sending a random hash
+signal
+Owner.get (hash)
+Hash → Manufacturer
+Step 2: Once the first operation completed, store first operation data (operation,
+time)
+Production operation → Data ()
+Completion time → Data ()
+Data ()→ Manufacture.sidechain
+Step 3: Generate a transaction in the sidechain
+Transaction.hash ← SHA256 (Data)
+Transaction.prehash ← Hash
+Transaction.signature ← Operator.signature ()
+Step 4: Publish the transaction to the owner
+Transaction → Owner
+End
+Algorithm A.2. Algorithm of ordering and verification
+Algorithm 2 Ordering and Verification
+Input: Transactions
+Output: Main Blockchain
+// Step 1: Owner gets and orders transactions by the previous hash in each transaction
+Owner.get (transaction)
+// Step 2: Owner receives production operation data from the manufacturer
+Owner.get(Data)
+// Step 3: Owner creates blocks and checks the data consistency
+Owner.createblock (header,transaction)
+if SHA 256 (Data) != transaction.hash
+Return False
+// Step 4: Owner broadcasts the block to participants
+Block → Contractor
+Block → Manufacturer
+Block → Supplier
+// Step 5: Each participant verified the block and signed it
+if Block.manufacturer_signature.error() OR Block.supplier_signature.error()
+OR Block.contractor_signature.error()
+Return False
+else
+Owner.signature (Block)
+// Step 6: Owner update the verified block to the world state
+Block → Main Blockchain
+End
+765
+
+29
+
+Table A.1 Example operation records in transaction data
+Process
+Material
+Supply
+
+Publisher
+Supplier
+
+Transaction
+{"Material":
+Material
+operation 01,
+10/22/2020}
+{"Material":
+Material
+operation 02,
+10/22/2020}
+{"Material":
+Material
+operation 03,
+10/24/2020}
+
+Production
+
+Manufacturer
+
+{"Material":
+Material
+operation 04,
+10/24/2020}
+……
+{"Production":
+Production
+operation 01,
+10/28/2020}
+{"Production":
+Production
+operation 02,
+10/30/2020}
+{"Production":
+Production
+operation 03,
+11/04/2020}
+
+Operation Details
+["MSRID":"MSR0001","Name":"Board",
+"Quantity":"10", "Operation":"Pretreatment &
+Punching","OperationTime":"10/22/2020","Completio
+Time":"10/23/2020","Record":"Details"]
+["MSRID":"MSR0001","Name":"Profile",
+"Quantity":"10", "Operation":"Pretreatment &
+Punching","OperationTime":"10/22/2020","
+CompletionTime":"10/23/2020", "Record":"Details"]
+["MSRID":"MSR0001","Name":"2D Panel",
+"Quantity":"10", "Operation":"2D Panel Assembly &
+Delivery (Butt Weld & Fillet Weld
+Included)","OperationTime":
+"10/24/2020","CompletionTime":"10/26/2020",
+"Record":"Details"]
+["MSRID":"MSR0001","Name":"Rebar",
+"Quantity":"100", "Operation":"Rebar
+Delivery","OperationTime":"10/24/2020","
+CompletionTime":"10/26/2020","Record":"Details"]
+["MSRID":"MSR0001","Name":"Structure",
+"Quantity":"10", "Operation":"2D Panel Hot Dip
+Galvanizing Treatment","OperationTime":"10/28/2020",
+"CompletionTime":"10/29/2020","Record":"Details"]
+["MSRID":"MSR0001","Name":"Structure",
+"Quantity":"1", "Operation":"3D Assembly including
+Welding Work for Bondek, Shear Stud, Bracket, Wall &
+CeilingSheet","OperationTime":"10/30/2020",
+"CompletionTime":"11/03/2020","Record":"Details"]
+["MSRID":"MSR0001","Name":"Structure",
+"Quantity":"1", "Operation":"Touch-up Galvanized Paint
+(Zinc Rich Primer)","OperationTime":
+"10/24/2020","CompletionTime":"10/26/2020",
+"Record":"Grade Details"]
+
+…...
+Inspection
+
+Contractor
+
+{"Inspection":
+Inspection
+record 01,
+10/22/2020}
+{"Inspection":
+Inspection
+operation 06,
+10/29/2020}
+{"Inspection":
+Inspection
+operation 07,
+11/04/2020}
+
+["MSRID":"MSR0001","Name":"Board", "Types":"Hold
+Point", "Operation":"Material Grade and Size Spot
+Check","OperationTime":"10/22/2020",
+"CompletionTime":"10/23/2020","Results":"Qualified","R
+ecord":"Grade Details"]
+["MSRID":"MSR0001","Name":"Structure",
+"Types":"Hold Point", "Operation":"2D Panel Weld Test,
+Visual Inspection (Butt Weld and Filet Weld)
+","OperationTime":"10/29/2020","CompletionTime":"10/3
+0/2020","Results":"Qualified","Record":" Test Details"]
+["MSRID":"MSR0001","Name":"Structure",
+"Types":"Hold Point", "Operation":"Cladding Sub Frame
+Alignment Check","OperationTime":
+"11/04/2020","CompletionTime":"11/05/2020","Results":
+"Qualified"","Record":"Alignment Details"]
+
+30
+
+

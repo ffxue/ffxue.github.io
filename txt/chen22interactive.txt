@@ -1,0 +1,537 @@
+Interactive BIM-based VR: A case study of doors
+Sou-Han Chen [0000-0003-0511-7518] and Fan Xue [0000-0003-2217-3693]
+The University of Hong Kong, Pokfulam, Hong Kong SAR, China
+souhan@hku.hk
+This is the peer-reviewed authors’ version of:
+Chen, S.H. & Xue, F. (2022). Interactive BIM-based VR: A case study of
+doors. The 19th International Conference on Computing in Civil and
+Building Engineering (ICCCBE) 2022, Cape Town, South Africa, 26-28
+October 2022. Proceedings in press.
+The official version of this paper is [e-proceedings link at SpringerLink]
+The use of this document other than personal use must follow Springer’s Guidelines.
+
+5
+
+10
+
+15
+
+Abstract. The adoption of virtual reality (VR) in the construction industry
+provides an immersive experience for users to view and interact with Building
+information modeling (BIM). However, in the current practice, the VR experience is created manually, which is time-consuming and does not refer to
+other validated data. This study proposes an automatic BIM to interactive VR
+method based on Revit and Unreal Engine in three steps. First, a bounding
+box-based segmentation is conducted in Revit through Dynamo for classifying the motion-bearing components. Then the BIM along with the segmentation results are imported to Unreal Engine for components mapping and interactive behavior selection. Finally, Oculus Quest presents an interactive
+BIM-based VR experience to users. A case study of BIM doors was conducted to validate the proposed method. In the output VR models, users can
+control and interact with swing doors through the touch controller of the VR
+headset. Four interactive behaviors of the door were realized for interactive
+and experiencing user interactions. The findings confirmed the feasibility as
+well as automation of the proposed method, for faster BIM-to-VR content
+creation.
+Keywords: Building information modeling, virtual reality, interactive, motion-bearing components, Revit, Unreal Engine
+
+20
+
+2
+
+1
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+65
+
+Introduction
+
+The architecture, engineering, construction, and operation (AECO) sector is seeking an
+efficient visualization approach to enhance the interpretation of construction projects. The
+rapid growth of urbanization has fastened and increased the construction complexity in
+architectural features, construction methods, and smart facilities management [1]. With
+such a high complexity, the traditional design approach gradually cannot meet the users’
+expectations of visualization and interaction. While all the information and 3D geometry
+are presented on the 2D screen, users sometimes have difficulties visualizing the special
+environment of the project, especially for complex projects [2]. As a result, design faults
+and inappropriate space utilization [3] still occur and lead to a low reputation in the sector.
+To reduce and alleviate the problems caused by visualization, virtual reality (VR) technology was introduced and adopted throughout the project lifecycle. Academic research
+and industrial applications have been conducted and validate the VR implementation. For
+example, facilitating the design process [4-6]; providing immersive visualization [7-10],
+safety training [11], and providing a virtual environment for users to interact with the
+building elements [12,13]. However, the VR content creation process is resource-intensive and requires designers to have both AECO and VR knowledge. Without sufficient
+domain knowledge, the VR content might be unrealistic and cannot provide a good experience and lead to failure of the VR applications. Therefore, an efficient approach to generating VR content is vital.
+Building information modeling (BIM) has been increasingly adopted in the AECO sector due to its integrational capability. BIM is a comprehensive digital representation of
+physical and functional characteristics of a facility [14]. The benefits and impacts of BIM
+have been widely agreed upon by researchers and industries [15-17] and have become
+mandatory in many regions [18]. BIM provides a systematic information hub for all the
+involved parties to collaborate at the same project pace. With the capability of storing
+accurate, semantic, and detailed data, BIM can represent a digital twin of reality, where
+architects, engineers, contractors, and end-users can simulate and manipulate the design
+and construction details. Although BIM can be considered to be a solid foundation of VR
+content, users cannot have any interaction with the objects as there is no mechanism and
+physic engine inside BIM software. Therefore, there is still a gap between BIM and digital
+twin applications.
+In addition, gaming technology has demonstrated its ability to produce high-end visualization of architectural features and to provide various interactive scenes for users to
+experience the virtual built assets [19-22]. Moreover, many gaming companies provide
+great tools for users in the AECO sector to import and link their BIM projects to the game
+engines. For example, Epic Games provides an add-on, Datasmith, for automatically
+transferring and synchronizing BIM with Unreal Engine (UE) projects [23]; Unity provides Unity Reflect for real-time collaboration across platforms and applications [24].
+Although such tools can minizine the information lost during data transformation, the
+transferred information is not automatically utilized for further applications. After importing BIM to the game engine, designers still need to spend effort on setting the interaction of the objects and configuring the parameters. This process is time-consuming and
+not suitable for large-scale projects. As a result, an automatic workflow for the interaction
+settings is desired.
+This research aims to present a preliminary method to exploit the potential of using
+BIM and gaming technologies in automatically facilitating VR content and experience.
+
+3
+
+70
+
+75
+
+The proposed approach is designed to (1) facilitate the VR content creation process, (2)
+explore the interactive ability of BIM, and (3) provide a realistic and diverse VR experience to the users through the game engine.
+2
+
+Methodology
+
+2.1
+
+Overview
+
+The proposed method is described below (Fig. 1) and includes three major steps: (1) object segmentation in BIM software, (2) interaction setting in the game engine, and (3) VR
+configuration and deployment.
+
+Fig. 1. Method of the proposed three-step automatic BIM to interactive VR process
+2.2
+80
+
+85
+
+90
+
+95
+
+Step 1. BIM object segmentation
+
+The first step of the method is to classify the motion-bearing components which will be
+used as the physic constraints, also known as hinges, in the game engine. Since BIM can
+be considered a well-structured information hub [25], the object data and parameters can
+be retrieved and analyzed in a systematic approach. For example, Dynamo, a Revit plugin for managing and extracting data, can be used to identify the elements that contain
+certain text, tags, or under specific categories. Therefore, users can easily classify the
+motion-bearing components and stored the information in a CSV file. However, since the
+properties of the BIM objects might not be comprehensive, a bounding box-based segmentation approach can be used to identify the motion-bearing components.
+The bounding box Is an invisible cube that contains all model elements, annotation
+elements, and datum elements [26]. The motion-bearing component can be identified by
+checking if its bounding box is intersecting with two or more connected components.
+Using the door as an example, hinges can be identified correctly as their bounding boxes
+intersect with the panel’s bounding box and the fram’'s bounding box, while the frame
+will not be classified as motion-bearing components as its bounding box contains the
+panel’s bounding box. This essential approach is favorable for segmenting the BIM objects into different parts as objects in the AECO sector are generally uncomplicated and
+more typical.
+
+4
+
+2.3
+
+100
+
+105
+
+110
+
+115
+
+120
+
+Step 2. Interaction setting in the game engine
+
+The target of this step is to transfer BIM objects to interactive objects with the option that
+designers can select the interactive behaviors of the objects (Fig. 2). Unlike the traditional
+mesh models in OBJ or FBX files, which mainly focus on the geometry of the model,
+BIM contains more metadata, such as category names, custom labels, and unique BIM
+IDs. Through mapping metadata with the segmentation results generated in Step 1, key
+motion-bearing components and other parts of the BIM objects can be recognized by the
+game engine and the interactive behaviors can be applied to the corresponding components. There are two advantages of adopting this pre-defined interactive behavior, applicable to large-scale transformation and can provide users with a diverse interactive experience.
+
+Fig. 2. General framework of transferring BIM objects to interactive objects
+Firstly, the interactive behaviors can be custom-built and applied to all the same object
+types. For example, once the designers define an interactive behavior of a push/pull window, all the push/pull windows can be applied to the same settings and designers don’t
+need to configure them one by one. Even though the shape or the size of each push/pull
+window might be different, the game engine can still use the segmentation results to recognize the motion-bearing components along with other parts of the objects and perform
+the correct behaviors of the objects.
+Secondly, through applying different interactive behaviors, the same BIM objects can
+perform differently. For example, a BIM furniture can be lifted either by one touch controller or two touch controllers; a BIM swing door can be open either by simple push or
+need a key to open it. With the ability to quickly change the behavior of the objects,
+designers can effortlessly try out different settings for providing the most realistic experience to the users.
+
+125
+
+2.4
+
+130
+
+To successfully develop and deploy the VR content inside the game engine, proper VR
+configuration should be set. Generally, there are three essential settings needed to be configurated sequentially before packing all the content into an Android Package (APK) file:
+(1) VR operating system configuration; (2) touch controller settings; (3) interactive game
+object settings.
+First of all, since different VR companies have their own VR operating system, designers need to determine which VR headset will they use to provide the interactive experience. Based on different systems, some plug-ins, packages, or software development kits
+needed to be installed in advance. Secondly, based on the VR operation system, designers
+
+Step 3. VR environment settings and deployment
+
+5
+
+135
+
+140
+
+145
+
+150
+
+need to define the action of each bottom on each touch controller. The actions can be
+classified into two categories: locomotion system and hand interaction system. Typically,
+the locomotion system can be set to either be continuously moving or teleporting, while
+the hand interaction system contains various actions. For example, holding/releasing
+game objects, controlling game objects to perform specific behavior, and pausing the
+game. Finally, the priorities of the interactive game objects should be modified to match
+the touch controller settings so that the objects can behave correctly based on the users’
+input.
+3
+
+Results
+
+3.1
+
+Case study of BIM door
+
+Doors are one of the most important object types for fire safety checking during the preliminary design of building works. Besides the appearance of the door, deciding its opening direction and planning the exit route are crucial works for the designer. Although the
+adoption of VR technology can provide an immersive experience for the user to interact
+with doors, the interactive behavior is still manually designed. As a result, this research
+used a BIM door from the UK National Building Specification (NBS) BIM Library [27]
+as a case study for validating the proposed method in Fig. 1. Table. 1 lists the software
+used in this case study.
+Table 1. Software list
+
+155
+
+160
+
+3.2
+
+Software
+
+Version
+
+Revit
+
+2022
+
+Dynamo
+
+2.12
+
+Unreal Engine
+(UE)
+
+4.27.2
+
+SideQuest
+
+0.10.32
+
+Description
+Loading BIM door in Revit family
+document (.rfa) and the supporting
+the environment for Dynamo
+Performing the bounding box-based
+segmentation and exporting the results in CSV file
+Creating interactive behavior of the
+BIM objects; setting VR environment; Packing the VR model into
+APK file
+Installing the APK file into Oculus
+VR
+
+Bounding box-based segmentation results
+
+Fig. 3 shows the Dynamo scripts for door segmentation. Based on the general structure
+of the door, all the components can be segmented into one of the following categories,
+Door_Panel, Door_Hinge, or Door_Frame. To correctly segment the decorations and handle on the panel to Door_Panel, the bounding box of the panel was extended on the yaxis. Then, by comparing each bounding box of all the components with the bounding
+box of the panel, their relationships with the panel can be known. Fig. 4 shows the segmentation results of the test BIM door. The first three rows show the segmentation results
+
+6
+
+165
+
+and list out the unique ID of each component, while the rest rows show the locational data
+of all the hinges, including the X-axis, Y-axis, and Z-axis. The unit is in centimeters.
+
+Fig. 3. Dynamo script of bounding box-based segmentation
+
+170
+
+175
+
+Fig. 4. Segmentation results. (a) Test BIM door; (b) Illustration of the segmentation results; (c) segmentation results in CSV file
+Besides the segmentation results, the BIM object was exported as a Datasmith file,
+which is a file type created by Epic Games and used for importing BIM into Unreal Engine (UE).
+3.3
+
+180
+
+185
+
+Interactive behaviors
+
+Unreal Engine provides a visual system, called Dataprep, for designers to pre-process the
+Datasmith file before the actual BIM object is imported to the scene. Fig. 5 shows the
+Dataprep system used in this case study. The core of this Dataprep system is shown in
+Fig. 5d. These blocks enable designers to select and modify the components. For example,
+designers can select all the components with native BIM material, Glass_-_Avanti__Laminated_Glass, and change their material to native UE material, which is more realistic and detailed. In this case study, the Dataprep system is formed by four main steps:
+(1) substituting materials; (2) merging components based on the segmentation results; (3)
+adding the interactive behavior to the door; (4) deleting unwanted data. With such a predefined Dataprep system, designers can effortlessly filter unwanted data and reorganize
+the data structure.
+
+7
+
+190
+
+195
+
+200
+
+Fig. 5. Dataprep system for transferring a BIM door to an interactive game object. (a)
+original BIM door data hierarchy in Datasnith file; (b) interactive BIM door preview; (c)
+interactive BIM door data hierarchy preview; (d) data processing blocks for transferring
+BIM door to interactive BIM door
+By changing the interactive behavior setting, users can experience different interactions
+with the door. These interactive behavior settings were pre-defined in Blueprint, a visual
+gameplay scripting system in UE. Designers can make use of the Blueprint system to
+custom-build users' interactive experiences. In this case study, four interactive behaviors
+were created in advance (Table 2). The Blueprint of each interactive behavior is provided
+in Fig. 6.
+Table 2. Interactive behaviors description
+Name
+
+Trigger
+
+Physic door
+
+Physic
+
+Automatic door
+Timer
+(1)
+Automatic door
+Collision
+(2)
+VR locking
+door
+
+VR settings
+
+Description
+The door contains physic priorities.
+Once there is any external force applied to the door, the physic engine
+will stimulate its movements and
+behaviors automatically.
+The door will follow the pre-set
+movements and behaviors based on
+the internal timer.
+The door will open automatically
+once there is any object with the
+collision priorities enter the specific
+area and will close once the object
+leave.
+The door will behave based on the
+pre-defined conductions. The door
+
+8
+
+can only be opened once the key is
+in a specific location.
+205
+
+210
+
+215
+
+220
+
+Fig. 6. Blueprint for different interactive behavior settings. (a) Physic-based interaction;
+(b) Time-based interaction; (c) Collision-based interaction; (d) VR-based with locking
+function interaction [28].
+Once all the VR models are properly placed in the scene and the VR configurations are
+done, UE can pack the contents into an APK file, which can be used for installing VR
+models into Oculus VR. In this case study, SideQuest is used for the APK installation.
+The final interactive BIM-based VR is presented to the users through Oculus Quest 2.
+Fig. 7 shows two screenshots of the interactive BIM-based VR. Fig. 7a shows the initial
+status of the VR model, while Fig. 7b shows the scene after 7 seconds with some doors
+already performing different interactive behaviors. This clearly reveals the great potential
+of the interactive ability of BIM.
+
+Fig. 7. Screenshots of the interactive BIM-based VR. (a) The initial scene; (b) Scene after
+7 seconds.
+
+9
+
+4
+225
+
+230
+
+235
+
+240
+
+In contrast to the manual VR creation approaches, the case study has validated the feasibility of the proposed automatic method. However, there are three limitations in the proposed method that shall be overcome in future studies.
+First, this method only works for Revit family documents. Due to the Revit system data
+hierarchy, the bounding box-based segmentation approach cannot perform correctly as
+detailed components inside family documents will not be passed to the project document.
+For example, door hinges might be invisible inside the Revit project.
+Secondly, the bounding box-based segmentation relies heavily on the accuracy of the
+model. If the geometric and the location of objects and components are not accurate, the
+segmentation results would be affected, and the final VR experience might not be realistic.
+Last but not least, in the current practice, the major panel of the door must be selected
+manually. Since the appearance of the door might be diverse, the door panel can not be
+accurately identified by its geometry. Some small experiments were conducted in Dynamo to automatically identify the panel. For example, based on the largest volume; based
+on the largest surface area; based on the components with nearby components. However,
+all the segmentation results are still not ideal and not general.
+5
+
+245
+
+250
+
+255
+
+Limitations
+
+Conclusion
+
+Virtual reality technologies have provided the AECO sector with an immersive experience of visualizing and interacting with the construction project. However, the process of
+VR content creation is time-consuming and requires great domain knowledge in both VR
+and ARCO knowledge. This study presents an automatic BIM to interactive VR method
+with the adoption of BIM and gaming technology. A case study of BIM door was implemented and validated the proposed method. The results showed the proposed method can
+facilitate and fasten the VR content creation process and provide a more interactive VR
+experience.
+To improve the process of BIM to interactive VR, several research directions can be
+explored. First, the adoption of the Revit project document can improve the scalability of
+the VR experience. Furthermore, a more efficient method of segmentation and auto-BIMdetailing can be developed and investigated. Also, a standardization of the interactive
+behaviors can be explored and shared across both academia and industry.
+6
+
+Acknowledgment
+
+The work present in this paper was financially supported by Hong Kong Research Grants
+Council (RGC) (No. 27200520).
+References
+260
+
+1. Luo L, He Q, Jaselskis EJ, Xie J. Construction project complexity: research trends
+and implications. Journal of construction engineering and management. 2017 Jul
+1;143(7):04017019.
+
+10
+
+265
+
+270
+
+275
+
+280
+
+285
+
+290
+
+295
+
+300
+
+305
+
+2. Potseluyko L, Rahimian FP, Dawood N, Elghaish F, Hajirasouli A. Game-like interactive environment using BIM-based virtual reality for the timber frame self-build
+housing sector. Automation in Construction. 2022 Oct 1;142:104496.
+3. Özmen C, Ünay Aİ. Commonly encountered seismic design faults due to the architectural design of residential buildings in Turkey. Building and Environment. 2007
+Mar 1;42(3):1406-16.
+4. Gan VJ, Liu T, Li K. Integrated BIM and VR for Interactive Aerodynamic Design and
+Wind Comfort Analysis of Modular Buildings. Buildings. 2022 Mar 10;12(3):333.
+5. Davila Delgado JM, Oyedele L, Beach T, Demian P. Augmented and virtual reality
+in construction: drivers and limitations for industry adoption. Journal of Construction
+Engineering and Management. 2020 Jul 1;146(7):04020079.
+6. Kim M, Wang X, Love P, Li H, Kang SC. Virtual reality for the built environment: a
+critical review of recent advances. Journal of Information Technology in Construction. 2013;18(2013):279-305.
+7. Roach DM, Demirkiran I. Computer aided drafting virtual reality interface. In2017
+IEEE/AIAA 36th Digital Avionics Systems Conference (DASC) 2017 Sep 17 (pp. 113). IEEE.
+8. Wolfartsberger J. Analyzing the potential of Virtual Reality for engineering design
+review. Automation in Construction. 2019 Aug 1;104:27-37.
+9. Pratama LA, Dossick CS. Workflow in virtual reality tool development for AEC industry. InAdvances in Informatics and Computing in Civil and Construction Engineering 2019 (pp. 297-306). Springer, Cham.
+10. Elgewely MH, Nadim W, ElKassed A, Yehiah M, Talaat MA, Abdennadher S. Immersive construction detailing education: building information modeling (BIM)–
+based virtual reality (VR). Open House International. 2021 Jul 20.
+11. Sacks R, Perlman A, Barak R. Construction safety training using immersive virtual
+reality. Construction Management and Economics. 2013 Sep 1;31(9):1005-17.
+12. Wong MO, Du J, Zhang ZQ, Liu YQ, Chen SM, Lee SH. An experience-based interactive lighting design approach using BIM and VR: a case study. InIOP Conference
+Series: Earth and Environmental Science 2019 Feb 1 (Vol. 238, No. 1, p. 012006).
+IOP Publishing.
+13. Alizadehsalehi S, Hadavi A, Huang JC. Assessment of AEC students’ performance
+using BIM-into-VR. Applied Sciences. 2021 Apr 3;11(7):3225.
+14. National Institute of Building Sciences. National Building Information Modeling
+Standard. Version 3. https://www.nationalbimstandard.org
+15. Chan DW, Olawumi TO, Ho AM. Perceived benefits of and barriers to Building Information Modelling (BIM) implementation in construction: The case of Hong Kong.
+Journal of Building Engineering. 2019 Sep 1;25:100764.
+16. Ghaffarianhoseini A, Tookey J, Ghaffarianhoseini A, Naismith N, Azhar S, Efimova
+O, Raahemifar K. Building Information Modelling (BIM) uptake: Clear benefits, understanding its implementation, risks and challenges. Renewable and Sustainable Energy Reviews. 2017 Aug 1;75:1046-53.
+17. Xue F, Wu L, Lu W. Semantic enrichment of building and city information models:
+A ten-year review. Advanced Engineering Informatics. 2021 Jan 1;47:101245.
+18. Lee G, Borrmann A. BIM policy and management. Construction Management and
+Economics. 2020 May 3;38(5):413-9.
+
+11
+
+310
+
+315
+
+320
+
+325
+
+330
+
+19. Sepasgozar SM. Digital twin and web-based virtual gaming technologies for online
+education: A case of construction management and engineering. Applied Sciences.
+2020 Jul 7;10(13):4678.
+20. Ma YP. Improved Interaction of BIM Models for Historic Buildings with a Game
+Engine Platform. Applied Sciences. 2022 Jan 18;12(3):945.
+21. Duan H, Li J, Fan S, Lin Z, Wu X, Cai W. Metaverse for social good: A university
+campus prototype. InProceedings of the 29th ACM International Conference on Multimedia 2021 Oct 17 (pp. 153-161).
+22. Ma YP. Extending 3D-GIS district models and BIM-based building models into computer gaming environment for better workflow of cultural heritage conservation. Applied Sciences. 2021 Feb 27;11(5):2101.
+23. Boost your pipeline with Datasmith, https://www.unrealengine.com/enUS/datasmith, last accessed 2022/09/28
+24. Unity Reflect, https://unity.com/products/unity-reflect, last accessed 2022/09/28
+25. Heaton J, Parlikad AK, Schooling J. Design and development of BIM models to support operations and maintenance. Computers in industry. 2019 Oct 1;111:172-86.
+26. Autodesk
+about
+Bounding
+Boxes,
+https://knowledge.autodesk.com/support/revit/learn-explore/caas/CloudHelp/cloudhelp/2021/ENU/RevitStructEng/files/GUID-C88AAF36-7F89-4599-8C57-CD9B02390C27-htm.html, last
+accessed 2022/09/29
+27. NBS National BIM Library, https://www.nationalbimlibrary.com/en/, last accessed
+2022/09/22
+28. Locked Door in Virtual Reality - Unreal Engine VR Tutorial,
+https://www.youtube.com/watch?v=DqRnOC8rylc, last accessed 2022/08/29
+
+

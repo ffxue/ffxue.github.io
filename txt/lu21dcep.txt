@@ -1,0 +1,1507 @@
+Blockchain technology for governmental supervision of construction work: learning from digital currency
+electronic payment systems
+Weisheng Lu1, Liupengfei Wu2, Rui Zhao3, Xiao Li4, and Fan Xue5
+This is the peer-reviewed, post-print version of the paper:
+Lu, W., Wu, L., Zhao, R., Li, X., & Xue, F., (2021). Blockchain technology for
+governmental supervision of construction work: learning from digital currency
+electronic payment systems. Journal of Construction Engineering and Management,
+147(10), 04021122. Doi: 10.1061/(ASCE)CO.1943-7862.0002148
+This material is shared under the permission of ASCE, and may be downloaded for
+personal use only. Any other use requires prior permission of ASCE. The official version
+of this paper can be accessed at http://doi.org/10.1061/(ASCE)CO.1943-7862.0002148
+Professor, Dept. of Real Estate and Construction Management, The University of Hong Kong, Hong Kong
+SAR, China. ORCID: 0000-0003-4674-0357. Email: wilsonlu@hku.hk
+2
+Ph.D. Student, Dept. of Real Estate and Construction Management, The University of Hong Kong, Hong
+Kong SAR, China (corresponding author). ORCID: 0000-0002-3768-9142. Email: liupengfeiwu@connect.hku.hk
+3
+Research Assistant, Dept. of Real Estate and Construction Management, The University of Hong Kong,
+Hong Kong SAR, China. ORCID: 0000-0003-1993-3129. Email: ruizhao@hku.hk
+4
+Postdoctoral Fellow, Dept. of Real Estate and Construction Management, The University of Hong Kong,
+Hong Kong SAR, China. ORCID: 0000-0001-9702-4153. Email: xl1991@hku.hk
+5
+Assistant Professor, Dept. of Real Estate and Construction Management, The University of Hong Kong,
+Hong Kong SAR, China. ORCID: 0000-0003-2217-3693. Email: xuef@hku.hk
+1
+
+Abstract
+
+5
+
+10
+
+15
+
+Blockchain technology has been explored for governmental supervision of construction work
+(GSCW) due to its merits of traceability, immutability, and transparency. However, its
+decentralized nature is seemingly incompatible with GSCW, which is a type of centralized
+governance per se. This research aims to find a network topology with a proper level of
+(de)centralization and, based on this topology, to develop a blockchain-based model for
+GSCW. Firstly, a literature review is conducted to identify problems in GSCW. Then, a
+cross-sectoral learning is performed between GSCW and digital currency electronic payment
+systems. Next, a design science research method is adopted to develop a dual-layer
+blockchain-based GSCW model integrated with an incentive mechanism. Finally, the model
+is illustrated in Hyperledger Fabric and evaluated its strengths and weaknesses. It is found
+that the model can enable an information-sharing, tamper-proof, and privacy-preserving
+mechanism without affecting the current status and routines of GSCW units and project
+teams. The model developed in our study can serve as a valuable reference for policymakers,
+practitioners, and researchers to develop governance policies or blockchain applications.
+
+Keywords
+Construction supervision; Blockchain; Central governance; Digital currency electronic
+payment; Dual-layer blockchain network.
+
+1
+
+1 Introduction
+20
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+55
+
+Central governance is where executive and legislative powers are concentrated at the top
+instead of scattered among lower-level governance bodies (Kooiman 2003). All constituted
+governments must be centralized to some degree. Even federated or federal states must
+exercise authority or privileges under some circumstances (e.g., the mandatory wearing of
+masks during the COVID-19 pandemic) (Christensen et al., 2008). Effective central
+governance has several advantages. It allows a clear hierarchy of reporting relationships
+(Corporate Finance Institute 2020). It helps reduce costs by avoiding department duplications
+(Bagul and Mukherjee 2018). It promotes rapid execution of decisions, as they can be made
+at a relatively smaller number of higher levels and then communicated to a greater number of
+lower levels (Ouchi 1980). Central governance can also strengthen supervision, thereby
+improving work quality (Lin and Ho 2013).
+A typical central governance scenario can be found in the construction industry, where
+governmental supervision of construction work (GSCW) is usually carried out to provide an
+independent view on quality, safety, progress and other compliance issues (Rounds and
+Segner 2010; Tuuli et al. 2010). This mandatory governmental supervision of projects,
+including those that are privately owned, is based on public interest concerns (Li et al., 2019),
+and is governed by various statutory or non-statutory arrangements including national
+standards, construction ordinances, building codes, and professional codes of conduct
+(Recarte and Jaselskis 1993). For example, China’s Regulations on Safety Production
+Management of Construction Projects require all building owners to submit documents
+related to project quality and safety and apply for local government construction permits (The
+State Council 2003). In the Australian state of Victoria, the Building Act 1993 and Building
+Regulations 2018 mandate that works require a building permit unless an exemption exists.
+Compliance with regulations such as these is overseen by government supervision units
+(GSUs), such as Hong Kong’s Buildings Department and the Construction Commission in
+China, set up to issue building permits and conduct inspections as projects progress.
+Blockchain technology, used most widely to record bitcoin and other cryptocurrency
+transactions, has been vigorously explored for its GSCW potential (Wang et al., 2020; Zhong
+et al., 2020). A blockchain is a distributed database with a consensus mechanism and
+cryptography (Risius and Spohrer 2017), with potential to offer enhanced traceability,
+transparency, immutability, privacy, and auditability, as well as reduced intermediary costs,
+among other benefits (Perera et al. 2020; Hasselgren et al. 2020). For example, blockchain
+allows GSUs to track the history of products and handling persons. With a blockchain-based
+quality and inspection platform, the scandal of missing site records will unlikely happen, and
+the construction quality will be more transparent to the public. In transferring control and
+decision-making power from a centralized entity to a distributed network, blockchain is an
+2
+
+60
+
+65
+
+70
+
+anti-authorization technology that counts on a consensus mechanism amongst decentralized
+parties. If blockchain is to be used in GSCW, the dilemma is to find a network topology that
+can balance centralized and decentralized governance.
+Central bank digital currencies (CBDCs) provide a useful reference for blockchain in GSCW.
+A CBDC is a digital form of fiat money, established and regulated by a country’s monetary
+authority (Shi and Zhou 2020). CBDCs are widely advocated because digital currencies not
+controlled by authorities pose problems. For example, the price of bitcoin can fluctuate
+sharply, affecting the financial stability of many countries (Ciaian and Rajcaniova 2016).
+Unsupervised digital currencies may facilitate tax evasion, terrorist financing, money
+laundering, and other financial crimes (Shi and Zhou 2020). To minimize these risks, the
+central banks of various countries (e.g., Sveriges Riksbank, the Central Bank of Uruguay, and
+the Central Bank of China) are developing, piloting, or have launched their own CBDCs.
+Particularly, in China, the central bank’s digital currency electronic payment (DCEP) system
+has a dual-tier structure that allows the maintenance of central governance while preserving a
+certain degree of privacy. It seems that this and other CBDCs have found a suitable
+blockchain network topology to balance centralized and decentralized governance.
+
+75
+
+80
+
+85
+
+This research aims to find an appropriate network topology and develop a blockchain-based
+model for GSCW. It has four specific objectives:
+1. to identify current problems in GSCW;
+2. to examine and learn from China’s DCEP system;
+3. to develop a blockchain-based model for GSCW; and
+4. to illustrate the blockchain-based supervision model through a prototype platform.
+The remainder of this paper is organized as follows. The following section reviews key
+blockchain concepts and types and their applications in various central governance scenarios.
+Next, the DCEP system is introduced. The subsequent section describes our research
+methods. Then the findings and the proposed blockchain-based model for GSCW are
+presented. After that, the proposed model is illustrated through the development of a
+prototype system. Finally, the discussion and conclusions are presented.
+
+2 Blockchain Technology
+90
+
+95
+
+2.1 Blockchain Basics
+Three key components support the functioning of a blockchain: cryptographic algorithms, a
+decentralized consensus mechanism, and a distributed database (Xue and Lu, 2020). Hash
+algorithms and Merkle trees are key concepts in cryptography, ensuring the immutability of
+transactions (Hasselgren et al. 2020). In the blockchain, transactions are packaged into blocks
+and chained together. Each block consists of a header and a set of transactions (Perera et al.
+2020) (Fig. 1). The header contains an index, a hash pointer for the previous block, a hash
+3
+
+100
+
+pointer for the current block, a nonce, a timestamp, and a Merkle root. Hashing transactions
+indicates that the endorsed transactions are adopted as input to a hash algorithm. Then, the
+hash algorithm converts the transactions into unique strings (hash values). As each
+transaction in a block is continuously hashed and merged, the Merkle tree and final root hash
+pointer are formed. The hash pointer is unique for each corresponding block input, allowing
+verification that the current block transactions have not changed. Since the current block
+contains the previous block’s hash pointer, blocks on the chain are not easily tampered with
+because changing the previous block requires changes to subsequent blocks.
+
+105
+
+Fig. 1. An example of a blockchain
+
+110
+
+115
+
+120
+
+125
+
+Blockchain protocol incorporates a consensus mechanism to verify the order and correctness
+of blocks (Hasselgren et al. 2020). That is, only when the blockchain network participants
+reach a consensus can transactions be included in the blockchain as a new block. Four
+common consensus algorithms are: proof of work, proof of stake, crash fault tolerance (CFT),
+and practical Byzantine fault tolerance (Perera et al. 2020). A blockchain database consisting
+of ledgers that record transaction data securely is distributed among network users. Peer
+nodes are blockchain network participants who store copies of the ledger and/or invoke smart
+contracts to check from or submit transactions to ledgers. As a result of the operation of these
+key components, blockchain information is immutable, verifiable, and trackable.
+2.2 Types of Blockchain
+Blockchains may be public, private, or consortium according to network centralization levels
+(Perera et al. 2020; Hasselgren et al. 2020) (Fig. 2). A public blockchain has a distributed and
+decentralized network where every interested participant can query historical transactions in
+ledgers or submit new transactions (Zhong et al. 2020). This network structure ensures that
+stored data is transparent to the public and not easily tampered with (Perera et al., 2020).
+However, the privacy level of a public blockchain is low because it does not provide access
+4
+
+130
+
+control functions that restrict network participants from viewing uploaded data (Hasselgren et
+al. 2020). Due to the need to establish trust between completely anonymous participants, an
+energy- and time-consuming mining-based consensus mechanism is used. This makes it
+difficult to improve performance of public blockchains and leads to the problem of low
+scalability (Perera et al. 2020).
+
+Fig. 2. Types of blockchain
+
+135
+
+A private blockchain is managed by a single organization, and only pre-approved nodes can
+participate (Zhong et al. 2020). The network of private blockchains is distributed but usually
+to a limited extent. Private blockchains have higher privacy, scalability, and efficiency due to
+their more centralized nature, but transparency, auditability and security of transaction data
+are reduced.
+
+140
+
+145
+
+A consortium blockchain involves multiple pre-authorized organizations participating in
+blockchain network management (Hasselgren et al. 2020). This network is partially
+centralized, and can allow participants full data access or set multiple levels of access
+permissions (Hyperledger Fabric 2020). A consortium blockchain has moderate privacy and
+is more auditable and secure than a private blockchain. It provides moderate scalability
+through its various governance structures. However, different access levels are allowed in the
+consortium blockchain, so participants need to spend considerable time defining these access
+rules.
+
+5
+
+150
+
+155
+
+2.3 Blockchain in Central Governance
+Many blockchain studies have considered central governance. Through a scoping review,
+Hasselgren et al. (2020) conclude that in the health sector only 15% of blockchain studies
+adopt a fully decentralized structure (i.e., a public blockchain). Liang et al. (2017), however,
+adopt membership services supported by a consortium blockchain that allows medical
+institutions to issue and manage enrolment certificates and transaction certificates for access
+control. Yong et al. (2020) consider authority control, putting the government above
+enterprises, the lot release agency, and the center for disease control in their vaccine
+consortium blockchain system. Mao et al. (2019) use a consortium blockchain to set
+permissions and authentication for food suppliers, deliverers and sellers.
+
+160
+
+165
+
+In construction, only a few blockchain studies have looked at central governance. In one such
+study, Zhong et al. (2020) utilize a consortium blockchain to supervise construction quality
+information, with the government a general peer node able to query transactions. Sheng et al.
+(2020) also use blockchain to monitor construction quality information, allowing the
+government to control the certificate authority (CA). Part of the blockchain network security
+protocol, the certificates are digitally signed and distributed by the CA and bind participants
+to proving their identity when conducting transactions in blockchain networks. Unfortunately,
+Sheng et al. do not discuss in depth why the government should maintain its central
+governance in issuing certificates.
+
+170
+
+175
+
+180
+
+While some blockchain research is dedicated to improving the traceability of the construction
+supply chain, it does not consider central governance. For instance, Wang et al. (2020)
+demonstrate a blockchain-based framework to supervise the supply chain in precast
+construction, but do not consider GSUs. Shemov et al. (2020) report development of a
+blockchain-based platform to supervise construction supply chain information and prevent
+manipulation, but do not provide platform access to GSUs. Qian and Papadonikolaki (2020)
+explain that blockchain could enable data tracking in the construction supply chain, thereby
+building trust between stakeholder organizations. In real-world governance scenarios,
+although they are interested in harnessing the power of blockchain, particularly for
+traceability, immutability, and information sharing, GSUs may be unwilling or not expected
+to give up their centralized status.
+
+3 The Digital Currency Electronic Payment (DCEP) System
+185
+
+A central bank digital currency (CBDC) is usually accompanied by a digital currency
+electronic payment (DCEP) system. Unlike bitcoin, which has no central bank or
+intermediaries, central governance plays a pivotal role in CBDCs. China’s DCEP utilizes an
+innovative blockchain-enabled dual-tier operation structure (Peters et al. 2020), shown in Fig.
+6
+
+190
+
+195
+
+3. At the upper level, the central bank issues DCEPs to intermediaries (e.g., commercial
+banks) or withdraws them. At the lower level are the transactions between intermediaries and
+market participants (e.g., individuals and enterprises). The main benefit of this DCEP design
+is that the central bank can supervise financial activities and prevent illegal transactions (Le
+2020; Shi and Zhou 2020). It also allows the balance of security and privacy to achieve
+“controllable anonymity”, i.e., only illegal activities detected will be disclosed to authorized
+officials, while regular transactions are anonymous (Shi and Zhou 2020). As shown by
+China’s DCEP, central governance has become an important factor in managing digital
+currencies and provides a reference for harnessing blockchain power in GSCW.
+
+Fig. 3. A dual-tier operating system of DCEP
+200
+
+4 Research Methods
+
+205
+
+The research methodology comprises two components: literature review and design science
+research (DSR). The critical literature review was used to identify problems in GSCW that
+may be solved by blockchain technology. To search for relevant papers in Google Scholar
+and Web of Science databases, the keywords “blockchain in construction” and “blockchain
+for construction management” were used. The search initially produced 304 hits comprising
+journal and conference papers, books, dissertations, and reports. Titles and abstracts were
+screened for suitability, and hits not dealing with a specific blockchain application in
+construction management were excluded. The full texts of 104 selected publications were
+7
+
+210
+
+215
+
+downloaded and further refined to include only those with a publication year and providing
+descriptive information about construction management problems and the potential of
+blockchain to solve these problems. This resulted in a total of 28 journal papers, 3 conference
+papers, and 1 industry report being collected for analysis.
+Cross-sectoral learning was then conducted through another literature review round, the
+purpose being to understand more about DCEPs, their blockchain applications, and how
+(de)centralized governance is considered. Journal articles and publicly available guidelines,
+white papers, and news articles were collected to analyze two aspects of DCEPs: public and
+central bank demands, and design features.
+
+220
+
+225
+
+230
+
+A DSR method was then used to develop a blockchain-based construction supervision model.
+DSR is an analytical and creative approach that involves creating meaningful artifacts to
+solve identified problems (Hevner and Chatterjee 2010). The first step was to understand our
+target audience; GSUs and construction project owners. The second step involved defining
+the critical issue; specifically, how to develop a model for a blockchain-based system
+enabling GSCW with an appropriate level of typology. To meet central governance
+requirements, the model must provide GSU with access to supervise projects. Also, the model
+needs to consider the privacy rights of project owners to protect their sensitive business
+information. The third step, in three research team meetings in October 2020, was to analyze
+and synthesize the knowledge gained from our literature reviews and explore solutions.
+Finally, the most promising solution was developed into a model prototype.
+
+5 Data Analyses, Results, and Findings
+235
+
+240
+
+5.1 Problem Identification and Blockchain Solution Potential
+Table 1 summarizes the current problems in GSCW emerging from the literature review. The
+first problem identified is the low level of real-time information sharing (e.g., Zhong et al.,
+2020). Failure to share supervision information promptly has led to untimely measures and
+increased costs. Blockchain can improve information transparency by sharing transaction
+records among parties and requiring endorsements from all. The second problem relates to
+the low traceability of existing recording and communication methods (e.g., paper records,
+phone calls, and emails) (e.g., Turk and Klinc, 2017; Zhang et al. 2020). Blockchain provides
+a timestamp for each recorded transaction so that auditors can track the history of products
+and handling persons.
+
+8
+
+245
+
+Table 1. Current problems in GSCW and the potentials of blockchain
+Problems
+
+Blockchain potentials
+
+Reference
+
+Low level of real-time
+information sharing
+
+Transparency
+
+Low traceability of paper
+records, phone calls and
+emails
+
+Traceability
+
+Heiskanen (2017), Wang et al. (2017), Penzes et al.
+(2018), Nawari and Ravindran (2019a), Nawari and
+Ravindran (2019b), Li et al. (2019), Yang et al. (2020),
+Hunhevicz and Hall (2020), Perera et al. (2020), Kiu et al.
+(2020), Qian et al. (2020), Zhong et al. (2020), Tezel et al.
+(2020), Adamska et al. (2021), Li et al. (2021).
+Turk and Klinc (2017), Penzes et al. (2018), Li et al.
+(2019), Yang et al. (2020), Perera et al. (2020), Sheng et
+al. (2020), Zhong et al. (2020), Zhang et al. (2020).
+
+Lack of incentive to
+share information
+
+250
+
+255
+
+Incentive mechanism
+
+Perera et al. (2020), Elghaish et al. (2020).
+
+Records are stored in a
+completely centralized
+manner, so there is a risk
+of a single point of
+failure
+Records can be modified
+intentionally or
+unintentionally
+
+Decentralization
+
+Turk and Klinc (2017), Penzes et al. (2018), Hargaden et
+al. (2019), San et al. (2019), Nawari and Ravindran
+(2019a), Perera et al. (2020), Qian et al. (2020), Zhong et
+al. (2020), Zhang et al. (2020).
+
+Immutability
+
+Current information
+recording and storage
+methods may face the
+risk of privacy leakage
+Manual processing of
+GSCW information is
+inefficient
+
+Privacy-preserving
+
+San et al. (2019), Nawari, and Ravindran (2019a),
+Hunhevicz and Hall (2020), Perera et al. (2020), Sheng et
+al. (2020), Zhong et al. (2020), Kim et al. (2020), Xue and
+Lu (2020), Zhang et al. (2020), Shemov et al. (2020),
+Sharma and Kumar (2020), Adamska et al. (2021).
+Turk and Klinc (2017), Li et al. (2019), Safa et al. (2019),
+Xiong et al. (2019), Sharma and Kumar (2020), Perera et
+al. (2020), Zhong et al. (2020).
+
+Self-execution
+
+Wang et al. (2017), Penzes et al. (2018), Hargaden et al.
+(2019), Hewavitharana et al. (2019), Dakhli et al. (2019),
+Nawari, and Ravindran (2019b), Hunhevicz and Hall
+(2020), Das et al. (2020), Ahmadisheykhsarmast and
+Sonmez (2020), Zhang et al. (2020), Hamledari and
+Fischer (2021), Kochovski and Stankovski (2021).
+
+The lack of incentive mechanism to share information is the third problem associated with
+GSCW (Elghaish et al. 2020; Perera et al. 2020). If there is no incentive mechanism, project
+owners may not wish to disclose their project information but point fingers at each other in
+case of disputes. Blockchain offers a solution to this problem because it can be integrated
+with incentive mechanisms to encourage participation. Fourth, while the centralized storage
+in GSCW creates the risk of a single point of failure (e.g., Nawari and Ravindran, 2019a),
+blockchain can store information in a distributed manner through ledgers. A distributed
+database prevents file loss since the same copy of the record is replicated and stored in the
+node network. Fifth, without supervision, current records can be modified intentionally or
+unintentionally (e.g., Kim et al. 2020). Sixth, scholars such as Xiong et al. (2019) and Sharma
+and Kumar (2020) point out that current recording methods may involve privacy issues. By
+applying hash algorithms, blockchain can protect information privacy. Seventh and finally,
+9
+
+260
+
+265
+
+270
+
+275
+
+280
+
+285
+
+290
+
+the manual processing of GSCW information is inefficient but, with the aid of smart
+contracts, blockchain can automate the process.
+5.2 Lessons Learned from China’s DCEP System
+According to Shi and Zhou (2020), the People’s Bank of China (PBC) (the central bank of
+China, responsible for implementing monetary policy and supervising financial institutions)
+has the following requirements for its DCEP system: high accessibility, credibility (e.g.,
+financial crime prevention), security (e.g., immutable data), and transaction performance
+(e.g., low latency). The system should also have the potential for internationalization, but the
+supervision power should rest with the PBC. Public user requirements are: offline payment
+capability, real-time payment (negligible latency), low transaction cost (low intermediary
+fee), high security and privacy (e.g., transaction records cannot be easily tampered with and
+cannot be disclosed to unauthorized parties), and official supervision (e.g., provision of a
+stable currency value) (Shi and Zhou, 2020). In short, the PBC must maintain central
+governance to supervise financial activities and prevent crime, and the public requires it to
+perform “business as usual” as regular commercial banks when there was no blockchain
+technology.
+User requirements of both the PBC and the public determine the features of the DCEP
+system, shown in Table 2. Since DCEP is a digital payment tool with value attributes, no
+account is needed to realize a value transfer. Intended to replace paper money, the DCEP
+system must have cash-like features, including acceptance by the public. Another feature is
+that the PBC is legally responsible for the DCEP system, so the PBC must supervise its
+related financial activities to detect illegal transactions and maintain currency value. In
+addition, the DCEP system adopts a dual-tier operating system (Fig. 3). The first layer
+involves the PBC issuing DCEPs, and the second layer includes intermediaries, such as
+commercial banks, who distribute DCEPs to users for transactions. To minimize the potential
+competition between DCEPs and commercial bank deposits, the PBC does not pay interest on
+DCEPs. Also, the DCEP system is technology inclusive, allowing the integration of
+technologies besides blockchain, such as big data. A further feature of the DCEP system is
+that it ensures privacy through one-way anonymity, so no party other than the PBC can track
+the payment behaviors of users. Finally, when the Internet is not available, DCEP
+transactions can be made offline.
+
+10
+
+295
+
+Table 2. Publications identifying salient features of DCEP
+References
+
+Digital
+payment
+
+Cashlike
+features
+
+
+Central
+bank’s
+liability
+
+
+Dual-tier
+operating
+system
+
+
+Shi & Zhou (2020)
+
+
+
+Peters et al. (2020)
+Xu & Prud'homme
+(2020)
+Volkova et al.
+(2020)
+Wang (2020)
+Le (2020)
+Feng & Borak
+(2020)
+Anwar (2020)
+Sato et al. (2020)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tran (2019)
+
+300
+
+305
+
+310
+
+315
+
+320
+
+
+
+Noninterest
+
+Technology
+inclusive
+
+One-way
+anonymity
+
+Offline
+payment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+By reviewing user requirements and the features of DCEP, we have summarized the points
+that can provide a useful reference when developing a blockchain-based model for GSCW:
+• Adopting a dual-tier operating system will allow the authorities in the upper layer to
+increase its control over intermediaries to monitor financial crimes and maintain the
+stability of the overall system;
+• Through the flexible structure at the lower layer, intermediaries can respond to the
+market and conduct efficient transactions; and
+• One-way anonymity can guard user privacy.
+When developing a blockchain-based supervision model, the upper layer of a DCEP dual-tier
+operating system can provide GSUs in construction with a central governance experience,
+like that of the PBC. Then, construction project owners perform similar roles to commercial
+banks because they are responsible for managing transactions related to
+individuals/enterprises or projects. In daily transactions, they all need to protect the privacy
+of information and enhance their ability to handle more transactions, and therefore the lower
+layer of the system can provide a reference for privacy and scalability design.
+5.3 A Dual-Layer Blockchain-Based Supervision Model
+Based on the needs of practitioners and DCEP lessons learned, this section proposes a duallayer consensus blockchain-based model for GSCW. As shown in Fig. 4, the proposed
+GSCW model involves four main entities: the GSU, and construction project Owners 1, 2,
+and 3. Each owner should register as a peer node to record its project information and submit
+it to the GSU, and the GSU should register as an ordering node to order the received
+information into blocks and then deliver the ordered blocks to the owners for endorsement.
+Also, the GSU can supervise the entire project construction process for owners by seeking
+project and supervision information including the preliminary project information of each
+11
+
+325
+
+330
+
+335
+
+340
+
+345
+
+owner including project background and construction-related data. To avoid the fake
+information is deliberately input at source (i.e., the “Garbage in, Garbage out” issue), the
+“blockchain oracles” are used. In blockchains, an oracle is used to bridge the on-chain (i.e., a
+blockchain system) and off-chain worlds (i.e., a real-life physical project). It is a middleware
+agent per se that queries and endorses data from external systems to the blockchain, including
+for use in smart contracts (Kochovski et al., 2019). The proposed model adopts consensusbased oracles to avoid centralization issues such as a single point of failure. Thus, a K-out-ofM threshold signature scheme (e.g., 3-out-of-4 signature), suggested by Lo et al. (2020), is
+used by multiple oracles in the model to reach a consensus on the transaction to be accepted.
+The main blockchain involves all four entities (the GSU and Owners 1, 2 and 3). Each entity
+obtains a copy of the main blockchain, enabling it to supervise each transaction representing
+an operation in the main blockchain, such as submitting new project information or updating
+existing information. When all participants agree on correctness of project information via
+the consensus algorithm, they can endorse the operation with a digital signature.
+The proposed model uses CFT consensus algorithm, which will not unduly degrade
+performance (e.g., transaction throughput) (Hyperledger, 2020). It does not require
+cryptocurrencies like Bitcoin to encourage participants to conduct expensive mining to verify
+transactions (Perera et al. 2020). Avoiding cryptocurrency can reduce vital risks/attack
+vectors, and not utilizing cryptographic mining processes can lower computational energy
+consumption. Operations related to the main blockchain and the local project information of
+owners (e.g., recording procurement information) are stored in the sidechains of owners and
+can be retrieved using the self-executed smart contracts of the main blockchain. The details
+of the proposed model are explained in the following paragraphs.
+
+12
+
+Fig. 4. A dual-layer blockchain-based model for construction supervision
+
+350
+
+As mentioned previously, the proposed model adopts a scalable dual-layer blockchain
+structure, including mainchain and sidechain. The dual-layer design imposes some limitations
+on the traditional blockchain structure. First, it retains the topology level of a GSU without
+13
+
+355
+
+360
+
+365
+
+370
+
+375
+
+significant changes to the existing regulatory system. Second, it provides privacy for different
+project owners, so that sensitive business information is not submitted to the mainchain.
+Third, the model is scalable for more project owners. Fourth, there is a mapping mechanism
+between operations and transactions. Construction supervision has various operations (e.g.,
+e.g., quality inspection, progress reporting, and safety information recording) in different
+projects. Each operation can be matched with a specific transaction on our model, ensuring
+that it can handle all operations generated by different projects. Finally, the proposed model
+has an integrated points-based incentive mechanism.
+Private operation transactions such as project procurement records and risk information can
+be recorded in the sidechain of each owner, inaccessible to other owners in the main
+blockchain. The structure of a private transaction is shown in Fig. 5(a). Each transaction
+includes a timestamp, the signature of the person in charge, the hash pointer, the hash pointer
+of the previous operation, and the data. The data is given in the form of a hash table with
+unique keys and values. The keys indicate the owner numbers corresponding to operations.
+The values display objects containing data content, such as project names and IDs and quality
+information. The sidechain layer contains local project information, copies of the main
+blockchain. Each owner maintain its own sidechain in this layer. For the main blockchain,
+each block consists of a header and transaction. Each block header includes an index (block
+sequence number in the chain), a timestamp, the signatures of the three project owners and
+the GSU, and the current and the previous blocks’ hash pointers. As shown in Fig. 5(b),
+project information of the three owners is retrieved from their sidechain through their
+respective hash pointers. Smart contracts are installed in the main blockchain so that the GSU
+can retrieve operation records from the main blockchain, and owners can submit operation
+records at specific time intervals for construction project supervision.
+
+14
+
+380
+
+385
+
+390
+
+395
+
+Fig. 5. Blockchain and transaction: (a) transaction structure in the sidechain; and (b) block
+structure in the main blockchain
+As the success of the proposed blockchain-based model depends on the participation of users,
+a points-based incentive mechanism is integrated with the model. This mechanism aims to
+increase participants’ willingness to publish transactions on time. Owners are informed of the
+details of the mechanism in advance. Table 3 shows the calculation principles for rewarding
+points. In this study, the owner will receive a point for each submitted transaction. Among
+them, each transaction published within 24 hours after completing the operation will help an
+owner earn 20 points. The final points are the sum of the points obtained from the published
+transaction and the on-time publishing. Five status levels (fail, pass, credit, distinction, and
+high distinction) are defined based on the total points earned, extending this incentive
+mechanism from rewards to reputation. The benefits of a good reputation include (1) more
+business opportunities; (2) lower marketing costs; (3) more customers and sales, (4) greater
+revenue; (5) cost-free advertising; and (6) higher company value (Pfeiffer et al., 2012). The
+status levels can be displayed on the GSU’s website for comparative purposes. The incentive
+mechanism has also been expanded by combining financial incentives, which are a way to
+increase productivity, reduce problematic behaviors (e.g., late assignment submissions), and
+improve participants’ attitudes (Marteau et al., 2009). Such incentives have been widely used
+15
+
+400
+
+405
+
+to encourage healthy behaviors (Volpp et al., 2009) and drive construction projects’ progress
+(Rose and Manley, 2010). In the model, every point earned by the owner can be exchanged
+for one dollar from the GSU. For example, GSU requires owner 1 to publish 500 transactions.
+As a result, owner 1 published all the 500 transactions, of which 450 transactions were
+published within 24 hours after completing the operations. Then, Owner 1 will receive 9500
+points (1×500 + 450×20), a reputational reward of high distinction, and a financial reward of
+9,500 dollars.
+Table 3. The points-based incentive mechanism
+Users
+
+410
+
+Reward point
+for each
+published
+transaction
+1
+1
+1
+
+Total number
+of transactions
+published
+(variable)
+A
+B
+C
+
+No. of transactions
+published on time* (No.
+of transactions not
+published on time)
+X (A−X), where X<=A
+Y (B−Y), where Y<=B
+Z (C−Z), where Z<=C
+
+Reward
+points per
+transaction
+(on time) *
+20
+20
+20
+
+Total points**
+
+Owner 1
+1×A+X×20
+Owner 2
+1×B+Y×20
+Owner 3
+1×C+Z×20
+Notes:
+*Transactions published within 24 hours after corresponding operations are completed.
+**Total points<5000, Fail; 5000<= Total points < 6500, Pass; 6500 <= Total points < 7500, Credit; 7500 <= Total
+points < 8500, Distinction; 8500 <= Total points, High Distinction;
+
+6 Illustration of the Blockchain-Based Supervision Model
+415
+
+420
+
+425
+
+430
+
+The supervision process for our prototype system illustrating the proposed dual-layer
+blockchain-based model for GSCW includes registration, submit-inquire, ordering, and
+consensus (Fig. 6). Before joining the system, owners must first verify their identity through
+the GSU at the registration stage. The GSU retains the CA and issues certificates to each
+owner so that they can participate in the main blockchain. The submit-inquire mechanism
+allows the GSU to supervise the project information of owners. For example, Owner 1 can
+record and hash the latest quality information in its sidechain and then submit the transaction
+hash to the GSU while ensuring data privacy. Next, in the ordering service stage, the GSU
+packs the received transaction hashes into blocks and then continuously delivers the ordered
+blocks back to the owners for endorsement. When owners receive these ordered blocks, they
+should endorse the order of blocks by checking the hash pointer of the current block and the
+hash pointer of the previous block. In the consensus stage, all main blockchain entities can
+endorse the authenticity of transactions in the received blocks through the CFT consensus
+algorithm. Each entity can decide whether the transactions are valid or not by signing in the
+received blocks. In CFT, as far as there are N / 2 + 1 participants left in the network (N is the
+total number of participants), a consensus can be reached (Hyperledger 2020). All
+transactions are stored in blocks, even if they are not genuine, but the main blockchain copy
+of each owner will only update valid transactions.
+
+16
+
+Fig. 6. Supervision process in the proposed dual-layer blockchain-based system
+435
+
+440
+
+445
+
+We used Hyperledger Fabric (version 2.2) to develop the blockchain prototype system for
+construction supervision, and JavaScript writing the smart contracts. Hyperledger Fabric is a
+blockchain platform created by the Linux Foundation. Linux version 5.4.0-58-generic-lpae
+(5.4.0-58.64~18.04.1) (Ubuntu 18.04.1 LTS) with four Intel® CoreTM i7-8250U CPU @
+3.40GHz processors, and 8 GB 2133MHz DDR4 memory was used to develop the
+application. We used the Docker engine (version 19.03.13) to develop the environment for
+maintaining chaincode (in Hyperledger Fabric, smart contracts are packaged as chaincode),
+and Docker-Compose (version 1.21.2) to form isolated networks and configure the Docker
+container. Four entities are involved in the prototype system: (1) the GSU, which acts as the
+ordering node in the ordering service; (2) Owner 1; (3) Owner 2; and (4) Owner 3. The
+configuration information of these entities is shown in Fig. 7(a), and the cryptogen in
+Hyperledger Fabric was used to achieve registration by issuing certificates (admincert for the
+administrator of each entity, cacert for the CA of each entity, and tlscacert for building
+connections), as shown in Fig. 7(b).
+
+450
+
+17
+
+Fig. 7. Prototype system conﬁguration for: (a) entities; (b) certiﬁcates; (c) genesis block; and
+(d) anchor peers
+
+455
+
+460
+
+Each of the above entities has an administrator registered in the main blockchain and
+sidechain. Thus, entities can first obtain certificates from the Hyperledger Fabric CA module
+of the main blockchain. The administrator can then request the Hyperledger Fabric CA of the
+sidechain to issue certificates to operators of owners who record operations in the sidechain.
+The genesis block of the main blockchain is configured to initialize the ordering service and
+contains information about the consortium, and entities (Fig. 7(c)). An anchor peer is defined
+in each entity and used for cross-entity communication in the main blockchain and crosschain interaction between the main blockchain and sidechains (Fig. 7(d)). Hyperledger
+Explorer was utilized to visualize the detailed information of the blockchain network, entities,
+blocks, and certificates (Fig. 8).
+
+465
+
+(a)
+
+(b)
+
+(c)
+
+18
+
+470
+
+475
+
+480
+
+485
+
+(d)
+Fig. 8. Main blockchain visualization: (a) network; (b) entities; (c) block; and (d) certificates
+(GSU)
+Using SpringBoot (version 2.4.0) and AdminLTE (version 3), the backend and frontend
+prototypes were developed for each entity. SpringBoot, a Java-based backend framework,
+was used to develop a Web server and the open-source relational database management
+system MySQL. AdminLTE, a frontend framework based on bootstrap, provides responsive,
+reusable, and widely used rapid development components. Fig.9 (a) and (b) show the
+interfaces of the system for transaction submission and inquiry. For example, when an
+engineer (operator) of Owner 1 inspects a certain number of rebar in Project 1, a quality
+report with inspection information and responsibilities must be recorded on the sidechain of
+Owner 1 (Fig. 9 (a)). The report will be saved as a JavaScript Object Notation file and hashed
+in the sidechain of Owner 1. The chaincode in the main blockchain will then interact with the
+backend of the sidechain to check the signature and hash pointer before submitting the hash
+pointer of the report to the main blockchain. The CFT consensus algorithm enables each
+entity in the main blockchain to digitally sign the document to reach a consensus, and then
+the rebar quality report can be committed to the latest block. The inquiry interface in Fig. 9(b)
+illustrates that by clicking on one of the transactions, the GSU in the main blockchain can
+track the historical operations of each sidechain and view the block details.
+
+19
+
+(a)
+
+490
+
+495
+
+500
+
+(b)
+Fig. 9. Prototype system interfaces. (a) The interface where the Owner 1 submits the rebar
+quality test report; (b) The interface for the GSU inquiring into the historical operations of the
+sidechain
+To sum up, this section has illustrated our dual-layer blockchain-based prototype system
+developed for construction supervision. The supervision process includes registration,
+submit-inquire, ordering, and consensus. By illustrating the deployed development
+environment, backend and frontend prototypes, and user interface, feasibility of the model
+proposed above is validated because it allows the GSU to monitor the project information of
+owners while ensuring safety and privacy.
+
+7 Discussion
+
+505
+
+The dual-layer blockchain-based model developed in this study provides a structured
+methodology to enable GSCW. Existing fully decentralized blockchain solutions for
+construction supervision lack consideration for GSUs, which are unwilling or not expected to
+give up their centralized status but are still interested in using blockchain. This study draws
+on China’s DCEP system experience to design a blockchain network typology, taking into
+20
+
+510
+
+515
+
+520
+
+525
+
+530
+
+535
+
+540
+
+545
+
+account the information safety and privacy of owners and the control requirements of the
+GSUs. The prototype system illustrates implementation of the proposed model in supervising
+project information in construction.
+Compared with existing blockchain solutions for construction supervision, the dual-layer
+blockchain model has four novel aspects. Firstly, the dual-layer blockchain structure means
+that no structural changes related to the current status of GSUs are needed. This is
+advantageous because it is difficult to change existing institutional arrangements in
+construction. The proposed model can help maintain GSU central governance, enhance
+project information security and privacy, and improve information-sharing efficiency.
+Concurrently, compared with the existing multi-layer contract system, the dual-layer
+blockchain-based model enhances communication and accountability processes. The reason
+is that the model can send and receive information through fewer levels, and the person who
+handles the corresponding transactions can be traced more easily. Secondly, the proposed
+model is scalable and open to extra owners without significantly changing network typology
+and model configuration. Previous blockchain research only focused on a particular
+construction process (e.g., production, supply chain, or on-site assembly). In contrast, the
+model proposed in this study can be extended and applied to the lifecycle and multiple tasks
+in project delivery. Thirdly, the model provides a valuable reference for designing blockchain
+governance policies, including relevant regulations, laws, policies, and standards.
+Policymakers can simulate different arrangements of blockchain network (de)centralization
+level in the prototype platform. Fourthly, the model is integrated with an incentive
+mechanism to enhance communication willingness.
+DCEP is not immune to criticisms. Although it adopts one-way anonymity, unlike cash and
+cryptocurrencies, authorized institutions can still trace transactions. If DCEP were used for
+international business transactions, the surveillance would cause privacy concerns in the
+global community. The same surveillance controversy also applies to the developed model
+for GSCW. When transactions are submitted to the main blockchain, the transactions will be
+hashed, protecting data privacy between participating entities. Nevertheless, it is a challenge
+to ensure that the supervised and queried information is not intentionally or unintentionally
+leaked at the top level. Therefore, from a legal perspective, more research on the blockchain
+network is needed to ensure that the “rule of blockchain” operates within the rule of law. The
+PBC has a series of considerations regarding technological (e.g., user-perceived benefits),
+organizational (e.g., top management support), and environmental (e.g., regulatory
+environment and government support) aspects to help enterprises, ranging from large to
+small, to adopt DCEP. Similarly, further empirical research is needed to establish strategies to
+drive the adoption of blockchain by organizations of different sizes.
+
+21
+
+550
+
+555
+
+Data sharing techniques have gradually attracted growing attention as a method of
+remarkably decreasing repetitive tasks. Nevertheless, there is still an issue to be addressed in
+the process of data sharing: unwillingness to share. Factors such as trust and the economic
+utility of data sharing may cause participants to be unwilling to share data. However, few
+studies in construction have been carried out on data sharing in the context of blockchain.
+The proposed model uses an incentive mechanism to encourage user participation by paying
+them rewarding points and exchanging for reputational and financial rewards. Scholars can
+improve the incentive mechanism adopted and explore other feasible incentive models for
+data sharing in blockchains. Besides, the proposed blockchain-based GSCW model is a
+decentralized data infrastructure, thereby not naturally concerting complicated information
+structures (e.g., Building Information Modeling’s semantics and ontologies). Therefore,
+future studies are encouraged to form logical information structures to allow construction
+stakeholders to add new and revised data to the model consistently.
+
+560
+
+8 Conclusions
+
+565
+
+570
+
+575
+
+580
+
+585
+
+Governmental supervision plays an indispensable role in existing construction governance
+systems. Government supervision units (GSUs), in reality, are reluctant or not supposed to
+give up their central position in a governance structure. However, they are interested in using
+blockchain owing to its promise in improving immutability, traceability, and transparency.
+There appears an incompatibility issue between blockchain technology, famous for its
+decentralization, and existing governmental supervision of construction work (GSCW)
+practices. This study attempted to address the incompatibility by finding an appropriate
+network topology with a proper level of (de)centralization and developing a blockchain-based
+model for GSCW.
+Through a series of research activities, including identifying current problems in GSCW
+practices, cross-sectoral learning from China’s digital currency electronic payment (DCEP)
+system, and conducting in-house design science research (DSR), we developed a blockchainbased model appropriate for GSCW. The proposed model, which is illustrated in Hyperledger
+Fabric, has two layers. The lower layer is the sidechain of participating entities (construction
+project teams), containing private transaction records and copies of the main blockchain. The
+upper layer is the main blockchain, which includes hash pointers and block information of
+transaction records. At this layer, the GSUs can supervise construction project owners by
+requesting project information. With help from smart contracts, interaction between the main
+and the side blockchains can be realized. The model also integrates a points-based incentive
+mechanism to enhance participation. The model aims to help GSUs maintain a reliable and
+effective supervision process by having registration, publish-inquire, ordering services, and
+consensus mechanisms. This research also provides a deployed development environment,
+backend and frontend prototypes, and the final user interfaces. Therefore, the developed dual22
+
+layer blockchain-based supervision model aims to ensure the authenticity of transactions,
+increase data privacy, and encourage user participation without affecting the autonomy of the
+project team and the power of GSU.
+
+590
+
+595
+
+600
+
+605
+
+The limitations of this study provide chances for further investigation. Firstly, the pointsbased incentive mechanism is yet to be refined by collecting empirical evidence. Future
+research can explore feasible blockchain incentive models that can dynamically adjust the
+incentives to maintain user participation. Secondly, the proposed blockchain-based model has
+not been extensively validated in actual GSCW practice because the construction industry has
+not yet formed an environment suitable for blockchain. Thus, GSUs are encouraged to
+cooperate with universities, research institutions, and construction companies to provide
+projects for pilot tests. Future research and practice are necessary to evaluate and validate the
+privacy and scalability of the proposed model. A detailed cost assessment for the initial
+platform establishment, deployment, storage, ongoing maintenance, and monitoring is also
+required. Thirdly, at the beginning of a construction project, it is necessary to conduct
+systematic business process analysis to concert the information structure among various
+applications (e.g., production, transportation, and on-site assembly). Future research can use
+the results of business process analysis to build and test applications. Fourthly, the operation
+data fed to the blockchain is endorsed by consensus-based blockchain oracles. More studies
+on the different types and reliability of blockchain oracles that bridge the off-chain and cyberworlds are desired to ensure the authenticity of the information. Fifthly, the proposed model
+does not naturally concert any complicated information structure so far. Therefore, future
+investigations can focus on blockchain friendly information structures so that construction
+stakeholders can consistently add new and revised data to the model.
+
+610
+
+Data Availability Statement
+Some or all data, models, or code that support the findings of this study are available from the
+corresponding author upon reasonable request. (Blockchain prototype code).
+
+615
+
+Acknowledgement
+This work is funded by the Hong Kong Innovation and Technology Fund (ITF) (Project No.:
+ITP/029/20LP).
+
+References
+620
+
+Adamska, B. A., Blahak, D., & Abanda, F. H. (2021). Blockchain in construction practice. In
+Collaboration and Integration in Construction, Engineering, Management and
+Technology (pp. 339-343). Springer, Cham.
+23
+
+625
+
+Ahmadisheykhsarmast, S., & Sonmez, R. (2020). A smart contract system for security of
+payment of construction contracts. Automation in Construction, 120, 103401.
+https://doi.org/10.1016/j.autcon.2020.103401.
+Anwar, H. (2020). “DCEP Project: China’s New Digital Currency.” 101 Blockhains.
+Accessed October 15, 2020. https://101blockchains.com/dcep-project/.
+
+630
+
+635
+
+Bagul, A., and Mukherjee, I. (2018). “An insight into centralised sourcing strategy for
+enhancing performance and sustainability of multi-tier supply network.” International
+Journal of Intelligent Enterprise, 5(1-2), 18-49.
+https://doi.org/10.1504/IJIE.2018.091183.
+Christensen, T., Lisheng, D., and Painter, M. (2008). “Administrative reform in China’s
+central government—how much ‘learning from the West’?” International Review of
+Administrative Sciences, 74(3), 351-371.
+https://doi.org/10.1177%2F0020852308095308.
+Ciaian, P., and Rajcaniova, M. (2016). “The digital agenda of virtual currencies: Can BitCoin
+become a global currency?” Information Systems and e-Business Management, 14(4),
+883-919. https://doi.org/10.1007/s10257-016-0304-0.
+
+640
+
+Corporate Finance Institute. (2020). “What is Centralization?” Accessed October 15, 2020.
+https://corporatefinanceinstitute.com/resources/knowledge/strategy/centralization/.
+Dakhli, Z., Lafhaj, Z., & Mossman, A. (2019). “The potential of blockchain in building
+construction.” Buildings, 9(4), 77. https://doi.org/10.3390/buildings9040077.
+
+645
+
+Das, M., Luo, H., & Cheng, J. C. (2020). “Securing interim payments in construction projects
+through a blockchain-based framework.” Automation in Construction, 118, 103284.
+https://doi.org/10.1016/j.autcon.2020.103284.
+Elghaish, F., Abrishami, S., & Hosseini, M. R. (2020). “Integrated project delivery with
+blockchain: An automated financial system.” Automation in Construction, 114, 103182.
+https://doi.org/10.1016/j.autcon.2020.103182.
+
+650
+
+655
+
+660
+
+Feng, C., and Borak, M. (2020). “China’s digital currency will not compete with mobile
+payment apps WeChat and Alipay, says programme head.” South China Morning Post.
+Accessed October 27, 2020. https://www.scmp.com/tech/policy/article/3107074/chinasdigital-currency-will-not-compete-mobile-payment-apps-wechat-and .
+Hamledari, H., & Fischer, M. (2021). “Role of blockchain-enabled smart contracts in
+automating construction progress payments.” Journal of Legal Affairs and Dispute
+Resolution in Engineering and Construction, 13(1), 04520038.
+https://doi.org/10.1061/(ASCE)LA.1943-4170.0000442.
+Hargaden, V., Papakostas, N., Newell, A., Khavia, A., & Scanlon, A. (2019). The role of
+blockchain technologies in construction engineering project management. In 2019 IEEE
+International Conference on Engineering, Technology and Innovation (ICE/ITMC) (pp.
+1-6). IEEE.
+Hasselgren, A., Kralevska, K., Gligoroski, D., Pedersen, S. A., and Faxvaag, A. (2020).
+“Blockchain in healthcare and health sciences—A scoping review.” International
+Journal of Medical Informatics, 134, 104040.
+https://doi.org/10.1016/j.ijmedinf.2019.104040.
+
+24
+
+665
+
+Heiskanen, A. (2017). “The technology of trust: How the Internet of Things and blockchain
+could usher in a new era of construction productivity.” Construction Research and
+Innovation, 8(2), 66-70. https://doi.org/10.1080/20450249.2017.1337349.
+Hevner, A., and Chatterjee, S. (2010). “Design science research in information systems.” In
+Design Research in Information Systems., 9-22. Springer, Boston, MA.
+
+670
+
+675
+
+Hewavitharana, T., Nanayakkara, S., & Perera, S. (2019). Blockchain as a project
+management platform. In Proceedings of the 8th World Construction Symposium (Vol. 1,
+No. 1, pp. 137-146). University of Moratuwa.
+Hunhevicz, J. J., & Hall, D. M. (2020). “Do you need a blockchain in construction? Use case
+categories and decision framework for DLT design options.” Advanced Engineering
+Informatics, 45, 101094. https://doi.org/10.1016/j.aei.2020.101094.
+Hyperledger Fabric. (2020). “Glossary.” Accessed April 15, 2020. https://hyperledgerfabric.readthedocs.io/en/latest/index.htm.
+
+680
+
+Kim, K., Lee, G., & Kim, S. (2020). “A study on the application of blockchain technology in
+the construction industry.” KSCE Journal of Civil Engineering, 24(9), 2561-2571.
+https://doi.org/10.1007/s12205-020-0188-x.
+Kiu, M. S., Chia, F. C., & Wong, P. F. (2020). “Exploring the potentials of blockchain
+application in construction industry: a systematic review.” International Journal of
+Construction Management, 1-10. https://doi.org/10.1080/15623599.2020.1833436.
+
+685
+
+Kochovski, P., & Stankovski, V. (2021). “Building applications for smart and safe
+construction with the DECENTER Fog Computing and Brokerage Platform.”
+Automation in Construction, 124, 103562. https://doi.org/10.1016/j.autcon.2021.103562.
+Kooiman, J. (2003). Governing as Governance. Thousand Oaks, USA: Sage.
+
+690
+
+Kochovski, P., Gec, S., Stankovski, V., Bajec, M., & Drobintsev, P. D. (2019). “Trust
+management in a blockchain-based fog computing platform with trustless smart
+oracles.” Future Generation Computer Systems, 101, 747-759.
+https://doi.org/10.1016/j.future.2019.07.030.
+Le, K. (2020). “How close is China’s digital currency DCEP to launching?” Forkast.
+Accessed October 15, 2020. https://forkast.news/china-dcep-launch-digital-currencyrenminbi-cbdc/.
+
+695
+
+700
+
+Li, X., Shen, G. Q., Wu, P., and Yue, T. (2019). “Integrating building information modeling
+and prefabrication housing production.” Automation in Construction, 100, 46-60.
+https://doi.org/10.1016/j.autcon.2018.12.024.
+Lin, Y. H., and Ho, S. P. (2013). “Impacts of governance structure strategies on the
+performance of construction joint ventures.” Journal of Construction Engineering and
+Management, 139(3), 304-311. https://doi.org/10.1061/(ASCE)CO.1943-7862.0000619 .
+Li, C. Z., Chen, Z., Xue, F., Kong, X. T., Xiao, B., Lai, X., & Zhao, Y. (2021). “A
+blockchain-and IoT-based smart product-service system for the sustainability of
+prefabricated housing construction.” Journal of Cleaner Production, 286, 125391.
+https://doi.org/10.1016/j.jclepro.2020.125391.
+
+705
+
+Li, J., Greenwood, D., & Kassem, M. (2019). “Blockchain in the built environment and
+construction industry: A systematic review, conceptual models and practical use cases.”
+Automation in Construction, 102, 288-307. https://doi.org/10.1016/j.autcon.2019.02.005.
+25
+
+710
+
+Liang, X., Zhao, J., Shetty, S., Liu, J., and Li, D. (2017). “Integrating blockchain for data
+sharing and collaboration in mobile healthcare applications.” In 2017 IEEE 28th Annual
+International Symposium on Personal, Indoor, and Mobile Radio Communications
+(PIMRC)., 1-5. IEEE.
+Lo, S. K., Xu, X., Staples, M., & Yao, L. (2020). “Reliability analysis for blockchain
+oracles.” Computers & Electrical Engineering, 83, 106582.
+https://doi.org/10.1016/j.compeleceng.2020.106582.
+
+715
+
+Mao, D., Hao, Z., Wang, F., and Li, H. (2019). “Novel automatic food trading system using
+consortium blockchain.” Arabian Journal for Science and Engineering, 44(4), 34393455. https://doi.org/10.1007/s13369-018-3537-z .
+Marteau, T. M., Ashcroft, R. E., & Oliver, A. (2009). “Using financial incentives to achieve
+healthy behaviour.” Bmj, 338, 1415. https://doi.org/10.1136/bmj.b1415.
+
+720
+
+725
+
+Nawari, N. O., & Ravindran, S. (2019a). “Blockchain and the built environment: Potentials
+and limitations.” Journal of Building Engineering, 25, 100832.
+https://doi.org/10.1016/j.jobe.2019.100832.
+Nawari, N. O., & Ravindran, S. (2019b). Blockchain and building information modeling
+(BIM): Review and applications in post-disaster recovery. Buildings, 9(6), 149.
+https://doi.org/10.3390/buildings9060149.
+Ouchi, V. G. (1980). “Markets, Bureaucracies, and Clans.” Administrative Science Quarterly,
+25(1), 129-141. https://doi.org/10.2307/2392231 .
+
+730
+
+735
+
+Perera, S., Nanayakkara, S., Rodrigo, M. N. N., Senaratne, S., and Weinand, R. (2020).
+“Blockchain technology: Is it hype or real in the construction industry?.” Journal of
+Industrial Information Integration, 17, 100125.
+https://doi.org/10.1016/j.jii.2020.100125 .
+Penzes, B., Kirkup, A., Gage, C., Dravai, T., and Colmer, M. (2018). “Blockchain technology
+in the construction industry: Digital transformation for high productivity.” Institution of
+Civil Engineers. Accessed October 1, 2020.
+https://www.academia.edu/38193166/Blockchain_Technology_in_the_Construction_Ind
+ustry_ICE_pdf.
+Peters, M. A., Green, B., and Yang, H. (2020). Forthcoming. “Cryptocurrencies, China’s
+sovereign digital currency (DCEP) and the US dollar system.” Educational Philosophy
+and Theory. https://doi.org/10.1080/00131857.2020.1801146 .
+
+740
+
+Pomponi, F., and Moncaster, A. (2016). “Embodied carbon mitigation and reduction in the
+built environment–What does the evidence say?.” Journal of Environmental
+Management, 181, 687-700. https://doi.org/10.1016/j.jenvman.2016.08.036.
+Pfeiffer, T., Tran, L., Krumme, C., & Rand, D. G. (2012). “The value of reputation.” Journal
+of the Royal Society Interface, 9(76), 2791-2797.
+
+745
+
+750
+
+Qian, X. A., and Papadonikolaki, E. (2020). Forthcoming. “Shifting trust in construction
+supply chains through blockchain technology.” Engineering, Construction and
+Architectural Management. https://doi.org/10.1108/ECAM-12-2019-0676 .
+Recarte Suazo, G. A., and Jaselskis, E. J. (1993). “Comparison of construction safety codes in
+United States and Honduras.” Journal of Construction Engineering and Management,
+119(3), 560-572. https://doi.org/10.1061/(ASCE)0733-9364(1993)119:3(560) .
+
+26
+
+Risius, M., and Spohrer, K. (2017). “A blockchain research framework.” Business and
+Information Systems Engineering, 59(6), 385-409. https://doi.org/10.1007/s12599-0170506-0 .
+755
+
+Rounds, J. L., and Segner, R. O. (2010). Construction Supervision. Hoboken, USA: John
+Wiley and Sons.
+Rose, T., & Manley, K. (2010). “Client recommendations for financial incentives on
+construction projects.” Engineering, Construction and Architectural Management. 17(3),
+252-267. https://doi.org/10.1108/09699981011038051.
+
+760
+
+765
+
+Sato, K., Sudo, K., Zheng, J., He, S., and Chen, O. (2020). “China DC/EP Research and
+Perspectives of CBDC in Japan.” Hashkey Capital and Nomura Research Institute.
+Accessed October 15, 2020. https://www.hashkey.com/wpcontent/uploads/2020/10/HashKey-Nomura-white-paper.pdf.
+San, K. M., Choy, C. F., & Fung, W. P. (2019). The potentials and impacts of blockchain
+technology in construction industry: A literature review. In IOP Conference Series:
+Materials Science and Engineering (Vol. 495, No. 1, p. 012005). IOP Publishing.
+Safa, M., Baeza, S., & Weeks, K. (2019). “Incorporating Blockchain technology in
+construction management.” Strategic Direction, 35(10), 1-3. https://doi.org/10.1108/SD03-2019-0062.
+
+770
+
+Shemov, G., de Soto, B. G., and Alkhzaimi, H. (2020). “Blockchain applied to the
+construction supply chain: A case study with threat model.” Frontiers of Engineering
+Management, 7(4), 564-577. https://doi.org/10.1007/s42524-020-0129-x .
+Sheng, D., Ding, L., Zhong, B., Love, P. E., Luo, H., and Chen, J. (2020). “Construction
+quality information management with blockchains.” Automation in Construction, 120,
+103373. https://doi.org/10.1016/j.autcon.2020.103373 .
+
+775
+
+Shi, Y., and Zhou, S. (2020). “Central bank digital currencies: Towards a Chinese approachdesign choices.” Jönköping University. Accessed November 15, 2020. https://www.divaportal.org/smash/record.jsf?pid=diva2%3A1433870anddswid=-5858.
+
+780
+
+Sharma, M. G., & Kumar, S. (2020). “The Implication of Blockchain as a Disruptive
+Technology for Construction Industry.” IIM Kozhikode Society & Management Review,
+9(2), 177-188. https://doi.org/10.1177%2F2277975220932343.
+
+785
+
+The State Council. (2003). “Regulations on Safety Production Management of Construction
+Projects.” Accessed April 15, 2020.
+http://sousuo.gov.cn/s.htm?t=govallandq=%E5%BB%BA%E8%AE%BE%E5%B7%A5
+%E7%A8%8B%E5%AE%89%E5%85%A8%E7%94%9F%E4%BA%A7%E6%9D%A1
+%E4%BE%8B .
+Tran, S. (2019). “China's Central Bank Digital Currency DCEP: What We Know So Far.”
+Blockchain News. Accessed October 15, 2020. https://blockchain.news/news/chinascentral-bank-digital-currency-what-we-know-so-far.
+
+790
+
+Tuuli, M. M., Rowlinson, S., and Koh, T. Y. (2010). “Dynamics of control in construction
+project teams.” Construction Management and Economics, 28(2), 189-202.
+https://doi.org/10.1080/01446190903365657.
+Turk, Ž., & Klinc, R. (2017). “Potentials of blockchain technology for construction
+management.” Procedia Engineering, 196, 638-645.
+https://doi.org/10.1016/j.proeng.2017.08.052.
+27
+
+795
+
+800
+
+805
+
+810
+
+Tezel, A., Papadonikolaki, E., Yitmen, I., & Hilletofth, P. (2020). “Preparing construction
+supply chains for blockchain technology: An investigation of its potential and future
+directions.” Frontiers of Engineering Management, 1-17.
+https://doi.org/10.1007/s42524-020-0110-8.
+Volkova, T. G., Sevryugin, Y. V., and Firsova, S. N. (2020). “Central Bank Digital
+Currencies as the Instrument of National Economic Sovereignty Consolidation.” In 2nd
+International Scientific and Practical Conference “Modern Management Trends and the
+Digital Economy: from Regional Development to Global Economic Growth” (MTDE
+2020)., 632-637. Atlantis Press.
+Volpp, K. G., Troxel, A. B., Pauly, M. V., Glick, H. A., Puig, A., Asch, D. A., ... & AudrainMcGovern, J. (2009). “A randomized, controlled trial of financial incentives for smoking
+cessation.” New England Journal of Medicine, 360, 699-709.
+https://doi.org/10.1056/NEJMsa0806819.
+Wang, J., Wu, P., Wang, X., & Shou, W. (2017). “The outlook of blockchain technology for
+construction engineering management.” Frontiers of Engineering Management, 67-75.
+https://doi.org/10.15302/J-FEM-2017006.
+Wang, Z., Wang, T., Hu, H., Gong, J., Ren, X., and Xiao, Q. (2020). “Blockchain-based
+framework for improving supply chain traceability and information sharing in precast
+construction.” Automation in Construction, 111, 103063.
+https://doi.org/10.1016/j.autcon.2019.103063.
+
+815
+
+820
+
+Wang, L. (2020). “Digital Currency In-depth Report: DCEP Leads the Wave of Financial
+Technology Trusted Computing Architecture.” ShenGang Securities. Accessed October
+15, 2020. https://www.vzkoo.com/doc/25713.html .
+Xu, J., and Prud'homme, D. Forthcoming. (2020). “China’s digital currency revolution and
+implications for international business strategy.” London School of Economics Business
+Review, https://dx.doi.org/10.2139/ssrn.3672240.
+Xue, F., & Lu, W. (2020). “A semantic differential transaction approach to minimizing
+information redundancy for BIM and blockchain integration.” Automation in
+Construction, 118, 103270. https://doi.org/10.1016/j.autcon.2020.103270.
+
+825
+
+Xiong, F., Xiao, R., Ren, W., Zheng, R., & Jiang, J. (2019). “A key protection scheme based
+on secret sharing for blockchain-based construction supply chain system.” IEEE Access,
+7, 126773-126786. https://doi.org/10.1109/ACCESS.2019.2937917.
+Yong, B., Shen, J., Liu, X., Li, F., Chen, H., and Zhou, Q. (2020). “An intelligent blockchainbased system for safe vaccine supply and supervision.” International Journal of
+Information Management, 52, 102024. https://doi.org/10.1016/j.ijinfomgt.2019.10.009.
+
+830
+
+835
+
+Yang, R., Wakefield, R., Lyu, S., Jayasuriya, S., Han, F., Yi, X., ... & Chen, S. (2020).
+“Public and private blockchain in construction business process and information
+integration.” Automation in Construction, 118, 103276.
+https://doi.org/10.1016/j.autcon.2020.103276.
+Zhong, B., Wu, H., Ding, L., Luo, H., Luo, Y., and Pan, X. (2020). “Hyperledger fabricbased consortium blockchain for construction quality information management.”
+Frontiers of Engineering Management, 7(4), 512-527. https://doi.org/10.1007/s42524020-0128-y.
+Zhai, Y., Chen, K., Zhou, J. X., Cao, J., Lyu, Z., Jin, X., ... and Huang, G. Q. (2019). “An
+Internet of Things-enabled BIM platform for modular integrated construction: A case
+28
+
+840
+
+study in Hong Kong.” Advanced Engineering Informatics, 42, 100997.
+https://doi.org/10.1016/j.aei.2019.100997 .
+Zhang, Z., Yuan, Z., Ni, G., Lin, H., & Lu, Y. (2020). “The quality traceability system for
+prefabricated buildings using blockchain: An integrated framework.” Frontiers of
+Engineering Management, 7(4), 528-546. https://doi.org/10.1007/s42524-020-0127-z.
+
+845
+
+29
+
+

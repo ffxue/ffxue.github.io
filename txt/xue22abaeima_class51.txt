@@ -1,0 +1,283 @@
+HKABAEIMA Training Class 51
+
+Low-cost Digital Twins of Built Assets
+
+Automatic creation of photo-realistic openBIM by integrating
+ubiquitous Augmented Reality and 2D CAD drawings
+12/10/2022
+
+Yijie WU
+Lingming KONG
+Fan (Frank) XUE
+Dept. REC, Faculty of Architecture, HKU
+
+1 Background & challenges
+• Digital Twin (DT)
+
+• is “digital replica of a physical object”
+
+🏠🏠
+
+• Real geometry, current texture, functions (regularly updated)
+• A US$ 3 billion global market in 2020 (yearly growth at 58%)
+
+• Featured with 1) reality, 2) simulations, 3) optimization
+• Highly demanded for building assets in the AECO sector
+
+• Challenges against DTs of building assets
+• Devices/data collection
+
+• Expensive LiDAR, drones, slow collection, incomputable data
+• As-designed BIM (no real textures)
+
+• Processing for reality
+
+• 3D Modeling: Intensive manual effort
+
+• Simulations & optimization: largely uncharted area
+2
+
+Engine DT (Src: GE)
+
+1 DTs aspired in national and local guidelines
+• 國家自然資源部 (MNR, 2022)
+
+• 《关于全面推进实景三维中国建
+设的通知》
+• ‘Real 3D China’ for all 15 subprovincial cities by 2027/32
+• “For >80% decision making”
+
+• CIC’s (2021) Const. Digital. Roadmap
+• DA 1/4/5/6
+• Digital scans for pre-2010 assets
+• Realtimelize as-designed BIM/CAD
+
+• Manifesto of CE’s Election (2022)
+
+2. Opportunities: Augmented Reality (AR) and CAD
+
+• Research question: How to integrate AR and CAD effectively for DTB?
+4
+
+3.1 Our “AR + CAD = DT” for building assets
+
+5
+
+Conceptual map of “AR + CAD = DT”
+
+Process map
+
+3.2 Software ecosystem
+• Stands on the
+shoulders of
+OpenBIM/open
+GIS ecosystems
+• 5 clusters
+• Data / device
+• Technologies
+• Services
+• Standards
+• User tools
+
+6
+
+4.1 Implementation – example
+• Corridor networks, Knowles Building, HKU
+• From 2/F to 8/F
+
+• 7 largely different layouts
+
+• AR devices:
+• 1,400
+
+Tango,
+
+iPad Pro 
+
+~18,000 color points / m2
+
+• Results
+
+• Output DT with photo-realistic textures 
+• Accessible in BIM, webGIS, Windows
+• IFC4, glTF, OBJ formats 
+
+Our work
+Ground truth
+7
+
+4.1 Implementation – OpenBIM
+• Textured DT as OpenBIM
+
+• OpenBIM : IFC4 with textures 
+
+• Geometry in IFC4
+• “IfcFace <--> IfcTextureMap <-->
+IfcImageTexture” schematic pipeline
+• Standard IFC schema
+• No extension needed
+
+• Texture image
+
+• The computable semantics in OpenBIM 
+• Well structured semantics for building assets
+• No add-in / extensions
+
+• Software tool: FZK viewer
+
+• Some IFC tools do not support PNG texture
+
+8
+
+4.1 Technical details
+• CAD segmentation
+
+• Walls, doors, columns, etc.
+• Using filters
+
+• Points to texture
+
+• Sampled point colors to extrusion
+• Small holes completion using
+neighbor colors
+
+4.1 Implementation – OpenGIS/Win viewer
+• DT in OpenGIS 
+
+• Cesium (a web GIS platform)
+
+• IFC4  glTF format
+• WebGL 3D tiles (see right)
+• With a background of 3D point cloud
+
+• Also works with ArcGIS APIs
+
+• DT in general viewer 
+
+• Windows 10/11’s native 3D viewer
+• IFC4  OBJ format
+• Accessible on any PC
+
+10
+
+5. Evaluation – performance
+•  Our work was ~50% more accurate
+and 73% faster than existing ones
+•  How it works
+•  Comparison of AR devices
+• iPad Pro was better
+
+• High-density points, vivid colors
+• 87~95% data compressions
+
+11
+
+5. Evaluation – costs
+• Fixed cost
+
+• iPad Pro: HK$6,500
+
+• Or Google Tango/ARCore: HK$3,000
+
+• Easy to use, no training required
+• OpenBIM/OpenGIS: free and open
+
+• On-cost
+
+• CAD: HK$42 per sheet (from BD’s BRAVO)
+• Human resource: 20 mins per storey
+• Data processing (per storey):
+• Step 1: 15~20 mins
+• Step 2: 1~5 seconds
+• Step 3: 1~2 mins
+
+12
+
+6. Innovations and advantages
+• Five innovations of the study
+
+1) Automatic creation of DT for building assets
+2) Ubiquitous AR+CAD for any existing building
+3) Information compensation between AR and CAD
+4) Utilization of architectural symmetry for DTB
+5) Photo-realistic textured OpenBIM
+
+• Advantages
+
+• Low-cost prerequisite: AR devices and CAD
+• Low-cost processing: Our open-source, fast Python tool
+• High-quality DT: in OpenBIM/OpenGIS (~90% compression)
+• Using “IfcFace <--> IfcTextureMap <--> IfcImageTexture” pipeline
+
+13
+
+6. Limitations & to-dos
+1. Noises & “Holes” in texture
+
+• 1. Cause:
+
+• Sub-sampling (1cm or 2cm) before
+point-to-image projection
+
+• 1. Future improvement:
+
+• Full point cloud cropping 
+projection textures  subsample
+
+2. AR Phones cannot scan
+building exteriors
+
+• 2. On-going: Drone exterior mesh
+texture optimization (multi-LoD)
+
+7. Future directions
+
+Fine-tune the technology
+in more projects/ types of
+assets
+
+15
+
+Collaborate with partners
+to develop a user-friendly
+“AR + CAD = DT (IFC4)”
+software pipeline
+
+Promote 2) simulations
+and 3) DT optimizations of
+Built Assets via OpenBIM in
+Hong Kong and beyond
+
+Acknowledgements
+• Funding support for algorithms
+
+• Research Grants Council (Nos. 17200218, 27200520)
+
+• Contact
+
+• Coordinator contact
+
+• Dr. Frank Xue, xuef@hku.hk, Asst. Prof., FoA, HKU
+
+• Related paper, software, and resources
+
+• Wu, Y., Shang, J., & Xue, F. (2021). RegARD: symmetry-based coarse
+registration of smartphone’s colorful point clouds with CAD drawings
+for low-cost digital twin buildings. Remote Sensing, 13(10), 1882.
+https://doi.org/10.3390/rs13101882
+• RegARD (Python) @ GitHub, https://github.com/eiiijiiiy/RegARD
+
+• Shared by us under LGPL-3.0 license, free for non-commercial use; limited
+commercial use (open source if any modifications)
+
+• FZKviewer @ KIT, https://www.iai.kit.edu/english/1648.php
+16
+
+OpenBIM/ OpenGIS
+and our Python code are
+free and open for you
+
+Let’s join our hands
+for an open-minded future !
+
+

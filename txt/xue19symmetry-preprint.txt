@@ -1,0 +1,490 @@
+Preprint version (before peer review) of
+Xue, F., Chen, K., & Lu, W. (2019). Architectural Symmetry Detection from 3D Urban Point Clouds: A Derivative-Free
+Optimization (DFO) Approach. In Advances in Informatics and Computing in Civil and Construction Engineering (pp.
+513-519). Springer, Cham.
+The full version is available at: https://link.springer.com/chapter/10.1007/978-3-030-00220-6_61
+
+Architectural Symmetry Detection from 3D
+Urban Point Clouds: A Derivative-Free
+Optimization (DFO) Approach
+Fan Xue, Ke Chen, and Weisheng Lu
+University of Hong Kong, Pokfulam, Hong Kong SAR,
+xuef@hku.hk, http://orcid.org/0000-0003-2217-3693,
+WWW home page: http://hub.hku.hk/cris/rp/rp02189
+
+Abstract. Symmetry is a fundamental phenomenon in not only nature
+and science but also cities and architectures. Architectural symmetry
+detection (ASD) from 3D urban point clouds is an essential step in understanding the architectures as well as creating a semantic city/building
+information model (CIM/BIM) to enable various applications for a smart
+and resilient future. However, manual segmentation and recognition of
+3D urban point clouds are too time-consuming, tedious, and costly, and
+automatic ASD is very challenging. This paper presents a derivativefree optimization (DFO) approach for automatic ASD from 3D urban
+point clouds. In this paper, we formulate the problem of ASD as a nonlinear optimization problem by extending the mathematical definition
+of geometric symmetry with soft constraints of architectural styles. We
+develop a ‘divide-and-detect’ process to discover the family of symmetry
+hierarchies based on the formulation and apply the state-of-the-art DFO
+algorithms to the formulated problem. A pilot study was conducted on
+a case of the rooftop of a neoclassical building. The proposed approach
+detected the global reflection from 1.4 million points in 23.5 seconds, and
+the whole symmetry hierarchy of reflections in about ten minutes. The
+detected symmetry hierarchy was applied to a regularity-based rooftop
+modeling. The contribution of this paper is twofold. First, this paper
+exposes the problem of ASD to many mathematical methods through
+an innovative problem formulation. Secondly, the proposed DFO approach is accurate, efficient, and capable of processing large-scale 3D urban
+point clouds for enriching the urban semantics in CIM/BIM.
+Keywords: symmetry detection, architectural symmetry, derivative-free
+optimization (DFO), 3D urban point cloud, semantic enrichment, urban
+semantics, city information model (CIM), building information model
+(BIM)
+
+1
+
+Introduction
+
+From quarks to animals to galaxies, symmetry is a fundamental phenomenon
+in nature and science. The presence of various symmetries makes an impact on
+not only our perceptions and recognition but also our understandings, responses,
+
+2
+
+Fan Xue et al.
+
+and artifacts [1]. In architecture, symmetry always finds its fundamental position
+across eras, continents, and cultures [2], in examples including the Parthenon of
+Greece, the Great Wall of China, the Taj Mahal of India, the Sydney Opera
+House, and ‘The Gherkin’ in London. Types of architectural symmetries include
+reflection, translation, rotation, uniform scaling, and their combinations. Architectural symmetries are not accidental but often result from considerations of
+function, mechanics, economics, manufacture, and aesthetics [3], e.g., for cleaner
+massive prefabrication and better buildability.
+Nowadays, increasingly affordable and accurate 3D point clouds of architectures and cities are available from advanced sensing devices from ground station to
+vehicle to aircraft to satellite [4]. Detecting architectural symmetries from urban
+point clouds reveals geometric fundamentals essential for accurate, informative,
+and machine recognizable city/building information model (CIM/BIM) [4] to
+enable various applications, such as architectural design, computer vision, construction management, heritage conservation, for a smart and resilient future of
+cities. Manual detection is way too time-consuming, tedious, and costly. Thus,
+automatic architectural symmetry detection (ASD) from 3D urban point clouds
+has attracted interests from both academia and the industry but remains very
+challenging [5].
+Derivative-free optimization (DFO) is a class of nonlinear optimization in
+mathematics and computer science [6]. It is well-known that the derivatives of
+a function contain information vital to finding the best values in mathematical problems. However, in many real-world complicated science and engineering
+problems, such as predicting protein folding, optimizing aircraft wings, as well
+as ASD, the derivatives the objective functions are often unavailable, unreliable,
+or impractical to obtain [7,8]. DFO algorithms have shown successful records
+to carry out optimization under such circumstances [6,7]. Examples of DFO
+applications are general pattern search for protein structure prediction [9] and
+covariance matrix adaptation evolution strategy (CMA-ES) [10] for as-built BIM
+generation from 2D images [8].
+This paper aims to apply state-of-the-art DFO algorithms to the problem
+of ASD from 3D urban point clouds. We first formulate the problem of ASD
+of a single symmetry to a nonlinear optimization problem by extending the
+definition of general symmetries. The symmetry hierarchies, including all the
+global and local symmetries and their relationships in a 3D urban point cloud,
+can thereafter be established in a ‘divide-and-detect’ process. Then, we apply a
+well-known DFO algorithm CMA-ES (see [10]) to the formulated problems to
+detect the symmetries and the symmetry hierarchies automatically. As far as is
+concerned, this paper is the first attempt of applying up-to-date DFO algorithms,
+such as CMA-ES, to the problem of ASD from 3D urban point clouds.
+The remainder of the paper is structured into four sections. Sect. 2 revisits the
+related methods in the literature. Sect. 3 presents the proposed DFO approach.
+Sect. 4 describes the experimental tests on a pilot case of a dense point cloud.
+Conclusion and recommendations for future research are given in Sect. 5.
+
+Architectural Symmetry Detection
+
+2
+
+Background
+
+2.1
+
+Symmetry
+
+3
+
+In geometry and group theory, symmetry is an affine transformation that preserves points, straight lines, and planes on the 3D Euclidean space R3 . Symmetry
+detection is the process of finding the symmetry group G of a geometric object [11], e.g., a 3D point cloud C in this research:
+G = hT , ◦i,
+
+T = T |T (C) = C, T is affine on R3 ,
+
+(1)
+
+3
+
+C = {p1 , p2 , . . . , pn } ⊂ R , n > 0,
+where T is the set of all global symmetries, ◦ is the function composition defined
+on T (i.e., (g ◦ f ) (x) = g (f (x)), and n is the cardinality (number of points) of
+C. An affine transformation T is called a global symmetry if T (C) = C [12], i.e., a
+global symmetry keeps C invariant as a whole while permuting its parts. Alternatively, T is called local (or partial ) if ∃C 0 ⊂ C such that T (C 0 ) = C 0 . Usually,
+the point cloud of a real object inevitably has instrumental, environmental, and
+calibration errors. Thus, the ideal global (or local) symmetry condition is often
+approximately relaxed to some quantitative descriptors [13,14], such as:
+1
+|T (C) ∩ C| > 1 − ε,
+n
+1X
+MNND =
+||T (p) − N (T (p), C)|| < εd,
+n
+PCR =
+
+(2)
+(3)
+
+p∈C
+
+where 0 ≤ ε  1 is a small threshold of error tolerance, d is the diagonal of C,
+and N (p, C) denotes the nearest point to p in C. A high point correspondence
+ratio (PCR) in Eq. (2) means that almost all points still belong to C after
+transformation T ; Eq. (3) is the mean nearest-neighbor distance (MNND). The
+root-mean-square distance (RMSD) was sometimes used, however often prone to
+non-uniform noises in urban point clouds.
+2.2
+
+Symmetry detection methods
+
+Researchers have developed different approaches for detecting general symmetries, including architectural symmetries, from 3D point clouds. These approaches can be broadly categorized into three types, i.e., (i) pairwise votingclustering, (ii) geometric feature matching, and (iii) parameter optimization.
+Pairwise voting-clustering approaches are primarily based on Eq. (2). The
+core technique is the collection of votes for symmetry parameters in a Hough-like
+transform parameter space [12]. There are n(n − 1)/2 pairwise correspondences
+between n points. Each correspondence ‘votes’ for a grid in the parameter space.
+The most voted grids represent the approximate parameters of the symmetries.
+
+4
+
+Fan Xue et al.
+
+Mitra et al. The correspondence can be between 3D points for architectural models and symmetrization-based design [12,13] and other geometry such as wavelet
+convolution [15]. However, voting-clustering approaches have limitations in processing urban point clouds, e.g., the inherited bias and proneness to the noise
+of the Hough-like transform [16] and ineffective recognition of local symmetries
+due to loss of correlation information during voting [18].
+Geometric feature matching approaches involve matching a collection of local
+geometric features. A feature such as a line, plane, or sphere can infer the locations and tilts of the dual symmetries, e.g., a planar rectangle naturally has two
+reflection symmetries. Examples of approaches include iterative closest points,
+boundary-tracing, matching of feature points, feature lines, and their repetitive
+patterns, e.g., [17,18]. The most popular methods in this category are the variants of random sample consensus (RANSAC) for detecting planes, spheres, and
+other pre-defined features [19]. Some variants (e.g., RAPter [20]) have considered
+preliminary regularities for buildings, e.g., emphasizing the angles of 90° and 60°
+between adjacent planes to improve the results of RANSAC. However, feature
+matching approaches often have inevitable errors inherited from the feature detection process [19] and rely heavily on a priori knowledge of the point clouds
+and availability of an abundance of suitable and regular features [21].
+Parameter optimization approaches, in contrast, focus on optimizing the parametric symmetries (e.g., the location and tilt of a plane of reflection) for a satisfactory condition (see Eq. 2–3). Early work in this category began with finding
+symmetries from 2D images, e.g., using eigenvectors of the similarity matrix [22].
+In processing 3D models and point clouds to detect the symmetries and symmetry group, [14] exploited fast Fourier transform (FFT) and formalize the optimal
+axis of rotational symmetry; [23] presented a parameter optimization method for
+non-rigid 3D objects in general. In fact, some modern feature matching methods,
+e.g., RAPter [20], also partially incorporate parameter optimization to take advantage of modern mathematical methods, though the parameters are strictly
+confined to the matching results of the prerequisite features.
+In summary, parameter optimization approaches can detect all types of symmetries in satisfactory conditions in reasonable time. However, the optimization
+problem can become very complicated (e.g., n > 106 ) and expensive (timeconsuming) in the dense point clouds of real architectures; as a result, many
+derivative-based mathematical methods cannot be implemented. This dilemma
+has given rise to attempts to develop a DFO approach in this paper.
+
+3
+
+Methodology
+
+As a subset of T in Eq. (1), the set TA of all architectural symmetries can be
+defined on Eq. (1) and the style A of a known architecture:
+TA = {T |A(T ) = Ag (T ) + At (T ) < εA , T ∈ T } ⊆ T ,
+Ag (T ) ≥ 0,
+At (T ) ≥ 0,
+
+(4)
+
+Architectural Symmetry Detection
+
+5
+
+where Ag measures the violations of the geometric regularity defined in the architectural style A, At measures the violations of the defined topology, and εA  1
+represents a small threshold of error tolerance. The global and local architectural
+symmetries can thereafter be similarly defined. For each symmetry, the problem
+of ASD can thus be formalized as a general form of nonlinear optimization with
+a weighted sum objective function:
+min
+
+f (x) = fC (x) + ωA(x)
+
+s.t.
+
+x = {x1 , x2 , . . . , xm } ∈ Rm ,
+fC : Rm 7→ R+ ∪ {0},
+A:R
+
+m
+
++
+
+7→ R ∪ {0},
+
+see Eq. (2–3),
+
+(5)
+
+see Eq. (4),
+
++
+
+ω ∈ R ∪ {0},
+where f is the objective function comprising of the penalty fC (x) from the point
+cloud and A(x) from the architectural style, x a parametric transformation with
+m parameters, ω is the relative weight of A. In Eq. (5), the violations of the soft
+constraints of the architectural style are converted to a weighted penalty. Eq. (5)
+is general and can be applied to all architectural symmetries, such as reflection,
+translation, rotation, uniform scaling, and their combinations.
+Because Eq. (5) only formulates the detection of one single symmetry, DFO
+algorithms must solve separately to obtain the optimal symmetries for each type
+of global symmetries such as reflection, rotation, translation, and scaling. The local symmetries can be detected in a ‘divide-and-detect’ process as follows. Every
+newly found symmetry splits its input Cinput into three parts: the source Csrc
+of correspondence, the destination Cdest , and the non-corresponded remaining
+points Crem . With the formulation (Eq. 5) and DFO algorithms, the ASD can
+continue on each part by substituting Cinput with Csrc , Cdest , and Crem , respectively. This ‘divide-and-detect’ process ceases when a termination criterion, such
+as a maximum level or too small fragments, is met. All the detected architectural symmetries can form a family of symmetry hierarchies according to the
+relationships between the parts of cloud C.
+
+4
+
+Experimental results on a pilot case
+
+A pilot study was conducted to find the reflection symmetries of a university
+building. The Hung Hing Ying Building at the University of Hong Kong is a
+two-storey neoclassical redbrick building (see Fig. 1.a). The authors took a series of 250 aerial photos with a drone (model: DJI Inspire 1) (see Fig. 1.b) and
+constructed a dense cloud of 1, 413, 211 points (over 2, 000 points/m2 ) of the
+rooftop from the photos using the photogrammetry function provided by Autodesk ReCap 360 (see Fig. 1.c). According to neoclassicism, we assumed the
+planes of the reflections on rooftops (i) must be perfectly vertical on the rooftop
+and (ii) prefer perpendicularity and parallelity of geometric regularity with other
+reflections. We defined the parameters of the vertical plane of a 3D reflection as
+
+6
+
+Fan Xue et al.
+
+a 2D line on the horizontal polar coordinate system L (see [13]), so that each
+(ρ, ϕ) on L represents a plane with a distance ρ ≥ 0 to the pole O and an angle
+ϕ ∈ (−π, π] of the heading direction. In fact in geometry, the point (ρ, ϕ) is the
+foot of the perpendicular from the pole O to the plane of reflection on L. Due
+to the assumption (i), we can reduce the computational load of verifying f by
+partitioning the whole cloud C into 177 horizontal slices (C1 , C2 , . . . , C177 , height
+= 0.05 m), as shown in Fig. 1.d.
+
+(a) The building
+
+(b) Photos by a drone
+
+(c) A dense point cloud
+
+(d) The 177 horizontal slices for fast evaluating reflections
+Fig. 1. A pilot case: The Hung Hing Ying Building at the University of Hong Kong
+
+We then formulated a nonlinear optimization problem for the reflection symmetries based on the general form of Eq. (5):
+min
+s.t.
+
+f (x) = fC (x) + 10A(x)
+x = {ρ, ϕ} ,
+ρ ∈ R+ ∪ {0}, ϕ ∈ (−π, π] ,
+177
+
+1X
+fC (x) =
+|Ci |MNNDCi (x),
+n i=1
+
+(6)
+
+A(x) = min raidus to perp or para(x),
+where x represents a possible vertical plane of reflection, |Ci | stands for the
+cardinality of Ci , fC is MNND (Eq. 3), A measures the minimum angular error
+(in radian) to the perpendicularity or parallelity against the parent symmetry,
+and the relative weight ω was set to 10 (e.g., a penalty A = 0.01 in architectural
+style was amplified to 0.1 in f ).
+We applied a C++ version of CMA-ES (libcmaes, version 0.9.5), a well-known
+DFO algorithm, to solve the formulated Eq. (6). The tests were conducted on
+a workstation (Intel Xeon E5-2690 v4 2.6GHz, 64 GB memory, Ubuntu 16.04,
+single-threading), with the point cloud library (version 1.8.1) and fast library for
+
+Architectural Symmetry Detection
+
+7
+
+approximate nearest neighbor (FLANN, version 1.8.4) for efficient point cloud
+processing. We set the number of iterations of CMA-ES to 200 and other parameters to default. Figure 2 shows the process of detecting the global reflection
+symmetry, where the objective value quickly descended from over 18 to less than
+0.1 in about a minute. In the viewport of parameter space, ρ and ϕ quickly converged to the most voted (dark color) grid; while in the point cloud viewport,
+the optimal global reflection symmetry was found by CMA-ES in less than 100
+seconds, as shown in Fig. 2. The time was furthermore reduced to 23.5 s on the
+test machine by enabling multi-threading parallel computing.
+
+Fig. 2. Illustrations of ASD by the proposed DFO approach in three viewports
+
+The proposed DFO approach was compared with a point-based pairwise
+voting-clustering [13] and a wavelet convolution-based voting method [15]. The
+feature matching methods were not included due to the error-prone feature detection in uncontrolled real-world scenes [19]. The feature matching Table 1 lists
+the comparisons, including PCR (Eq. 2), MNND (Eq. 3), the success of finding the target reflection, plane equation, and computational time, of the three
+methods in the pilot case. The proposed DFO approach won in both accuracy
+(PCR = 93.7% , MNND = 0.086 m) and efficiency (98.7 s), while the pointbased voting-clustering found a slightly less accurate and efficient result (PCR
+= 90.7% , MNND = 0.091 m, in 140.7 s), and the wavelet convolution-based
+voting was only with local symmetries.
+The ‘divide-and-detect’ process continued for local reflections till the remaining clouds were too small (less than n/20). All the global and local reflections,
+as shown in Figure 3.a, were detected in 641.8 seconds in total; Fig. 3.b shows the
+hierarchy of the reflections. It was found that the whole hierarchy of reflections
+was also symmetric to the plane of the global reflection. The symmetry hierarchy
+
+8
+
+Fan Xue et al.
+Table 1. A comparison of the results of detecting the global reflection symmetry
+
+Mitra and Pauly [13]
+
+Cicconet et al. [15]
+
+The DFO approach
+
+Type
+Voting-clustering
+PCR†
+90.7% (grid center)
+MNND† (m)
+0.091
+Plane
+19.983x − y = 78.033
+Correct?†
+Yes
+Time† (s)
+140.7
+
+Voting-clustering
+9.77% (the best one)
+19.164
+7.914x − y = 71.718
+No (local only)
+837.7
+
+Parameter optim.
+93.7%
+0.086
+19.708x − y = 75.596
+Yes
+98.7
+
+Top view
+†: Best values in bold.
+
+was applied to a RANSAC-based automatic rooftop modeling process to rectify
+the planar and spherical primitives [24]. As shown in Fig. 3.c, a symmetry-guided
+rooftop model was created and attached to the ‘box’ model of the building. In
+summary, the pilot study preliminarily endorsed the feasibility and soundness of
+the proposed DFO approach.
+
+(a) The detected reflections (b) Symmetry hierarchy
+
+(c) A symmetry-guided model
+
+Fig. 3. The hierarchy and an application of the detected symmetries
+
+5
+
+Conclusion
+
+This paper presents a DFO approach for automatic ASD from 3D urban point
+clouds. In this approach, the symmetries and symmetry hierarchies can be formulated to nonlinear optimization problems, that concerns both the geometric
+symmetry condition and architectural style, and solved by DFO algorithms. The
+results of experiments on a pilot case preliminarily confirmed the technological
+feasibility of the proposed approach. For example, the proposed approach returned the best accuracy (both PCR and MNND) and efficiency (time cost)
+in the comparisons in detecting the global reflective symmetry. The symmetry
+hierarchy was also validated in generating a symmetry-guided rooftop model.
+
+Architectural Symmetry Detection
+
+9
+
+The contribution of this paper is twofold. First, the problem formulation in
+this approach exposes the problem of ASD from 3D urban point clouds to DFO
+algorithms and other mathematical methods. Secondly, The accurate and efficient DFO approach for ASD can be applied to the processing of large-scale 3D
+urban point clouds for enriching the urban semantics in CIM/BIM. Given the
+background of the boomingly available 3D urban point clouds and the demands
+of semantic CIM/BIM, the presented approach, and the enriched CIM/BIM at
+large, may enable various applications in heritage conservation, smart city development, architectural morphology, computational geometry, computer vision,
+and location-based services for a smart and resilient future.
+Although the proposed DFO approach has many merits, the proposed approach relies on domain knowledge (architectural styles) in the formulation and
+only works with the clouds of uniformly distributed points. The experiments in
+this paper were also preliminary, e.g., focusing on reflections only. Possible future
+research directions include: (i) collecting, formulating, and compiling the typical
+architectural styles in urban areas, (ii) adopting, gauging, and fine-tuning stateof-the-art DFO algorithms, and (iii) integrating and applying the symmetries
+and symmetry hierarchy into popular CIM/BIM software platforms.
+
+Acknowledgements
+This study was supported by a grant from the Hong Kong Research Grant
+Council (GRF HKU17201717) and two grants from The Hong Kong University
+(201702159013, 201711159016).
+
+References
+1. Thompson, D. W.: On Growth and Form. Cambridge University Press, Cambridge
+(1961).
+2. Fletcher, B., Fletcher, B. F.: A history of Architecture on the comparative method,
+5th ed. Bradbury, Agnew, & Co., London (1905).
+3. Mitra, N. J., Pauly, M., Wand, M., Ceylan, D.: Symmetry in 3D geometry: Extraction and applications. Computer Graphics Forum, 32(6) 1–23, (2013). doi:
+10.1111/cgf.12010
+4. Tang, P., Huber, D., Akinci, B., Lipman R., Lytle, A.: Automatic reconstruction
+of as-built building information models from laser-scanned point clouds: A review
+of related techniques. Automation in Construction, 19(7) 829–843 (2010). doi:10.
+1016/j.autcon.2010.06.007
+5. van Kaick, O., Zhang, H., Hamarneh G., Cohen-Or, D.: A survey on shape correspondence. Computer Graphics Forum, 30(6) 1681–1707 (2011). doi:10.1111/j.
+1467-8659.2011.01884.x
+6. Conn, A. R., Scheinberg, K., Vicente, L. N.: Introduction to derivative-free optimization. SIAM, Philadelphia, PA (2009).
+7. Rios, L. M., Sahinidis, N. V.: Derivative-free optimization: A review of algorithms
+and comparison of software implementations. Journal of Global Optimization, 56(3)
+1247–1293 (2013). doi:10.1007/s10898-012-9951-y
+
+10
+
+Fan Xue et al.
+
+8. Xue, F., Lu, W., Chen, K.: Automatic generation of semantically rich as-built building information models using 2D images: A derivative-free optimization approach.
+Computer-Aided Civil and Infrastructure Engineering, under review (2018).
+9. Nicosia, G., Stracquadanio, G.: Generalized pattern search algorithm for peptide
+structure prediction. Biophysical Journal, 95(10) 4988–4999 (2008). doi:10.1529/
+biophysj.107.124016
+10. Hansen, N., Ostermeier, A.: Completely derandomized self-adaptation in evolution strategies. Evolutionary Computation 9(2) 159–195 (2001). doi:10.1162/
+106365601750190398
+11. James, G. D.: The Representation Theory of the Symmetric Groups, Springer, New
+York (1978).
+12. Mitra, N. J., Guibas, L. J., Pauly, M.: Partial and approximate symmetry detection
+for 3D geometry. ACM Transactions on Graphics, 25(3) 560–568 (2006). doi:10.
+1145/1179352.1141924
+13. Mitra, N. J., Pauly, M.: Symmetry for architectural design. In: Advances in Architectural Geometry. pp. 13–16. (2008). http://www.architecturalgeometry.org/
+aag08/aag08proceedings-papers and poster abstracts.pdf
+14. Kazhdan, M.: An approximate and efficient method for optimal rotation alignment
+of 3D models. IEEE Transactions on Pattern Analysis and Machine Intelligence,
+29(7) 1221–1229 (2007). doi:10.1109/TPAMI.2007.1032
+15. Cicconet, M., Birodkar, V., Lund, M., Werman, M., Geiger, D.: A convolutional
+approach to reflection symmetry. Pattern Recognition Letters, 95 44–50 (2017).
+doi:10.1016/j.patrec.2017.03.022
+16. Brown, C. M.: Inherent bias and noise in the Hough transform. IEEE Transactions
+on Pattern Analysis and Machine Intelligence, 5(5) 493–505 (1983). doi:10.1109/
+TPAMI.1983.4767428
+17. Berner, A., Bokeloh, M., Wand, M., Schilling, A., Seidel, H. P.: A graph-based
+approach to symmetry detection. In: Volume Graphics, 40 pp. 1–8. ACM (2008).
+doi:10.2312/VG/VG-PBG08/001-008
+18. Bokeloh, M., Berner, A., Wand, M., Seidel, H., Schilling, A.: Symmetry detection
+using feature lines. Computer Graphics Forum, 28(2) 697–706 (2009). doi:10.1111/
+j.1467-8659.2009.01410.x
+19. Andreopoulos, A., Tsotsos, J. K.: 50 years of object recognition: Directions forward.
+Computer Vision and Image Understanding, 117(8) 827–891 (2013). doi:10.1016/j.
+cviu.2013.04.005
+20. Monszpart, A., Mellado, N., Brostow, G. J., Mitra, N. J.: RAPter: Rebuilding manmade scenes with regular arrangements of planes. ACM Transactions on Graphics,
+34(4) 103 (2015). doi:10.1145/2766995
+21. Lipman, Y., Chen, X., Daubechies, I., Funkhouser, T.: Symmetry factored embedding and distance. ACM Transactions on Graphics, 29(4) 103 (2010). doi:
+10.1145/1778765.1778840
+22. Chertok, M., Keller, Y.: Spectral symmetry analysis. IEEE Transactions on Pattern
+Analysis and Machine Intelligence, 32(7) 1227–1238 (2010). doi:10.1109/TPAMI.
+2009.121
+23. Raviv, D., Bronstein, A. M., Bronstein, M. M., Kimmel, R.: Full and partial symmetries of non-rigid shapes. International Journal of Computer Vision, 89(1) 18–39
+(2010). doi:10.1007/s11263-010-0320-3
+24. Chen, K., Lu, W., Xue, F., Tang, P., Li, L. H.: Automatic building information
+model reconstruction in high-density urban areas: Augmenting multi-source data
+with architectural knowledge. Automation in Construction, under review (2018).
+
+

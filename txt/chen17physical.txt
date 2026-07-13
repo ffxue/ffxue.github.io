@@ -1,0 +1,971 @@
+A Physical Internet-enabled Building Information Modelling
+System for Prefabricated Construction
+Ke CHEN1, Gangyan XU2a, Fan XUE3b, Ray Y ZHONG4, Diandian Liu5, and
+Weisheng LU6
+1) PhD Candidate, Corresponding author, Department of Real Estate and
+Construction,
+
+The
+
+University
+
+of
+
+Hong
+
+Kong,
+
+Hong
+
+Kong,
+
+E-mail:
+
+leochen@connect.hku.hk, Telephone: +852 6486 7971;
+2) PhD Candidate, Department of Industrial and Manufacturing Systems Engineering,
+The University of Hong Kong, Hong Kong. E-mail: gangyan@hku.hk;
+3) Post-doctoral Fellow, Department of Building and Real Estate, The Hong Kong
+Polytechnic University, Hong Kong, E-mail: fan.xue@polyu.edu.hk;
+4) Lecturer, Department of Mechanical Engineering, University of Auckland,
+Auckland, New Zealand, E-mail: r.zhong@auckland.ac.nz;
+5) MPhil Candidate, Department of Real Estate and Construction, The University of
+Hong Kong, Hong Kong. E-mail: liudd@connect.hku.hk;
+6) Associate Professor, Department of Real Estate and Construction, The University
+of Hong Kong, Hong Kong, E-mail: wilsonlu@hku.hk;
+
+a
+
+New affiliation: Research Fellow, School of Mechanical and Aerospace Engineering, Nanyang Technological
+University, Singapore. E-mail: gagexgy@gmail.com;
+b
+
+New affiliation: Research Assistant Professor, Department of Real Estate and Construction, The University of
+Hong Kong, Hong Kong, E-mail: xuef@hku.hk;
+
+1
+
+A Physical Internet-enabled Building Information Modelling
+System for Prefabricated Construction
+Prefabricated construction is believed to be energy conserving though
+opportunities for achieving higher energy efficiency have yet to be fully
+harnessed. From investigation of a prefabricated construction project in Hong
+Kong, two main problems have been revealed relating to energy consumption,
+including: i) inefficient management of resources such as labours and
+machines, and ii) inefficient production, transportation, and on-site assembly of
+prefabricated components. These problems are primarily caused by lagged
+information communication and human errors. This paper seeks to offer a
+solution by developing a Physical Internet-enabled Building Information
+Modelling System (PI-BIMS) that integrates Auto-ID technologies, BIM, and
+cloud computing. The PI-BIMS enables real-time collection, communication,
+and visualization of information across the processes of production,
+transportation, and on-site assembly. Practical issues of the system
+implementation are provided through a pilot prototype. It is found that the PIBIMS helps enhance the resource allocation efficiency and decrease human
+errors. Thus, an alternative opportunity to improve energy efficiency in
+prefabricated construction has become possible.
+Keywords: prefabricated construction; energy efficiency; Physical Internet;
+Building Information Modelling (BIM); cloud technologies
+
+1 Introduction
+Construction is arguably one of the most energy-intensive industries around the
+world. Each year, the building sector consumes roughly 40% of the energy used
+globally (Dixit et al. 2010). Subject to rising energy costs and growing environmental
+concerns, energy-efficient ways of delivering construction projects is necessary.
+Compared with conventional methods featured by in-situ casting and wet trades,
+prefabricated construction emphasizes mass production of building components in
+off-site factories and on-site assemblies (Gibb 1999). It has been recognized as
+2
+
+consuming less energy than traditional methods (Yee 2001; Lu and Yuan 2013). For
+example, Hong et al. (2016) found that up to 14% of the total energy consumption
+could be saved by using prefabricated components over using an equivalent amount
+of cast-in-place ones.
+Despite a modest improvement in energy conservation, some challenges in
+prefabricated construction are existing. Firstly, a substantial amount of energy is still
+spent on the offsite production of components (Reddy and Jagadish 2003). Advancing
+the energy efficiency in the manufacturing process is demanded. Secondly, as
+prefabrication factories are usually located far away from construction sites, the
+transportation of prefabricated components consumes a considerable amount of
+energy (Zhong et al. 2013a). A more accurate logistics approach thus is needed.
+Thirdly, when carrying out the on-site assembly, the energy used is dependent not
+only on physical properties of prefabricated components, but also on the assembly
+sequences (Neelamkavil 2009). More effective ways of handling components are
+required to avoid wasting energy.
+In the contemporary prefabricated construction, however, there is a lack of
+real-time project information that can be shared among various stakeholders. As a
+result, it is difficult for the manufacturers, contractors, and logistics companies to
+efficiently make plans and manage resources such as labours and machines. They thus
+make decisions depending on past experiences, which lead to energy dissipations
+(Heydarian and Golparvar-Fard 2011). Moreover, it is difficult to eliminate human
+errors when a job is conducted largely by manual efforts. A substantial amount of
+energy, therefore, would be consumed wastefully for addressing consequences of
+human errors.
+
+3
+
+Towards higher energy efficiency in prefabricated construction, it is crucial to
+improve information collection and communication across processes of production,
+transportation, and on-site assembly and to reduce human errors. The advent of
+Building Information Modelling (BIM) and Physical Internet (PI) offers promising
+solutions. BIM is a digital representation of physical and functional characteristics of
+a project, which serves as a shared information resource for project management
+(NIBS 2015). PI denotes an open global supply chain system (Montreuil 2011), in
+which various objects are traced in a real-time manner (Qiu et al. 2015; Zhang et al.
+2015). This research introduces a PI-enabled BIM System (PI-BIMS) that collects and
+communicates real-time project information for ultimately enhancing energy
+efficiency in prefabricated construction by piloting a system prototype in a real-life
+case in Hong Kong.
+Remaining contents start with a literature review in Section 2, followed by an
+introduction of the PI-BIMS architecture in Section 3. The case study project is
+introduced in Section 4, where existing energy consumption issues are revealed.
+Section 5 describes how the prototype is devised, and Section 6 discusses how the
+system enhances the working practices towards higher energy efficiency from a reallife case study project. The system validation is given in Section 7. Section 8
+concludes this paper.
+
+2. Literature review
+Recently, an intensive attention has been placed on energy conservation with a steep
+increase in studies projected to enhance energy efficiency in the Architecture,
+Engineering, Construction, and Operations (AECO) industry. Energy consumed in the
+AECO industry can be categorized into two types: (1) the operating energy (OE) used
+
+4
+
+for maintaining the inside environment during the service life of a building; and (2)
+the embodied energy (EE) that goes into processes of production, transportation,
+construction, and final demolition (Crowther 1999; Treloar, Love, and Holt 2001).
+In the relevant literature, focuses have been placed on the OE (e.g., Bazjanac
+2004; Laine, Karola, and Oy 2007; Bynum, Issa, and Olbina 2012). It is because the
+service life usually accounts for a long building life-cycle. Scholars also argued that
+the design stage could play an important role in saving OE (Eichholtz, Kok, and
+Quigley 2010). Supported by Azhar et al. (2011), a sustainable design on average
+could save 20% of total life-cycle construction costs. In accordance with this
+viewpoint, Bazjanac (2004) proposed that, by offering more accurate energy
+simulations, the interoperable software could help select a design with the best energy
+performance among possible designs. Similarly, Laine, Karola, and Oy (2007)
+simulated the energy performance when designing buildings by utilizing BIM as a
+data source. Confining to the design stage, they inspiringly argued that it was crucial
+to verify energy performances at different project stages, which can only be achieved
+by BIM-enabled interoperability. Following this idea, many researchers adopted BIM
+at the design stage to simulate the OE for enhancing energy efficiency in a project
+life-cycle (e.g., Krygiel and Nies 2008; Stadel et al. 2011).
+Thanks to previous research achievements, the potential for curbing the OE is
+able to be attained. There thus emerges a call for shifting emphases to conserving the
+EE of buildings. The concept of supply chain management (SCM) was adopted for
+enhancing energy efficiency in construction projects, particularly for prefabricated
+ones (Neelamkavil 2009). Just-in-Time (JIT) philosophy was another managerial
+concept aiming at smoothening the production process by efficient handling of
+materials. Pheng and Chuan (2001) studied applications of JIT to prefabricated
+
+5
+
+construction. Through JIT, waste generations could be minimized and energy
+efficiency could be improved in prefabricated construction (Jeong et al. 2016).
+Researchers also have striven efforts to conserve energy regarding individual
+processes of prefabricated construction projects. For instance, Hu (2005) developed
+an automatic determination method for arranging assembly sequences. Benjaoran and
+Dawood (2006) developed an innovative planning system for automating the
+production planning of prefabricated components. Babič, Podbreznik, and Rebolj
+(2010), Li et al. (2011), Irizarry, Karan, and Jalaei (2013) and many other researchers
+also proposed approaches to optimizing operations of manufacturing and
+transportation processes. In these studies, advanced technologies such as Auto-ID
+technologies and BIM were often adopted given their capabilities of real-time
+information collection and processing (Zhong et al. 2017).
+The literature of conserving energy in prefabricated construction is insightful.
+However, building components are either tightly tracked within a single project
+process but loosely connected to rest processes, or being managed by following JIT or
+SCM but without details of how to attain such managerial concepts. This paper thus is
+significant as it proposes a PI-BIMS that offers real-time component information for
+resource allocation and reducing human errors from the prefabrication factory to the
+construction site. Moreover, details of how to implement the PI-BIMS for energy
+efficiency are unfolded by piloting a system prototype in a real-life prefabricated
+construction project.
+
+3. Physical Internet-enabled BIM System (PI-BIMS)
+3.1. System architecture
+In the proposed PI-BIMS, PI is enabled by Auto-ID technologies following the
+6
+
+existing research in the manufacturing industry (Montreuil, Meller, and Ballot 2013;
+Gubbi et al. 2013; Zhong et al. 2013b), and is tailored to fit the prefabricated
+construction context. In addition, a cloud BIM is developed by integrating BIM and
+cloud computing technologies that allow processing and visualizing the real-time
+information offered by PI (Chuang, Lee, and Wu 2010). The architecture of the PIBIMS consists of three layers, including, from bottom to top, the data collection layer,
+the intermediate layer, and the energy efficiency support layer (see Figure 1).
+[Figure 1 near hear]
+
+(1) The data collection layer contains smart construction objects (SCOs) and
+Auto-ID devices for real-time data collection. The SCOs refer to typical
+construction objects, such as prefabricated components, trucks, and trailers,
+which are made smart by equipping with Auto-ID tags (Niu et al. 2015).
+Relevant information about individual SCOs, such as the real-time status,
+can be quickly traced and collected by Auto-ID readers that are held by
+workers or fixed at value-adding points (e.g., the entrance gate on-site). The
+collected information is then transmitted to upper layer via communication
+networks.
+(2) The intermediate layer is comprised of smart gateways which act as a
+bridge between the frontline data collection layer and the energy efficiency
+support layer. A smart gateway consists of a hardware hub and the software
+working in a “plug and play” fashion. It has three main functions. Firstly, it
+configures and manages all SCOs in the project. Secondly, it controls the
+data transfer between Auto-ID devices and SCOs. Thirdly, it communicates
+the collected information in a standardized format.
+
+7
+
+(3) The energy efficiency support layer refers to three cloud-based platforms
+that support the production, transportation, and on-site assembly of
+prefabricated components respectively. The primary functions of this layer
+are to process and visualize the real-time information in BIM environment,
+as well as to timely record the information in databases and enable seamless
+communication throughout the project life-cycle.
+
+3.2. Innovative modules for end-users
+PI-BIMS contains three primary modules: Traceability, Visibility, and Information
+Exchange. These modules are essential to solve energy consumption problems caused
+by inefficient resource management and human errors.
+(1) The traceability module, mainly based on the Auto-ID technologies, is
+designed to trace the information of individual prefabricated components
+and associated tasks of production, transportation, and on-site assembly. The
+traced information, including production stage, location, and assembly stage
+of a prefabricated component, is important for resource management
+towards higher energy efficiency.
+(2) The visibility module is designed to integrate, visualize, and explore the
+components’ statues and associated tasks in a graphical interface. This
+module not only offers detailed information of individual components, but
+reveals a complete picture of the entire project with new insights to
+managers. The visibility module thus is essential for saving energy through
+helping managers making more accurate production plans, transportation
+schedules, and on-site assembly tasks. It is also helpful for workers to check
+
+8
+
+their finished works, and for managers to supervise the tasks conducted by
+workers in a real-time manner.
+(3) The information exchange module is devised to enable information in one
+cloud platform to be seamlessly shared. As a prefabricated construction
+project often engages more stakeholders compared to a conventional project,
+efficient information communication becomes even more crucial for
+addressing any energy consumption issue. This module maintains the
+information consistency throughout the project processes and ensures the
+right information is delivered to the right person at the right time (Chen et
+al. 2015).
+
+4. Energy consumption issues in prefabricated construction
+4.1. Case study project
+The case study project comes from a real-life a prefabricated construction project in
+Hong Kong. It has five building blocks, one of which has 37 floors that need 7,103
+prefabricated components of 13 different types (Zhong et al. 2017). These
+components are supplied by a prefabrication manufacturer (Company A) located in
+Boluo County of Mainland China, about 130 miles away from the construction site.
+The logistics services are provided by Company B that also offers transhipment
+warehouse for temporary component storages. The construction work is undertaken
+by Company C, which is a leading contractor in Hong Kong.
+
+4.2. Existing energy consumption issues
+A two months’ pre-pilot research through weekly on-site observations and face-toface interviews have been conducted. A total of eight site visits were completed. Thus
+9
+
+the entire processes of the prefabrication production, transportation, and on-site
+assembly were recorded. Particularly, energy consumption issues were identified as
+follows.
+4.2.1. The production process
+Once receiving a production order from Company C, a manager from Company A
+established a production plan. According to the plan, workers produced prefabricated
+components following seven steps, viz., preparation, moulding, reinforcing,
+concreting, quality check, curing, and demoulding. On the surface of each produced
+component, workers manually printed a sequential number and fastened a plastic label
+to it specifying the project name and component code. Then, the component would be
+temporarily stocked at storage yards. Workers would also record the production
+information (e.g., finishing time, component code, etc.) on papers and hand over the
+paper documents to a worker who was responsible for documentation management.
+These onwards, the produced prefabricated components were stored in the finished
+product warehouse waiting for delivery.
+During this process, a major energy consumption issue was that the production
+plan cannot adjust order changes in a timely manner. In the pre-pilot period, Company
+C averagely changed orders two times per week due to various reasons such as design
+and engineering changes. When acknowledging such changes, it was often too late for
+Company A to make proper reactions. Consequently, unexpected inventory occurred,
+leading to a waste of energy on sorting, managing, and damage-preventing of these
+components. More seriously, some produced components even became unsuitable for
+the case study project due to changes in specifications, which resulted in an extra
+usage of energy for discarding wrong productions and reproducing right components.
+
+10
+
+4.2.2. The transportation process
+The transportation process started with Company A receiving the delivery order from
+Company C. A manager from Company A made the transportation plan and notified
+Company B about the upcoming transportation tasks in one-day advance. Meanwhile,
+the manager informed workers about the prefabricated components to be delivered.
+Workers in Company A found the required components in the finished product
+warehouse according to the sequential number printed on the component surface, and
+loaded them on trailers. After confirming the loading condition, workers manually
+recorded the information of loaded components in paper-based reports.
+The manager from Company B reviewed the transportation tasks and assigned
+the driver and the truck for each task. Drivers from Company B picked the trailer at
+the warehouse of Company A, and then transported the components together with
+paper-based delivery dockets to the construction site. After customs clearance, the
+components were either directly sent to the construction site or temporarily stored at a
+transhipment warehouse. On arriving at the construction site, the transported
+components were unloaded and stocked on-site.
+As the trailer to be transported was manually located, it was possible that the
+truck was connected to a wrong trailer. Actually, during the pre-pilot period, five
+times of incorrect transportation happened. The incorrectly transported components
+had to be temporarily stored at the transhipment warehouse, and another delivery with
+right components must be immediately arranged. An extra amount of energy thus was
+spent on unnecessary transportations. In addition, since the manager from Company C
+lacked the delivery status, resources (e.g., labours, machines) could not be efficiently
+allocated for incoming component batches. Energy hence was wasted as machines
+
+11
+
+usually had a relatively long idle time before receiving the components for on-site
+assembly.
+
+4.2.3. The on-site assembly process
+For each round of on-site assembly, the manager from Company C informed three
+workers to finish the task. The first worker manually searched from the on-site
+storage for the required component according to the printed sequential number. The
+second worker operated the tower crane to lift the component to the target position.
+The third worker was responsible for directing the tower crane to ensure that the
+component was fixed in the right position. After the installation, that third worker
+made paper-based records and reported the completion of the task to the manager.
+During this process, three energy consumption issues were recognized. Firstly,
+workers had to spend considerable time on manually searching the required
+components, during which time, the tower crane was idle. Secondly, manual
+inspection conducted for checking whether the right components were found. Wrong
+installations might happen causing wasteful consumption of energy for knocking
+down the incorrectly installed components and conducting re-installation. Thirdly, the
+paper-based reports were not sufficient to timely track the construction progress. It
+thus was difficult for managers to arrange construction resources in an efficient
+fashion.
+
+5. The PI-BIMS prototype
+For solving the above-identified issues in the case study project, a PI-BIMS prototype
+has been developed. Specifically, two kinds of RFID tags including ultra-high
+frequency (UHF) and high frequency (HF) tags have been used. The UHF tags were
+attached to the prefabricated components to ensure the radio wave can penetrate the
+12
+
+concrete cover. The HF tags were attached to the trucks and trailers since they have
+reliable performance when mounted on metal surfaces. Other main hardware of the
+prototype includes TSL1128 Bluetooth® UHF RFID Reader, the smartphone
+equipped with the Global Positioning System (GPS) sensor and Near Field
+Communication (NFC).
+Three platforms, viz., the prefabrication production platform (PPP), the
+prefabrication transportation platform (PTP), and the on-site assembly platform
+(OAP), have been designed for the three companies respectively. The database of
+OAP was designed for storing the original design information of each prefabricated
+component and on-site assembly information. For PPP and PTP, their databases were
+mainly for storing the production information and transportation information
+respectively. Each of the three platforms contained a smartphone App and a web
+service. Smartphone Apps were developed for workers to check their daily tasks.
+These Apps made the smartphones as gateways that managed the tag-attached
+prefabricated components, trucks, and trailers, and sent the real-time information to
+databases. Web services were developed for managers of the three companies to
+arrange tasks and allocate resources based on the shared real-time information.
+The prototype system has been tested at three levels, including module testing,
+integration testing, and online testing. Module testing was conducted by using white
+box testing strategy to ensure the compatibility of individual function modules.
+Integration testing was to verify the integrity of the entire functional processes, and
+the connection among the developed platforms. Online testing used experimental
+scenarios to evaluate the compliance of the system with requirements of supporting
+different project processes. After testing, selected workers and managers of the three
+companies were trained to use the prototype.
+
+13
+
+6. Enhanced energy efficiency by the PI-BIMS
+The duration of piloting the PI-BIMS prototype in the case study project is nine
+months. The overall workflow after applying the prototype is presented in Figure 2.
+How the new workflow brought about higher energy efficiency, enabled by the PIBIMS, will be introduced along with processes of production, transportation and onsite assembly.
+[Figure 2 near here]
+
+6.1. Energy efficient prefabrication production
+[Figure 3 near here]
+
+The re-engineered workflow of prefabrication production is exhibited in Figure 3. The
+connection between PPP and OAP allows the production order from Company C
+being communicated to Company A in a paperless and efficient manner. At the
+beginning of each production round, the manager from Company C selects digital
+prefabricated components in the web service of OAP and sets the date when these
+components should be ready. Then, OAP automatically generates an order list
+containing the complete information of required components, including type, floor,
+flat, component code, design drawing, quantity, date, etc. The generated order is
+automatically sent to PPP. When an order needs to be changed, any approved changes
+are updated in different platforms simultaneously.
+Based on the received production order, the manager in Company A can
+establish the production plan in PPP and make timely adjustments to avoid wrong
+productions. Workers can receive the daily production plan via the smartphone App
+of PPP, including the type and quantity of components to be produced on a certain
+day. They can also view the design drawings and thus make more efficient
+preparations such as preparing the correct reinforcement cage and mould.
+14
+
+When producing a prefabricated component, a UHF tag is attached to the
+reinforcement cage of that component. After that, a worker selects the produced
+component in the smartphone App and scans the tag by a RFID reader. The
+information will be transmitted to the worker’s smartphone via Bluetooth. This links
+the prefabricated component with the RFID tag and recorded the status of that
+component to “Produced” automatically. The smartphone App then uploads the status
+and other information about the produced component to the database. In this way, the
+production information is timely recorded and revealed in PPP where the manager is
+able to review the real-time project progresses.
+
+6.2. Energy efficient prefabrication transportation
+[Figure 4 near here]
+
+The rationalized workflow of prefabrication transportation is shown in Figure 4. The
+synchronization of PTP, PPP, and OAP is useful for enhancing the energy efficiency
+of the transportation process. In this process, a delivery order is firstly made by the
+manager from Company C in the web service of OAP. The delivery order is
+transferred to the web service of PPP for the manager from Company A to make
+loading and transportation plans.
+Workers in Company A receive loading tasks in the smartphone App. Before
+loading a component on the trailer, workers use a RFID reader to scan the tag
+deployed on the prefabricated component to check whether it is the right one. Once
+confirmed, the component will be loaded on the trailer. Workers then select the
+component in the smartphone App of PPP, and scan the HF tag deployed on the trailer
+by the NFC. This operation binds the loaded component with the trailer. At the
+meantime, the loading time of the prefabricated component is recorded and
+transmitted to the database of PPP automatically.
+15
+
+The manager from Company B can view the latest transportation plan via the
+web service of PTP. All transportation tasks are evaluated to identify their priorities.
+Then, the manager assigns a driver and a truck to each task. The assigned task will be
+stored in the database of PTP. Together with the binding information of components
+and trailer from PPP, the driver, truck, trailer, and components for each transportation
+task are combined.
+Drivers from Company B use the smartphone App of PTP to check the
+transportation task. Then, they drive the assigned truck to the storage yard in
+Company A to pick the trailer with the components. They will use the smartphone
+with NFC function to scan the HF tags deployed on both the truck and trailer to
+confirm their correctness. If a wrong trailer is picked, the smartphone App will give
+an alarm. When passing the cross-border customs and approaching to the construction
+site, drivers can update status via App of PTP so that the status is shared among
+different stakeholders.
+
+6.3. Energy efficient on-site assembly
+[Figure 5 near here]
+
+The improved workflow of the on-site assembly is shown in Figure 5. The connection
+between the three platforms enables on-site activities heading towards higher energy
+efficiency. Foremost, with the status of prefabricated components from PPP and PTP,
+the manager from Company C allocates resources for carrying out the construction
+work, such as arranging labour forces and dispatching machines, more efficiently and
+thereby avoid non-value-adding activities.
+For the assembly execution, OAP ensures that the right components for an
+installation task are located to avoid wrong on-site assemblies. Workers of Company
+C receive a list of components to be assembled in the smartphone App of OAP. When
+16
+
+workers find a required component in the site storage area, they firstly scan its RFID
+tag. The information of that component (e.g., 3D drawings) is then shown in the App.
+Therefore, workers can check whether the right component is ready for installation
+and acknowledge the exact position where the component is to be installed. With the
+confirmation made by workers, the manager can arrange the tower crane and other
+resources more accurately to avoid the idle time of both labours and machines.
+In addition, OAP helps workers to confirm that the prefabricated component is
+installed at the right position. This is done by scanning the RFID tag integrating a
+smartphone GPS sensor. The workers will be noticed by the difference between the
+collected location and the as-designed location from the BIM model. In case the result
+is not satisfactory, i.e., a component is placed at a wrong place, the component can be
+removed before it is connected with the in-situ concreting structure. By using this
+function, assembly and installation accuracy is improved, and thereby wasteful energy
+consumption is avoided.
+Based on the completed on-site assembly recorded in the database of OAP and
+a BIM model with the analytical figures, the manager can review the current site
+storage and the actual construction progress. Such real-time information helps the
+manager to make plans more efficiently.
+
+7. System validation
+Both qualitative and quantitative analyses have been carried out to validate the PIBIMS. The qualitative analysis was based on 18 times of semi-structured interviews
+with seven workers and one manager from Company A, two drivers and one manager
+from Company B, and five workers and two managers from Company C. The
+majority of interviewees agreed that the PI-BIMS is useful for improving energy
+
+17
+
+efficiency in the case study project. The quantitative analysis was done through
+comparing performances (e.g. the operation time and the accuracy of on-site
+assembly) before and after using the PI-BIMS (see Table 1). During the pilot period
+of 9 months, the implementation of the PI-BIMS prototype consumed 12.419 kWh of
+electricity in total, which is significantly lower than the energy it conserved.
+Considering that the prototype can be used repeatedly in other similar projects, the PIBIMS indeed is useful for enhancing energy efficiency in prefabricated construction.
+[Table 1 near here]
+
+7.1. Enhancing energy efficiency by decreasing human errors
+It has been recognized that the operational errors have been significantly reduced
+based on the feedback of interviewees. As expressed by the interviewed manager
+from Company A, the connection between PPP and OAP has avoided the
+manufacturing of misplaced prefabricated components by enabling timely
+communication among different parties. The interviewed manager and drivers from
+Company B also agreed that the synchronization of three platforms has positive
+impacts on the accuracy of transportation. From their points of view, it was
+particularly useful for functions of “alarm” when drivers got wrong vehicles.
+In a similar vein, workers from Company C replied that the prototype offered
+them a valid checking mechanism when searching components and conducting
+installations. As shown in Table 1, the “accuracy rate of on-site assembly” was
+increased from the original 99.85% to 100%. Since a single prefabricated component
+is large in size and costly in energy, the assembly accuracy is significant in terms of
+the energy and labour saving. For example, during the pilot period, a total of 1,354
+pieces of precast façade have been installed. Provided that the 0.15% of installation
+accuracy rate was absent, about 2 pieces of precast façade would have been knocked
+18
+
+down and re-installed. According to Mao et al. (2013), the embodied energy of one
+piece of façade that weighs 14 tons is estimated to include 5.83 litres of diesel, 53.52
+kWh of electricity, and 14.87 m3 of water. Therefore, such an increase in installation
+accuracy conserved quite a substantial amount of energy.
+
+7.2. Enhancing energy efficiency by supporting the resource management
+The interviewed workers and managers from all three companies agreed that, by
+taking advantages of the prototype, a considerable amount of time and recourses spent
+on daily operations were saved. For example, both interviewed managers from
+Company C confirmed that, facilitated by OAP, they could review the real-time status
+and location of each prefabricated component, and thereby determine more accurate
+on-site buffers for heading on towards the JIT philosophy. 75% of the interviewed
+workers recognized that the smartphone Apps helped them to finish their work with
+less time. This can be observed from Table 1 that the time used for recording the
+installation of a single wing of 23 facades was reduced by 14 minutes than before, and
+the time spent on finding a target component was decreased from 6-7 minutes to 3-4
+minutes.
+The interviewed logistics manager noted that scheduling transportation tasks
+was greatly eased by PTP. He could import the due date of each task into PTP which
+automatically computed task priorities to support more accurate scheduling (e.g., the
+average “waiting time for delivery” was decreased from 2 hours to 1.5 hours, see
+Table 1). The interviewed manager from Company A expressed that, with the advent
+of the real-time information, he could make production plans much more accurately
+than before. As presented in Table 1, enabled by the prototype, the average
+“Working-in-process inventory” was decreased from 110 sets to 98 sets. This shows
+
+19
+
+that the prototype is helpful for reducing non-value-adding activities and managing
+resources more efficiently.
+
+8. Conclusions
+In light of the importance of energy conservation nowadays, there emerges a global
+demand of new managerial and technological concepts to avoid wasteful energy
+consumption. This study has been geared for achieving higher energy efficiency in
+prefabricated construction by innovatively developing a Physical Internet-enabled
+Building Information Modelling System (PI-BIMS). The PI-BIMS enables collecting,
+transmitting, processing, and visualizing the real-time project information across the
+project processes. Facilitated by the PI-BIMS, it becomes possible for the contractor
+to allocate labours and machines on-site explicitly; for the logistics company to make
+more accurate transportation plans; and for the manufacturer to timely adjust
+production plans subject to order changes. The PI-BIMS developed in the present
+research is also scalable to other construction projects, particularly for those where
+prefabrication techniques are used, for addressing the energy consumption issues.
+Alongside the manifold advantages of the PI-BIMS, challenges of applying it
+to real-life projects emerge in terms of technology and people. Regarding
+technological challenges, the major problem is the stability of networks for
+communicating the information. If networks were unavailable, workers cannot access
+to platforms and transmit the real-time information. In this situation, delays will occur
+for uploading the collected information. Secondly, it was found that about 1.5% of
+RFID tags having failed in being responsive after concreting during the pilot period,
+perhaps due to that the tags were damaged by the force of concrete pouring. More
+stable networks and RFID tags are needed for solving these technical problems
+
+20
+
+Additionally, though it has attached attentions to minimize impacts on
+workers’ daily workflows when devising the PI-BIMS, such impacts cannot be
+thoroughly avoided due to workers’ reluctance of adopting new technologies. It was
+found workers did not consistently follow the standardized workflow required by the
+PI-BIMS. Such problem can be partially solved by labour training and demonstrating
+the benefits of the system to managers and workers (Dai et al. 2012). Future studies of
+this research thus could be heading on towards meeting challenges, sourced from both
+technical and managerial aspects, to enhance energy efficiency in prefabricated
+construction.
+
+Acknowledgement
+This work is supported by the Innovation and Technology Fund of the Hong Kong
+Innovation and Technology Commission (ITC) under Grant ITP/045/13LP. The
+authors are grateful to the Hong Kong Housing Authority, Gammon Construction
+Limited, Wing Hong Shun Enterprise Limited, and Yingyun Transportation Limited.
+References
+Azhar, S., W. A. Carlton, D. Olsen, and I. Ahmad. 2011. “Building information
+modeling for sustainable design and LEED® rating analysis.” Automation in
+Construction 20 (2): 217-224. doi: 10.1016/j.autcon.2010.09.019.
+Babič, N. Č., P. Podbreznik, and D. Rebolj. 2010. “Integrating resource production
+and construction using BIM.” Automation in Construction 19 (5), 539-543. doi:
+10.1016/j.autcon.2009.11.005.
+Bazjanac, V. 2004. “Building energy performance simulation as part of interoperable
+software environments”. Building and Environment 39 (8): 879-883. doi:
+10.1016/j.buildenv.2004.01.012.
+Benjaoran, V., and N. Dawood. 2006. “Intelligent approach to production planning
+system for bespoke precast concrete products.” Automation in Construction 15
+(6): 737-745. doi: 10.1016/j.autcon.2005.09.007.
+Bynum, P., R.R. Issa, and S. Olbina. 2012. “Building information modeling in support
+of sustainable design and construction.” Journal of Construction Engineering
+21
+
+and Management 139 (1): 24-34. doi: 10.1061/(ASCE)CO.1943-7862.0000560.
+Chen, K., W. Lu, Y. Peng, S. Rowlinson, and G. Q. Huang. 2015. “Bridging BIM and
+building:
+
+From
+
+a
+
+literature
+
+review
+
+to
+
+an
+
+integrated
+
+conceptual
+
+framework.” International Journal of Project Management 33 (6): 1405-1416.
+doi: 10.1016/j.ijproman.2015.03.006.
+Chuang, T. H., B. C. Lee, and I. C., Wu. 2011. “Applying cloud computing
+technology to BIM visualization and manipulation.” Paper presented at the 28th
+International Symposium on Automation & Robotics in Construction, Seoul,
+Korea, June 29-July 2.
+Crowther, P. 1999. “Design for disassembly to recover embodied energy.” Paper
+presented at the 16th Annual Conference on Passive and Low Energy
+Architecture, Melbourne, Australia, September.
+Dai, Q. Y., R. Y. Zhong, G. Q. Huang, T. Qu, T. Zhang and T. Y. Luo. 2012. “Radio
+frequency identification-enabled real-time manufacturing execution system: a
+case study in an automotive part manufacturer.” International Journal of
+Computer
+
+Integrated
+
+Manufacturing
+
+25
+
+(1):
+
+51-65.
+
+doi:
+
+10.1080/0951192X.2011.562546.
+Dixit, M. K., J. L. Fernández-Solís, S. Lavy, and C. H. Culp. 2010. “Identification of
+parameters for embodied energy measurement: A literature review.” Energy and
+Buildings 42 (8): 1238-1247. doi: 10.1016/j.enbuild.2010.02.016.
+Eichholtz, P., N. Kok, and J. M. Quigley. 2010. “Doing well by doing good? Green
+office buildings.” The American Economic Review 100 (5): 2492-2509. doi:
+10.1257/aer.100.5.2492.
+Gibb,
+
+A.G.
+
+1999.
+
+Off-site
+
+fabrication:
+
+prefabrication,
+
+pre-assembly
+
+and
+
+modularisation. John Wiley & Sons.
+Gubbi, J., R. Buyya, S. Marusic, and M. Palaniswami. 2013. “Internet of Things (IoT):
+A vision, architectural elements, and future directions.” Future Generation
+Computer Systems 29 (7): 1645-1660. doi: 10.1016/j.future.2013.01.010.
+Heydarian, A., and M. Golparvar-Fard. 2011. “A visual monitoring framework for
+integrated productivity and carbon footprint control of construction operations.”
+In Proceedings of the 2011 ASCE International Workshop on Computing in
+Civil Engineering, edited by Yimin Zhu and R. Raymond Issa, 504-511.
+American Society of Civil Engineers. doi: 10.1061/9780784411827.
+Hong, J. K., G. Q. Shen, C. Mao, Z. D. Li, and K. J. Li. 2016. “Life-cycle energy
+22
+
+analysis of prefabricated building components: an input–output-based hybrid
+model.”
+
+Journal
+
+of
+
+Cleaner
+
+Production
+
+112:
+
+2198-2207.
+
+doi:
+
+10.1016/j.jclepro.2015.10.030.
+Hu, W. 2005. “Automatic construction process of prefabricated buildings on
+geometric reasoning.” In Proceedings of the Construction Research Congress
+2005, edited by Iris D. Tommelein, 1-10. American Society of Civil Engineers.
+doi: 10.1061/40754(183)11.
+Irizarry, J., E. P. Karan, and F. Jalaei. 2013. “Integrating BIM and GIS to improve the
+visual monitoring of construction supply chain management.” Automation in
+Construction 31: 241-254. doi: 10.1016/j.autcon.2012.12.005.
+Jeong, W., S. Chang, J. Son, and J. S. Yi. 2016. “BIM-Integrated construction
+operation simulation for just-in-time production management.” Sustainability 8
+(11): 1106. doi: 10.3390/su8111106.
+Krygiel, E., and B. Nies. 2008. Green BIM: successful sustainable design with
+building information modeling. John Wiley & Sons.
+Laine, T., A. Karola, and O.G. Oy. 2007. “Benefits of building information models in
+energy analysis”. In Proceedings of the Clima 2007 WellBeing Indoors. Finnish
+Association of HVAC Societies, Helsinki, Finland.
+Li, H., H. L. Guo, M. Skitmore, T. Huang, K. Y. N. Chan, and G. Chan. 2011.
+‐based IK EA
+
+“Rethinking prefabricated construction management using the VP
+model in Hong Kong.” Construction Management and Economics 29 (3): 233245. doi: 10.1080/01446193.2010.545994.
+Lu, W. S., and H. P. Yuan. 2013. “Investigating waste reduction potential in the
+upstream processes of offshore prefabrication construction.” Renewable and
+Sustainable Energy Reviews 28: 804-811. doi: 10.1016/j.rser.2013.08.048.
+Mao, C., Q. Shen, L. Shen, and L. Tang. 2013. “Comparative study of greenhouse gas
+emissions between off-site prefabrication and conventional construction
+methods: two case studies of residential projects.” Energy and Buildings 66:
+165-176. doi: 10.1016/j.enbuild.2013.07.033.
+Montreuil, B. 2011. “Toward a Physical Internet: meeting the global logistics
+sustainability
+
+grand
+
+challenge”. Logistics
+
+Research 3
+
+(2):
+
+71-87.
+
+doi:
+
+10.1007/s12159-011-0045-x.
+Montreuil, B., R. D. Meller, and E. Ballot. 2013. “Physical internet foundations.” In
+Service Orientation in Holonic and Multi Agent Manufacturing and Robotics,
+23
+
+edited by Theodor Borangiu, Andre Thomas, and Damien Trentesaux, 151-166.
+Springer Berlin Heidelberg.
+NIBS (National Institute of Building Science) 2015. “National BIM Standard-United
+States V3”. Accessed 20 May 2016. https://www.nationalbimstandard.org/.
+Neelamkavil, J. 2009. “Automation in the prefab and modular construction industry.”
+Paper presented at the 26th International Symposium on Automation &
+Robotics in Construction, Austin, U.S., June 24-27.
+Niu, Y., W. Lu, K. Chen, G. G. Huang, and C. Anumba. 2015. “Smart Construction
+Objects.” Journal of Computing in Civil Engineering, 04015070. doi:
+10.1061/(ASCE)CP.1943-5487.0000550.
+Pheng, L. S., and C. J. Chuan. 2001. “Just-in-time management of precast concrete
+components.” Journal of Construction Engineering and Management 127 (6):
+494-501. doi: 10.1061/(ASCE)0733-9364(2001)127:6(494).
+Qiu, X., H. Luo, G. Y. Xu, R. Y. Zhong, and G. Q. Huang. 2015. “Physical assets and
+service sharing for IoT-enabled Supply Hub in Industrial Park (SHIP).”
+International
+
+Journal
+
+of
+
+Production
+
+Economics
+
+159:
+
+4-15.
+
+doi:
+
+10.1016/j.ijpe.2014.09.001.
+Reddy, B. V., and K. S. Jagadish. 2003. “Embodied energy of common and
+alternative building materials and technologies.” Energy and Buildings 35 (2):
+129-137. doi: 10.1016/S0378-7788(01)00141-4.
+Stadel, A., J. Eboli, A. Ryberg, J. Mitchell, and S. Spatari. 2011. “Intelligent
+sustainable design: Integration of carbon accounting and building information
+modeling.” Journal of Professional Issues in Engineering Education and
+Practice 137 (2): 51-54. doi: 10.1061/(ASCE)EI.1943-5541.0000053
+Treloar, G. J., P. E. Love, and G. D. Holt. 2001. “Using national input/output data for
+embodied energy analysis of individual residential buildings.” Construction
+Management and Economics 19 (1): 49-61. doi: 10.1080/014461901452076.
+Yee, A. A. 2001. “Structural and economic benefits of precast/prestressed concrete
+construction.”
+
+PCI
+
+Journal
+
+7
+
+(8):
+
+34-42.
+
+url:
+
+http://www.precastdesign.com/media/publications/2001_0701_Structural_and_
+Economic_Benefits.pdf
+Zhang, Y. F., G. Zhang, J. Q. Wang, S. D. Sun, S. B. Si, and T. Yang. 2015. “Realtime information capturing and integration framework of the internet of
+manufacturing things.” International Journal of Computer Integrated
+24
+
+Manufacturing 28 (8): 811-822. doi: 10.1080/0951192X.2014.900874.
+Zhong, R. Y., Q. Dai, T. Qu, G. Hu, and G. Q. Huang 2013a. “RFID-enabled realtime manufacturing execution system for mass-customization production.”
+Robotics and Computer Integrated Manufacturing 29 (2): 283-292. doi:
+10.1016/j.rcim.2012.08.001.
+Zhong, R. Y., Z. Li, L. Y. Pang, Y. Pan, T. Qu, and G. Q. Huang. 2013b. “RFIDenabled real-time advanced planning and scheduling shell for production
+decision
+
+making.” International
+
+Journal
+
+of
+
+Computer
+
+Integrated
+
+Manufacturing 26 (7): 649-662. doi: 10.1080/0951192X.2012.749532.
+Zhong, R. Y., Y. Peng, F. Xue, J. Fang, W. Zou, H. Luo, S. T. Ng, W. Lu, G. Q. Shen,
+and G. Q. Huang 2017. “Prefabricated construction enabled by the Internet-ofThings.”
+
+Automation
+
+10.1016/j.autcon.2017.01.006.
+
+25
+
+in
+
+Construction
+
+76:
+
+59-70.
+
+doi:
+
+Figure 1. System architecture of PI-BIMS
+
+26
+
+Figure 2. An illustration of the overall workflow
+
+27
+
+Figure 3. The new workflow of prefabrication production
+
+28
+
+Figure 4. The new workflow of prefabrication transportation
+29
+
+Figure 5. The new workflow of on-site assembly
+30
+
+Table 1. Causal elements of enhanced energy efficiency
+Company
+
+Causal Elements (Average
+
+Previous
+
+Enhanced
+
+Value)
+
+Performances
+
+Performances
+
+Production cycle
+
+10 days
+
+6 days
+
+110 sets
+
+98 sets
+
+7-8 minutes
+
+5-6 minutes
+
+200-300 sheets of
+
+110-140 sheets
+
+A4-sized paper
+
+of A4-sized
+
+per day
+
+paper per day
+
+5 sheets of A4-
+
+3 sheets of A4-
+
+sized paper per
+
+sized paper per
+
+car
+
+car
+
+Waiting time for delivery
+
+2 hours
+
+1.5 hours
+
+Time used for order picking
+
+2 hours per car
+
+1.2 hours per car
+
+6-7 minutes
+
+3-4 minutes
+
+99.85%
+
+100%
+
+30 minutes
+
+16 minutes
+
+Working-in-Process (WIP)
+inventory
+Company A
+(Production)
+
+Time length for locating a
+component
+
+Paper work
+
+Paper work
+Company B
+(Transportation)
+
+Time length for locating a
+component
+Company C
+(On-site assembly)
+
+Accuracy rate of on-site
+assembly
+Time used for recording the
+installation of a wing
+
+31
+
+

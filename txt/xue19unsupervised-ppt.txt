@@ -1,0 +1,302 @@
+Understanding unstructured 3D point
+clouds for creating digital twin city
+An unsupervised hierarchical clustering approach
+CIB WBC 18 June 2019
+HK PolyU
+
+Frank Xue, Ke Chen & Weisheng Lu
+xuef@hku.hk
+www.frankxue.com
+Research Assistant Professor
+Dept. of REC, HKU
+iLab, HKURBANlab, HKU
+
+Outline
+1
+
+Background
+
+2
+
+An unsupervised method to PCD
+
+3
+
+Discussion
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+2
+
+Section 1
+
+BACKGROUND
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+3
+
+1.1 Motivation
+ Digital twin city / semantic enrichment for CIM
+ Real-time/as-is/as-built modeling of
+o The built environment (4D)
+
+o Moving objects (4D persons, vehicles)
+
+Example of photogrammetry: Kowloon Wall City
+(Source: patrick-@sketchfab.com)
+
+ Vital to
+
+o Architecture, urban planning
+
+o Construction, conservation, smart city
+o Self-driving car, etc.
+
+ Popular models and technologies
+
+Example of point cloud: Pompei City
+(Source: MAP-Gamsau lab, CNRS, France)
+
+ Point clouds (Photogrammetry, laser scanning)
+ Triangle mesh models (3D Maps)
+ Volumetric as-built BIMs
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+: Architecture, Engineering and
+Construction/ Facilities Management
+
+Example of GIS-based: 3D Berlin
+(Open Data, source: berlin.de)
+
+4
+
+1.2 Existing as-built modeling methods
+ Manual reconstruction?
+ Expensive, tedious, and impractical for DTC
+
+ Two paradigms of automatic reconstruction
+ (1) Semantic segmentation
+o Step 1: To cut and label data to small patches (objects)
+
+Example of Step 1 of Paradigm (1)
+(Qi et al. 2017)
+
+(e.g., slicing bridge piers/deck)
+o Step 2: To fit object parameters (e.g., width, height of a
+wall)
+
+ (2) Semantic registration
+
+o Step 1: To annotate standard BIM components
+
+(b) I d
+
+A
+
+i
+
+f
+
+i
+
+(384 512
+
+E.g., online open BIM resources
+
+o Step 2: To register into the whole data
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+Example of Step 2 of Paradigm (2)
+(Xue et al. 2018)
+
+5
+
+1.2 Review the methods in the ML perspective
+Machine learning
+ Supervised learning
+ E.g., flower classification
+
+ Reinforced learning
+ E.g., iterative AlphaZero chess/Go
+
+score optimization
+
+ Unsupervised learning
+ E.g., clustering of nearest points, animal
+
+spicies
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+As-built modeling
+ Semantic segmentation
+ E.g., with PointNet, Semantic3D
+
+ Semantic registration
+ E.g., iterative RMSE optimization by
+
+fitting free BIM components
+
+ An opportunity
+ Based on existing unsupervised
+
+methods
+
+6
+
+Section 2
+
+AN UNSUPERVISED METHOD TO PCD
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+7
+
+2.1 Overview
+ Hierarchical clustering approach
+
+Figure 1: An overview of the proposed hierarchical clustering approach
+
+ Objective
+ No training data
+ Evidence: Connectivity, (dis)similarity of PCD patches
+
+dissimilarity(Pi, Pj) = minr, t ∈ ℝ³ RMSE(Pi, translate(rotate(Pj, r), t))
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+8
+
+2.2 Pilot case
+ A car park
+ Dublin dataset (Laefer et al. 2017).
+ 112,999 points (6.78MB)
+ 12 cars: 8 “short”, 3 “tall”, 1 SUV
+ 24,126 points after ground removal
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+(a) 112,999 LiDAR points (color indicates height) (b) After the preprocess of planar removal
+
+9
+
+2.2 Pilot case (cont.)
+ 368 small patches segmented
+ Normal, point-level connectivity
+
+ 12 patches clustered
+ Patch connectivity
+ The 12 cars
+
+(a) 368 small patches (by color) and the
+connectivity (lines) detected in 1.3s
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+(b) 12 patches (obj1 to obj12) was clustered via the
+connectivity of patches in (a)
+10
+
+2.2 Pilot case (cont.)
+ Hierarchical clustering
+ Dissimilarity matrix in 109.4s
+ Based on top algorithms benchmarked in Xue et al. (2019a)
+
+ 3 clusters seen
+ Green: 9 “short” cars
+ Red: 3 “tall” cars
+ Blue: 1 SUV
+ All correct
+
+ Understanding
+ Relative relationships
+ X, y, z locations
+ Groups, “near-by” etc.
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+(a) The dissimilarity matrix computed in 109.4s (b) Hierarchical clusters of similar patches
+(unit = cm, color depth indicates the dissimilarity) (grouping threshold = 10cm)
+11
+
+2.3 Additional model registration
+ After understanding
+ Towards a real DTC
+ By semantic registration
+(Xue et al. 2018, 2019b)
+
+ Some models/colors were
+
+wrong
+o No RGB in input
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+(a) Online open CAD files of 20 known car
+models
+
+(b) The dissimilarity matrix (unit = cm, best
+model for each patch is circled)
+
+12
+
+Section 3
+
+DISCUSSION
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+13
+
+3.1 Discussion
+ DTC/as-built modeling
+ Converts geometric raw data to semantics
+ May reuse BIM resources
+ Can be unsupervised
+o Automatic
+o Accurate
+o Efficient
+
+o Good for large-scale, complex-shaped objects
+
+ Drawbacks
+
+ Limited understanding
+ Require Model registration/annotations afterwards
+
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+Auto 3D
+modeling by
+one click
+
+14
+
+References
+ Laefer, D. F., Abuwarda, S., Vo, A. V., Truong-Hong, L., & Gharibi, H. (2017). 2015 aerial laser and
+
+photogrammetry survey of Dublin city collection record.
+ National Institute of Building Sciences. (2015). National Building Information Modeling Standard. Version 3, Retrieved
+
+from https://www.nationalbimstandard.org/
+ Qi, C. R., Su, H., Mo, K., & Guibas, L. J. (2017). Pointnet: Deep learning on point sets for 3d classification and
+segmentation. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (pp. 652-660).
+ Volk, R., Stengel, J., and Schultmann, F. (2014). Building Information Modeling (BIM) for existing buildings—Literature
+review and future needs. Automation in Construction, 38: 109-127.
+ Xue, F., Lu, W., Chen, K. (2018). Automatic generation of semantically rich as-built building information models using
+2D images: A derivative-free optimization approach. Computer-Aided Civil and Infrastructure Engineering, 33(11), 926942.
+ Xue, F., Lu, W., Webster, C. J., & Chen, K. (2019a). A derivative-free optimization-based approach for detecting
+architectural symmetries from 3D point clouds. ISPRS Journal of Photogrammetry and Remote Sensing, 148, 32-40.
+ Xue, F., Lu, W., Chen, K., & Zetkulic, A. (2019b). From Semantic Segmentation to Semantic Registration: DerivativeFree Optimization–Based Approach for Automatic Generation of Semantically Rich As-Built Building Information
+Models from 3D Point Clouds. Journal of Computing in Civil Engineering, 33(4), 04019024.
+ Xue, F., Lu, W., Chen, K., & Webster, C. J. (2019c). BIM reconstruction from 3D point clouds: A semantic registration
+approach based on multimodal optimization and architectural design knowledge, Advanced Engineering Informatics,
+(under revision)
+F Xue: Unsupervised for DTC, June 2019, HKPU
+
+15
+
+Thank You !
+
+

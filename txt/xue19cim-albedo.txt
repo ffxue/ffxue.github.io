@@ -1,0 +1,221 @@
+Semantic enrichment of city information models with LiDARbased rooftop albedo
+F. Xue*, W. Lu & T. Tan
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong SAR
+
+K. Chen
+Department of Construction Management, Huazhong University of Science and Technology, Wuhan
+430074, China PR
+*
+
+Corresponding author, Email: xuef@hku.hk
+
+: This is the pre-print version of the conference paper to appear as a book chapter:
+Xue, F., Lu, W., Tan, T., Chen, K. (2019). Semantic enrichment of city information models with LiDARbased rooftop albedo. In Sustainable Buildings and Structures: Building a Sustainable Tomorrow,
+pp. 207-212. London, UK: CRC Press. doi: 10.1201/9781003000716-27. (Best Paper Award of ICSBS2019)
+Permission from CRC Press must be obtained for all uses other than personal use.
+ABSTRACT: In the era of smart city, semantically rich city information models (CIMs) are demanded as a critical information hub. Roof albedo, a semantic property measures how much solar
+radiation is reflected, is vital to various urban sustainability topics, including heat island, local
+climate, green roof, and urban morphology. This paper presents an approach that enriches LiDAR-based albedo to rooftop models for CIM. First, we apply Chen et al. (2018)’s method to the
+reconstruction of the geometries of rooftop elements. Then, albedos of roofs and rooftop elements
+are estimated from the mean reflectance in LiDAR data. A pilot study was conducted in an urban
+area in Hong Kong. The results showed that the building models created by the presented approach were satisfactory in terms of rooftop elements and roof albedos. The results from the present approach can provide sustainability study the details of 3D geometries and albedos in an
+urban area.
+1 INTRODUCTION
+Roofs usually constitute 20~25% urban surfaces in typical metropolises (Rose et al. 2003). Rooftop albedo that measures how much solar radiation is reflected (other than absorbed) by roof
+coatings leads to a negative radiative forcing. At a worldwide level, high-albedo roofs can offset
+billions of tons of CO₂ emissions as well as save billions of dollars of energy bills every year
+(Akbari et al. 2009). Therefore, some governments, such as the California Energy Commission
+(2005), have required all new or retrofitted roofs to be white or reflective.
+To monitor rooftop albedos and utilize them in simulations, semantically rich building/city
+information models (BIMs/CIMs) are demanded as data hubs. CIM is the digital presentation of
+the physical and functional characteristics of a city area, like BIM for a building (NBIMS 2018;
+Chen et al. 2018). CIM plays the data hub role in various smart city applications (Xu et al. 2014;
+Cheng et al. 2016). As important physical and functional components in CIM, the rooftop geometries and albedos are vital to various urban sustainability topics such as heat island, local climate,
+green roof, and urban morphology (Santamouris 2014; Stewart et al. 2014; Baniassadi et al. 2018).
+Since only a few buildings have their digital models of as-built conditions, CIM often involves
+reconstruction of measurement data from sensors like satellite camera, satellite radar, or airborne
+light detection and ranging (LiDAR) (Pătrăucean et al. 2015; Xu et al. 2018). The reconstruction
+methods can be broadly categorized as either data-driven or model-driven, where a data-driven
+method is to perform modeling based on the preprocessed measurement data, and a model-driven
+method compares, recognizes, and fits known components to the data (Xue et al. 2018). Recently,
+researchers have made considerable progress on both types of reconstruction by using advanced
+methods like a priori rules, shape regulations, machine learning, and evolutionary computation
+
+(Pătrăucean et al. 2015). One example is Chen (2018), in which rooftop elements are regularized
+as perpendicular or parallel to the major edges of a building footprint.
+Semantic enrichment of albedo to roofs is the subsequent problem. Conventional methods used
+to employ multiple pyranometers (or albedometers) or scanning radiometers to measure the value
+of albedo (NASA 2014). Some researchers also validated other types of sensors like near-infrared
+(NIR) sensors and thermocouples, where a city’s LiDAR data is measured by ultraviolet-vis-NIR
+bands (Levinson et al. 2014). Therefore, the reflectance (or absorption equivalently) can confidently approximate the rooftop albedo and reveal the rooftop materials (e.g., coatings and green
+roofs) if carefully calibrated (Levinson et al. 2014; Tan et al. 2019).
+However, many CIMs or 3D city maps equip neither the rooftop details nor albedo. For example, Google Maps, as well as many other topographic maps in geographic information systems
+(GIS), have box-shaped 2.5D building models, on which rooftop elements and albedos are omitted. The Google Earth has photo-realistic 3D mesh models of building in most metropolises, but
+the albedo information is missing, too. The information gap between the CIMs and sustainability
+study’s demands thus calls for rooftop albedo research for CIM.
+This paper reconstructs and enriches the rooftop models with LiDAR-based albedo estimation
+for creating CIMs by extending Chen et al. (2018). The results are rooftop elements with geometry
+and albedo for CIM. Section 2 reviews the related works in literature. Section 3 describes our
+methods. A pilot case is shown in Section 4; and conclusion appears at the end of the paper.
+2 RELATED WORKS
+The task of processing 3D LiDAR data for 3D models usually starts with segmenting the points
+into patches of objects (e.g., buildings, roofs, and rooftop elements). This segmentation is generally called “semantic segmentation,” primarily based on the geometry (e.g., normal of a surface,
+connectivity, planarity) (Cao et al. 2017) or the reflectance value captured by the LiDAR sensors
+(Sun & Salvaggio 2013). The patches can be associated with other types of data. For instance, a
+topographic map can offer the surveyed ground truth building footprints for filtering noise and
+2.5D extrusion (Ledoux & Meijers 2011). Some architectural knowledge like pre-defined roof
+styles (e.g., flat, skillion, gable, hip, and gambrel) and parallel and perpendicular features can help
+in the 3D reconstruction, too (Xiong et al. 2014; Sampath & Shan 2009; Chen et al. 2018).
+Albedo can also be inferred from LiDAR data. It is because about 43% of the solar radiation
+output is visible light (400~800 nm) and 49% is infrared (> 800 nm) (Mohanakumar 2008); while
+LiDAR involves the visible spectrum and sometimes infrared. Levinson et al. (2014) conducted
+an experiment comparing three albedo estimation methods using a Perkin–Elmer Lambda 900
+UV–vis–NIR spectrometer. Their findings showed that the simple average value of reflection is
+surprisingly accurate – only with a 0.006 mean error (out of 1.0) and 0.021 root-mean-square
+error (RMSE) from the ground truth; the error can be narrowed further to RMSE = 0.014 if removing white materials and using the polynomial regression. In this paper, we will use the average albedo across the visible light and infrared spectrums.
+3 THE METHODS
+Figure 1 shows the framework of the approach presented in this paper. Technologically, the approach is a pipeline extending Chen et al. (2018) for LiDAR-based rooftop albedo modeling. The
+inputs include multiple sets of urban data. Apart from the LiDAR data, topographic map (2D or
+2.5D) and architectural regularity belong to the inputs, too. The outputs after the four-step pipeline
+are cloud-based 3D map and data exchange of rooftop model in GeoJSON format, which is an
+open standard format designed for representing simple geographical features on top of JavaScript
+Object Notation (JSON).
+
+Figure 1. The pipeline of the presented approach in this paper.
+
+The first three steps, from “roof segmentation” to “regularization” in Figure 1, duplicate the
+geometric modeling of rooftop elements in Chen et al. (2018). The last step, semantic enrichment
+of albedo aims to exploit the “intensity” value in LiDAR data. The intensity records how many
+laser photons were reflected from the surface of the target location. Although intensity is a standard “scalar” property in the laser (LAS) standard (ASPRS 2011) of LiDAR format, the definition
+and range of intensity can vary significantly from one LiDAR equipment to another. For example,
+some LiDAR limits the intensity between 0 and 1, while some have a range between 0 and 128.
+Therefore, we use the normalized mean intensity (in a range 0 to 1) of the upper surface of a
+rooftop element as its approximate albedo, i.e.
+albedo = Σi=1 to n intensityi / intensityMAX,
+(1)
+where n is the number of LiDAR points on a top surface, and intensityMAX is the highest value of
+the defined range of intensity in the LiDAR data.
+4 A CASE IN HONG KONG
+The study area in this paper was a squared area around the University of Hong Kong (HKU) Main
+Campus, about 0.3 km2 in the Central Western District, Hong Kong. As shown in Figure 2, the
+small area included hundreds of high-rise buildings, groundcover vegetation, hills, roads, flyovers, and ferry facilities. The study area consisted of various urban landscapes, including highdensity urban blocks.
+(a)
+
+(b)
+
+Figure 2. The study area around HKU campus in Central Western District, Hong Kong, (a): Map of the
+target area, (b): LiDAR 3D data (cooler color indicates higher albedo).
+
+The LiDAR data, as shown in Figure 2b, was collected by the Civil Engineering and Development Department (CEDD) of the Hong Kong SAR Government (CEDD 2015). The intensity in
+the LiDAR data was measured by an airborne Optech 3100 LidAR sensor, which was a wavelength range of 400-2000 nm using a portable field spectro-goniometer ASD FieldSpec Pro
+(Ahokas et al. 2006). We use the average reflectance as the estimated albedo, as shown in Eq. (1),
+according to the validation in Levinson et al. (2014).
+The results are the albedo models of 1,087 blocks of buildings and 1,288 rooftop elements on
+top of them. It should be noted that a complex building’s blocks and parts, e.g., podium and
+
+blocks, are defined as multiple block models. We also converted the models into GeoJSON formats and visualized on a web 3D library OSMBuildings (version 3.0.1, https://github.com/OSMBuildings/OSMBuildings). Figure 3 shows the visualized albedo models of the study area.
+Beside of the albedo, each roof model was also associated with the topographical map of Hong
+Kong (in HKGS1980 coordinate system) and Open Street Map (in WGS1984). As a result, more
+semantic properties can be enriched to the model of the building. Figure 4 shows the Knowles
+Building, HKU, in which the offices of the authors reside, in the web visualization system. Apart
+from the geometric dimensions, one can read the more properties from the mouse tooltip (Figure
+4.a): Name, building IDs in the topographic map and Open Street Map, roof albedo (0.351), type
+of building, storeys (including the level of basements). In comparison to the model in Google
+Earth, as shown in Figure 4.b, all rooftop elements including the parapet walls, elevators’ machine
+rooms, water tank, and cooling towers, except for one circled in red. Since the albedo is not available in Google Earth, and the GeoJSON is an open GIS format, the albedo models presented in
+this paper can facilitate more in sustainability study.
+
+Figure 3. Screenshot of the LiDAR-based albedo models of roofs and rooftop elements visualization (cooler
+color indicates higher albedo).
+
+(a)
+
+(b)
+
+Figure 4. Example of the output model. (a) Roof and rooftop elements of Knowles Building, HKU (cooler
+color indicates higher albedo), (b) the referential 3D building model in Google Earth, where the circled is
+a missing element in (a).
+
+5 CONCLUSION
+Roof albedo that measures how much solar radiation is reflected is vital to various urban sustainability topics, including heat island, local climate, green roof, and urban morphology. However,
+the detailed models of roof geometries and rooftop albedos are not well prepared to enable such
+studies. This paper focuses on the LiDAR data, which involves roofs’ reflectance on visible light
+and NIR spectrums. We present an approach that reconstructs rooftop geometry and enriches LiDAR-based albedo for CIM. A pilot study confirmed the methodological feasibility, and the results were encouraging. Future directions include reconstruction of irregularly shaped rooftop
+elements such as satellite dishes and the data interoperability with energy modeling software.
+ACKNOWLEDGEMENTS
+The work presented in this paper was supported by the Hong Kong Research Grant Council
+(No. 17200218) and The University of Hong Kong (Nos. 201711159016, 102009741). The work
+was completed when the coauthor K.C. was with The University of Hong Kong.
+REFERENCES
+Ahokas, E., Kaasalainen, S., Hyyppä, J. & Suomalainen, J. 2006. Calibration of the Optech ALTM 3100
+laser scanner intensity data using brightness targets. International Archives of Photogrammetry, Remote
+Sensing and Spatial Information Sciences, 36(Part 1). Retrieved July 25, 2019, from
+https://www.isprs.org/proceedings/xxxvi/part1/papers/T03-11.pdf
+Akbari, H., Menon, S. & Rosenfeld, A. 2009. Global cooling: Increasing world-wide urban albedos to offset
+CO2. Climatic Change, 94(3-4): 275-286. doi:10.1007/s10584-008-9515-9
+ASPRS. 2011. LAS Specification Version 1.4–R13. Bethesda, MD, USA: American Society for Photogrammetry and Remote Sensing. Retrieved July 25, 2019, from http://www.asprs.org/wpcontent/uploads/2010/12/LAS_1_4_r13.pdf
+Baniassadi, A., Heusinger, J. & Sailor, D. J. 2018. Building energy savings potential of a hybrid roofing
+system involving high albedo, moisture retaining foam materials. Energy and Buildings, 169: 283-294.
+doi:10.1016/j.enbuild.2018.04.004
+California Energy Commission. 2005. California Energy Commission Building Energy Efficiency
+Standards, For Residential and Nonresidential. Publication No. CEC-400-2006-015. Sacramento, CA,
+USA: California Energy Commission.
+
+Cao, R., Zhang, Y., Liu, X. & Zhao, Z. 2017. 3D building roof reconstruction from airborne LiDAR point
+clouds: A framework based on a spatial database. International Journal of Geographical Information
+Science, 31(7): 1359-1380. doi:10.1080/13658816.2017.1301456
+CEDD. 2015. The CEDD 2010 LiDAR Survey. (private communication). Hong Kong: Civil Engineering
+and Development Department.
+Chen, K., Lu, W., Xue, F., Tang, P. & Li, L. H. 2018. Automatic building information model reconstruction
+in high-density urban areas: Augmenting multi-source data with architectural knowledge. Automation in
+Construction, 93: 22-34. doi:10.1016/j.autcon.2018.05.009
+Cheng, J. C., Lu, Q. & Deng, Y. 2016. Analytical review and evaluation of civil information modeling.
+Automation in Construction, 67: 31-47.
+Ledoux, H. & Meijers, M. 2011. Topologically consistent 3D city models obtained by extrusion.
+International
+Journal
+of
+Geographical
+Information
+Science,
+24(5):
+557-574.
+doi:10.1080/13658811003623277
+Levinson, R., Chen, S., Berdahl, P., Rosado, P. & Medina, L. A. 2014. Reflectometer measurement of
+roofing aggregate albedo. Solar Energy, 100: 159-171. doi:10.1016/j.solener.2013.11.006
+Mohanakumar, K. 2008. Stratosphere Troposphere Interactions: An Introduction. Springer.
+NASA. 2014. Measuring Earth’s Albedo. NASA, USA. Retrieved July 25, 2019, from
+https://earthobservatory.nasa.gov/images/84499/measuring-earths-albedo
+NBIMS. 2018. United States National Building Information Modeling Standard. Retrieved July 25, 2019,
+from Whole Building Design Guide: http://www.wbdg.org/building-information-modeling-bim
+Pătrăucean, V., Armeni, I., Nahangi, M., Yeung, J., Brilakis, I. & Haas, C. 2015. State of research in
+automatic as-built modelling. Advanced Engineering Informatics, 29(2): 162-171.
+doi:10.1016/j.aei.2015.01.001
+Rose, L. S., Akbari, H. & Taha, H. 2003. Characterizing the fabric of the urban environment: a case study
+of Greater Houston, Texas. Berkeley, CA, USA: Lawrence Berkeley National Laboratory.
+Sampath, A. & Shan, J. 2009. Segmentation and reconstruction of polyhedral building roofs from aerial
+LiDAR point clouds. IEEE Transactions on Geoscience and Remote Sensing, 48(3): 1554-1567.
+doi:10.1109/TGRS.2009.2030180
+Santamouris, M. 2014. Cooling the cities–a review of reflective and green roof mitigation technologies to
+fight heat island and improve comfort in urban environments. Solar Energy, 103: 682-703.
+doi:10.1016/j.solener.2012.07.003
+Stewart, I. D., Oke, T. R. & Krayenhoff, E. S. 2014. Evaluation of the ‘local climate zone’scheme using
+temperature observations and model simulations. International Journal of Climatology, 24(4): 10621080. doi:10.1002/joc.3746
+Sun, S. & Salvaggio, C. 2013. Aerial 3D building detection and modeling from airborne LiDAR point
+clouds. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing, 6(3): 14401449. doi:10.1109/JSTARS.2013.2251457
+Tan, T., Chen, K., Lu, W. & Xue, F. 2019. Semantic enrichment for rooftop modeling using aerial LiDAR
+reflectance. Proceedings of the 2019 IEEE International Conference on Signal Processing,
+Communications and Computing, in press. IEEE.
+Xiong, B., Elberink, S. O. & Vosselman, G. 2014. A graph edit dictionary for correcting errors in roof
+topology graphs reconstructed from point clouds. ISPRS Journal of Photogrammetry and Remote
+Sensing, 93: 227-242. doi:10.1016/j.isprsjprs.2014.01.007
+Xu, J., Chen, K., Xue, F. & Lu, W. 2018. 3D point cloud data enabled facility management: A critical
+review, In Proceedings of the 23rd International Symposium on the Advancement of Construction
+Management and Real Estate, in press. Springer.
+Xu, X., Ding, L., Luo, H. & Ma, L. 2014. From building information modeling to city information
+modeling. Journal of Information Technology in Construction, 19: 292-307.
+Xue, F., Lu, W. & Chen, K. 2018. Automatic Generation of Semantically Rich As‐Built Building
+Information Models Using 2D Images: A Derivative‐Free Optimization Approach. Computer‐Aided
+Civil and Infrastructure Engineering, 33(11): 926-942. doi:10.1111/mice.12378
+
+

@@ -1,0 +1,1804 @@
+Automatic information gain-guided convergence for refining building design parameters:
+Enhancing effectiveness and interpretability in simulation-based optimization
+Qianyun Zhou 1, Fan Xue 2*
+This is the peer-reviewed post-print version of the paper:
+Zhou, Q., & Xue, F. (2025). Automatic information gain-guided convergence for
+refining building design parameters: Enhancing effectiveness and interpretability in
+simulation-based optimization. Building and Environment, 275, 112788.
+Doi: 10.1016/j.buildenv.2025.112788
+The final version of this paper is available at: https://doi.org/10.1016/j.buildenv.2025.112788.
+The use of this file must follow the Creative Commons Attribution NonCommercial No Derivatives License, as required by Elsevier’s policy.
+Abstract
+5
+
+10
+
+15
+
+20
+
+Simulation-based optimization (SBO) is widely applied to building designs by iteratively
+tuning design parameters towards sustainable goals. However, numerous design parameters in
+exploratory stages lead to design uncertainty and exponentially increase optimization search
+space’s dimensionality. The non-linear, non-derivative nature of objective functions
+determines SBO tasks a black box, which lacks interpretability for design decisions or
+optimization strategies. This study introduces an Automatic Information Gain-guided
+Convergence (AIGGC) method for refining critical design parameters in building performance
+SBO. The AIGGC method extends the generic SBO process with interpretable information
+gain analysis for each design parameter and component, to converge to the most promising
+domain sub-intervals prior to traditional SBOs. Experimental results evaluated the robustness
+and scalability of AIGGC across two design scales. Under the same iteration budgets, AIGGC
+significantly enhanced three SBO algorithms, i.e., RBFOpt, CMAES, and GA, by 0.62~0.67%
+less energy use intensity and 2.14~4.74% more direct sunlight hours against the baseline
+solutions, respectively. The contribution of this study involves two aspects, including
+introducing a novel information-theory-based method for optimizing design parameters in
+high-dimensional SBO tasks of sustainable building designs, and a novel perspective in guiding
+stakeholders with interpretable analysis of building design parameters.
+Keywords: Information gain; Simulation-based optimization; Sustainable building design;
+Interpretability analysis
+
+1 Qianyun Zhou, MArch, PhD student
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong, China
+E-mail: qianyun8@connect.hku.hk ORCiD: https://orcid.org/0000-0002-5466-6225
+2 Fan Xue, PhD, Associate Professor
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong, China
+National Center of Technology Innovation for Digital Construction Hong Kong Branch, The University of Hong Kong,
+Pokfulam, Hong Kong, China
+E-mail: xuef@hku.hk ORCiD: https://orcid.org/0000-0003-2217-3693
+* Corresponding author, Tel: +852 3917 4174, Fax: +852 2559 9457, Email: xuef@hku.hk
+
+1
+
+25
+
+30
+
+Highlights
+•
+
+A novel Information Gain-guided parameter convergence for complex sustainable designs
+
+•
+
+A sound information-theory-based method to enhance generic simulation-based
+optimization (SBO)
+
+•
+
+Automatic converging design parameters to most promising domain sub-intervals
+
+•
+
+Improved 3 SBO algorithms in 2 cases, by 0.62~0.67% less energy cost and 2.14~4.74%
+more sunlight hours
+
+•
+
+Interpretable guidance for stakeholders in sustainable design decision-making
+
+1 Introduction
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+The building and construction sector significantly contributes to global climate change,
+accounting for 34 percent of global energy demand and 37 percent of greenhouse gas emissions
+(UNEP 2024). Nowadays, the sector follows sustainable planning guidelines and standards
+among countries, focusing on reducing building energy consumption and enhancing occupant
+well-being to create environmentally friendly buildings and urban neighborhoods (Luca et al.
+2024; He et al. 2024). The environmental performance analysis of buildings includes various
+aspects, such as energy consumption, thermal comfort, and daylighting (Zhan et al. 2024).
+Extensive research has shown that early-stage building design is critical to effectively
+enhancing these performance outcomes (Wang et al. 2024). By integrating simulation engines
+into visual programming environments, parametric modeling techniques can couple with
+simulation data to deliver instant performance feedback during design generation (Hinkle et al.
+2024).
+Simulation-based optimization (SBO) automates the design exploration process
+through iterative algorithms, enabling the identification of optimal or near-optimal solutions
+with less time and labor (Nguyen et al. 2014). Typically, an SBO process begins with defining
+the target design parameters and objective function, followed by an optimizer iteratively
+updating the design parameters to converge towards the optimal solution. Early-stage building
+design often involves a vast range of parameters that control the building’s physical
+components, materials, and systems (Wang et al. 2024; Zhan et al. 2024; Es-sakali et al. 2025).
+A large number of design parameters results in the uncertainty of potential designs and the
+exponential growth of the design search space, known as the ‘curse of dimensionality’ (Nguyen
+et al. 2014; Chen et al. 2015; Han et al. 2023). The high dimensionality of the search space
+complicates SBO convergence; furthermore, time-intensive simulations plus limited iteration
+budgets confine the efficiency in SBO. On the other hand, the non-linear, non-derivative nature
+of objective functions makes SBO a black box (Waibel et al. 2019), which limits
+interpretability for decision-makers and provides little insight into guiding the convergence of
+the design search space.
+Current frontier research employed sensitivity analysis techniques to quantify the
+importance of design parameters (Østergård et al. 2017; Brown & Mueller 2019; Hinkle et al.
+2
+
+65
+
+70
+
+75
+
+80
+
+85
+
+90
+
+95
+
+100
+
+2024). Some studies have incorporated surrogate models to replace simulation engines in SBO,
+enabling real-time interactive optimization (Lin et al. 2021; Han et al. 2023; Li et al. 2024).
+Others have explored visual analytics to enhance the interpretability of SBO results
+(Showkatbakhsh & Makki 2022). However, both sensitivity-based techniques and surrogate
+models rely on extensive simulation datasets for analysis and often need rerunning for different
+optimization tasks, requiring considerable time and labor. Additionally, while visualizing
+optimization results improves interpretability, it does not enhance optimization efficiency,
+leaving a research gap in improving the interpretability of the optimization convergence
+process.
+The uncertainty and lack of interpretability in high-dimensional SBO search spaces
+make it challenging for stakeholders to fully understand the SBO process. In this context,
+information entropy, a classical concept in information theory (Shannon 1948), provides the
+fundamental measure of uncertainty within a variable or dataset. The entropy reflects the
+amount of information gained when observing the outcome of a potential state. Information
+gain (IG), that quantifies changes in information entropy, is a classic descriptor for assessing
+feature importance during data partitioning (Zhang et al. 2022). IG is, therefore, widely applied
+in many fields, such as machine learning and data mining, to address the curse of
+dimensionality while enhancing model interpretability and decision-making capability (Omuya
+et al. 2021; Son & Hyun 2022). However, in the building and construction sector, few studies
+have conducted IG-based methods or analyses for SBO tasks.
+Our research aims to enhance the generic SBO process by incorporating IG-guided
+analysis for each design parameter and component, optimizing the initial parameter set to those
+most promising for improving building performance and thereby reducing the dimensionality
+of the search space. Additionally, the visualized results of IG-guided analysis provide
+interpretable insights for stakeholders, enabling them to independently navigate optimization
+convergence, and enhancing their understanding of the process.
+Therefore, this paper presents an Automatic IG-guided Convergence (AIGGC) method
+for refining design parameters in sustainable building designs. This method allocates a small
+portion of the iteration budget for first-phase optimization, using its results to conduct IGguided analysis of sub-intervals within each design parameter. This analysis aids stakeholders
+in automatically converging design parameters and identifying high-quality interval domains.
+The remaining iteration budget is then applied to re-optimize the converged parameters, further
+improving the solution. This paper tested the robustness and scalability of the proposed method
+on two prominent optimization objectives: minimizing the annual energy consumption of a
+typical modular flat in Hong Kong and maximizing sunlight hours on the ground floor of a
+south-facing urban block in Jianhu City. The contribution of this paper is thus twofold: (i) a
+novel information-theory-based method for optimizing design parameters in high-dimensional
+SBO tasks of sustainable building designs, and (ii) a novel perspective in guiding stakeholders
+with interpretable analysis of building design parameters.
+
+3
+
+2 Literature review
+2.1 Simulation-based optimization for buildings and construction
+105
+
+110
+
+115
+
+120
+
+125
+
+130
+
+135
+
+140
+
+SBO is recognized as a commonly used strategy for satisfying the sustainable requirements of
+high-performance building designs, both in research and practice. Since the late 2000s, the
+workflow of iteratively coupling optimization algorithms with simulation programs to
+approximate sub-optimal solutions has gained popularity (Evins 2013; Nguyen et al. 2014;
+Javanroodi et al. 2019). The generic SBO process can be divided in three phases: the first phase
+is the definition of the optimization task, including setting independent design parameters,
+objective functions, and constraints; then it follows by running optimization algorithms while
+monitoring convergence; and finally, the optimized data is transformed into visualized charts
+(Nguyen et al. 2014; Zhan et al. 2024).
+Optimization is the process of discovering the minimum or maximum of a function by
+selecting certain variables under given constraints (Machairas et al. 2014; Yu et al. 2023). In
+SBO, the objective function is typically a “black box” computed by third-party simulation
+engines, relying on complex physical models and climate data, making direct mathematical
+formulation infeasible (Evins 2013; Cruz et al. 2024). The highly non-linear, non-derivative
+mapping of multi-dimensional inputs defines SBO as a black-box optimization problem
+(Wortmann 2019; Waibel et al. 2019). Consequently, derivative-free algorithms, including
+Genetic Algorithm (GA), Particle Swarm Optimization (PSO), Simulated Annealing (SA),
+Covariance Matrix Adaptation Evolution Strategy (CMA-ES), and RBFOpt, are widely
+employed in architectural design exploration (Machairas et al. 2014; Waibel et al. 2019).
+Statistics show that GA is the most frequently used among these algorithms (Evins 2013;
+Nguyen et al. 2014), while comparative studies have found that CMA-ES and RBFOpt
+outperform in black-box optimization for building design (Kämpf et al. 2010; Xue et al. 2019;
+Wortmann 2019; Rehbach et al. 2022).
+Energy performance optimization has been extensively studied in SBO tasks to mitigate
+buildings’ environmental impact (Evins 2013; Luca et al. 2024). By integrating energy
+simulation engines such as EnergyPlus, TRNSYS, and DOE-2, key metrics like cooling and
+heating loads and Energy Use Intensity (EUI) can be evaluated (Nguyen et al. 2014). Among
+building components, optimizing orientation, layouts, HVAC systems, envelope design, and
+openings play a crucial role in passively reducing energy consumption (Konis et al. 2016;
+Javanroodi et al. 2019; Mousavi et al. 2022; Gupta & Deb 2023; Zhou & Xue 2023). Notably,
+envelope optimization is essential for substantial energy savings, with studies showing
+reductions of up to 50% (Es-sakali et al. 2025). Optimizing the building envelope involves
+multiple factors, including wall materials, window-to-wall ratio (WWR), window shape,
+glazing, and shading (Hinkle et al. 2022; Wortmann et al. 2022). Among these, studies identify
+WWR as a major factor influencing building energy consumption (Wang et al. 2024).
+Daylight quality is also a crucial aspect of sustainable design exploration, serving as a
+critical indicator of livability and well-being (Fang & Cho 2019; Bushra 2022; Luca et al. 2024).
+4
+
+145
+
+150
+
+155
+
+160
+
+165
+
+170
+
+175
+
+In the built environment, daylight accessibility is influenced by inter-building overshadowing,
+and numerous studies have shown that optimizing block morphology and layout can
+significantly enhance regional daylight quality (Javanroodi et al. 2019; Liu et al. 2023; Liu et
+al. 2024).
+Nowadays, researchers have developed a range of tools on Grasshopper and Dynamo
+platforms to integrate the whole generic SBO process, enabling architects to seamlessly
+transition from parametric modeling to simulation engines (e.g., Diva, Radiance, Honeybee,
+and Ladybug), and finally to optimizers and visualization tools such as Galapagos, Octopus,
+Wallacei, and Opossum (Javanroodi et al. 2019; Wortmann et al. 2022; Luca et al. 2024).
+However, given the high-dimensional design search space generated by numerous design
+parameters in early design stages, combined with the black-box nature of SBO, the generic
+SBO process still faces limitations in search efficiency and the interpretable guidance for
+optimization convergence.
+2.2 Design parameter analysis for convergence of search space
+The memory and computational cost may rise exponentially and become difficult to navigate
+as more design parameters are brought into the SBO task (Nguyen et al. 2014). In practice, the
+convergence of design parameters is heavily influenced by the designer’s prior knowledge
+(Brown & Mueller 2019; Wang et al. 2024). However, this process can be particularly
+challenging for other stakeholders with little design experience. Therefore, implementing a
+systematic converging and analysis approach in the early design stages is essential to maintain
+a manageable and effective set of design parameters.
+Previous studies have conducted design parameters analysis through literature reviews
+(Zhou et al. 2023), sensitivity analysis (Tian 2013; Østergård et al. 2017), or machine learningbased feature selection method (Olu-Ajayi et al. 2022; Liu et al. 2022; Hinkle et al. 2024).
+Zhou et al. (2023), for instance, reviewed 50 papers published between 2010 and 2022,
+summarizing eight types of design parameters that significantly impact building environmental
+performance. This review helps to focus on the categories of design parameters in SBO.
+Sensitivity analysis is commonly divided into local and global approaches (Tian 2013), with
+global sensitivity analysis being more widely used in building analysis due to the non-linear,
+multi-modal, and discontinuous character of building simulation results (Nguyen et al. 2014).
+Global sensitivity analysis methods include regression techniques (e.g., Standardized
+Regression Coefficients and Standardized Rank Regression Coefficients), screening-based
+methods (e.g., the Morris method), variance-based methods (e.g., Fourier Amplitude
+Sensitivity Test and Sobol method), and meta-modeling approaches (e.g., Multivariate
+Adaptive Regression Splines and Support Vector Machines). Machine learning-based feature
+selection methods, such as Random Forest (RF) or Extra Trees classifiers, apply recursive
+assessment of feature importance by evaluating the effect of adding or removing individual
+features (Olu-Ajayi et al. 2022; Liu et al. 2022; Tian et al. 2024).
+
+5
+
+180
+
+185
+
+190
+
+While Zhou et al. (2023) emphasize the categories of design parameters in SBO, it has
+a limited impact on reducing the dimensionality of the optimization search space. In contrast,
+most global sensitivity analyses require extensive large-scale sampling techniques, such as
+Monte Carlo or Latin Hypercube Sampling, which is impractical for SBO tasks with timeintensive simulations, as each simulation can take several minutes or even hours (Tian 2013;
+Nguyen et al. 2014; Østergård et al. 2017). Additionally, machine learning-based feature
+selection methods provide important metrics through training; however, if variables or their
+value boundaries change, retraining becomes necessary to maintain accuracy, which increases
+computational costs (Hinkle et al. 2024). Therefore, effectively screening design parameters
+without increasing computational burden and seamlessly integrating this process into the SBO
+workflow remains a research challenge in SBO tasks.
+2.3 Information gain and applications
+
+195
+
+200
+
+205
+
+210
+
+Given the uncertainty and lack of interpretability in high-dimensional SBO, information theory
+provides a possible approach to addressing these challenges. In information theory, information
+entropy is proposed as the metric for uncertainty or randomness within a dataset (Shannon
+1948). And information gain (IG) is an entropy-based feature evaluation method widely used
+in machine learning (Zhang et al. 2022). In decision trees, it helps to choose the feature that
+best splits the data, with higher IG indicating more effective sample separation and improved
+classification (Kotsiantis 2013). Chen and Hao (2017) applied IG to rank feature importance
+in stock market indices prediction, providing a basis for computing feature weights in weighted
+Support Vector Machines. Besides, Omuya et al. (2021) utilized an IG-based feature selection
+technique to address the curse of dimensionality, improving the accuracy and overall
+performance of machine learning algorithms.
+In the building design sector, limited research has integrated information entropy or
+information gain. Hester et al. (2018) were the first to apply information entropy in early-stage
+building design optimization, quantifying the flexibility of uncertain or probabilistic designs
+during iterative refinement and optimization. Son et al. (2022) developed a proactive design
+exploration system incorporating Bayesian information gain and information entropy to
+provide designers with guidance feedback during the design exploration process. Additionally,
+other researchers employed information gain to determine criterion weights in multi-criteria
+decision-making (Weerasuriya et al. 2021; Zhang et al. 2022). However, information gainguided methods remain scarce in high-dimensional SBO tasks, revealing a gap in the research.
+3 Research methods
+
+215
+
+This paper demonstrates the effectiveness of the Automatic Information Gain-guided
+Convergence (AIGGC) method in early-stage building design through two sustainable design
+case studies. The overall workflow is illustrated in Figure 1.
+
+6
+
+220
+
+225
+
+230
+
+Figure 1. The proposed workflow for Automatic IG-guided Convergence of design
+parameters.
+Distinct from the generic SBO process, which optimizes the program by running the
+total iteration budget once, this method allocates a small portion of the total budget for firstphase optimization. The optimized results from first-phase optimization, comprising objective
+function values and corresponding design parameter sets, are then utilized as a dataset for IGguided analysis. Second, the dataset is pre-processed, and the initial domain intervals of the
+design parameters are partitioned. IG is then calculated for each sub-interval, enabling
+automatic convergence by prioritizing high-information design parameters based on the total
+IG score. The IG-guided visual analysis provides stakeholders with interpretable insights from
+both design parameters and components, allowing them to converge design parameters and
+gain a deeper understanding of influential components. Finally, the converged design
+parameters are adopted for the second phase of optimization.
+3.1 Information gain-guided approach for automatic convergence
+3.1.1 Design the allocation of iteration budget
+As shown in Figure 1, the AIGGC method consists of two optimization phases. First, building
+designers set the total iteration budget (N) and determine the distribution ratio (rd) between the
+7
+
+235
+
+240
+
+245
+
+two phases, resulting in the pre-convergence budget (N1 = N × rd) and the post-convergence
+budget (N2 = N − N1). In the second phase, the converged design parameters based on IGguided visual analysis are re-inputted into the optimizer to finally find the optimal solution.
+The optimization settings and algorithm remain the same across both phases.
+3.1.2 Dataset preprocessing
+The first-phase optimization generates a dataset of optimized design solutions (S) and
+corresponding objective function values f(S), organized as a matrix. The first row lists the
+names of design parameters and the objective function, while each subsequent row represents
+an optimized solution. The matrix is then sorted by the optimization objective in ascending
+order (for minimizing f(x)) or descending order (for maximizing f(x)). Subsequently, inspired
+by the elitism strategy in GA, the dataset is categorized into ‘elite’ and ‘non-elite’ groups based
+on a designer-defined elite ratio (re), as shown in Figure 2.
+
+Figure 2. Detailed procedures of IG-guided automatic convergence.
+
+250
+
+255
+
+3.1.3 Decomposing the domain of design parameters
+The initial design parameter domains (R) are divided into multiple sub-interval bins using the
+partitioning method (BinM), and the number of bins (Nb) determines the analytical granularity.
+This partitioning process helps to analyze the distribution of pre-optimized solutions within
+each sub-interval bin after the first-phase optimization and to calculate the probability of
+solutions belonging to the ‘elite’ group. In addition, it aids in targeting promising regions of
+design parameters for further optimization.
+This study proposes three approaches for the partitioning method (BinM ∈ Ζ): (1) BinM
+= 10, dividing each design parameter domain into 10 bins; (2) BinM = N1 /10, with the number
+of bins set to the integer value of the pre-convergence budget (N1) divided by 10; (3) BinM =
+�𝑁𝑁1 , with the number of bins set to the integer value of the square root of the pre-convergence
+budget (N1).
+
+260
+
+3.1.4 IG-guided Automatic Convergence
+The information gain (γ) for each design parameter can be computed automatically according
+to Algorithm 1. The algorithm takes as input a set of solutions (S) with their objective function
+values f(S), the design parameter’s initial domain range (R), the elite ratio (re), and the number
+of bins (Nb).
+
+8
+
+265
+
+270
+
+275
+
+280
+
+285
+
+Algorithm 1 first computes the baseline entropy (e0), assuming an equal distribution of
+elite solutions across the parameter range. The algorithm determines the threshold value of f
+for elite solutions to identify the elite solutions (SE). The initial range R is then decomposed
+into Nb equally spaced sub-intervals I. For each sub-interval i, the entropy of elites in i is
+calculated by the probability p of elite solutions. The algorithm also computes the probability
+r of input solutions S in each sub-interval, and accumulates the weighted entropy (ew) by
+weighting the elite entropy with probability r before summing across sub-intervals. Finally, the
+information gain (γ) is computed as the difference between the baseline entropy (e0) and the
+accumulated weighted entropy (ew). A higher IG value for a design parameter indicates greater
+importance in reducing the uncertainty of finding the optimal solution within the search space.
+Algorithm 2 and Figure 2 show the following steps, which converge design parameter
+intervals based on IG values, improving optimization efficiency by either converging interval
+ranges or fixing parameters as constants. Algorithm 2 takes as input the number of design
+parameters (n), corresponding initial domain range (R), corresponding information gains (Γ),
+and the corresponding sub-intervals (I). Additionally, it requires a set of elite solutions (SE) and
+two ratios: rconv, associated with the highest IG, which determines the subsets of parameters
+that should converge; and rconst, associated with the lowest IG, which defines the subsets of
+parameters that should be fixed to constants. Specifically, the lower threshold (γconv) of gain to
+converge is set at the (1 - rconv) percentile of the information gains, while the upper threshold
+(γconst) of gain to constant is set at the rconst percentile.
+
+9
+
+290
+
+295
+
+300
+
+305
+
+For each design parameter, the algorithm applies a three-way decision rule based on its
+information gain (γi). If the gain γi is greater than or equal to γconv, the parameter range is
+converged by removing sub-intervals that do not appear in elite solutions. If the gain γi is less
+than or equal to γconst, the parameter is converted to a constant value, which is determined as
+the design value observed in the optimum of elite solutions. Otherwise, the parameter range
+remains unchanged. Finally, the converged set of parameter ranges R* is returned. This process
+effectively reduces the design search space by eliminating irrelevant or highly stable parameter
+variations, thereby improving the efficiency of the second-phase optimization.
+3.1.5 Interpretable analysis of building design parameters and components
+The IG-guided interpretable analysis starts with information from design parameters, traces
+their association with different design components, and finally provides stakeholders with
+guidance on overall design strategies. As shown in the Sankey diagram in Figure 3(a), design
+parameters originally belonging to various design components are ranked based on their IG
+values and subsequently categorized into three subsets, corresponding to different modes of
+domain interval convergence. Figure 3(b) further explains and visually presents the
+convergence modes within three IG-guided subsets. Furthermore, the IG values of individual
+design parameters can be aggregated to evaluate their associated design components,
+highlighting the most impactful components for design optimization within the given SBO task.
+The IG-guided interpretable analysis explicitly demonstrates the convergence to effective subintervals during the SBO process while effectively supporting designers and stakeholders in
+making informed design decisions.
+
+10
+
+310
+
+Figure 3. An example visualization for interpretable analysis in AIGGC. (a) Flow of design
+parameters information: from design components to IG-guided subsets. (b) Visual
+transformation from initial to converged domain intervals. (c) Illustration of IG ranking for
+design components.
+3.2 Case study
+
+315
+
+320
+
+325
+
+330
+
+335
+
+To evaluate the robustness and scalability of the proposed method, we applied AIGGC to
+enhance three optimization algorithms to SBO tasks in two scales. The first conducted
+sustainable design optimization for energy efficiency at the building scale, while the other
+optimized daylight quality at the urban scale. Residential energy consumption has steadily risen
+in recent years, highlighting the need for sustainable building technologies (Qin & Pan 2020;
+Zhou & Xue 2023). Modular construction, known for its productivity, reusability, and pollution
+reduction, is extensively studied and particularly vital in Hong Kong due to its dense population
+and limited land resources (Zhou & Xue 2023). This paper optimizes the design of modular
+flats based on the building dimensions published by the Hong Kong Housing Authority (HKHA
+2015). Given the floor layout of a one-bedroom modular flat, the building envelope was
+optimized to minimize energy consumption. Additionally, daylight quality, which significantly
+impacts residents’ quality of life, is affected by mutual shading among urban buildings (Liu et
+al. 2023). Therefore, optimizing building forms during the early stages of urban block
+development is also essential for enhancing daylight accessibility and improving living
+conditions.
+3.2.1 Definition of initial design parameters
+The first design case focuses on optimizing the building envelope of a modular flat in Hong
+Kong, designed for 1-2 occupants, with an internal floor area rationalized to 14.1~14.5 m2.
+Hong Kong has a subtropical climate, with warm and humid conditions year-round. Summers
+are long and hot, with dry-bulb temperatures exceeding 30°C, leading to a high energy demand
+for cooling (Zhou & Xue 2023). To enhance passive energy efficiency, we further optimize the
+envelope components. Numerous studies have identified the window-to-wall ratio (WWR) as
+a significant factor influencing building energy consumption (Wang et al. 2024). Besides, we
+consider details such as window shape (where variations in window height, given a fixed WWR,
+determine the window’s width), sill height, and the angle and number of louvers used for
+11
+
+340
+
+345
+
+shading, as illustrated in Figure 4(a). The design scheme includes four façades to be optimized,
+comprising 11 continuous variables, 7 discrete variables, and 4 binary variables. The specific
+design parameters and their domain intervals are shown in Table 1.
+
+Figure 4. Design cases to be optimized. (a) Case 1: Envelope design optimization for onebedroom modular flat; (b) Case 2: Urban block forms design optimization.
+Table 1. Description of envelope design parameters for one-bedroom modular flat.
+Design parameters
+
+350
+
+355
+
+Unit
+
+Parameter domain intervals
+
+Precision
+
+Window-to-Wall Ratio (WWR1, WWR2)
+
+Parameter
+type
+Continuous
+
+-
+
+0.1 ≤ WWR1, WWR2 ≤ 0.6
+
+0.01
+
+Window-to-Wall Ratio (WWR3, WWR4)
+Window height (WH1&2)
+
+Continuous
+Discrete
+
+m
+
+0.1 ≤ WWR3, WWR4 ≤ 0.3
+1.0 ≤ WH1&2 ≤ 2.0
+
+0.01
+0.1
+
+Window height (WH3, WH4)
+Window sill height (WSH1&2, WSH3, WSH4)
+Window louvers count (LC1, LC2, LC3, LC4)
+Window louvers angle (LA1, LA2, LA3, LA4)
+Window louvers direction (LVH1, LVH2,
+LVH3, LVH4)
+
+Discrete
+Continuous
+Discrete
+Continuous
+Binary
+
+m
+m
+°
+-
+
+1.0 ≤ WH3, WH4 ≤ 1.5
+0.80 ≤ WSH1&2, WSH3, WSH4 ≤ 1.20
+1 ≤ LC1, LC2, LC3, LC4 ≤ 6
+-45 ≤ LA1, LA2, LA3, LA4 ≤ 45
+Horizontal = 0; Vertical = 1
+
+0.1
+0.01
+1
+1
+-
+
+The second design case focuses on optimizing the building forms of urban blocks in
+Jianhu City, located in Jiangsu Province, China. The selection of initial design parameters is
+based on the findings of Liu et al. (2023). As shown in Figure 4(b), the urban block consists of
+nine zones, numbered from 0 to 8. According to the generative rules by Liu et al., one of these
+zones is designated as open space, while the remaining eight plots are selected from nine typical
+building combinations. These building combinations are derived from actual residential
+clusters in Jianhu City and are categorized into three major types: point-type buildings
+(including P-1, P-2, P-3, and P-4), slab-type buildings (including S-1, S-2, S-3), and courtyardtype buildings (including C-1 and C-2). Specifically, P-1, S-1, and C-1 are low-rise buildings;
+P-2, S-2, and C-2 are mid-rise buildings; P-3, P-4, and S-3 are high-rise buildings; with their
+respective floor number counts detailed in Table 2. Each block is uniformly south-facing, with
+a floor area ratio (FAR) of approximately 2.5. There are 1 discrete variable, 9 continuous
+variables, and 8 categorical variables.
+
+12
+
+360
+
+Table 2. Description of urban block form design parameters.
+Design parameters
+Open space location (OPos)
+Building type of remaining plots (Pos1,
+Pos2, Pos3, Pos4, Pos5, Pos6, Pos7, Pos8)
+Number of floors (NFP1, NFS1, NFC1, NFP2,
+NFS2, NFC2, NFP3, NFP4, NFS3)
+
+Parameter
+type
+Discrete
+Categorical
+
+Unit
+
+Continuous
+
+-
+
+-
+
+Parameter domain intervals
+
+Precision
+
+[0, 1, 2, 3, 4, 5, 6, 7, 8]
+[P-1, S-1, C-1, P-2, S-2, C-2, P-3, P-4,
+S-3]
+1 ≤ NFP1, NFS1, NFC1≤ 3
+4 ≤ NFP2, NFS2, NFC2≤ 12
+13 ≤ NFP3, NFP4, NFS3≤ 30
+
+1
+1
+
+3.2.2 Definition of objective functions
+In the first design case, we aim to minimize energy use intensity and the objective function can
+be concluded as:
+(1)
+arg minx∈X EUI(x)
+
+365
+
+370
+
+375
+
+380
+
+Where EUI is the energy use intensity (kWh/m2·yr) that can be calculated by dividing
+the total annual energy consumption over the gross floor area (Konis et al. 2016), x represents
+a combination of the n design parameters (x1, x2, ..., xn), and X indicates the set of all potential
+design combinations. The optimization problem’s dimensionality is defined by n, determining
+the search space complexity and computational effort. The numerical computing of EUI is
+performed using the Honeybee components in the Grasshopper platform (Zhou & Xue 2023).
+First, the Honeybee-Radiance (Ver.1.5) component integrates context data (Qin & Pan 2020),
+including local climate, construction materials, construction type, and HVAC systems, to
+simulate annual daylight based on a predefined grid size (Gs1). The results are then utilized to
+set up the daylight control schedule for the target model. Next, the context data and the
+generated schedule are passed to the Honeybee-OpenStudio (Ver.1.5) component, which
+translates this information to create an energy model (.osm) and convert it into a .idf file for
+total EUI calculation via the built-in EnergyPlus program (Roudsari & Pak 2013). According
+to Qin and Pan (2020), the EUI of local modular flats in Hong Kong is generally 153.8
+kWh/m2·yr.
+In contrast, the second design case focuses on an opposing optimization objective:
+maximizing the average direct sunlight hours on the south-facing ground floors of urban blocks
+in Jianhu City. Jianhu City is situated in the hot summer and cold winter (HSCW) climate zone.
+According to mainland China’s building code (MOHURD 2018), residential buildings in this
+zone must receive at least two hours of sunlight on the south-facing ground floor on the coldest
+day of the year, i.e., January 20th (Liu et al. 2023). We formulate the function as follows:
+1
+(2)
+arg maxy∈Y ∑𝑚𝑚
+𝑖𝑖=1 𝐷𝐷𝐷𝐷𝐷𝐷𝑖𝑖 (𝑦𝑦)
+𝑚𝑚
+
+subject to | FARori – FARopt |≤ 0.05
+
+385
+
+Where DSHi(y) is the direct sunlight hours for the i-th sampling point as a function of
+the design parameter y, m means the total number of sampling points determined by the
+simulation grid size (Gs2), and Y denotes the set of all design parameters. The constraint is that
+the absolute difference between the optimized block’s floor area ratio (FARopt) and the original
+block’s FAR (FARori = 2.5) must be less than 0.05. The DSHi(y) can be simulated through
+13
+
+390
+
+395
+
+400
+
+405
+
+410
+
+the Ladybug-Direct Sun Hours (Ver.1.5) component, which calculates direct sunlight hours on
+geometry using sun vectors and ray intersection methods (Roudsari & Pak 2013).
+3.2.3 Optimization algorithms selection
+In this study, both design cases are single-objective optimization tasks. To evaluate the
+robustness of the proposed method, we compared three optimization algorithms with distinct
+search strategies, GA, CMA-ES, and RBFOpt, which are integrated into Grasshopper and
+interact smoothly with the design parameters and simulation engines. Statistical data indicates
+that GA has been the most frequently used algorithm in single-objective SBO tasks over
+decades (Evins 2013; Nguyen et al. 2014). Moreover, CMA-ES and RBFOpt have
+demonstrated efficiency advantages in black-box optimization for sustainable building design
+(Kämpf et al. 2010; Xue et al. 2019; Wortmann 2019; Rehbach et al. 2022).
+GA is a population-based metaheuristic algorithm inspired by natural selection,
+iteratively generating new populations through selection, mutation, and crossover (Katoch et
+al. 2021). CMA-ES aims to reduce the stochastic nature of evolutionary strategies by using the
+Covariance Matrix (CM) in each iteration, which has been shown to be an efficient method in
+building design optimization, especially for small population sizes (Hansen et al. 2003;
+Ramallo-González & Coley 2014). RBFOpt is a model-based algorithm that applies sampling
+points to refine an approximation model for the unknown objective function (Waibel et al.
+2019). GA can be implemented in the Galapagos plugin, while CMA-ES and RBFOpt can be
+operated in the Opossum plugin.
+4 Experimental tests
+4.1 Experimental settings
+
+415
+
+420
+
+425
+
+The experiments were conducted on a desktop computer with an Intel (R) Core i7-10700 CPU
+@ 2.90 GHz processor and 32 GB memory. In this study, both design cases were parametrically
+reconstructed in Rhinoceros3D (Ver.7.0) and the visual programming platform Grasshopper,
+based on the detailed dimensions provided by the Hong Kong Housing Authority (HKHA 2015)
+and the published work of Liu et al. (2023), respectively.
+The first sustainable design case utilized the Ladybug-EPWmap (Ver.1.5) component
+to obtain meteorological data for Hong Kong (ASHRAE 2021). The Honeybee plugin assigned
+physical properties of construction materials to the parametric model, including thickness,
+conductivity, density, specific heat capacity, and U-value, following (Qin & Pan 2020). The
+EUI value was then calculated via the Honeybee-Radiance (Ver.1.5) and HoneybeeOpenStudio (Ver.1.5) components, with a sensor grid size (Gs1) of 0.2 meters. The original onebedroom modular flat served as the baseline, with its design parameters used as initial
+optimization inputs, resulting in an EUI value of 159.599 kWh/m2·yr, as detailed in Table 1 in
+the Appendix.
+Similarly, in the second sustainable design case, climate data for Jianhu City was
+collected using the Ladybug-EPWmap (Ver.1.5) component and processed through the
+Ladybug-SunPath (Ver.1.5) component to obtain the sun position between 8:00 a.m. and 5:00
+14
+
+430
+
+435
+
+440
+
+445
+
+p.m. on January 20th (i.e., the coldest day). The resulting sunlight vector data was then fed into
+the Ladybug-Direct Sun Hours (Ver.1.5) component to calculate the direct sunlight duration on
+the ground floor of a south-facing urban block. The sensor grid size (Gs2) was set to 1 meter
+for this urban-scale optimization. The baseline urban model’s parameters are listed in Table 2
+of the Appendix, with a corresponding DSH value of 6.081 hours.
+This experiment evaluated the robustness and advantages of the AIGGC method across
+two design cases using different SBO algorithms, i.e., RBFOpt, CMA-ES, and GA. Since many
+algorithms contain randomized factors during the optimization process (Waibel et al. 2019),
+each algorithm was rerun 5 times for Case 1 (as a single set of runs required 36 hours) and 20
+times for Case 2 to ensure reliable results.
+For the three SBO algorithms, this experiment included an experimental group with
+AIGGC and a control group without AIGGC under the same iteration budget. The detailed
+hyperparameter settings for the single-objective algorithms are described in Appendix Table 3,
+referring to previous literature (Waibel et al. 2019). For both design cases, the total iteration
+budget (N) was set to 300 with a distribution ratio (rd) of 1:2, resulting in the pre-convergence
+budget (N1) as 100 and the post-convergence budget (N2) as 200. The elite ratio (re) was set to
+20% to classify the solutions into ‘elite’ and ‘non-elite’ groups. The partitioning method for
+sub-interval bins was chosen as BinM (Nb) = 10, which divided each design parameter domain
+into 10 bins. For design parameters convergence, rconv and rconst were both set to one-third.
+4.2 Experimental results and analysis
+
+450
+
+455
+
+4.2.1 Optimized results with AIGGC
+The experimental results compare the best of optimized design solutions from multiple runs of
+the three SBO algorithms (i.e., RBFOpt, CMAES, and GA), using the AIGGC method, against
+the baseline design solution, as detailed in Table 3. RBFOpt, after five reruns of three SBO
+algorithms, provided the best optimization result in Case 1, resulting in a minimum EUI value
+of 149.149 kWh/m2·yr. Compared to the baseline design solution, all four window façades
+showed a significant increase in the number of louvers. Notably, except for the first window,
+the remaining three featured a vertical louver design.
+Table 3. Comparison between the best of optimized solutions with AIGGC and the baseline
+solution.
+
+Case 1
+
+EUI
+(kWh/m2·yr)
+Algorithm
+
+Best optimized
+solution based on
+AIGGC
+
+Baseline design
+solution
+
+149.149
+
+159.599
+RBFOpt
+
+Case 2
+
+DSH
+(hours)
+Algorithm
+
+15
+
+Best optimized
+solution based on
+AIGGC
+
+Baseline design
+solution
+
+9.000
+
+6.081
+RBFOpt
+
+460
+
+465
+
+470
+
+In Case 2, RBFOpt still stands out among the other algorithms across 20 reruns,
+achieving the optimal DSH value of 9 hours under the constraints of a given floor area ratio.
+The P-1 building cluster most frequently appeared in the best solution from multiple runs, with
+a noticeable trend of locating lower-rise blocks in the southern plots and higher-rise buildings
+in the northern plots.
+4.2.2 Robustness and significance across different optimization algorithms
+Table 4 compares the average and best objective performance values among three SBO
+algorithms between the experimental group (With AIGGC) and the control group (NO AIGGC),
+as well as the magnitude and significance of performance improvements achieved by AIGGC.
+The result demonstrates that incorporating AIGGC into SBO algorithms consistently improves
+optimization performance across multiple runs, with statistically significant enhancements in
+average results. Notably, RBFOpt shows the best overall performance among all algorithms,
+achieving the best solution in both cases.
+Table 4. The magnitude and significance of AIGGC’s performance in improving SBO
+algorithms in multiple runs.
+Average SBO results
+NO
+With
+†
+Sig.#
+% Imp.
+Δ
+AIGGC AIGGC
+150.289 149.301 -0.988
+0.62 0.008
+RBFOpt
+min EUI
+1
+CMA-ES
+151.961
+150.935
+-1.026
+0.64 0.019
+(159.599 kWh/m2·yr)
+GA
+155.305 154.241 -1.064
+0.67 0.018
+RBFOpt
+8.449
+8.579 0.130
+2.14 0.036
+max DSH
+2
+CMA-ES
+7.997
+8.202 0.205
+3.37 0.037
+(6.081 hours)
+GA
+7.977
+8.265 0.288
+4.74 0.000
+*: Smaller values are better for Case 1 and larger values are preferred for Case 2.
+†: Improvement by percentage, | Δ |/v0 × 100%, v0 for baseline value.
+#: Two-tailed p-value of independent t-test, bold when p-value < 0.05.
+Case
+
+475
+
+480
+
+485
+
+Objective function f*
+(Baseline value v0)
+
+SBO
+algorithm
+
+Best solution
+NO
+With
+AIGGC AIGGC
+149.719 149.149
+151.429 150.099
+154.469 153.709
+9.000
+8.764
+8.554
+8.708
+8.329
+8.680
+
+Δ
+-0.57
+-1.33
+-0.76
+0.236
+0.154
+0.351
+
+In Case 1, where a lower EUI value is preferred, AIGGC leads to a reduction in the
+average EUI across all algorithms, with the improvement percentage ranging from 0.62% to
+0.67%. With the incorporation of AIGGC, RBFOpt reduced the average EUI from 150.289
+kWh/m2·yr (NO AIGGC) to 149.301 kWh/m2·yr. CMA-ES and GA also showed
+improvements with AIGGC, achieving average EUI reductions of 0.64% (from 151.961 to
+150.935 kWh/m2·yr) and 0.67% (from 155.305 to 154.241 kWh/m2·yr), respectively.
+Moreover, RBFOpt achieved the best performance value of 149.149 kWh/m2·yr after five
+reruns, representing a 3.024% improvement compared to the general EUI of local modular flats,
+which is 153.8 kWh/m2·yr.
+In Case 2, where higher DSH values are desirable, AIGGC similarly enhances the
+performance of all three algorithms, with the improvement percentage ranging from 2.14% to
+4.74% across 20 repeated runs. When combined with AIGGC, RBFOpt achieved an average
+DSH of 8.579 hours, which is 0.13 hours higher than without AIGGC. Similarly, CMA-ES and
+GA showed notable enhancements with AIGGC, achieving average sunlight hours
+improvements of 3.37% (from 7.997 to 8.202 hours) and 4.74% (from 7.977 to 8.265 hours),
+respectively. The best DSH value obtained with AIGGC was 9.000 hours, followed by 8.708
+16
+
+490
+
+495
+
+500
+
+505
+
+hours identified by CMA-ES and 8.680 hours identified by GA, all significantly exceeding the
+two-hour requirement specified in the local residential building code.
+The statistical significance of the performance improvements was evaluated using the
+independent two-tailed t-test. For both cases, RBFOpt consistently showed significant
+improvements when AIGGC was applied (two-tailed p = 0.008 < 0.05 for Case 1 and p = 0.036
+< 0.05 for Case 2). The significant p-values across all algorithms validate the robustness and
+reliability of the AIGGC method, demonstrating its ability to improve optimization
+performance under different objectives and scenarios.
+Figure 5 (a) and (b) apply violin plots to compare the deviations of best performance
+values achieved by three SBO algorithms under two conditions. The ‘NO AIGGC’ control
+group is represented in blue, the ‘AIGGC’ experimental group is in red, and the baseline is
+indicated by a red dashed line. In both cases, the median values of the ‘AIGGC’ group
+consistently outperform those of the ‘NO AIGGC’ group, with the ‘AIGGC’ group showing a
+larger overall deviation from the baseline, indicating a more significant improvement. Overall,
+the RBFOpt algorithm with the AIGGC method exhibits the most concentrated distribution and
+is more efficient in finding the minimum solution for EUI and the maximum solution for DSH.
+
+Figure 5. Comparison of optimal performance deviations of three optimization algorithms
+with and without AIGGC. (a) Case 1: Minimize EUI; (b) Case 2: Maximize DSH.
+
+17
+
+510
+
+515
+
+520
+
+525
+
+530
+
+535
+
+Figure 6. Convergence trend of optimization with and without AIGGC. (a) Case 1: Minimize
+EUI; (b) Case 2: Maximize DSH.
+Figure 6 (a) and (b) illustrate the optimization line graphs of RBFOpt achieving the best
+performance in two cases, i.e., 149.149 kWh/m2·yr for Case 1 and 9.000 hours for Case 2. The
+convergence trends highlight the performance improvements achieved by integrating the
+AIGGC method. The blue lines represent the control group without AIGGC, while the red lines
+represent the experimental group with AIGGC. The thin solid lines depict the iterative solution
+values during the optimization process, and the thick solid lines indicate the best objective
+values achieved so far. It can be observed that in high-dimensional optimization problems,
+algorithms without AIGGC struggle to converge in the later stages and often get trapped near
+sub-optimal solutions. In contrast, optimization algorithms incorporating AIGGC can apply
+IG-guided information to identify superior solutions. According to the experimental settings,
+the group with AIGGC first used 100 iterations to compute a dataset, followed by IG-guided
+analysis and refining of the design parameters. The results demonstrate that the experimental
+group, with converged design parameters, quickly surpassed the control group within the 50
+iterations in the second phase, while the control group ran for 150 iterations. Statistically,
+AIGGC performed a faster descent/ascent in Figure 6. The fast descent/ascent confirms the
+hypothesis that reducing the dimensionality of the design search space enhances the efficiency
+of the RBFOpt algorithm.
+4.2.3 Design parameters and components analysis
+Figures 7 and 8 illustrate the reduction in the number of design parameters and the size of the
+potential solution space before and after IG-guided analysis for both cases. In Case 1, the initial
+four design components included 22 design parameters, with a fine-grained division of the total
+domain intervals revealing 4.45×1025 possible solutions. After applying the AIGGC method to
+calculate, rank, and group the IG value for each design parameter, the number of design
+parameters was reduced to 16, with 8 partially converged and 8 remaining unchanged.
+Consequently, the design solution space size decreased sharply to 6.30×1018, by seven orders
+of magnitude. Similarly, in Case 2, the design parameters were reduced from 18 to 12, with 6
+18
+
+partially converged and 6 unchanged, while the solution space shrank from 4.45×1016 to
+2.21×109 by seven orders of magnitude.
+
+540
+
+Figure 7. Detailed visualization of the design parameter convergence process for RBFOpt’s
+best performance solution in Case 1.
+
+19
+
+545
+
+550
+
+555
+
+560
+
+565
+
+Figure 8. Detailed visualization of the design parameter convergence process for RBFOpt’s
+best performance solution in Case 2.
+Figure 9 presents a series of heatmaps visualizing the average probability associated
+with the sub-interval bins of each design parameter. The probability indicates the likelihood of
+solutions within a given bin belonging to the ‘elite’ group. The color intensity of the heatmap
+reflects the probability magnitude, with darker colors corresponding to higher probabilities.
+Blank regions denote that there are no design solutions within those sub-interval bins. The bin
+sequence is arranged from 1 to 10, representing the full domain range of each design parameter
+from smallest to largest. On the right side, a bar chart illustrates the average IG value of each
+design parameter observed in this experiment.
+
+Figure 9. Visualization of design parameters’ average IG values and probabilities of subinterval bin contributions to the ‘elite’ group.
+In Case 1, the window-to-wall ratio (WWR) and window louvers’ angle (LA) exhibit
+relatively high IG values overall, with WWR1 showing the highest average IG value. The results
+suggest that decision-makers may focus on adjusting the values of WWR and LA to minimize
+energy use intensity efficiently. Moreover, high-probability sub-intervals for WWR are
+concentrated in the larger bin indices (i.e., bins 9th and 10th), which means that when the WWR
+of façades 1 and 2 approaches 0.5 to 0.6, and that of façades 3 and 4 approaches 0.27 to 0.3,
+the likelihood of achieving low-EUI design solutions increases. Similarly, for LA2, the 2nd bin
+emerges as a promising sub-interval, suggesting that setting LA2 between -35° and -27° is more
+effective for high-performance building design exploration. In contrast, the parameter LVH
+contributes minimally to the optimization objective regarding IG value and probability.
+In Case 2, OPos shows the highest average IG value, with higher probabilities of
+approaching high-DSH solutions concentrated in sub-interval bins 2nd, 5th, and 9th,
+20
+
+570
+
+575
+
+580
+
+585
+
+590
+
+corresponding to plots 1st, 4th, and 7th in the urban block design. For building clusters of P-1,
+S-1, and C-1, the suggested number of floors is primarily concentrated in the 1st and 2nd bins,
+indicating single- or double-story configurations. Moreover, for clusters P-2, S-2, and C-2,
+higher probabilities of optimal solutions are found from bins 1st to 3rd, with a preferred range
+of four to six floors. And the suggested floor numbers for P-3, P-4, and S-3 building clusters
+are 25–26, 27–28, and 17–18, respectively. Regarding plot allocation, S-1 is applicable for
+most plots, whereas C-2 presents a lower likelihood of existing good design solutions across
+all plots. P-1 and S-3 are recommended for plots 4th and 8th, respectively.
+Analyzing the IG values of design components is also meaningful, as it highlights their
+importance in reducing the uncertainty of finding optimal solutions within the optimization
+search space. Figure 10(a) and (b) compare the average IG values of design components and
+parameter categories in Case 1. Specifically, Win_01 demonstrates the highest IG value (0.75),
+followed by Win_02 (0.699). Therefore, decision-makers may prioritize the optimization of
+Win_01 to effectively reduce building energy consumption. Among the five parameter
+categories, WWR ranks the highest with an IG value of 0.624, while LVH ranks the lowest with
+an IG value of 0.118. The result means that WWR is the most significant factor in the Case 1
+optimization task, whereas LVH can be given less emphasis.
+
+Figure 10. Visualization of average IG values for design components and parameter
+categories in Case 1. (a) Average IG values for design components; (b) Average IG values for
+design parameter categories.
+Similarly, in Case 2, the placement of the ‘Open Space’ plot significantly impacts the
+average direct sunlight hours on the south-facing ground floors of urban blocks. Combining
+Figures 9 and 11, the three plots with the highest average IG values also correspond to the plots
+with the highest probabilities, i.e., plot 1st (IG of 0.327), plot 4th (IG of 0.371), and plot 7th (IG
+21
+
+595
+
+of 0.349). This observation suggests that positioning the ‘Open Space’ plot along the central
+axis of the urban block is most conducive to achieving the optimal solutions.
+
+Figure 11. Visualization of average IG values for positioning ‘Open Space’ plot in Case 2.
+4.3 Sensitivity analysis
+
+600
+
+605
+
+610
+
+A sensitivity analysis was conducted to determine the trade-off between time cost and optimal
+results, identifying the most effective experimental settings for the experimental and control
+groups. This experiment involved three key parameters: (i) the total iteration budget (N), with
+comparisons made between 100, 300, 500, 1000, 3000, and 5000; (ii) the distribution ratio (rd)
+between the two optimization phases, tested with ratios of 1:1, 1:2, and 1:4; and (iii) the
+partitioning method for sub-interval bins (BinM), which was evaluated using three scenarios:
+BinM = 10, BinM = N1 /10, and BinM = �𝑁𝑁1. Due to the computational expense of energy
+consumption simulations in Case 1, Case 2 was selected for comparing experimental
+configurations. The experimental and control groups were compared under the same iteration
+budget.
+Figures 12 and 13 visually compare the impact of different experimental configurations
+on the number of sub-interval bins and the maximum DSH values achieved via the AIGGC
+method. Where BinM is distinguished by symbols and colors: blue squares represent ‘BinM =
+N1 /10’, purple inverted triangles for ‘BinM = �𝑁𝑁1 ’, and red circles for ‘BinM = 10’.
+
+615
+
+Meanwhile, solid symbols indicate that the experimental group outperformed the control group
+(i.e., obtained higher DSH values), while hollow symbols indicate the opposite. In addition, the
+distribution ratio (rd) is represented by pink circles of varying sizes.
+
+22
+
+Figure 12. Variation in bin counts for BinM methods across iteration budgets.
+
+620
+
+625
+
+Figure 13. Sensitivity analysis of experimental settings.
+From Figures 12 and 13, it can be observed that the number of sub-interval bins
+increases significantly with higher iteration budgets at ‘BinM = N1 /10’, indicating finer
+granularity for IG-guided analysis. When ‘BinM = N1 /10’, the frequency of finding the optimal
+solution is also higher under most iteration budgets. Interestingly, with ‘BinM = 10’, the
+number of bins remains constant regardless of the iteration budget, yet it consistently ensures
+the discovery of optimal solutions (e.g., performing well with budgets of 300, 500, 1000, and
+5000). In contrast, ‘BinM = �𝑁𝑁1’ shows relatively average performance. Furthermore, a side-
+
+by-side comparison in Figure 12 reveals that a distribution ratio (rd) of 1:2 is most common
+near the top of the stack of points, implying a higher chance of finding the optimal solution.
+
+23
+
+630
+
+635
+
+640
+
+645
+
+650
+
+655
+
+660
+
+The proportion of solid and hollow symbols is also noteworthy. Only hollow symbols
+are observed at a total iteration budget of 100, indicating that the generic SBO process is more
+suitable for small-budget optimization tasks. In medium-budget tasks (ranging from 300 to
+1000 iterations), the AIGGC method demonstrates clear advantages, particularly at 1000
+iterations, where it consistently outperforms the generic SBO across all experimental
+configurations. For large-budget tasks (e.g., 3000 and 5000 iterations), the AIGGC method
+demonstrates a more remarkable ability to find the optimal solution than the generic SBO, as
+solid symbols consistently appear at the top.
+In this study, considering the balance between the time cost of expensive simulations
+(e.g., energy simulation) and overall efficiency, we recommend the experimental configuration
+of ‘BinM = 10’, a distribution ratio (rd) of 1:2, and a total iteration budget of 300.
+5 Discussion
+This study presents the AIGGC method for high-dimensional SBO building designs for the
+first time, establishing an information-theory-based method for the automatic convergence of
+design parameter domains, thus reducing the dimensionality of the search space. Based on the
+dataset from first-phase optimization, the AIGGC method effectively enhances the
+performance of existing optimization algorithms under a limited iteration budget. Through IGguided fine-grained visual analysis at the parameter and component levels, Case 1 highlights
+the importance of the Win_01 object and the design parameter category WWR, while Case 2
+provides applicable insights into the central axis placement of the ‘Open Space’ plot. AIGGC
+applies information gain measurement into interpretable guidance, to enable designers and
+stakeholders to identify optimization strategies and make informed decisions in early design
+exploration. It can also enhance SBO efficiency in real-world sustainable building projects
+while improving stakeholders’ understanding of optimization convergence.
+Nevertheless, this study still has a few limitations. First, the analysis of design
+parameters was conducted independently based on information gain, while potential non-linear
+and complex interactions between parameters remain an area for future exploration. Second,
+future research will consider more complex real-world projects, incorporating factors such as
+practical occupant schedules, energy-efficient building materials, and the shading effects or
+microclimate conditions of the built environment to optimize thermal comfort and energy
+consumption, further assessing the method’s scalability to multi-objective optimization tasks.
+Third, future work will focus on dynamically enhancing search efficiency within the solution
+space by integrating advanced machine learning models and extending the applications to highdimensional optimization problems in other fields, such as architectural engineering and
+environmental science.
+6 Conclusion
+
+665
+
+The proposed Automatic Information Gain-guided Convergence (AIGGC) method in this
+paper demonstrates promising experimental results in enhancing effectiveness and
+24
+
+670
+
+675
+
+680
+
+685
+
+interpretability for high-dimensional sustainable building designs. The AIGGC method
+reallocates a limited budget by utilizing first-phase optimization results as a dataset and
+performing IG-guided analysis on sub-intervals of each design parameter. The value of
+information gain assists stakeholders in quickly identifying high-information design
+parameters and high-quality domain intervals. The interpretable analysis of building design
+parameters and components enables stakeholders to converge design parameters by effectively
+reducing the number of design parameters as well as the size of the potential solution space.
+This study validated the AIGGC method for robustness and scalability in optimizing energy
+consumption and daylight quality at both the building and urban scales, while also significantly
+improving the convergence efficiency of three SBO algorithms — RBFOpt, CMA-ES, and GA.
+The findings in this study contribute to both the theory and application of SBO in highdimensional architectural design involving a large number of design parameters. The AIGGC
+method establishes an information-theory-based method for optimizing design parameters in
+addressing the challenge of the ‘curse of dimensionality’ in design search spaces. Furthermore,
+for non-derivative black-box SBO tasks, this method can enhance optimization efficiency
+while integrating interpretability analysis, enabling building designers and stakeholders to
+make informed and rational decisions in early architectural design exploration.
+Future work directions include multivariate analysis of design parameters, integration
+of IG-based metrics with advanced machine learning techniques to uncover non-linear
+correlations, and exploration of AIGGC’s applications in broader fields, such as multiobjective optimization in engineering and environmental science.
+Acknowledgment
+
+690
+
+The study was supported by Hong Kong Research Grants Council (RGC) (Nos. C7080-22GF,
+T22-504/21-R).
+References
+
+695
+
+700
+
+705
+
+ASHRAE. (2021). Weather Data Viewer. Peachtree Corners, GA, USA: American Society of
+Heating, Refrigerating and Air-Conditioning Engineers. Retrieved 12 8, 2024, from
+https://www.ashrae.org/technical-resources/bookstore/weather-data-center#weather
+Brown, N. C. & Mueller, C. T. (2019). Design variable analysis and generation for
+performance-based parametric modeling in architecture. International Journal of
+Architectural Computing, 17(1), 36–52. doi:10.1177/1478077118799491
+Bushra, N. (2022). A comprehensive analysis of parametric design approaches for solar
+integration with buildings: A literature review. Renewable and Sustainable Energy
+Reviews, 168, 112849. doi:10.1016/j.rser.2022.112849
+Chen, S., Montgomery, J. & Bolufé-Röhler, A. (2015). Measuring the curse of dimensionality
+and its effects on particle swarm optimization and differential evolution. Applied
+Intelligence, 42, 514–526. doi:10.1007/s10489-014-0613-2
+Chen, Y. & Hao, Y. (2017). A feature weighted support vector machine and K-nearest neighbor
+algorithm for stock market indices prediction. Expert Systems with Applications, 80,
+340-355. doi:10.1016/j.eswa.2017.02.044
+
+25
+
+710
+
+715
+
+720
+
+725
+
+730
+
+735
+
+740
+
+745
+
+750
+
+Cruz, A., Caldas, L., Mendes, V., Mendes, J. & Bastos, L. (2024). Multi-objective optimization
+based on surrogate models for sustainable building design: A systematic literature
+review. Building and Environment, 266, 112147. doi:10.1016/j.buildenv.2024.112147
+Es-sakali, N., Pfafferott, J., Mghazli, M. O. & Cherkaoui, M. (2025). Towards climateresponsive net zero energy rural schools: A multi-objective passive design optimization
+with bio-based insulations, shading, and roof vegetation. Sustainable Cities and Society,
+120, 106142. doi:10.1016/j.scs.2025.106142
+Evins, R. (2013). A review of computational optimisation methods applied to sustainable
+building design. Renewable and Sustainable Energy Reviews, 22, 230-245.
+doi:10.1016/j.rser.2013.02.004
+Fang, Y. & Cho, S. (2019). Design optimization of building geometry and fenestration for
+daylighting
+and
+energy
+performance.
+Solar
+Energy,
+191,
+7-18.
+doi:10.1016/j.solener.2019.08.039
+Gupta, V. & Deb, C. (2023). Envelope design for low-energy buildings in the tropics: A review.
+Renewable
+and
+Sustainable
+Energy
+Reviews,
+186,
+113650.
+doi:10.1016/j.rser.2023.113650
+Han, Z., Li, X., Sun, J., Wang, M. & Liu, G. (2023). An interactive multi-criteria decisionmaking method for building performance design. Energy and Buildings, 282, 112793.
+doi:10.1016/j.enbuild.2023.112793
+Hansen, N., Müller, S. D. & Koumoutsakos, P. (2003). Reducing the time complexity of the
+derandomized evolution strategy with covariance matrix adaptation (CMA-ES).
+Evolutionary Computation, 11(1), 1-18. doi:10.1162/106365603321828970
+He, Q., Wu, Z. & Chen, X. (2024). An integrated framework for automatic green building
+evaluation: A case study of China. Frontiers of Engineering Management, 11, 269–287.
+doi:10.1007/s42524-023-0274-0
+Hester, J., Gregory, J., Ulm, F.-J. & Kirchain, R. (2018). Building design-space exploration
+through quasi-optimization of life cycle impacts and costs. Building and Environment,
+144, 34-44. doi:10.1016/j.buildenv.2018.08.003
+Hinkle, L. E., Pavlak, G., Curtis, L. & Brown, N. C. (2024). Implementing dynamic subset
+sensitivity analysis for early design datasets. Automation in Construction, 158, 105198.
+doi:10.1016/j.autcon.2023.105198
+Hinkle, L. E., Wang, J. & Brown, N. C. (2022). Quantifying potential dynamic façade energy
+savings in early design using constrained optimization. Building and Environment, 221,
+109265. doi:10.1016/j.buildenv.2022.109265
+HKHA. (2015). Design of the new public housing flats by the Hong Kong Housing Authority.
+Transport and Housing Bureau. Hong Kong: Legislative Council Panel on Housing.
+Retrieved
+12
+2,
+2024,
+from
+https://www.legco.gov.hk/yr1415/english/panels/hg/papers/hg20150706cb1-1037-1-e.pdf
+Javanroodi, K., Nik, V. M. & Mahdavinejad, M. (2019). A novel design-based optimization
+framework for enhancing the energy efficiency of high-rise office buildings in urban
+areas. Sustainable Cities and Society, 49, 101597. doi:10.1016/j.scs.2019.101597
+Kämpf, J. H., Wetter, M. & Robinson, D. (2010). A comparison of global optimization
+algorithms with standard benchmark functions and real-world applications using
+EnergyPlus. Journal of Building Performance Simulation, 3(2), 103-120.
+doi:10.1080/19401490903494597
+Katoch, S., Chauhan, S. S. & Kumar, V. (2021). A review on genetic algorithm: past, present,
+and future. Multimedia Tools and Applications, 80, 8091–8126. doi:10.1007/s11042020-10139-6
+
+26
+
+755
+
+760
+
+765
+
+770
+
+775
+
+780
+
+785
+
+790
+
+795
+
+800
+
+Konis, K., Gamas, A. & Kensek, K. (2016). Passive performance and building form: An
+optimization framework for early-stage design support. Solar Energy, 125, 161-179.
+doi:10.1016/j.solener.2015.12.020
+Kotsiantis, S. B. (2013). Decision trees: a recent overview. Artificial Intelligence Review, 39,
+261-283. doi:10.1007/s10462-011-9272-4
+Li, X., Lu, W., Peng, Z., Zhang, Y. & Huang, J. (2024). Generative design of walkable urban
+cool spots using a novel heuristic GAN×GAN approach. Building and Environment,
+266, 112027. doi:10.1016/j.buildenv.2024.112027
+Lin, B., Chen, H., Yu, Q., Zhou, X., Lv, S., He, Q. & Li, Z. (2021). MOOSAS – A systematic
+solution for multiple objective building performance optimization in the early design
+stage. Building and Environment, 200, 107929. doi:10.1016/j.buildenv.2021.107929
+Liu, K., Xu, X., Huang, W., Zhang, R., Kong, L. & Wang, X. (2023). A multi-objective
+optimization framework for designing urban block forms considering daylight, energy
+consumption, and photovoltaic energy potential. Building and Environment, 242,
+110585. doi:10.1016/j.buildenv.2023.110585
+Liu, R., Liu, Z., Xiong, W., Zhang, L., Zhao, C. & Yin, Y. (2024). Performance simulation and
+optimization of building façade photovoltaic systems under different urban building
+layouts. Energy, 288, 129708. doi:10.1016/j.energy.2023.129708
+Liu, X., Tang, H., Ding, Y. & Yan, D. (2022). Investigating the performance of machine
+learning models combined with different feature selection methods to estimate the
+energy consumption of buildings. Energy and Buildings, 273, 112408.
+doi:10.1016/j.enbuild.2022.112408
+Luca, F. D., Natanian, J. & Wortmann, T. (2024). Ten questions concerning environmental
+architectural design exploration. Building and Environment, 261, 111697.
+doi:10.1016/j.buildenv.2024.111697
+Machairas, V., Tsangrassoulis, A. & Axarli, K. (2014). Algorithms for optimization of building
+design: A review. Renewable and Sustainable Energy Reviews, 31, 101-112.
+doi:10.1016/j.rser.2013.11.036
+MOHURD. (2018). Standard for urban residential area planning and design. MOHURD
+Research Institute of Standards and Norms, Ministry of Housing and Urban-Rural
+Development. People's Republic of China: China Architecture & Building Press.
+Retrieved 1 2, 2025, from https://www.codeofchina.com/standard/GB50180-2018.html
+Mousavi, S., Gijón-Rivera, M., Rivera-Solorio, C. & Rangel, C. G. (2022). Energy, comfort,
+and environmental assessment of passive techniques integrated into low-energy
+residential buildings in semi-arid climate. Energy and Buildings, 263, 112053.
+doi:10.1016/j.enbuild.2022.112053
+Nguyen, A.-T., Reiter, S. & Rigo, P. (2014). A review on simulation-based optimization
+methods applied to building performance analysis. Applied Energy, 113, 1043-1058.
+doi:10.1016/j.apenergy.2013.08.061
+Olu-Ajayi, R., Alaka, H., Sulaimon, I., Sunmola, F. & Ajayi, S. (2022). Building energy
+consumption prediction for residential buildings using deep learning and other machine
+learning techniques. Journal of Building Engineering, 45, 103406.
+doi:10.1016/j.jobe.2021.103406
+Omuya, E. O., Okeyo, G. O. & Kimwele, M. W. (2021). Feature selection for classification
+using principal component analysis and information gain. Expert Systems with
+Applications, 174, 114765. doi:10.1016/j.eswa.2021.114765
+Østergård, T., Jensen, R. L. & Maagaard, S. E. (2017). Early Building Design: Informed
+decision-making by exploring multidimensional design space using sensitivity analysis.
+Energy and Buildings, 142, 8-22. doi:10.1016/j.enbuild.2017.02.059
+27
+
+805
+
+810
+
+815
+
+820
+
+825
+
+830
+
+835
+
+840
+
+845
+
+850
+
+Qin, H. & Pan, W. (2020). Energy use of subtropical high-rise public residential buildings and
+impacts of energy saving measures. Journal of Cleaner Production, 254, 120041.
+doi:10.1016/j.jclepro.2020.120041
+Ramallo-González, A. & Coley, D. (2014). Using self-adaptive optimisation methods to
+perform sequential optimisation for low-energy building design. Energy and Buildings,
+81, 18-29. doi:10.1016/j.enbuild.2014.05.037
+Rehbach, F., Zaefferer, M., Fischbach, A., Rudolph, G. & Bartz-Beielstein, T. (2022).
+Benchmark-driven configuration of a parallel model-based optimization algorithm.
+IEEE Transactions on Evolutionary Computation, 26(6), 1365-1379.
+doi:10.1109/TEVC.2022.3163843
+Roudsari, M. S. & Pak, M. (2013). Ladybug: A parametric environmental plugin for
+grasshopper to help designers create an environmentally-conscious design.
+Proceedings of the 13th international IBPSA conference (pp. 3128-3135). Lyon, France:
+Building Simulation Conference Proceedings. doi:10.26868/25222708.2013.2499
+Shannon, C. E. (1948). A mathematical theory of communication. The Bell system technical
+journal, 27(3), 379 - 423. doi:10.1002/j.1538-7305.1948.tb01338.x
+Showkatbakhsh, M. & Makki, M. (2022). Multi-Objective Optimisation of Urban Form: A
+Framework for Selecting the Optimal Solution. Buildings, 12(9), 1473.
+doi:10.3390/buildings12091473
+Son, K. & Hyun, K. H. (2022). Designer-Centric Spatial Design Support. Automation in
+Construction, 137, 104195. doi:10.1016/j.autcon.2022.104195
+Son, K., Lee, S. W., Yoon, W. & Hyun, K. H. (2022). CreativeSearch: Proactive design
+exploration system with Bayesian information gain and information entropy.
+Automation in Construction, 142, 104502. doi:10.1016/j.autcon.2022.104502
+Tian, L., Hao, T., He, X., Chan, I., Niu, J., Chan, P., Ng, W. & Huang, J. (2024). Examining
+the non-linear relationship between urban form and air temperature at street level: A
+case of
+Hong Kong.
+Building
+and
+Environment,
+264,
+111884.
+doi:10.1016/j.buildenv.2024.111884
+Tian, W. (2013). A review of sensitivity analysis methods in building energy analysis.
+Renewable
+and
+Sustainable
+Energy
+Reviews,
+20,
+411-419.
+doi:10.1016/j.rser.2012.12.014
+UNEP. (2024). Global status report for buildings and construction: Beyond foundations:
+Mainstreaming sustainable solutions to cut emissions from the buildings sector.
+Nairobi: United Nations Environment Programme. Retrieved 11 28, 2024, from
+https://www.unep.org/resources/report/global-status-report-buildings-andconstruction
+Waibel, C., Wortmann, T., Evins, R. & Carmeliet, J. (2019). Building energy optimization: An
+extensive benchmark of global search algorithms. Energy and Buildings, 187, 218-240.
+doi:10.1016/j.enbuild.2019.01.048
+Wang, X., Teigland, R. & Hollberg, A. (2024). Identifying influential architectural design
+variables for early-stage building sustainability optimization. Building and
+Environment, 252, 111295. doi:10.1016/j.buildenv.2024.111295
+Weerasuriya, A., Zhang, X., Wang, J., Lu, B., Tse, K. & Liu, C.-H. (2021). Performance
+evaluation of population-based metaheuristic algorithms and decision-making for
+multi-objective optimization of building design. Building and Environment, 198,
+107855. doi:10.1016/j.buildenv.2021.107855
+Wortmann, T. (2019). Genetic evolution vs. function approximation: Benchmarking
+algorithms for architectural design optimization. Journal of Computational Design and
+Engineering, 6(3), 414-428. doi:10.1016/j.jcde.2018.09.001
+28
+
+855
+
+860
+
+865
+
+870
+
+875
+
+Wortmann, T., Cichocka, J. & Waibel, C. (2022). Simulation-based optimization in
+architecture and building engineering—Results from an international user survey in
+practice
+and
+research.
+Energy
+and
+Buildings,
+259,
+111863.
+doi:10.1016/j.enbuild.2022.111863
+Xue, F., Lu, W., Chen, K. & Zetkulic, A. (2019). From Semantic Segmentation to Semantic
+Registration: Derivative-Free Optimization–Based Approach for Automatic
+Generation of Semantically Rich As-Built Building Information Models from 3D Point
+Clouds. Journal of Computing in Civil Engineering, 33(4), 04019024.
+doi:10.1061/(ASCE)CP.1943-5487.0000839
+Yu, S., You, L. & Zhou, S. (2023). A review of optimization modeling and solution methods
+in renewable energy systems. Frontiers of Engineering Management, 10, 640–671.
+doi:10.1007/s42524-023-0271-3
+Zhan, J., He, W. & Huang, J. (2024). Comfort, carbon emissions, and cost of building envelope
+and photovoltaic arrangement optimization through a two-stage model. Applied Energy,
+356, 122423. doi:10.1016/j.apenergy.2023.122423
+Zhang, Z., Geng, Y., Wu, X., Zhou, H. & Lin, B. (2022). A method for determining the weight
+of objective indoor environment and subjective response based on information theory.
+Building and Environment, 207, 108426. doi:10.1016/j.buildenv.2021.108426
+Zhou, Q. & Xue, F. (2023). Pushing the boundaries of modular-integrated construction: A
+symmetric skeleton grammar-based multi-objective optimization of passive design for
+energy savings and daylight autonomy. Energy and Buildings, 296, 113417.
+doi:10.1016/j.enbuild.2023.113417
+Zhou, Y., Ma, M., Tam, V. W. & Le, K. N. (2023). Design variables affecting the
+environmental impacts of buildings: A critical review. Journal of Cleaner Production,
+387, 135921. doi:10.1016/j.jclepro.2023.135921
+
+879
+880
+881
+
+29
+
+882
+
+883
+884
+
+Appendix A. Supplementary table and figures of experiments
+This section shows the detailed settings in experiments.
+Table A.1. Baseline settings for the original one-bedroom modular flat (Case 1).
+Category
+Simulation
+setting
+
+Window
+parameters
+setting
+
+Window
+louver
+parameters
+setting
+
+Items
+
+Values
+
+Unit
+
+Baseline model
+
+Location
+Climate zone
+Construction set
+HVAC system
+Grid size (Gs1)
+WWR1
+WWR2
+WWR3
+WWR4
+WH1&2
+WH3
+WH4
+WSH1&2
+WSH3; WSH4
+LC1; LC2; LC3; LC4
+LA1; LA2; LA3; LA4
+LVH1; LVH2; LVH3; LVH4
+
+Hong Kong SAR
+2-Hot
+ASHRAE 90.1 2019
+Window AC with no heat
+0.2
+0.45
+0.35
+0.30
+0.10
+1.5
+1.2
+1
+0.80
+1.20
+1
+0
+0
+
+m
+m
+m
+m
+m
+m
+°
+-
+
+EUI = 159.599 kWh/m2·yr
+
+885
+886
+
+Table A.2. Baseline settings for the urban block forms optimization (Case 2).
+Category
+
+Items
+
+Values
+
+Unit
+
+Baseline model
+
+Simulation
+setting
+
+Location
+Grid size (Gs2)
+Date and time
+OPos
+Pos1
+Pos2
+Pos3
+Pos4
+Pos5
+Pos6
+Pos7
+Pos8
+NFP1
+NFS1
+NFC1
+NFP2
+NFS2
+NFC2
+NFP3
+NFP4; NFS3
+
+Jianhu City, Jiangsu Province
+1
+Jan. 20th 8:00-16:00
+5
+C-2
+P-4
+P-2
+S-3
+P-2
+P-4
+P-2
+S-2
+2
+1
+3
+6
+4
+6
+30
+13
+
+m
+-
+
+DSH = 6.081 hours
+
+Building
+types
+position
+
+Window
+louver
+parameters
+setting
+
+887
+888
+
+30
+
+889
+
+Table A.3. Hyperparameters settings for single-objective algorithms.
+Algorithm
+
+Grasshopper
+plugin
+
+Hyperparameters
+
+Description
+
+Value
+25
+2
+50
+5%
+75%
+
+GA
+
+Galapagos
+
+Population size
+Initial boost
+Max. Stagnant
+Elite rate
+Inbreeding rate
+
+CMA-ES
+
+Opossum
+
+Initial sigma
+
+Number of individuals in each generation
+Controlling the exploration range in the first generation
+Managing convergence efficiency
+Preserving best individuals across generations
+Controlling genetic diversity by probability of parent solutions’
+exchange
+Controls the initial step size of the search range
+
+Max. iterations
+
+The maximum number of iterations
+
+10000
+
+Max. evaluations
+
+The maximum number of evaluations
+
+10000
+
+Max. stalled
+cycles
+Local search box
+scaling
+
+The maximum number of consecutive iterations allowed
+without significant improvement in the objective function value
+Limit the scope of the local search
+
+2000
+
+RBFOpt
+
+Opossum
+
+890
+
+31
+
+0.5
+
+False
+
+

@@ -1,0 +1,517 @@
+Fully Automatic Scan-to-BIM:
+
+Consolidation of unsupervised, supervised, and reinforced learning
+
+Fan Xue
+
+Dept. of Real Estate and Construction, University of Hong Kong
+5 May 2023, Smart City and Construction Forum, Wuhan, China
+
+Outline
+1
+
+背景 Introduction
+
+关键词
+
+2
+
+概述 Types of Machine Learning
+
+“训练?”
+
+3
+
+自动化 Automatic scan-to-BIM
+
+“综合”
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+2
+
+Section 1
+
+INTRODUCTION
+背景
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+3
+
+1 Smart construction & digitalization 智能建造
+ Smart construction as a national strategy
+ 中央政府：“發展智能建造”——《十四五規劃和
+
+2035年遠景目標綱要》
+ 國家自然資源部：《关于全面推进实景三维中国
+
+建设的通知》
+
+ NDC
+
+ In Hong Kong
+ Election Manifesto of Chief Executive Election
+
+2022
+ Development Bureau’s Technical Circular (2021)
+ CIC’s Construction Digitalization Roadmap (2021)
+o 6 Applications (DAs)
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+4
+
+1 BIM is a key 关键
+ HK market: ~HK$300 billion. 每年3000亿
+ BIM in Hong Kong 越来越宽、越来越深
+ “Wider” by industry-wide mandatory uses
+o 所有All public works >HK$30M since 2020 (DevB, 2019)
+
+o 所有All private projects >HK$300M by 2026 (CIC, 2022)
+
+ “Deeper” for values
+
+o “A roadmap on BIM for plans submission” (Policy Addr
+2022)
+o 20 mandatory BIM stages since 2022 (DevB, 2021)
+
+ 3D point scans 激光点云 in top BIM uses
+ Surveys actual 3D dimensions, real assets
+
+ Every developer/contractor has a laser scan team
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+BIM mandatory stages
+(DevB TC(W) No. 2/2021)
+
+Scan-to-BIM
+(Moon Palace,
+Src: authors)
+
+Top BIM uses in
+Hong Kong (Src: CIC)
+
+5
+
+1 What is a point cloud 点云
+ Point 点
+ A location in space, 0D (no width, length, or thichness)
+ Structured format: {x, y, z}, [R, G, B, Nx, Ny, Nz, Cls, Int., …]
+
+ Cloud 云
+
+0D
+
+1D
+
+2D
+
+3D
+
+ An unstructured collection [of water droplets or ice crystals]
+ Dense when looking at a distance, sparse closely
+
+ Point cloud (PC)
+
+A point cloud of HKU Campus (Source: Author, 2019)
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+A close look of cloud at
+Mount Hua (Source: Author)
+
+6
+
+1 Existing scan-to-BIM paradigms 现存范式
+Paradigm
+
+Key algorithm
+
+1. Open-source
+mesher +
+ifcopenshell
+
+Poisson
+reconstruction
+
+Trained
+for HK
+
+Software’s output
+(Dimension of objects)
+Mesh triangles (2D)
+
+Labor-hour Applicability
+(30 rooms) for BIM uses
+
+200
+
+Visualization
+
+140
+
+Visualization;
+Designed BIM
+verification;
+
+Points with labels (3D)
+
+2. Aurivus® +
+open-source
+clustering
+
+3D Deep
+Learning (DL)
+
+3. Proposed
+SBASE
+
+Our 3D DL +
+frequent 3D
+BIM for HK
+
+Reference BIM by
+human modeler
+Xue: Fully auto scan2BIM. Wuhan, China.a
+2023.
+
+(30% saved)
+BIM Objects (3D)
+
+85
+(60% saved)
+
+Visualization;
+Designed BIM
+verification;
+BIM auditing;
+Lightweight CIM
+
+BIM Obj. (3D)
+7
+
+1 General workflow; 现存问题
+ 4 steps
+1.1 Point-level 点级别
+1.2 Primitive-level 几何块级别
+1.3 3D BIM details 细节BIM
+2. Applications 应用
+1.1 Segmentation
+Input 3D scan
+
+(Src: Authors)
+
+Time cost: ~5%
+
+1. mesher + ifcopenshell
+2. Aurivus®
+clustering
+Xue: Fully auto +
+scan2BIM.
+Wuhan, China. 2023.
+
+1.2 General
+architectural
+elements (AEs)
+wall
+
+floor
+
+column
+
+beam
+
+Time cost: ~20%
+
+Not covered
+
+(Src: Authors)
+
+1.3 Detailed BIM
+objects
+
+2. Applications
+
+door
+
+window
+
+lighting
+
+HVAC
+
+BIM/
+OpenBIM
+
+furniture
+Time cost: ~75%
+
+CIM
+(Src: Authors)
+
+Not covered
+Not covered
+
+8
+
+Section 2
+
+TYPES OF MACHINE
+LEARNING
+概述
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+9
+
+2 3 types of ML 机器学习三大类
+ Supervised learning 监督：须标注数据
+ Classification and regression
+ Meta learning
+ Automated ML (AutoML)
+ Deep learning
+
+ Reinforcement learning 强化：无标注有奖励
+ Simulation-based optimization
+
+ Unsupervised learning无监督：无标注无奖励
+ Clustering
+ Association rules
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+2.1 Supervised segmentation 监督：须标注数据
+ ‘KP’ of FLKPP: Kernels of points
+
+KPConv
+(Thomas et al. 2019)
+
+DL
+Trains
+
+3D objects
+Input: point cloud after
+clutter removal
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+Output:
+Segmented points of
+walls, doors, and stairs
+
+2
+
+RANSAC plane fitting
+
+Wall
+
+Column
+
+Door
+
+Others
+(Wu et al. 2022b)
+
+11
+
+2.2 Reinforcement 3D pose 强化：无标注有奖励
+
+(Xue et al. 2019b)
+
+ 惩罚：BIM与点云匹配误差
+ Time = 6.44s (Manual = 300s), RMSE = 3.87 cm
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+12
+
+2.2 Reinforcement 3D pose 强化：demo
+ Output formats
+ BIM
+ JSON
+Fitting BIM objects for location, rotation,
+and relational semantics (Xue 2019)
+
+Another demo of 3D pose estimation of columns
+(Wu et al. 2022b; https://youtu.be/kdMYD0Po7kY)
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+13
+
+Xue et al (2020)
+
+2.3 Unsupervised clustering无监督：无标注无奖励
+ Ground (planar) removal
+ Clustering patches
+ Symmetry detection
+ By optimization (RL)
+ For cross-sections
+ Longitudinal / transverse
+
+ Clustering objects using
+cross-sections
+ 无成本，快速
+
+ Fitting 3D model
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+2.3 Unsupervised clustering无监督：无标注无奖励
+ ‘FL’ of FLKPP: floor layers
+ Room clustering 聚合室内“空间”
+
+(Zoom-in)
+
+ Room-base noise and clutter removal 去噪
+
+(Voxels occupied
+by scan data)
+(Indoor
+space
+voxels)
+
+ Space voxels labeling
+ Region growing to segment rooms
+ Clutter removal (using head levels in rooms)
+
+1. Space voxels
+(closer to Edge, Ceiling,
+Walls)
+
+E C C C
+W E C C
+W W E C
+
+Above
+head-level
+room layer
+
+2. Room clustering
+(using voxels 1m to
+ceilings)
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+15
+
+Section 3
+
+AUTOMATIC SCAN-TO-BIM
+全自动化
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+16
+
+3 SBASE项目 : Fully automation
+ SBASE 项目
+ Scan-to-BIM Auto SystEm
+
+ Step 1.1 :
+ Unsupervised + supervised
+
+ Step 1.2:
+ Unsupervised + rules
+
+ Step 1.3:
+ Unsupervised +
+
+reinforcement
+
+ Step 2:
+ Localized apps
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+17
+
+3.1 SBASE 项目: Funding and team
+ Funding
+ Hong Kong ITF Tier-1: HK$ 7.51M (in total 751万) 2023-2025
+
+ Team
+ PC 主持: F Xue
+ Co-PI: Prof Anthony Yeh 叶嘉安院士
+ Co-PI: Prof Wilson Lu 吕伟生教授
+ Co-I: Dr Ke Chen 陈珂（华科）
+
+ Automation level: Full, limitations in 1.3
+ Job vacancies 虚位以待
+ Postdoc 博士后 1 名
+ RA 助理研究 6 名
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+NC
+18
+
+3.2 A recap
+ Scan-to-BIM
+ Vital to smart construction
+ Automation is limited currently
+
+ Types of Machine Learning “训练?”
+ Supervised: 3D语义分割
+ Reinforcement:最佳BIM族匹配
+ Unsupervised: 对比、聚类
+
+ Auto scan-to-BIM “综合”
+ Consolidation 按需求整合
+ Huge potentials 大有可为
+
+Xue: Fully auto scan2BIM. Wuhan, China. 2023.
+
+19
+
+References
+Hu, Q., Yang, B., Khalid, S., Xiao, W., Trigoni, N., & Markham, A. (2021). Towards semantic segmentation of urban-scale 3D point clouds: A dataset, benchmarks and challenges. In Proceedings of the IEEE/CVF
+conference on computer vision and pattern recognition (pp. 4977-4987).
+ Li, J., & Lee, G. H. (2019). Usip: Unsupervised stable interest point detection from 3d point clouds. In Proceedings of the IEEE/CVF International Conference on Computer Vision (pp. 361-370).
+ Li, M., Xue, F., Wu, Y., & Yeh, A. G. (2022). A room with a view: Automatic assessment of window views for high-rise high-density areas using City Information Models and deep transfer learning. Landscape and
+Urban Planning, 226, 104505.
+ NIBS. (2015). National Building Information Modeling Standard, Version 3, U.S. National Institute of Building Sciences
+ Penttilä, H. (2007). Early architectural design and BIM. Computer-Aided Architectural Design Futures 2007, 291-302.
+ Qi, X., Liao, R., Jia, J., Fidler, S., & Urtasun, R. (2017). 3d graph neural networks for rgbd semantic segmentation. In Proceedings of the IEEE International Conference on Computer Vision (pp. 5199-5208).
+ Schuchmann, S. (2019). Analyzing the prospect of an approaching AI winter
+ Tan, T., Chen, K., Lu, W., & Xue, F. (2019, September). Semantic enrichment for rooftop modeling using aerial LiDAR reflectance. In 2019 IEEE International Conference on Signal Processing, Communications and
+Computing (ICSPCC) (pp. 1-4). IEEE.
+ Varady, T., Martin, R. R., & Cox, J. (1997). Reverse engineering of geometric models—an introduction. Computer-aided design, 29(4), 255-268.
+ Wu, S., Yang, Z., Ding, X., Zhang, B., Zhang, L., & Lu, Z. (2020a). Two decades of settlement of hong kong international airport measured with multi-temporal InSAR. Remote Sensing of Environment, 248, 111976.
+ Wu, S., Le, Y., Zhang, L., & Ding, X. (2020b). Multi-temporal InSAR for Urban Deformation Monitoring: Progress and Challenges. 雷达学报, 9(2), 277-294.
+ Wu, Y., Shang, J., & Xue, F. (2021). RegARD: Symmetry-Based Coarse Registration of Smartphone’s Colorful Point Clouds with CAD Drawings for Low-Cost Digital Twin Buildings. Remote Sensing, 13(10), 1882.
+ Wu, Y., Li, M., & Xue, F. (2022a). Floor layer-based kernels and pillars of points (FLKPP): 3D building model reconstruction. 2nd Workshop on Computer Vision in the Built Environment, CVPR 2022. 19 Jun
+2022, New Orleans, Louisiana, USA.
+ Wu, Y., Li, M., & Xue, F. (2022b). Scan2floorplan: Floor layer-based kernels and pillars of points (FLKPP). 2nd Workshop on Computer Vision in the Built Environment, CVPR 2022. 19 Jun 2022, New Orleans,
+Louisiana, USA.
+ Xu, J., Chen, K., Xue, F., & Lu, W. (2018). 3D point cloud data enabled facility management: A critical review. In The 23rd International Symposium on Advancement of Construction Management and Real Estate,
+CRIOCM2018. https://doi.org/10.1007/978-981-15-3977-0_49
+ Xue, F., Lu, W., Chen, Z., & Webster, C. J. (2020a). From LiDAR point cloud towards digital twin city: Clustering city objects based on Gestalt principles. ISPRS Journal of Photogrammetry and Remote Sensing,
+167, 418-431. (2020 Featured Article)
+ Xue, F., Wu, L., & Lu, W. (2021). Semantic enrichment of building and city information models: A ten-year review. Advanced Engineering Informatics, 47, 101245.
+ Xue, F., Lu, W., Chen, K. (2018). Automatic generation of semantically rich as-built building information models using 2D images: A derivative-free optimization approach. Computer-Aided Civil and
+Infrastructure Engineering, 33(11), 926-942.
+ Xue, F., Lu, W., Webster, C. J., & Chen, K. (2019a). A derivative-free optimization-based approach for detecting architectural symmetries from 3D point clouds. ISPRS Journal of Photogrammetry and Remote
+Sensing, 148, 32-40.
+ Xue, F., Lu, W., Chen, K., & Zetkulic, A. (2019b). From Semantic Segmentation to Semantic Registration: Derivative-Free Optimization–Based Approach for Automatic Generation of Semantically Rich As-Built
+Building Information Models from 3D Point Clouds. Journal of Computing in Civil Engineering, 33(4), 04019024.
+ Xue, F., Lu, W., Chen, K., & Webster, C. J. (2019c). BIM reconstruction from 3D point clouds: A semantic registration approach based on multimodal optimization and architectural design knowledge, Advanced
+Engineering Informatics, 42, 100965.
+ Xue, F., Chen, K., & Lu, W. (2019d). Architectural symmetry detection from 3D urban point clouds: A derivative-free optimization (DFO) approach. In Advances in Informatics and Computing in Civil and
+Construction Engineering (pp. 513-519). Springer, Cham.
+ Xue, F., Chen, K., & Lu, W. (2019e). Understanding unstructured 3D point clouds for creating digital twin city: An unsupervised hierarchical clustering approach. CIB World Building Congress 2019.
+ Xue, F., Lu, W., Tan, T., & Chen, K. (2019f). Semantic enrichment of city information models with LiDAR-based rooftop albedo. In Sustainable Buildings and Structures: Building a Sustainable Tomorrow (pp. 207212). CRC Press.
+ auto
+Zhu, X.
+X., & Bamler,Wuhan,
+R. (2014). China.
+Superresolving
+Xue: Fully
+scan2BIM.
+2023.SAR tomography for multidimensional imaging of urban areas: Compressive sensing-based TomoSAR inversion. IEEE Signal Processing Magazine, 31(4), 51-58. 20
+
+
+2023智慧城市与智能建造高端论坛
+暨中国建筑学会智能建造学术委员会年会
+
+Keep awesome!
+感谢！欢迎提问
+
+

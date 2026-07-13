@@ -1,0 +1,470 @@
+©2022 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future
+media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or
+redistribution to servers or lists, or reuse of any copyrighted component of this work in other works.
+
+When permissioned blockchain meets IoT oracles:
+An on-chain quality assurance system for off-shore
+modular construction manufacture
+Lingming Kong
+
+Chen Chen
+
+Rui Zhao
+
+Dept. of Real Estate and Construction
+The University of Hong Kong
+Hong Kong, China
+u3009509@connect.hku.hk
+
+Dept. of Real Estate and Construction
+The University of Hong Kong
+Hong Kong, China
+jaden@hku.hk
+
+Dept. of Real Estate and Construction
+The University of Hong Kong
+Hong Kong, China
+Jeremyrui.zhao@connect.hku.hk
+
+Zhe Chen
+
+Liupengfei Wu
+
+Zhongze Yang
+
+Dept. of Real Estate and Construction
+The University of Hong Kong
+Hong Kong, China
+cz77@connect.hku.hk
+
+Dept. of Real Estate and Construction
+The University of Hong Kong
+Hong Kong, China
+liupengfeiwu@connect.hku.hk
+
+Dept. of Real Estate and Construction
+The University of Hong Kong
+Hong Kong, China
+zoeyang@connect.hku.hk
+
+Xiao Li
+
+Weisheng Lu
+
+Fan Xue
+
+Dept. of Building and Real Estate
+The Hong Kong Polytechnic University
+Hong Kong, China
+shell.li@polyu.edu.hk
+
+Dept. of Real Estate and Construction
+The University of Hong Kong
+Hong Kong, China
+wilsonlu@hku.hk
+
+Dept. of Real Estate and Construction
+The University of Hong Kong
+Hong Kong, China
+xuef@hku.hk
+
+Abstract—Advanced information technologies such as the Internet of Things (IoT) and Modular Construction (MC) bring
+new potentials to the construction industry. The trustworthiness
+is critical for MC quality assurance (QA), particularly in the offshore manufacture stage. The emerging blockchain technology
+which enables transparent, traceable, and immutable information
+exchange in distributed systems opens a new avenue for managing
+off-shore MC. However, the real-time data collection and update,
+as well as permitted data access are two critical concerns in
+utilizing blockchain for MC. The permissioned blockchain and
+IoT is considered as feasible solutions. Thus, this paper presents
+a three-tier architecture of permissioned blockchain with IoT
+oracles: the infrastructure layer, platform layer, and service
+layer. IoT devices in the infrastructure layer act as oracles
+of the blockchain, feeding real-world data from MC components promptly on time through trusted APIs. A permissioned
+blockchain network in the platform layer provides authentication
+functions to ensure authorized access to QA-related channels.
+A mobile-based application named e-InStar in the service layer
+provides user-friendly UI for multi-stakeholders to access the
+QA system named e-inspection 2.0. The three-tier architecture
+design can thus respond to the data access and data updating
+needs for MC QA, specifically for multi-stakeholders cooperation
+requirements. An application case of a housing project validated
+the permissioned blockchain in the e-Inspection 2.0 system in
+This work presented in this paper was funded by the Hong Kong Innovation
+and Technology Fund (No. ITP/029/20LP) and the Hong Kong Research Grant
+Council (No. 17200221).
+
+two aspects: (1) system transparency and security, and (2) users’
+satisfaction with data collection and QA functions.
+Index Terms—Permissioned Blockchain, Internet of Things,
+Quality Assurance, Modular Construction, Oracle
+
+I. I NTRODUCTION
+Modular Construction (MC) is a trending distributed construction method [1], [2], in which most construction components are manufactured remotely in an off-site, sometimes offshore factory, and assembled into a 3D module before transporting by specialized vehicles to the construction site [3]. The
+MC is deemed a promising solution for many countries that
+have confined building space but urgent needs for construction,
+such as Singapore and China.
+Inefficient and ineffective execution of MC projects may
+severely impact construction productivity in terms of cost,
+quality, and timeliness. Quality in MC is associated closely
+with safety and property [1], and the Quality Assurance
+(QA) acts as a vital ‘gatekeeper’ to the MC project. It is a
+systematic operation that ensures checking items in accordance
+with the quality standards to meet a set of targets, such as
+compliance, schedule, and function [4]. Therefore, QA is
+a time-consuming task that must be completed during the
+construction and pre-construction manufacturing phases [5].
+
+[Citation]: Kong, L., Chen, C., Zhao, R., Chen, Z., Wu, L., Yang, Z., ... & Xue, F. (2022). When permissioned blockchain meets IoT oracles: An on-chain quality assurance
+system for off-shore modular construction manufacture. 2022 IEEE 1st Global Emerging Technology Blockchain Forum: Blockchain & Beyond (iGETblockchain).
+DOI: 10.1109/iGETblockchain56591.2022.10087164
+
+The authorized individuals and parties, such as contractors,
+supervisors, and developers, frequently perform the inspection
+part [6]. Furthermore, the physical presence is indispensable
+during inspections due to the MC’s nature of the distribution. Moreover, file-based QA remains the primary mode of
+information recording, revising, and sharing [2]. As a result,
+inspectors from different parties must record inspection data
+on-site and subsequently enter the data at the office. However,
+the lock-downs of COVID-19 undoubtedly makes traveling
+and on-site working troublesome or even impossible.
+The recent advancement in Information Technologies [7]
+has brought potential opportunities for digital QA [8]. For example, Wu et al. [9] developed a method to facilitate efficient
+QA by adopting Building Information Modeling (BIM) and
+IoT on a mobile device. A collaborative system integrating
+BIM and indoor positioning can eliminate errors and cursoriness in QA [10]. However, the lack of integrated data recording
+and confidence in the authenticity have led to the incomplete
+and inaccurate report of QA, hindering a trustworthiness and
+efficient QA [5]. The existing approaches mentioned in the
+literature are still limited by centralized governance from contractors, resulting in low inspection efficiency and stakeholder
+collaboration [1], [11]. Furthermore, the process, results, and
+responsible individuals sometimes are ambiguous; contractors,
+as the project’s general data manager, can sneakily modify
+records to exonerate them from unexpected quality issues,
+leaving original or modification records untraceable and easily
+tampered with [12].
+Blockchain is a promising technology to realize decentralized storage that chronologically and securely records data [6],
+[13], [14]. It has been adopted in several construction industrial
+applications, such as smart contracts [15], collaborative detection [16], and logistics management [17]. However, public
+blockchains have some serious problems, involving prone to
+attacks, the latency of data transmission and updating, which
+hurdle wider application in the construction industry [18]–[20].
+A permissioned blockchain generally involves a federation of
+organizations in which transactions are blocked together and
+verified by authorized peers rather than anonymous miners.
+With a granted access control, transactions with consensus can
+be achieved in an attack-proof manner. The IoT technology has
+been utilized in contributing to promise better strategies in construction practice. For example, the social reputation capital in
+IoT was optimized using a blockchain-based group formation
+strategy [21]. IoT oracles guarantee the “true provenanc” and
+real-time updating of data are two issues for implementing
+permissioned blockchain in construction industry [22].
+This paper aims to introduce a permissioned blockchainenabled IoT system named e-Inspection 2.0 to offer an adaptable solution to achieve secure data access, as well as trusted
+data provenance and updating for MC QA. Compared with
+the traditional insufficient inspection and inflexible manners,
+a transparent, secured, and traceable framework was designed
+to streamline and digitalize the QA procedures, for facilitating
+co-management by stakeholders. At last, a case study of
+practical application is deployed to validate its performance.
+
+II. T HE PERMISSIONED BLOCKCHAIN - BACKED I OT
+PLATFORM
+
+A typical MC project usually involves one or several manufacturing factories, due to the fragmented construction process
+and distributed stakeholders, the data sources are discrete
+and variable for QA. The e-Inspection 2.0 system aims to
+collect mass production data of MC projects through IoT
+oracles and support trustworthy decision-making by leveraging
+a permissioned blockchain. The three-tier structure of the
+system is shown in Fig. 1.
+
+Fig. 1. The three-tier structure of e-Inspection 2.0 system
+
+The infrastructure layer integrates IoT sensors and provides
+web and application servers, networking resources, and data
+storage physical plants. In this layer, the IoT sensors/devices
+serve as oracles of the second-tier blockchain network to
+collect real-world data from distributed MC processes. The
+infrastructure layer enables blockchain and database to deploy
+quickly, and data from different resources such as human
+beings, IoT devices, and files of the MC project can be stored
+and computed efficiently.
+A permissioned blockchain is implemented in the platform
+layer. An open-source permissioned distributed ledger platform Hyperledger Fabric and the J2EE data web services
+running on server Resin are employed. This layer serves as
+the middleware of e-Inspection 2.0 system that involves the
+database management tools, backend services, and deployed
+blockchain ledgers. In this layer, all components serve as
+a bridge for the communication between users and data,
+and a parallel data exchange system using Java Database
+Connectivity and smart contracts is developed. The inspection
+records of materials and production processes of modules, as
+well as dynamic BIM models of the target MC project, are
+processed as quality assurance contracts (QAC) to support
+trustworthy consensus-based collaboration among stakeholders. The structure of the ledger is shown in Fig. 2.
+The service layer provides a mobile-based application
+named e-InStar. Users can make intelligent decisions based
+
+Fig. 2. Ledger service model in the platform layer (Adapted from Li et al. 2021 [6])
+
+on the process management and QA of the off-site manufacturing activities of MC projects. Typical QA stakeholders
+involve manufacturers/contractors, registered structural engineers, building service inspectors, authorized people, and
+clients. Different roles contain different authorities in the app,
+and Fig. 3 illustrates the transaction flow, which is based on
+the consensus mechanism.
+In this architecture, As shown in Fig. 3, the transaction flow
+consists of three phases: the proposal phase, the ordering and
+packaging of transactions phase, and the validation/submission
+phase. In the first phase, the client application with different authorities sends a transaction proposal to a subset of
+peer nodes that will invoke a QAC to generate a proposed
+ledger update and then approve the results. For example, the
+main contractor delivers a production inspection report of
+door/window installation through the app; this action invokes
+a chain code to generate a transaction T1 and submits it to
+qualified peers, then receives an endorsed transaction proposal
+response. In the second phase, app clients submit transactions
+T1 to the ordering node to create blocks of transactions that
+will eventually be distributed to all peers of the QA channel. In
+the last phase, peers connected with the ordering node validate
+each transaction in block B2 independently, and the validated
+transactions update the ledger’s state (add block B2 to ledger
+L1).
+To avoid malicious users and guarantee the exact access to
+the QA channel, the certificate authority (CA) and membership
+service provider (MSP) supported by Hyperledger is utilized.
+A CA dispenses certificates to users through the key-pair
+mechanism, and a MSP is a trusted authority to prove the
+identity and grant specific privileges an actor has on a node or
+channel. Thus, only the project-related organizations and their
+colleagues with different authorities are able to transact on the
+QA channel.
+The IoT oracles, such as prefabricated MC components with
+QR codes, can be captured and recorded through smartphones.
+With the help of the developed application, users with different
+roles and authorities can scan the QR code or NFC (Near Field
+
+Communication) chips on the module to record and upload the
+related data to the system. As Fig. 4 shows, stakeholders of
+an MC project can update the inspection data everywhere, and
+related peers in the permissioned blockchain QA channels are
+able to monitor these data changes timely.
+III. I MPLEMENTATION AND EVALUATION
+A. A case study
+An MC project of a new student residence at the University
+of Hong Kong (HKU) was used to test the e-Inspection
+2.0 system regarding remote quality assurance. The student
+residence comprises two 17-floor tower buildings with 952
+prefabricated modules, of which the QA includes 40 tasks to
+conduct at the off-shore manufacturing factory. Traditionally,
+the QA practices were achieved by sending a troop of inspectors from Hong Kong to Mainland China where the parts of
+MC were manufactured. However, the COVID-19 pandemic
+and the control measures, such as long-term border control and
+strict quarantine policies, made the traditional QA practices
+surprisingly tricky. The e-Inspection 2.0 is deployed as an
+innovative way for remote and digital QA.
+The primary stakeholders in this MC project include the
+Real Estates Office of HKU (owner and clients in Hong Kong
+SAR, China), Paul Y. engineering (main contractor in Hong
+Kong SAR, China), and Yahgee Modular House (manufacturer
+in Zhuhai, Guangdong, China). The 40 inspection tasks for
+QA can be categorized into five types in accordance with
+stakeholders:
+• 40 items for the main contractor (Paul Y.),
+• 12 items for RSE (Registered Structural Engineers),
+• 7 items for AP (Authorized People),
+• 5 items for BSI (Building Service Inspectors), and
+• 17 items for CR (Client Representative).
+Other users include the architect, structural engineer, and
+building services consultant. All these stakeholders had corresponding rights to access the system, for example, the workers
+from the main contractor or building services inspectors access
+the system via a smartphone application, as shown in Fig. 4.
+
+Fig. 3. Transaction flow of the presented e-Inspection 2.0 system
+
+Fig. 4. The smartphone application interface of e-InStar (Adapted from Lu et al. 2022 [1])
+
+In this project, Paul Y. monitored the quality of the prefabricated modules during production through photography
+and then submitted these photo records to AP or RSE for
+validation. Each submission of the inspection photo records
+invokes a transaction (proposal) in the blockchain network,
+as Fig. 5 shows. For roles with permissions such as AP or
+RSE, the commitment results of inspection tasks are sent to
+the inspector with an endorsed response in a limited time.
+Otherwise, the endorsing process will be done automatically.
+After all the inspection tasks are finished, users deliver the
+inspection report to the blockchain server and publish it to all
+peer nodes. In this way, stakeholders in the QA channel can
+access the inspection record anywhere.
+
+B. Evaluation
+The presented e-Inspection 2.0 system was tested in the
+study case with practice production data. At the time of
+reporting, 421 (about 43 percent) modules were produced with
+detailed inspection records in the study case. This section
+describes two performance indicators, namely, the security and
+transparency of the system and satisfaction reported by users.
+a) System security and transparency: The e-Inspection
+2.0 system utilizes permissioned blockchain that only stakeholders of the MC project could join the network, the membership service provider of Hyperledger Fabric is used in this
+paper to certify the authorized peers. In this way, the system
+provides a granted access control function and prevents the
+
+Fig. 5. Example of the pilot-floor on-chain transactions visualization interfaces for owners and contractors
+
+(a)
+
+(b)
+
+Fig. 6. Examples of modules as IoT oracles (a) With GPS + tremble + env. sensors + 4G outdoor; (b)With QR codes indoor
+
+whole system suffers from some cybersecurity attacks, such
+as the Sybil attack, which is a typical attack on the consensus
+process as the participants are anonymous and can have several
+identities. At the same time, the permissioned blockchain
+keeps all the inspection records and data transparent and
+immutable for a consortium of stakeholders of the MC quality
+assurance.
+b) User satisfactions: The major stakeholders give positive feedback on this e-Inspection 2.0 system on both data
+collection and QA functions.
+In terms of data collection, the size of inspection attachments such as photos and instruction files are 44 gigabytes
+(GB) for a total of 13,055 transactions. As Fig. 6 shows, there
+are total 975 smart MC components in the practice project that
+serve as IoT oracles through QR code or NFC chips. By simply
+scanning the QR code on the module, or communicating with
+NFC chips on the e-InStar app, users can achieve real-time
+
+and compatible data uploading. Thus smartphones acts as the
+media between users/permissioned blockchain and IoT oracles,
+the unique QR codes and NFC chips ensure the collection of
+true-provenance data. In the e-Inspection 2.0, each inspection
+photo record includes the original size and a thumbnail, where
+the average size of photos in original size is 1 megabyte
+(MB) and the average size of thumbnails is 20 kilobytes (KB).
+To guarantee the efficiency of data storage in transactions,
+only the thumbnails of inspection photos are stored as JSON
+values in Base64 encoded forms. In this way, the size of each
+transaction is about 50 KB which is reasonable for blockchain.
+Meanwhile, as Fig. 5 shows, the brief summaries of inspection
+records are also stored in MySQL indexing tables that enable
+users to browse the transaction details efficiently.
+The HKU Estates Office confirmed that they understand
+the virtual process of transaction flow in the permissioned
+blockchain and feel confident about the massive volume
+
+of collected inspection data. The main contractor Paul Y.
+claimed, “[the] e-InStar supports various functions such as
+the inspection, progress monitoring, statistical analysis, and
+streamlined verification processes. It is an empirical evidence
+of blockchain rebuild trust in construction.”
+IV. C ONCLUSION
+Trustworthy remote quality assurance (QA) is an urgent
+issue for modular construction (MC) involving distributed
+manufacturing and construction activities. Especially the restricted border control due to the COVID-19 prevents crossborder activities such as on-site quality inspection. The recent
+advancement of information technologies such as IoT and permissioned blockchain has brought potential opportunities for
+digital QA. The permissioned blockchain provides a promising
+pathway for upgrading the information security and trustworthiness of a consortium of stakeholders. IoT oracles guarantee
+real-time data collection from the real world. So, a permissioned blockchain-backed IoT platform is presented in this
+paper, aiming to facilitate the security of the blockchain system
+and data collection efficiency. It is an empirical evidence of
+the claim that blockchain rebuild trust in contruction industry.
+The significant contributions of this study are summarized in
+two aspects.
+a) The e-Inspection 2.0 system: An integrated quality
+assurance system is presented with two highlights. 1) The
+presented e-Inspection 2.0 system utilizes IoT MC components
+for real-time data collection from the MC project, which
+serves as the oracle of the permissioned blockchain network
+to ensure efficient and true-provenance data collection. The
+system also provides a mobile-based application named eInStar that support QA functions for MC stakeholders. 2) A
+permissioned blockchain network for MC quality assurance is
+presented, which guarantees the privacy and authority of peers
+in the network and prevents the whole system from suffering
+cybersecurity attacks. In this way, the MC project stakeholders
+can comply with regulations, have complete control of data,
+and come to a consensus on the present data state of the ledger.
+b) A practical case study: A practical MC project is
+used as a case study to validate the feasibility of the proposed
+system. The experiment’s performance illustrates the reliable
+privacy and security of e-Inspection 2.0 system, and the users’
+satisfaction with data collection and QA functions prove the
+feasibility and efficiency of the whole system. In the future, the
+e-Inspection 2.0 system could be improved in terms of latency
+performance and smart contracts’ ability to process complex
+transactions.
+R EFERENCES
+[1] W. Lu, L. Wu, J. Xu, and J. Lou, “Construction e-Inspection 2.0 in
+the COVID-19 pandemic era: A blockchain-based technical solution,”
+Journal of Management in Engineering, vol. 38, no. 4, p. 04022032,
+2022. doi:10.1061/(ASCE)ME.1943-5479.0001063.
+[2] H. Johnsson and J. H. Meiling, “Defects in offsite construction: timber module prefabrication,” Construction Management and Economics,
+vol. 27, no. 7, pp. 667–681, 2009. doi:10.1080/01446190903002797.
+
+[3] Z. Zheng, Z. Zhang, and W. Pan, “Virtual prototyping-and transfer learning-enabled module detection for modular integrated construction,” Automation in Construction, vol. 120, p. 103387, 2020.
+doi:10.1016/j.autcon.2020.103387.
+[4] A. Mohsen Alawag, W. Salah Alaloul, M. Liew, M. Ali Musarat,
+A. Baarimah, S. Saad, and S. Ammad, “Total quality management in industrialised building system: Implementation and benefits in construction projects,” Ain Shams Engineering Journal, 2022.
+doi:10.1016/j.asej.2022.101877.
+[5] L. Martin and L. Benson, “Relationship quality in construction projects:
+A subcontractor perspective of principal contractor relationships,” International Journal of Project Management, vol. 39, no. 6, pp. 633–645,
+2021. doi:10.1016/j.ijproman.2021.05.002.
+[6] X. Li, L. Wu, R. Zhao, W. Lu, and F. Xue, “Two-layer Adaptive Blockchain-based Supervision Model for off-site modular housing production,” Computers in Industry, vol. 128, p. 103437, 2021.
+doi:10.1016/j.compind.2021.103437.
+[7] F. Xue, W. Lu, Z. Chen, and C. J. Webster, “From lidar point cloud
+towards digital twin city: Clustering city objects based on Gestalt
+principles,” ISPRS Journal of Photogrammetry and Remote Sensing,
+vol. 167, pp. 418–431, 2020. doi:10.1016/j.isprsjprs.2020.07.020.
+[8] D.-G. J. Opoku, S. Perera, R. Osei-Kyei, and M. Rashidi, “Digital twin application in the construction industry: A literature review,” Journal of Building Engineering, vol. 40, p. 102726, 2021.
+doi:10.1016/j.jobe.2021.102726.
+[9] C.-M. Wu, Q. Tsai, L.-Y. Li, and C. Xiao, “Development and application
+scenario of municipal utility tunnel facility management based on
+BIM, 3D printer and IoT,” in 2020 IEEE Eurasia Conference on IoT,
+Communication and Engineering (ECICE), pp. 44–47, IEEE, 2020.
+doi:10.1109/ECICE50847.2020.9301944.
+[10] Z. Ma, S. Cai, N. Mao, Q. Yang, J. Feng, and P. Wang, “Construction
+quality management based on a collaborative system using BIM and
+indoor positioning,” Automation in Construction, vol. 92, pp. 35–45,
+2018. doi:10.1016/j.autcon.2018.03.027.
+[11] S. Ahmadisheykhsarmast and R. Sonmez, “A smart contract system for
+security of payment of construction contracts,” Automation in Construction, vol. 120, p. 103401, 2020. doi:10.1016/j.autcon.2020.103401.
+[12] F. Xue and W. Lu, “A semantic differential transaction approach
+to minimizing information redundancy for BIM and blockchain integration,” Automation in Construction, vol. 118, p. 103270, 2020.
+doi:10.1016/j.autcon.2020.103270.
+[13] A. I. Sanka and R. C. Cheung, “A systematic review of blockchain
+scalability: Issues, solutions, analysis and future research,” Journal
+of Network and Computer Applications, vol. 195, p. 103232, 2021.
+doi:10.1016/j.jnca.2021.103232.
+[14] W. Lu, X. Li, F. Xue, R. Zhao, L. Wu, and A. G. Yeh, “Exploring smart
+construction objects as blockchain oracles in construction supply chain
+management,” Automation in Construction, vol. 129, p. 103816, 2021.
+doi:10.1016/j.autcon.2021.103816.
+[15] F. Elghaish, M. R. Hosseini, S. Matarneh, S. Talebi, S. Wu, I. Martek,
+M. Poshdar, and N. Ghodrati, “Blockchain and the ‘Internet of
+Things’ for the construction industry: research trends and opportunities,” Automation in Construction, vol. 132, p. 103942, 2021.
+doi:10.1016/j.autcon.2021.103942.
+[16] K. Figueiredo, A. W. Hammad, A. Haddad, and V. W. Tam, “Assessing
+the usability of blockchain for sustainability: Extending key themes to
+the construction industry,” Journal of Cleaner Production, p. 131047,
+2022. doi:10.1016/j.jclepro.2022.131047.
+[17] Q. Lu and X. Xu, “Adaptable blockchain-based systems: A case study
+for product traceability,” IEEE Software, vol. 34, no. 6, pp. 21–27, 2017.
+doi:10.1109/MS.2017.4121227.
+[18] T. A. Syed, A. Alzahrani, S. Jan, M. S. Siddiqui, A. Nadeem, and
+T. Alghamdi, “A comparative analysis of blockchain architecture and
+its applications: Problems and recommendations,” IEEE Access, vol. 7,
+pp. 176838–176869, 2019. doi:10.1109/ACCESS.2019.2957660.
+[19] R. Yang, R. Wakefield, S. Lyu, S. Jayasuriya, F. Han, X. Yi,
+X. Yang, G. Amarasinghe, and S. Chen, “Public and private
+blockchain in construction business process and information integration,” Automation in Construction, vol. 118, p. 103276, 2020.
+doi:10.1016/j.autcon.2020.103276.
+[20] X. Li, W. Lu, F. Xue, L. Wu, R. Zhao, J. Lou, and J. Xu, “Blockchainenabled iot-bim platform for supply chain management in modular
+construction,” Journal of construction engineering and management,
+
+vol. 148, no. 2, p. 04021195, 2022. doi:10.1061/(ASCE)CO.19437862.0002229.
+[21] F. Xiong, C. Xu, W. Ren, R. Zheng, P. Gong, and Y. Ren, “A blockchainbased edge collaborative detection scheme for construction internet
+of things,” Automation in Construction, vol. 134, p. 104066, 2022.
+doi:10.1016/j.autcon.2021.104066.
+[22] C. V. Helliar, L. Crawford, L. Rocca, C. Teodori, and M. Veneziani,
+“Permissionless and permissioned blockchain diffusion,” International
+Journal of Information Management, vol. 54, p. 102136, 2020.
+doi:10.1016/j.ijinfomgt.2020.102136.
+
+

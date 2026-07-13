@@ -1,0 +1,617 @@
+BUILDING DECAY IN HONG KONG: ASSESSING AND MAPPING BUILDING
+CONDITION INDEX USING CHATGPT AND AIRBORNE POINT CLOUDS
+Wai Hung LEE1, and Fan XUE2
+1) B.Sc. Student, Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong SAR.
+Email: sammylee@connect.hku.hk
+2) Ph.D., Assoc. Professor., Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong.
+Email: xuef@hku.hk
+
+Abstract: Hong Kong faces critical challenges in the maintenance and redevelopment of aged buildings. Recently,
+advancements in multi-modal generative AI (GenAI) and high-definition urban geospatial data, such as point
+clouds, have offered new opportunities to the architectural, engineering, and construction industry. This paper
+defines, assesses, and maps a Building Condition Index (BCI) as the condition of aged building fabrics using
+GenAI and high-definition geospatial data. First, a BCI is defined as a numerical scale of multi-dimensional factors,
+including floor area, building age, management quality, and the presence of unauthorized building works. Then,
+multiple data sources, including building exterior photos, airborne point clouds, and government building datasets,
+are processed and trained for the BCI using multiple regression and image embedding with ChatGPT4. Finally, a
+comprehensive BCI map and focused BCI hot spots can be visualized for an urban area. Experiments with over
+1,200 building data points in Kowloon City, Hong Kong, indicated the robustness of the BCI in explaining the
+exogenous factors causing decayed buildings while accurately reflecting the building condition of buildings.
+Keywords: Building decay, Building condition index, Assessment and mapping, Airborne point clouds,
+Generative AI
+1. INTRODUCTION
+Hong Kong faces a critical impasse in addressing the challenges of aging buildings and their
+redevelopment, intensifying urban decay, a process characterized by the gradual decline of urban areas due to
+neglect and insufficient investment in the maintenance of old buildings. As of 2021, around 22% of Hong Kong’s
+buildings, approximately 9,600 structures, are over 50 years old and increasingly unfit for habitation (BD, 2023a).
+Many of these are “three-nil” buildings, which lack owners’ corporations, residents’ organizations, or property
+management companies, leading to inadequate maintenance and rapid deterioration (Lee & Chan, 2008).
+Redevelopment efforts under Cap. 545 are further hampered by fragmented ownership structures that require
+developers to secure over 70% of undivided shares, a challenging and often prohibitive task in an uncertain
+economic environment (Wang et al., 2022). Even when shares are acquired, economic uncertainties often cause
+developers to delay redevelopment, leaving many buildings in disrepair.
+Building maintenance is crucial for preserving the structural integrity, functionality, and aesthetic appeal
+of buildings, thereby ensuring safety and regulatory compliance (Seeley, 1987). This involves addressing various
+challenges such as wear and tear of building fabrics and building services issues like water seepage or structural
+issues. In Hong Kong’s context of aging infrastructure, a range of maintenance strategies are employed to mitigate
+deterioration. Preventive maintenance includes regular inspections and timely repairs to prevent major failures,
+while ad-hoc maintenance responds reactively to defects as they arise (Chanter, 2008). Additionally, planned
+maintenance schedules activities based on thorough assessments of building conditions, ensuring a proactive
+approach to upkeep (Jasiulewicz-Kaczmarek, 2016). Policies such as Hong Kong’s Mandatory Building Inspection
+Scheme (MBIS) underscore the importance of routine inspections in maintaining older structures, where buildings
+aged over 30 years old are required to be inspected every 10 years (BD, 2023b).
+However, challenges persist in the maintenance of aged buildings in Hong Kong. First, fragmented
+ownership in these buildings complicates coordination among multiple stakeholders, making it difficult to
+implement consistent maintenance practices. Financial constraints are significant, as the high costs associated with
+repairing and upgrading older buildings often discourage property owners, particularly in Hong Kong, where
+property management companies assist in procurement processes. The complexities of managing multiple
+ownerships can lead to conflicts among owners, complicating decision-making for necessary repairs and
+renovations. This situation is exacerbated by instances of bid-rigging, where contractors collude to inflate prices
+or manipulate the bidding process. For example, in the Garden Vista case, a contractor was jailed for offering
+bribes to facilitate a bid-rigging scheme that resulted in a renovation contract worth HK$260 million (Leung et al.,
+2022). Worse still, the prevalence of “three-nil” buildings leads to inadequate maintenance and accelerated decay
+due to the absence of coordinated upkeep efforts (Ho et al., 2011; Hui et al., 2008). Moreover, the aging population
+residing in these buildings often lacks the resources or knowledge to advocate for proper maintenance,
+compounding the neglect issue (Hui et al., 2008). These multifaceted challenges create a complex environment
+that hinders the effective maintenance of Hong Kong’s aging building stock, perpetuating urban decay and posing
+
+This is author's version of the paper, shared under CC-BY-SA-4.0 license.
+
+Lee, W. H., & Xue, Fan. (2025). Building decay in Hong Kong: Assessing and mapping building condition
+index using ChatGPT and airborne point clouds. Proceedings of The Sixth International Conference on Civil
+and Building Engineering Informatics, 22, 1113-1125. https://doi.org/10.29007/z7mj
+
+risks to public safety and the overall livability of the city.
+AI technological advancements have significantly enhanced building maintenance strategies. For instance,
+the integration of 2D imaging embedding with deep machine learning into building inspection has gained traction
+in the industry for detecting building defects. Studies have shown that image embedding techniques can effectively
+identify issues such as cracks and spalling by analyzing visual data through deep learning algorithms (Jiang et al.,
+2021). This growing emphasis on structured maintenance is essential in addressing the challenges posed by aging
+buildings, thereby supporting efforts to combat urban decay and improve overall urban livability. With image
+embedding and other sensing and processing technologies, building surveyors are able to deliver more systematic
+and efficient approaches to building upkeep.
+Recently, advancements in multi-modal generative AI (GenAI), exemplified by the latest iterations of
+ChatGPT, offer new opportunities across various sectors by enhancing content creation, automating routine tasks,
+and facilitating more natural human-computer interactions (García-Peñalvo & Vázquez-Ingelmo, 2023). These
+GenAI systems can analyze and generate text, images, and sometimes audio. Hence, it seems that this provides a
+new opportunity for building maintenance, not only to conduct defect diagnosis but also to automatically provide
+feedback on their presence, provide herewith scheduled maintenance activities, predict potential failures, and
+provide real-time updates to residents, thus increasing efficiency and responsiveness. However, despite their
+potential, GenAI models exhibit notable limitations. They often produce hallucinations, generating information
+that appears plausible but is factually incorrect or nonsensical, which can lead to misinformation in maintenance
+reports (Salvagno et al., 2023). Additionally, GenAI struggles with understanding complex contexts and nuances,
+resulting in responses that may not align with user intentions or the specific requirements of building maintenance
+tasks (Chiu, 2023).
+Another opportunity comes from the emergence of high-definition geospatial data, which presents
+significant opportunities for enhancing building maintenance and management practices. One of the most
+promising advancements in this field is the use of point cloud technology, which captures detailed threedimensional data of buildings through methods such as laser scanning and photogrammetry. This technology
+generates a dense collection of points that represent the physical features of a structure, allowing for precise
+modeling and analysis of building fabrics on a larger scale. By segmenting point clouds, in-depth building
+characteristics can be identified, which presents new opportunities for aiding building inspections, monitoring
+structural integrity, and identifying maintenance needs with greater accuracy and efficiency. Furthermore,
+geospatial data can facilitate planned maintenance by analyzing spatial patterns under City Information Modelling
+(CIM) (Xue et al. 2021). For instance, integrating point cloud data with geographic information systems (GIS)
+enables the visualization of building conditions in relation to environmental factors, helping to prioritize
+maintenance efforts effectively.
+In response to the aforementioned opportunity to promote the effectiveness of building maintenance, this
+paper introduces, assesses, and maps a Building Condition Index (BCI) as the condition of aged building fabrics
+using GenAI and high-definition airborne point clouds.
+2. RESEARCH METHODS
+2.1 Definition of Building Condition Index
+The BCI in this paper is a numerical scale employed to assess the overall condition of a building’s
+fabrics, typically ranging from 20 (very poor) to 100 (excellent). Equation (1) defines BCI on the impact of
+property management on building quality:
+
+Where the BCI is the index, C is a constant, and the descriptions of the rest variables are listed in Table 1. The
+variables in Table 1 cover the multiple facets of building conditions, such as physical appearance in aesthetics,
+quality of management in maintenance organization, and the presence of unauthorized building works (UBW) in
+related legal issues. The BCI can thus provide a quantitative, overall measure of building health based on various
+factors, according to Ho (2013).
+Table 1. Descriptions of Variables
+Variables
+BUILDING_AGE
+BUILDING_AGE²
+GFA
+
+Descriptions
+The age of the building (linear term)
+The squared age of the building, capturing nonlinear effects
+Gross Floor Area (linear term)
+
+GFA²
+FLOOR
+FLOOR²
+MANAGEMENT_COMPANY
+MANAGEMENT_COMPANY
+× BUILDING_AGE
+THREE_NIL
+THREE_NIL ×
+BUILDING_AGE
+UBW
+ε
+
+The squared Gross Floor Area
+The number of floors (linear term)
+Squared number of floors
+Dummy variable for the presence of a management company
+The interaction term between the dummy of the management company and the building
+age
+Dummy variable for the “three-nil” status (buildings without proper management)
+The interaction term between three-nil status and building age
+Dummy variable of the presence of Unauthorized Building Works (UBW)
+Error term capturing unexplained variance in BCI
+
+2.2
+
+Case area and data source
+As shown in Figure 1, the case area is selected as a part of the Kowloon City District in Hong Kong in
+this paper. The area was selected for encompassing typical aged and newly built buildings in the sub-districts of
+Kowloon City, Ma Tau Wai, and To Kwa Wan. A total of 1,211 buildings were selected and analyzed. As indicated
+by the colors in Figure 1, the majority of the buildings in the area were over 40 years old, while certain clustered
+blocks of buildings were over 60 years old (indicated as dark red).
+
+Figure 1. A case area of 1,211 buildings in Kowloon City District, Hong Kong (warmer color indicates older
+buildings, map sources: OpenStreetMap, MapBox)
+Figure 2 stipulates the data sources and overall workflow to construct the BCI. Most of the independent
+variables marked in light green are available publicly online or via a site survey. For example, the source of
+building age, gross floor area, and number of floors is the Buildings Department’s building information and age
+records. Information regarding the presence of the management company and the three-nil status for each building
+is confirmed by searching the Land Registry records and verifying the registration of the Deed of Mutual
+Covenants for the building. Site visits to old buildings where the management company is absent were conducted
+to further confirm the absence of the owners’ corporation and owners’ committee, substantiating the three-nil
+status of these buildings.
+
+Figure 2. Flowchart of the construction of BCI
+
+The processing for “presence of UBW” in Figure 2 begins with LiDAR data. The LiDAR data collected
+by CEDD (2023) was processed through point cloud segmentation and machine learning algorithms to identify
+potential UBW features, such as rooftop structures. Simultaneously, key variables, such as building age, Gross
+Floor Area (GFA), number of floors, the presence of a management company, and “three-nil” status (denoting
+buildings lacking proper management), are systematically collected. Additionally, building photographs undergo
+image embedding using Generative AI (GenAI), which predicts a preliminary BCI score by analyzing visual
+indicators of building conditions. These GenAI-generated BCI scores are then integrated into a multiple regression
+model to evaluate the relationships between the BCI and the exogenous factors influencing building conditions.
+This dual approach not only verifies the accuracy of the AI-predicted BCI but also enhances the explanatory power
+of the regression model, offering a robust framework for constructing the BCI in assessing and addressing building
+quality within old districts in Hong Kong.
+2.3 Data processing for unauthorized building works and site image embedding
+This paper triangulates two data sources to confirm the presence of UBW. First, searches of the Land
+Registry records for the disposal or removal orders regarding UBW were conducted as training data and references.
+The base point cloud data was obtained from an airborne LiDAR scan by the Civil Engineering Development
+Department in 2020 (CEDD 2023). Using the annotated UBW in the CEDD’s (2023) LiDAR data, we then trained
+machine learning to segment 3D point clouds to identify potential rooftop areas that constitute UBWs. This is a
+task-specific point cloud segmentation, in which one can discern various rooftop elements such as air conditioning
+units, water tanks, and other installations, which are typical provisions of rooftop structures.
+Regarding the use of machine learning to segment point clouds of rooftop UBWs, the CANUPO plugin
+within CloudCompare v2 was used to handle multi-dimensional data and various point cloud feature sets, including
+intensity, number of returns, and return number, to name but a few, alongside random forests. These point cloud
+features serve as a foundation for training the machine learning model, especially the intensity feature set, denoting
+the reflectivity of bi-spectral surveyed surfaces, which helps classify the different materials of rooftop structures
+(Zhao et al., 2022). To be specific about the training process, first, we segment the rooftop point cloud, then analyze
+the pattern and distribution of the intensity dataset of the rooftop point cloud with random forest classification to
+identify the potential steel-sheeting roof covers eventually, which are ubiquitously recognized as UBWs in old
+buildings (BD, 2023b). The time of training was 31 hours, with an overall CANUPO confidence of 0.94.
+Figure 3 shows the detected anomalies of possible UBWs on rooftop structures. The results are mostly
+the temporary steel sheet structures, which often constitute UBWs as deviating from the temporary structures. The
+automated anomaly identification process for UBW significantly enhances the efficiency and accuracy of UBW
+detection compared to traditional manual inspections.
+
+Figure 3. Illustration of point cloud segmentation to automatically identify UBW
+ChatGPT (ver. 4o) and high-resolution images of building facades are employed to offer embedded
+visual features to BCI. Figure 4 shows an example. A high-resolution image of a case building was taken by
+smartphone and uploaded through an intuitive interface. Then, the process employs robust image embedding
+techniques using the ChatGPT-4o service’s enhanced photograph for stringent quality standards essential for
+precise analysis. Following this, the Image Preprocessing visual analysis capabilities extract critical visual features
+such as signs of wear, discoloration, cracks, and structural irregularities. These refined images are then subjected
+to Feature Analysis, where a pre-trained transformer neural network (TNN), enriched with photographic feature
+datasets curated by OpenAI, adeptly describes and captures intricate image details. This descriptive data is
+subsequently transformed into numerical embeddings that quantitatively represent the building’s appearance and
+
+condition, enabling a nuanced evaluation of various structural aspects.
+
+Figure 4. Example of image-based feature processing by TNN of ChatGPT for BCI assessment
+In the final Output Generation stage, the system calculates the BCI score using a weighted algorithm
+that accounts for the severity and impact of each identified feature, normalizing the score for standardized
+interpretation. The output BCI is then recorded for every building in the study area as the dependent variable.
+2.4 Overview of the dataset in the case area
+Table 2 presents the descriptive data of all the variables. The variables in the dataset were in accordance
+with a multi-variable regression analysis. For example, the maximum (“best building condition”) of ln(BCI) was
+ln(100) = 4.603, while the minimum (or the “worst”) was ln(20) = 2.996. The median of BCI was EXP(3.88) =
+48.4, which was closer to the end of 20. Similarly, the median BUILDING_AGE was 44 years, and the median of
+GFA was 2,381.2 square feet, which was relatively aged and small for a high-density city like Hong Kong. The
+median number of floors was eight storeys, which was lower than the average of a high-rise urban form in Hong
+Kong. About 11% of buildings, on average, were identified as “There-nil” buildings.
+Table 2. Descriptions Data
+Mean
+Median
+Maximum
+Minimum
+Std. Dev.
+Skewness
+Kurtosis
+
+ln(BCI)
+BUILDING_AGE BUILDING_AGE^2 GFA
+GFA^2
+FLOOR
+FLOOR^2
+3.898738
+41.77666
+2013.713 4613.769 98902886 10.21942 171.7536
+3.882826
+44
+1936 2381.223
+5670223
+8
+64
+4.603086
+77
+5929 102683.8 1.05E+10
+59
+3481
+2.996134
+1
+1 38.90204 1513.369
+0
+0
+0.441536
+16.38824
+1328.868 8812.469 5.84E+08 8.207008 313.3496
+-0.181719
+-0.29059
+0.51038 5.715663 11.18781 1.694284 5.252967
+1.98624
+2.450962
+2.602456 44.53008 154.2416 8.008287
+39.9004
+
+Jarque-Bera
+Probability
+
+86.115
+0
+
+47.46157
+0
+
+89.09948
+0
+
+137765.1
+0
+
+1735570
+0
+
+2714.976
+0
+
+109297
+0
+
+Sum
+Sum Sq. Dev.
+
+6947.55
+347.2125
+
+74446
+478331.1
+
+3588436
+3.15E+09
+
+8221736
+1.38E+11
+
+1.76E+11
+6.08E+20
+
+18211
+119959.2
+
+306065
+1.75E+08
+
+Observations
+
+1211
+
+1211
+
+1211
+
+1211
+
+1211
+
+1211
+
+1211
+
+Table 2. Descriptions Data (Con’t)
+Mean
+Median
+Maximum
+Minimum
+Std. Dev.
+Skewness
+Kurtosis
+
+MANAGEMENT_COMPANY MANAGEMENT_COMPANY*BUILDING_AGE THREE_NIL THREE_NIL*BUILDING_AGE
+0.838384
+33.68462
+0.11055
+6.945006
+1
+38
+0
+0
+1
+75
+1
+77
+0
+0
+0
+0
+0.368202
+20.09236
+0.313662
+19.85852
+-1.838551
+-0.411676
+0.483944
+0.55713
+4.380271
+2.042261
+7.169976
+7.690309
+
+Jarque-Bera
+Probability
+
+1145.398
+0
+
+118.4417
+0
+
+3123.593
+0
+
+3575.483
+0
+
+Sum
+Sum Sq. Dev.
+
+1494
+241.4545
+
+60026
+718994.8
+
+197
+175.2217
+
+12376
+702356.6
+
+Observations
+
+1211
+
+1211
+
+1211
+
+1211
+
+Figure 5 stipulates the Pearson’s correlation coefficient matrix between the variables. It can be seen that
+both the squared features, including BUILING_AGE^2 and GFA^2, had strong positive correlations with the
+original feature. In addition, the last two variables, i.e., THREE_NIL and THREE_NIL*BUILDING_AGE, had
+an almost perfect (r = 0.99, N = 1,211) linear correlation. In contrast, the THREE_NIL and BUILDING_AGE had
+a moderate positive linear correlation (r = 0.45, N = 1,211). From the first row of Figure 5, it can be seen that
+ln(BCI) had the most strong linear correlations with BUILDING_AGE (r = -0.47), THREE_NIL (r = -0.42), and
+THREE_NIL*BUILDING_AGE (r = -0.41).
+
+Figure 5. Correlation coefficient matrix heatmap
+
+3. RESULTS
+3.1 Regression results
+The least squares regression analysis examined the determinants of the natural logarithm of BCI using
+a sample of 1,211 observations. Table 3 shows the empirical results of the regression.
+Table 3. Multiple regression results (row in bold when a variable’s p-value <= 0.001)
+Variable
+
+Coefficient
+
+(Std. Error)
+
+p-value
+
+Constant
+BUILDING_AGE*
+BUILDING_AGE^2**
+GFA**
+
+4.5477
+-0.0412
+0.000124
+-2.52E-06
+
+(0.0439)
+(0.00199)
+(0.0000164)
+(9.46E-07)
+
+0.0000
+0.0382
+0.0043
+0.0079
+
+GFA^2*
+FLOOR
+FLOOR^2
+MANAGEMENT_COMPANY**
+MANAGEMENT_COMPANY*BUILDING_AGE***
+THREE_NIL***
+THREE_NIL*BUILDING_AGE**
+UBW***
+
+3.42E-11
+-0.00183
+2.56E-05
+0.0703
+0.00707
+-0.8665
+-0.00768
+-0.0321
+
+(1.38E-11)
+(0.00109)
+(2.68E-05)
+(0.0472)
+(0.00196)
+(0.1287)
+(0.00285)
+(7.32E-07)
+
+0.0135
+0.0947
+0.3385
+0.0031
+0.0003
+0.0000
+0.0072
+0.0003
+
+R-squared: 0.8716
+No. of Observations: 1211
+*: Significant at 5% level; **: Significant at 1% level; ***: Significant at 0.1% level
+
+A negative relationship between building age and the Building Condition Index (BCI) is anticipated due
+to the increased likelihood of structural deterioration and higher maintenance costs associated with older buildings
+(Chanter & Swallow, 2008). Consequently, as buildings age, their condition is expected to decline, reducing their
+overall BCI. The regression results support this expectation, with the coefficient for BUILDING_AGE being 0.00412 (p = 0.038), indicating that each additional year of building age is associated with a 0.412% decrease in
+the BCI. Furthermore, the positive coefficient for BUILDING_AGE² (0.000124, p = 0.004) suggests a decelerating
+rate of decline in building conditions as buildings become increasingly old, possibly due to stabilization effects or
+periodic major renovations that temporarily improve building conditions.
+Gross Floor Area is expected to have a complex relationship with the Building Condition Index. On the
+one hand, larger buildings may benefit from economies of scale in maintenance, while on the other hand, they may
+face higher absolute maintenance costs and greater challenges in upkeep (Ho et al., 2011). The analysis reveals a
+negative coefficient for GFA (-0.00000252, p = 0.008), indicating that larger floor areas are associated with a
+slight decrease in BCI. However, the positive coefficient for GFA² (0.0000000342, p = 0.014) implies that the
+negative impact of increasing floor area on building condition diminishes at higher levels of GFA, suggesting that
+very large buildings may implement more effective maintenance strategies that mitigate the adverse effects of size.
+The number of floors in a building is expected to influence the BCI, potentially due to the complexities
+associated with maintaining taller structures (Seeley, 1987). The coefficient for FLOOR is -0.00182705 (p = 0.095),
+indicating a marginal negative effect on BCI, though it is not statistically significant at the conventional 5% level.
+The squared term for FLOOR (0.0000256, p = 0.338) is also not significant, suggesting that there is no clear
+nonlinear relationship between the number of floors and building conditions within the sampled data.
+The presence of a management company is hypothesized to positively impact the BCI by ensuring
+regular maintenance and efficient management practices (Seeley, 1987). The coefficient for
+MANAGEMENT_COMPANY is 0.07035 (p = 0.003), confirming that buildings managed by professional
+companies tend to have higher BCIs. Additionally, the interaction term between MANAGEMENT_COMPANY
+and BUILDING_AGE (0.00707, p < 0.001) indicates that the positive effect of management companies on
+building condition buildings age, therefore, can be interpreted that aged building with management company can
+slightly enhance the BCI.
+Three-nil buildings, which lack owners’ corporations, residents’ organizations, or property management
+companies, are expected to exhibit poorer maintenance and lower BCIs due to the absence of coordinated upkeep
+efforts (Ho et al., 2011). The regression results substantiate this expectation, with a significant negative coefficient
+for THREE_NIL (-0.86652, p < 0.001), indicating that three-nil buildings have substantially lower BCIs compared
+to those with proper management structures. The interaction term between THREE_NIL and BUILDING_AGE (0.00768, p = 0.007) further reveals that the detrimental effect of being a three-nil building on the BCI intensifies
+as the building ages, highlighting the critical need for organized management in maintaining older buildings.
+
+UBW is posited to negatively affect the BCI, as unauthorized modifications can lead to structural
+weaknesses and potential accelerated deterioration (Ho et al., 2011). The coefficient for UBW is -0.03215 (p <
+0.001), indicating that higher instances of unauthorized building works are significantly associated with lower
+BCIs. This suggests that buildings with unauthorized modifications experience more rapid declines in condition,
+underscoring the importance of regulatory enforcement and regular inspections to prevent such works and maintain
+building integrity.
+In short, the model demonstrated a high explanatory power, with an R-squared of 0.872 in Table 3 and
+an adjusted R-squared of 0.871, indicating that approximately 87.2% of the variability in LN(BCI) is accounted
+for by the independent variables included in the model, indicate the reliability of using ChatGPT analysis in
+quantifying the building condition of old buildings.
+3.2
+
+Visualization of BCI
+Figure 6 visualizes the heatmap of BCI assessed with the regression model on ArcGIS Pro. The chart
+highlights the spatial distribution of structural conditions within the study area. Using a combination of detailed
+maps and georeferenced building data, the tool identifies clusters of aging or decayed buildings.
+
+Figure 6. Visualization of BCI assessment results
+Figure 7 shows a hotspot analysis of areas with significant concentrations of deteriorated structures. The
+hotspot areas pinpoint the central blocks that further refine the understanding of decayed buildings in the area. As
+shown in Figure 7, two prominent clusters of decayed buildings are identified: Cluster 1 along Ma Tau Wai Road
+and Lok Shan Road and Cluster 2 near Mok Cheong Street and To Kwa Wan Road. The clustering results provide
+new insights into urban decay patterns and facilitate data-driven urban planning decisions. For example, urban
+planners can prioritize redevelopment or maintenance efforts.
+
+Figure 7. Hotspot Analysis showing the decayed building clusters
+4. DISCUSSION
+The BCI and assessment have several advantages. First, a multi-regression of the first part of BCI
+includes managerial conditions and UBWs, in addition to traditional physical building conditions. The significant
+coefficients (p-value < 0.001) of MANAGEMENT_COMPANY*BUILDING_AGE, THREE_NIL, and UBW
+showed the newly added variables impacted Hong Kong’s aging buildings. Furthermore, the overall BCI integrates
+vector embedding of building exterior photos and the first part’s regression result using the TNN of ChatGPT.
+This indicated that GenAI might have a huge potential in building and urban assessment. The assessment and
+mapping of BCI, as demonstrated in Sect. 3.2, visualizes and highlights the building decay in the target area.
+There were also certain limitations in this paper. One limitation is the lack of urban environmental features,
+which might lead to confirmation bias. Another is the lack of a detailed maintenance record for each building, so
+the BCI might not represent the temporal relationship. Last but not least, the BCI is a localized regression indicator
+for typical building structures in the urban areas in Hong Kong, while the significance of variables THREE_NIL
+and UBW may not be reproduced in other cities.
+5. CONCLUSIONS
+Hong Kong has many aging buildings. This paper defines a novel building condition index (BCI) to
+represent the building decay conditions of existing buildings in Hong Kong. The BCI integrates big urban data of
+physical building conditions, managerial conditions, localized conditions such as THREE_NIL and UBW, and
+building exterior photos via multi-regression and ChatGPT. The assessed and mapped BCI can offer quantitative
+and visualized results of building conditions for building surveying, real estate, and urban planning. Future
+research directions are suggested as urban environmental features and maintenance record.
+ACKNOWLEDGMENTS
+The work in this paper was supported by the Undergraduate Research Fellowship Programme and the
+Teaching Development Grant from the University of Hong Kong.
+REFERENCES
+BD. (2023a). Building information and age records. In CSDI Portal. Hong Kong: Buildings Department of the
+Government of Hong Kong SAR. https://portal.csdi.gov.hk/geoportal/#metadataInfoPanel
+BD. (2023b). Code of practice of Mandatory Building Inspection Scheme and Mandatory Window Inspection
+Scheme 2012 (2023 Edition). Hong Kong: Buildings Department of the Government of Hong Kong
+SAR. https://www.bd.gov.hk/doc/en/resources/codes-and-references/code-and-designmanuals/CoP_MBIS_MWISe.pdf
+CEDD. (2023). The CEDD 2020 LiDAR Survey. Hong Kong: Civil Engineering and Development Department
+of the Government of Hong Kong SAR. https://sdportal.cedd.gov.hk/#/en/lidar
+Chanter, B., & Swallow, P. (2008). Building maintenance management. John Wiley & Sons.
+Chiu, T. K. (2023). The impact of Generative AI (GenAI) on practices, policies and research direction in
+
+education: A case of ChatGPT and Midjourney. Interactive Learning Environments, 1-17.
+https://doi.org/10.1080/10494820.2023.2253861
+García-Peñalvo, F., & Vázquez-Ingelmo, A. (2023). What do we mean by GenAI? A systematic mapping of the
+evolution, trends, and techniques involved in Generative AI.
+https://reunir.unir.net/handle/123456789/15134
+Ho, D., Yau, Y., Wah Poon, S., Law, C. K., Chui, E., Wong, Y., ... & KH Wong, K. (2011). Urban renewal in
+Hong Kong: a community aspiration study. Surveying and Built Environment, 21, 63-77.
+Hui, E. C., Wong, J. T., & Wan, J. K. (2008). A review of the effectiveness of urban renewal in Hong
+Kong. Property Management, 26(1), 25-42. https://doi.org/10.1108/02637470810848877
+Jasiulewicz-Kaczmarek, M. (2016). SWOT analysis for Planned Maintenance strategy-a case study. IFACPapersOnLine, 49(12), 674-679.
+Jiang, Y., Han, S., & Bai, Y. (2021). Building and infrastructure defect detection and visualization using drone
+and deep learning technologies. Journal of Performance of Constructed Facilities, 35(6), 04021092.
+https://doi.org/10.1061/(ASCE)CF.1943-5509.0001652
+Lee, G. K., & Chan, E. H. (2008). Factors affecting urban renewal in high-density city: Case study of Hong
+Kong. Journal of Urban Planning and Development, 134(3), 140-148.
+https://doi.org/10.1061/(ASCE)0733-9488(2008)134:3(140)
+Leung, T. C., Tsang, K. P., & Tsui, K. K. (2022). Collusion In Private Procurement: How Does Mandatory
+Building Repair Increase Renovation Prices?. The Singapore Economic Review, 67(05), 1759-1779.
+https://doi.org/10.1142/S0217590822430020
+Salvagno, M., Taccone, F. S., & Gerli, A. G. (2023). Artificial intelligence hallucinations. Critical Care, 27(1),
+180. https://doi.org/10.1186/s13054-023-04473-y
+Seeley, I. H. (1987). Building maintenance. Bloomsbury Publishing.
+Wang, Y., Fan, Y., & Yang, Z. (2022). Challenges, experience, and prospects of urban renewal in high-density
+cities: a review for Hong Kong. Land, 11(12), 2248. https://doi.org/10.3390/land11122248
+Xue, F., Wu, L., & Lu, W. (2021). Semantic enrichment of building and city information models: A ten-year
+review. Advanced Engineering Informatics, 47, 101245. https://doi.org/10.1016/j.aei.2020.101245
+Zhao, Y., Seo, H., & Chen, C. (2022). Displacement analysis of point cloud removed ground collapse effect in
+SMW by CANUPO machine learning algorithm. Journal of Civil Structural Health Monitoring, 12(2),
+447-463.
+
+

@@ -1,0 +1,500 @@
+Floor layer-based kernels and pillars of points (FLKPP):
+3D building model reconstruction
+Yijie Wu, Maosu Li and Fan Xue
+Faculty of Architecture, The University of Hong Kong
+2nd Workshop on Computer Vision in the Built Environment, CVPR 2022
+19 June 2022, New Orleans, Louisiana, USA.
+
+1
+
+CONTENT
+
+1
+
+Background
+
+2
+
+Key methods
+
+3
+
+Results
+
+4
+
+Conclusion
+
+2
+
+1
+
+Background
+
+2
+
+Key methods
+
+3
+
+Results
+
+4
+
+Conclusion
+
+1.1 Background
+ Automatic Building Information Model (BIM) and City Information Model (CIM) reconstruction
+ can help free repetitive manual modelling work, (Wu et al. 2021)
+ attracting attentions both from architecture, engineering, construction, and computer science.
+3D point cloud
+
+3D BIM
+
+?
+Automatic
+reconstruction
+
+ Accurate geometric information and
+textured appearance
+ But less semantic and instantiated
+
+ More useful in building and facility
+management
+ But requires high-cost manual modelling
+4
+
+1.2 Our recent interests
+ Rich features from different sources may boost the performance of computer vision in the urban
+and built environment. (Li et al. 2022)
+Land: 0 or 1
+
+Height to ground
+
+Probability of road
+
+Distance to roof
+
+Road network map
+
+Building footprint
+
+KPConv (Thomas et al. 2019)
+
+Land boundary map Digital Terrain model
+(DTM)
+
+Feature
+
+Ground
+
+Terrain
+
+Building
+
+Vehicle
+
+Vegetation
+
+Water
+
+Facility
+
+mIoU
+
+Color + xyz
+
+0.51
+
+0.18
+
+0.88
+
+0.16
+
+0.77
+
+0.84
+
+0.24
+
+0.51
+
+Color + xyz + land +
+ground + roof + road
+
+0.54
+
+0.24
+
+0.91
+
+0.28
+
+0.76
+
+0.88
+
+0.26
+
+0.56
+
+Similarly, is feature enrichment of point cloud still helpful for automatic building model reconstruction in the
+built environment?
+
+5
+
+1.3 Scan-to-BIM Challenge
+ Fully understand the relationship mapping between point cloud and ground truth of training set,
+ To automatically reconstruct the walls, doors, and columns of the test set.
+
+Mapping
+Extract
+
+Training dataset: point cloud
+
+Patterns of the
+relationship mapping
+
+Ground truth: Walls, columns, and doors
+
+What, where, and how?
+
+?
+Test dataset: point cloud
+
+Automatic detected result
+
+6
+
+1
+
+Background
+
+2
+
+Key methods
+
+3
+
+Results
+
+4
+
+Conclusion
+
+2.1 Experimental design
+
+3D boxes of walls,
+doors, and columns
+
+Training and
+validation set
+Point cloud labelled
+by ground truth
+
+Segmented point
+cloud
+
+Instances
+represented by
+points
+
+JSON
+Manhattan box
+
+Registration
+
+Rotated point cloud
+with less noise
+
+Inner-class
+DBSCAN clustering
+
+Points of walls, doors,
+and columns
+Extraction by class
+
+Trained deep
+learning model
+
+Inference
+
+Original point cloud
+
+Test set
+
+3D building model
+reconstruction
+
+3D semantic segmentation
+
+Instance
+segmentation
+
+Rotation
+
+3D semantic
+segmentation
+
+Floorlayer
+based
+noise
+removal
+
+Data preprocessing
+
+3D walls, doors, and
+columns in the
+format of IFC
+
+8
+
+2.1.1 Data pre-processing
+ Floor-layer based noise removal
+Observation
+Some floors have big holes due to tripods and occlusion, while
+ceilings are more complete and no obstruction.
+A heuristic algorithm (Xue 2022)
+Aim:
+ Control the class balance;
+ Remove outdoor noise.
+
+Ceilings are
+not wanted.
+
+Head-level room layer x
+Three floor layers (x, x+1 m, x-1 m)
+
+Result
+Point cloud without outdoor noise and ceiling and ground parts.
+(Voxels occupied by
+scan data)
+(Indoor
+space
+voxels)
+
+E C C C
+W E C C
+W W E C
+1. Space voxels
+(closer to Edge, Ceiling, Walls)
+
+2. Room clustering
+
+9
+
+2.1.2 3D semantic segmentation
+ KPConv: Point-level semantic segmentation
+ Segment the input point cloud into four groups: Wall, door, column, and others.
+Input
+
+Output
+Deformable KPConv
+
+(Thomas et al. 2019)
+
+Wall
+
+Door
+
+Column Others
+10
+
+2.1.3 Instance segmentation
+ DBSCAN based clustering
+ Wall
+
+ Door
+
+ Column
+
+ Split walls according to normal
+
+DBSCAN clustering (Ester et al. 1996)
+
+11
+
+2.1.4 3D building model generation
+ Manhattan box + BIM generation
+Manhattan box with
+repairments
+
+JSON file generation
+
+IFC file generation for BIM
+
+Wall
+
+Column
+
+Door
+
+12
+
+2.1.5 Alternative: 3D instance registration
+ Model-driven instance registration (Xue et al. 2018; 2019)
+Example
+Columns
+
+JSON files
+
+Registration process
+(To replace 2.1.3 Instance segmentation +2.1.4
+Manhattan box generation)
+13
+
+1
+
+Background
+
+2
+
+Key methods
+
+3
+
+Results
+
+4
+
+Conclusion
+
+3.1 Results
+ Preprocessed data
+¾ as training set and ¼ as validation set
+mIoU computed on validation set
+
+Training and validation
+sets: Original point cloud
+
+ID Wall
+
+Door
+
+Column Others
+
+mIoU
+
+1
+
+0.55
+
+0.48
+
+0.67
+
+0.77
+
+0.85
+
+Rotated point cloud Point cloud labelled
+with fewer clutters
+by ground truth
+
+ Segmented result and metrics
+
+Observation: The IoUs in the point and component
+levels are significantly different.
+
+Test set:
+Original point cloud
+Rotated point cloud
+with fewer clutters
+
+Predicted results
+15
+
+3.1 Results
+ Instance segmentation
+
+ Building model generation
+
+ Example wall instances
+JSON files of walls,
+columns, and doors
+BIM in the format of IFC
+
+Enclosed issue of room
+
+16
+
+1
+
+Background
+
+2
+
+Key methods
+
+3
+
+Result
+
+4
+
+Conclusion
+
+4 Conclusion
+ Conclusion
+
+ Observation
+
+ The proposed pipeline utilizes
+ floor layer-based noise removal
+ 3D semantic segmentation
+ DBSCAN clustering, and
+ Manhattan box-based model generation
+ There still exist amounts of information loss
+ the overall accuracy stay at a low level.
+
+ Significantly inconsistent accuracy
+ between point-wise and component levels
+ Features from other resources
+ such as prior model library
+ may improve Scan-to-BIM considerably
+
+ Room for improvement
+ Adaptive thresholds for instance segmentation
+ clutter removal and
+ Occlusion completion
+ Modification and fine-tuning of deep learning
+ Topology repairing
+18
+
+References
+•
+•
+•
+•
+•
+•
+
+•
+
+Ester, M., Kriegel, H. P., Sander, J., & Xu, X. (1996, August). A density-based algorithm for discovering clusters in large spatial
+databases with noise. In kdd (Vol. 96, No. 34, pp. 226-231).
+Li, M., Wu, Y., Xue, F., & Yeh, A. (2022). Semantic segmentation of 3D city mesh model: a multi-source City Information
+Modeling benchmarking dataset. (working paper)
+Thomas, H., Qi, C. R., Deschaud, J. E., Marcotegui, B., Goulette, F., & Guibas, L. J. (2019). KPConv: Flexible and deformable
+convolution for point clouds. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6411-6420).
+Wu, Y., Shang, J., & Xue, F. (2021). Regard: Symmetry-based coarse registration of smartphone’s colorful point clouds with cad
+drawings for low-cost digital twin buildings. Remote Sensing, 13(10), 1882.
+Xue, F., Lu, W., & Chen, K. (2018). Automatic generation of semantically rich as‐built building information models using 2D
+images: A derivative‐free optimization approach. Computer‐Aided Civil and Infrastructure Engineering, 33(11), 926-942.
+Xue, F., Lu, W., Chen, K., & Zetkulic, A. (2019). From semantic segmentation to semantic registration: Derivative-Free
+Optimization–based approach for automatic generation of semantically rich as-built Building Information Models from 3D point
+clouds. Journal of Computing in Civil Engineering, 33(4), 04019024.
+Xue, F. (2022). Interpretable segmentation and clustering of rooms in unstructured 3D point cloud using indoor space voxels.
+(working paper)
+
+19
+
+Thank you for your attention!
+
+Li Maosu, PhD. Candidate
+Dept. of Urban Planning and Design, HKU
+maosulee@connect.hku.hk
+20
+
+

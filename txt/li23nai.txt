@@ -1,0 +1,1386 @@
+Bi-objective analytics of 3D visual-physical nature exposures in high-rise high-density cities for
+landscape and urban planning
+Maosu Li 1, Fan Xue 2*, and Anthony G. O. Yeh 3
+This is the peer-reviewed post-print version of the paper:
+Li, M., Xue, F., & Yeh, A.G.O. (2023). Bi-objective analytics of 3D visual-physical
+nature exposures in high-rise high-density cities for landscape and urban planning.
+Landscape and Urban Planning, 233, 104714. Doi: 10.1016/
+j.landurbplan.2023.104714
+The final version of this paper is available at: https://doi.org/10.1016/j.landurbplan.2023.104714.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+Abstract
+Urban dwellers enjoy nature exposure in the neighborhood built environment through visual
+and physical ways, such as window views and outdoor activities. However, existing studies
+and analytics examine these pathways separately, leading to underinformed urban planning
+5
+
+practices such as difficult prioritizing urban areas with both low-level nature exposures. The
+underinformation problem is particularly severe for high-rise, high-density cities that
+embrace high-level vertical diversity. This study aims to propose bi-objective analytics of 3D
+visual-physical nature exposures, for holistic – rather than separated – assessments. First, a
+floor-level Nature Exposure Index (NEI) is defined with visual and physical components. The
+
+10
+
+visual component NEIv is assessed by window view imagery and deep transfer learning,
+while the physical component NEIp reflects the mean time from the floor to the nearest
+natural sites (e.g., nature parks and seaside) through the 3D pedestrian network. Then, biobjective optimization-based analytics is designed for (i) identifying buildings and blocks
+with holistically low-level visual-physical nature exposures using NEI and (ii) examining
+
+1 Maosu LI, PhD Candidate.
+
+Department of Urban Planning and Design, The University of Hong Kong, Pokfulam, Hong Kong SAR,
+China; Email: maosulee@connect.hku.hk, : https://orcid.org/0000-0002-9970-4053
+2 Fan XUE, Assistant Professor.
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong SAR,
+China; Email: xuef@hku.hk, : http://orcid.org/0000-0003-2217-3693
+*: Corresponding author, Tel: +852 3917 4174, Fax: +852 2559 9457; Email: xuef@hku.hk
+3 Anthony G. O. YEH, Chair Professor.
+
+Department of Urban Planning and Design, The University of Hong Kong, Pokfulam, Hong Kong SAR,
+China; Email: hdxugoy@hku.hk, : http://orcid.org/0000-0002-0587-0588
+
+1
+
+15
+
+probabilistic outputs and robustness of linear weighting schemes. A case study of 519
+buildings showed that the NEI-enabled bi-objective analytics is automatic, effective, and
+inexpensive. Interviews with field experts confirmed that the analytics provides
+comprehensive evidence for a holistic identification of high-rise, high-density areas in need
+of nature exposure for landscape management and urban planning.
+
+20
+
+Keywords
+Nature exposure; Window view; Walkability; Pareto optimality; 3D GIS; High-rise, highdensity cities
+Highlights
+
+
+Nature Exposure Index (NEI) defined on window views and walkability of natural
+sites
+
+
+
+Holistically assessed physical-visual nature exposures for the built environment
+
+
+
+Pareto optimality-based identification of areas with low-level nature exposures
+
+
+
+NEI-enabled analytics for probabilistic outputs and robustness of linear weightings
+
+
+
+A case study of a high-rise, high-density area with 519 buildings for validation
+
+25
+
+30
+
+1 Introduction
+Exposure to nature, such as greenery, sky, and waterbody, is preferred by urban
+dwellers because of well-recognized benefits for human physical and mental health,
+satisfaction, restoration, and productivity (Ulrich 1984; Kaplan 2001; Jiang et al. 2021). In
+35
+
+contrast, less nature access in the urban context may exacerbate stress, depression, and other
+mood disorders (Ulrich 1984; Coppel & Wüstemann 2017). Given that almost all urban
+dwellers spend considerable time indoors, such as at home or working places (Andersen
+2015), a convenient nature exposure from the neighborhood built environment is treasured.
+
+40
+
+Natural settings in the urban context are multi-faceted accessible resources for the
+built environment, particularly in high-rise, high-density cities with limited and fragmentally
+shared natural elements (Wolch et al. 2014). Visual and physical interactions are identified as
+two main ways of nature exposure (Keniger et al. 2013; Cox et al. 2017). Visually, natural
+elements from the urban landscape, e.g., greenery, water, and sky can be viewed through
+
+45
+
+windows or balconies by urban dwellers. Physically accessible natural elements, embodied in
+green and blue spaces (e.g., parks and promenades), often scatter within the walkable range
+2
+
+for daily outdoor activities. Nature exposures through the visual and physical pathways
+indicate inconsistent mediators for urban dwellers’ embracement of nature.
+50
+
+Identification of the urban areas with both poor visual and physical exposures to
+nature, which is a multi-criteria decision analysis (MCDA) problem, can effectively facilitate
+smarter landscape management and urban planning (Choguill 2008; Xia et al. 2022).
+Nevertheless, traditional planning and design from individual perspectives often hinder a
+holistic analysis and allocation of the multi-faceted natural resources. For example, built
+
+55
+
+environment and architectural design fields emphasize more on visual exposure to nature for
+buildings (CIBSE 2014; CEN/TC 169 2018), whereas urban planners underline the equal
+physical nature accessibility (Wolch et al. 2014; Tang et al. 2021). Researchers have
+developed many methods and urban indices to assess visual and physical nature exposures
+separately (Park & Guldmann 2020; Yang et al. 2021; Chen et al. 2022), but multi-faceted
+
+60
+
+combinations were seldom considered. As a result, urban planners are often underinformed to
+balance multi-faceted natural resources. For instance, the buildings and blocks without any
+pathway of nature exposure, which should be preferential in urban renewal and revitalization,
+used to be unnoticed in traditional practices.
+
+65
+
+Recent geo-informatics technologies opened new avenues, such as 3D City
+Information Model (CIM) view imagery and walkability analyses, for a multi-faceted nature
+exposure extraction (Xue et al. 2021b). Deep learning models, e.g., Deeplab V3+ pretrained
+on Cityscapes, can be transferred to compute the nature view proportion in window view
+photos captured on 3D photorealistic CIMs (Li et al. 2022). The recent 3D pedestrian
+
+70
+
+network has yielded opportunities for accurately assessing the walkability of nearby natural
+sites from residential buildings (Zhao et al. 2020; Tang et al. 2021). Bi-objective optimization
+of visual-physical nature exposures thus becomes technologically enabled especially in a
+multi-level 3D urban environment.
+
+75
+
+The research question of this study is thus:
+“How to assess and analyze the visual and physical facets of nature exposure
+holistically for identifying buildings and city blocks with both low values for a
+prioritized landscape management and urban planning?”
+To answer the question, we propose two objectives: i) to automatically assess floor3
+
+80
+
+level visual and physical nature exposures for buildings, and city blocks in the 3D high-rise,
+high-density cities, and ii) to bridge the assessment results with decision-support analytics in
+landscape management and urban planning. This study first defines a two-dimension Nature
+Exposure Index (NEI) for multiple scales of the high-rise, high-density context by inclusively
+assessing both visual and physical exposures to nature. Thereafter, the NEI-based
+
+85
+
+identification and prioritization of buildings and city blocks are formulated as a bi-objective
+optimization problem. An automatic Pareto optimality-based analytical method is adopted to
+identify buildings and blocks with low-level exposures to nature; and NEI-enabled analysis of
+linear weighting schemes can quantitatively examine the robustness of weightings and their
+probabilistic outputs for prioritization of the built environment improvement.
+
+90
+
+The main contribution of this study is three-fold.
+i.
+
+From a theoretical perspective, this study defines a multi-dimensional NEI for
+representing urban dwellers’ multi-faceted nature exposure. The multi-dimensional
+NEI enables holistic urban planning and analytics regarding visual and physical nature
+exposures. The multi-dimensional definition of NEI complements the existing studies,
+
+95
+
+in particular in the 3D high-rise, high-density areas.
+ii.
+
+From a methodological perspective, the automatic 3D assessment of NEI using the
+latest photorealistic window view imagery and 3D pedestrian network extends the
+conventional 2D modeling of nature exposure. NEI-based bi-objective analytics
+bridges the assessment results with decision-making in landscape management and
+
+100
+
+urban planning.
+iii.
+
+For practitioners, the bi-objective analytics of NEI offers a comprehensive and
+effective method for identifying buildings and blocks with unsatisfactory nature
+exposure. For conventional practices using linear weightings, the analytics can
+
+105
+
+support planners’ weight settings with outputs, probabilities, and robustness.
+The remainder of this study is organized as follows. Section 2 reviews related work in
+the literature. Section 3 presents the definition of NEI, the automatic assessment of NEI using
+3D GIS, and a set of NEI enabled bi-objective analytics. Section 4 describes a case study and
+
+110
+
+the results. Sections 5 and 6 present the discussion and conclusion, respectively.
+
+4
+
+2 Literature review
+2.1 Benefits and planning practices regarding exposure to nature
+Numerous studies have been conducted to analyze the impact of exposure to nature on
+urban inhabitants, e.g., impacts on mental and physical well-being (Jiang et al. 2014; He et al.
+115
+
+2022). Visual exposure to nature is beneficial for physical and mental health. Window view
+as the main way to visually accessing nature is treasured by urban dwellers owing to their
+long-term indoor occupations (Cox et al. 2017). The benefits of the window views of nature
+include stress relief, attention restoration, and productivity promotion for urban dwellers
+(Ulrich 1984; Lottrup et al. 2015), which have been validated in multiple scenarios, such as
+
+120
+
+residence, office, and hospital (Ulrich 1984; Kaplan 2001; Lottrup et al. 2015). By contrast,
+lacking views of nature may engender mental fatigue, stress, and more potential for violence
+(Kuo & Sullivan 2001).
+Physical exposure through travels to nearby natural sites, such as natural parks,
+
+125
+
+similarly, brings benefits to human health in terms of stress reduction (Hartig et al. 2014).
+High walkability of natural sites becomes increasingly important for residential buildings
+because it effectively encourages occupants to actively access nature, e.g., daily outdoor
+activities (Fan et al. 2017; Tang et al. 2021). More extensively, easy physical exposure to
+nature can also facilitate social cohesion, decrease crime rate, and revitalize the community
+
+130
+
+(Lwin & Murayama 2011). By contrast, inconvenient physical nature exposure has shown a
+negative impact on urban dwellers’ physical and mental health (Coppel & Wüstemann 2017;
+He et al. 2022).
+Landscape management and urban planning have recently embraced narratives on the
+
+135
+
+links between urban health and the benefits of exposure to nature (Wolch et al. 2014).
+Balancing the visual and physical nature exposures for buildings and city blocks becomes the
+main way for urban planners and designers to optimize natural resource allocation (FisherGewirtzman 2018; Tang et al. 2021). For example, high-quality views of natural landscapes
+are considered in space planning of buildings and flats (USGBC 2019, p. 134;
+
+140
+
+Laovisutthichai et al. 2021) and strategically shared in high-density urban environments
+(Fisher-Gewirtzman 2018), such as Hong Kong (HKTPB 2010). In addition, physical access
+to nature becomes important in urban regeneration and new town planning (Wolch et al.
+2014). There is increasing policy interest in planning more neighborhood natural sites, such
+5
+
+as parks, gardens, and ponds, to sustain urban health and livability (Raymond et al. 2016).
+145
+
+Nevertheless, existing land constraints and relentless development pressures can hinder
+planners from simultaneously providing natural elements (e.g., greenery, water, and sky) for
+all buildings and blocks in need (Tang et al. 2021). Thus, identifying buildings and city
+blocks with both low-level visual and physical exposures to nature is a prerequisite of
+comprehensive orderly planning of natural resource settings for healthy high-rise, high-
+
+150
+
+density urban development.
+2.2 Quantified nature exposure measurement
+Domain-isolated assessments of exposure to nature were studied from various
+perspectives for landscape management and urban planning. The quantification of visual
+
+155
+
+exposure to nature utilizes visibility analysis (Fisher-Gewirtzman 2018) and view imagery
+(Helbich et al. 2019; Chen et al. 2022; Xue et al. 2021a) on the ground, floor, and overhead
+levels (Li et al. 2022). View collection has recently been transferred to the window level
+(Laovisutthichai et al. 2021; Li et al. 2021). Natural elements (e.g., greenery, water, and sky)
+of window view photos collected from 3D photorealistic CIMs can be automatically
+
+160
+
+identified using a deep transfer learning model, e.g., Deeplab V3+ pre-trained on the
+Cityscapes, thereby providing opportunities to represent visual nature exposure of buildings
+and blocks in a multi-level urban environment (Li et al. 2022).
+Physical accessibility has been measured using buffer zone, model-based, and
+
+165
+
+distance-based assessment methods (Oh & Jeong 2007; Park & Guldmann 2020). For
+neighborhood services to function properly, walkability is often used to examine the
+connectivity between living and working places and nearby services, such as natural parks
+(Lwin & Murayama 2011; Tang et al. 2021). The recent reconstruction of a 3D pedestrian
+network with regard to topography and travel speed has enabled high accuracy of walkability
+
+170
+
+measurement for physical nature exposure of buildings, particularly in high-rise, high-density
+cities (Sun et al. 2021; Tang et al. 2021).
+Some emerging studies combined different forms of greenery exposure to understand
+the exposure disparity of urban areas comprehensively. For example, availability, physical
+
+175
+
+accessibility, and eye-level visibility have been harmonized for greenspace exposure
+examination (Ye et al. 2019; Labib et al. 2021). However, existing nature exposure
+6
+
+assessment methods encounter challenges in high-rise high-density urban environments.
+First, accessible nature by urban dwellers in high-rise, high-density cities cannot be
+represented by ground-level visibility (Li et al. 2022) and 2D accessibility (Zhao et al. 2020;
+180
+
+Sun et al. 2021) of greenery. Furthermore, current integrated visual and physical assessments
+fail to bridge the multi-criteria decision-making process for prioritized improvement of the
+built environment. Thus, next-generation decision-support analytics for landscape
+management and urban planning should be able to examine multi-dimensional exposures to
+nature and identify buildings and city blocks with low-level visual-physical nature exposures
+
+185
+
+for 3D high-rise, high-density cities, with up-to-date multi-criteria decision methods.
+2.3 Multi-criteria decision analysis for urban planning
+MCDA attempts to solve complex geospatial problems with multiple constraints,
+particularly for decision support applications (Malczewski 2006). In general, MCDA
+
+190
+
+comprises two categories: multi-attribute decision analysis and multi-objective optimization.
+Compared to the multi-attribute decision analysis returning a single result, multi-objective
+optimization outputs multiple results for a set of specific objectives (Malczewski & Rinner
+2015), enabling a comparison for planners’ final decisions. Pareto optimality is one of the
+cornerstone concepts of multi-objective optimization that attempts to identify all non-
+
+195
+
+dominated results as Pareto-optimal solutions (Huang et al. 2008; Malczewski & Rinner
+2015). This concept has been used in typical multiple objective scenarios, such as land use
+allocation and urban infrastructure site planning (Huang et al. 2008; Rahman & Szabó 2021).
+Thus, Pareto optimality-based optimization can be used to identify a set of solutions for biobjective analytics of 3D visual-physical exposures to nature in high-rise, high-density cities.
+
+200
+
+In summary, the targeted bi-objective optimization analytics of 3D visual-physical
+nature exposures in this paper is a research gap to close in landscape management and urban
+planning studies. Among the reasons are the previous immature 3D visual-physical
+representations (e.g., window views and walkability) of nature exposures in high-rise, high205
+
+density cities, and the minimal consideration in their integrated assessment and analytics for
+comprehensive decision-making in landscape management and urban planning. Meanwhile,
+automatic deep transfer learning-based window view assessment, 3D pedestrian network
+analysis, and Pareto optimality-based optimization may provide opportunities to advance the
+automatic multi-dimensional nature exposure analytics for significantly improving the visual7
+
+210
+
+physical nature exposures of the built environment in high-rise, high-density cities.
+3 Research methods
+Figure 1 shows the conceptual framework of the proposed NEI and related analytics.
+In general, 3D data inputs comprise photorealistic CIM and building footprints for window
+view measurement, as well as pedestrian network, floor sites, and natural site entries for the
+
+215
+
+physical accessibility. The proposed automatic integrated nature exposure assessment and
+analytical methods for prioritized built environment improvement consists of two parts: (i)
+NEI definition together with the automatic floor-level visual-physical nature exposure
+assessment and (ii) Bi-objective optimization-based analytics of NEI. The final output
+includes three parts: buildings or blocks with both low-level nature exposures, probabilistic
+
+220
+
+outputs of linear weightings, and robustness of target weighting for an invariant output.
+
+Figure 1. Conceptual framework of the proposed NEI and bi-objective analytics.
+
+225
+
+3.1 Automatic assessment of NEI
+3.1.1 General definition of NEI
+Given a floor of a building in the built environment, NEI is a two-dimension vector:
+NEI = (NEIv, NEIp),
+
+(1)
+
+NEIv = (FNVI − FNVImin) ⁄ (FNVImax − FNVImin) ∈ [0, 1],
+
+(2)
+
+NEIp = (tmax – t) ⁄ (tmax – tmin) ∈ [0, 1],
+
+(3)
+
+where NEIv denotes a relative floor-level visible nature proportion in an area, FNVI represents
+an absolute nature view proportion of a floor, and FNVImin and FNVImax are the maximum and
+8
+
+230
+
+minimum values of FNVI in the context area. In addition, NEIp is the physical component
+representing the relative walkability from the floor to the nearest natural site (e.g., nature
+parks and seaside) in the area. Considering the set of walking time t for all floors in the
+context area, NEIp is denoted as a normalized value computed by t, tmax, and tmin. Thus, both
+NEIv and NEIp are scalars bounded between 0 and 1, and the closer to 1 they are, the higher
+
+235
+
+levels of visual and physical nature exposures the floor owns.
+Given a two-dimension vector of weighting w = (wv, wp), where wv + wp = 1, the
+weighted sum of an NEI is a scalar:
+wNEI = NEI × wT ∈ [0, 1],
+
+(4)
+
+where wv and wp represent the weighting values for NEIv and NEIp, respectively. Moreover, w
+240
+
+used to be set by experts or statistics from surveys. For example, an equal weighting pair w =
+(0.5, 0.5) indicates the equal significance of visual and physical exposures to nature. A small
+wNEI value indicates the inconvenience of daily access to nature, thereby deserving a high
+priority for the renewal and revitalization in the context area.
+
+245
+
+3.1.2 The visual component of NEI
+This study defines NEIv using the average visible nature proportions of window view
+photos captured at the floor level. Given a virtual view photo captured on a window of the 3D
+photorealistic CIM, WVIα defined in (Li et al. 2022) presents the ratio of visible greenery,
+waterbody, and sky:
+WVIα = Number of pixels in α ⁄ Total pixels of the view photo, α ∈
+{greenery, waterbody, sky}.
+
+250
+
+(5)
+
+Regarding greenery, water, and sky as visible natural elements, we first summarize the FNVI
+from WVIα of floor-level window view photos. More specifically, assuming m view photos
+captured on the different facades of a floor, FNVI is calculated from WVIαi (i = 1, 2, 3, …, m)
+with the sampling interval Ii as weights as shown in Eq. 6. Last, NEIv is computed as an
+output using FNVI, FNVImin, and FNVImax.
+FNVI = ∑i = 1, …, m (WVIαi × Ii) ⁄ ∑i = 1, …, m Ii.
+
+(6)
+
+255
+
+Figure 2 shows the workflow consisting of view site sampling, view generation, and
+deep transfer learning-based computing of WVIα. We compute the modeled NEIv on 3D
+photorealistic CIMs instead of physical sites, as shown in Figure 2a. Li’s (2022) method is
+9
+
+utilized to automate the photorealistic window view quantification as shown in Figure 2b. We
+260
+
+first apply an even sampling method to ensure at least two view sites for individual facades of
+a floor (max Ii = 20 m). Then, a virtual camera with a 60-degree field of view (Tara et al.
+2021; Li et al. 2022) is set on the designated sites of CIMs to capture the window view
+outside. A deep transfer learning model, DeepLab V3+ trained on the Cityscapes with a
+machine-learning classifier helps segment the window view photo for nature view
+
+265
+
+quantification. In the end, sample window view photos on the same floor of the building are
+aggregated to summarize WVIαi for NEIv, as shown in Figure 2c. 3D locations and their floor
+and building IDs are geo-tagged to the NEIv datasets.
+
+Figure 2. Deep transfer learning-based estimation workflow for NEIv.
+270
+
+3.1.3 The physical component of NEI
+NEIp is modeled using walking time from the occupant’s building floor to the entry of
+the nearby natural site through the shortest path S. Natural sites in this study include parks,
+gardens, and promenades, which are dominantly covered or surrounded by natural elements,
+275
+
+such as vegetation and waterbody to serve outdoor activities and recreation. Within the highrise, high-density context, we connect the staircase and lift of buildings with exterior
+pedestrian urban fabrics, thereby updating a more comprehensive and computable 3D urban
+system. Meanwhile, pedestrian walking speed is different on walkway types, such as the path
+of different slopes, transport systems, and interference like crossing and traffic islands. Thus,
+
+280
+
+S is divided into n segments s1, s2, …, sn, where the corresponding walking speeds are v1,
+v2, …, vn. The walking time t is computed as the sum of the n quotients as follows:
+t = ∑i = 1, …, n d (si) ⁄ vi,
+
+(7)
+
+where d is a function to calculate the distance of si. Last, NEIp is computed by t, tmin, and tmax.
+10
+
+We compute the NEIp from the simulated walking through a 3D pedestrian network,
+285
+
+consisting of interconnected path segments, such as lifts, staircases, sidewalks, and footpaths.
+We measure the closest natural site to compute NEIp. 3D building floor sites and natural site
+entries are set as origins and destinations, respectively, as shown in Figure 3. Within the
+interior buildings, lifts and staircases are used to simulate the walking situation. Travel
+distance by lift is considered the vertical distance between the floor and ground levels, while
+
+290
+
+staircase length is assumed as the vertical distance divided by sin 35° (HKLWB 2006).
+Walking speed vi of different walkway types is added to the 3D pedestrian network
+following the field tests of normal adults, previous studies, and regulations (Oh & Jeong
+2007; Tang et al. 2021; HKBA 2011). Urban planners and researchers can finetune the control
+
+295
+
+parameters for specific application scenarios.
+100e-3.5|tanθ+0.05| , type(si ) ∈ Footpath
+⎧
+120,
+type(si ) = Travellator
+⎪
+⎪
+105,
+type(si ) = Lift
+vi =
+,
+type(si ) = Escalator
+⎨48,
+⎪
+type(si ) = Staircase
+⎪39,
+⎩6,
+type(si ) ∈ Interference
+
+(8)
+
+where vi is measured in meters per minute, Footpath = {Footway, footbridge, service lane,
+ramp, generalized walkway, underpass} is the set of paths with different slopes, and
+Interference = {Crossing, traffic island} is the set of places where pedestrians need to wait to
+cross the street. Tobler’s hiking function (Tobler 1993) is used to simulate slope impact on
+300
+
+walking speed. The slope θ is positive for walking uphill and negative for walking downhill.
+Last, the value of t is computed by combining all the time consumed on the segments of the
+shortest path and NEIp is computed using t, tmax, and tmin (see Figure 3). Values of NEIp are
+saved with the corresponding 3D locations and floor and building IDs.
+
+305
+
+Figure 3. NEIp computing based on the pedestrian network analysis
+
+11
+
+3.1.4 Scaling up for buildings and city blocks
+Modern landscape management and urban planning aim to improve nature exposure
+to the built environment through active intervention, such as planning more parks, roof
+310
+
+gardens, and vertical greenery. Moreover, buildings and blocks are the main analytical units
+in measuring nature exposure to help priority identification. For fulfilling urban planners’
+needs, floor-level datasets can be adaptively aggregated into corresponding buildings and
+blocks based on building IDs and topological relationships. For example, at the building
+level, NEIv sets with the same building IDs are considered as a group and the NEIv_bldg is
+
+315
+
+computed as a floor-area-based linear weighted sum.
+3.2 Bi-objective optimization-based analytics of NEI
+3.2.1 Pareto optimality for identifying least-nature-exposure areas
+An NEI-based MCDA is a bi-objective optimization problem. Pareto optimality is
+
+320
+
+used to identify all potential areas with both low-level exposures to nature. For example, the
+search of buildings with low-level visual-physical nature exposures can be formulated as:
+P = arg minx ∈ X NEIbldg (x),
+
+(9)
+
+where X is the set of buildings x in the planning area, as shown in Figure 4a. Figure 4b shows
+that Pareto optimal building set P ∈ X is the set of non-dominated buildings x* in terms of
+least NEIbldg. Any rest building, i.e., in X \ P, have both NEIv_bldg and NEIp_bldg greater than at
+325
+
+least one Pareto optimal building x* in P:
+P = {x* | ¬ ∃x ∈ X, NEIv_bldg(x) ≤ NEIv_bldg(x*) and NEIp_bldg(x) ≤ NEIp_bldg(x*)}.
+
+(10)
+
+Thus, by excluding dominated buildings (X \ P), the Pareto optimal buildings x* of P become
+the least-nature-exposure candidates for the prioritized improvement. In practice, a buffer
+zone of Pareto front constructed by P, as shown in Figure 4b, can also be set to involve more
+buildings with near-low-level visual-physical nature exposures (e.g., building #1) for more
+330
+
+inclusive consideration.
+
+12
+
+Figure 4. Identification of the Pareto optimal buildings. (a) Example buildings X, and (b)
+Pareto optimal building set P visualized in the plot of NEIv_bldg and NEIp_bldg.
+335
+
+3.2.2 Linear weighting analysis for probabilistic outputs and robustness
+We present a linear weighting analysis to decipher the relationship between
+weightings and the final output from P. In traditional practices, urban planners employ linear
+weightings from various scientific assumptions (e.g., expert knowledge and statistics) to
+340
+
+integrate multiple indices for a final output, where planners are often puzzled by various
+weightings due to varied strengths and weaknesses. The presented analysis involves all the
+recommended weightings at one time and returns the probabilistic outputs and robustness of
+linear weightings.
+
+345
+
+Figure 5 shows that a fixed linear weighting represents a set of straight parallel lines
+with a determined slope. For example, weighting pair w = (0.5, 0.5) represents parallel lines
+with the slope k = − wv / wp = −1 passing Pareto optimal building points. The closer the line
+to the origin, the lower the level of wNEI the building access. When the weighting ratio k
+changes, the convex point with the lowest wNEI may change, i.e., C1, C2, and C3, as shown in
+
+350
+
+Figure 5b. Isoline with the lowest wNEI reaches the same convex point(s) on the Pareto front
+when k changes within the ranges of A1, A2, or A3 in blue. The relationship between the output
+and the weighting ratio k = − wv / wp is shown in Eq. 11.
+C1 , k∈A1 =(−∞, k1 ]
+C = �Ci , k∈Ai =[ki , ki+1 ], 1 ≤ i ≤ N − 1.
+CN , k∈AN =[kN , 0]
+13
+
+(11)
+
+355
+
+Figure 5. Analysis of linear weighting schemes. (a) Parallel lines indicating equal weightings,
+(b) relationship between weightings and outputs, and (c) least NEI building identification by
+overlapping the target range to the weighting ratio range of C.
+When the recommended weightings are in a range and not finally determined, urban
+
+360
+
+planners can directly use the range Atarget as the input in Figure 5c. Then, the probability of
+any candidate Ci is measured using the overlap between Ai and Atarget:
+Probability (Ci) = rad (Ai ∩ Atarget) ⁄ rad (Atarget),
+
+(12)
+
+where rad is a function to compute the radian of A. For example, Figure 5c indicates that the
+Atarget is a subset of A2. Thus, considering all the weightings, the candidate building C2 is
+always the final output, with probability = 100%. In addition, the robustness of target
+365
+
+weighting for an invariant final output can also be assessed. Eq. 13 shows the robustness of
+target weighting ratio k is computed based on the corresponding radian of Ai. For example,
+the target weighting pair, w = (wv, wp), k = − wv ⁄ wp = −1 within A2, as shown in Figure 5b,
+owns a robustness, rad(A2) ⁄ 0.5π, to ensure the invariance of the final output C2.
+Robustness (w) = rad(Ai) ⁄ 0.5π, k = − wv ⁄ wp ∈Ai.
+
+(13)
+
+4. Case study
+370
+
+4.1 Study area and settings
+The study area includes a total of 519 buildings in 57 town blocks of Wan Chai, one
+of the most high-rise, high-density areas in Hong Kong (HKPlanD 2018), as shown in Figure
+6. The average building height is 35.5 m and the maximum plot ratio is 10.0. Major natural
+elements, e.g., vegetation and water from mountains and sea, are located in the northern and
+
+375
+
+southern areas, while the minor scatters in parks and gardens. Because of the vertical
+development and imbalanced natural settings, the occupants in the case area encounter
+considerably different visual and physical nature exposures, the variance of which is
+14
+
+confirmed in Sections 4.2.1 and 4.2.2.
+380
+
+Building footprints with height information were extracted from the iB1000 digital
+map of Hong Kong (HKLandsD 2014), as shown in Figure 6c, while a 3D photorealistic CIM
+was from the Planning Department (2019). For physical accessibility, the 3D entry points of
+case natural sites in blue were collected from the Leisure and Cultural Services Department
+of Hong Kong and Google Map in Figure 6e, while the 3D pedestrian network in red was
+
+385
+
+from the Lands Department (HKLandsD 2021). Moreover, the number of stories of buildings
+in yellow and lift information were extracted from the Home Affairs Department (HKHAD
+2021) and Electrical and Mechanical Services Department (HKEMSD 2021), respectively.
+
+Figure 6. Study area of Wan Chai, Hong Kong. (a) Location, (b) 519 buildings, (c) building
+390
+
+footprints and heights, (d) CIM, and (e) 3D pedestrian network with floors and entry points.
+The computational process was set up as follows. This study used a workstation with
+an Intel i7-10700 CPU (2.90GHz, 16 cores), 128 GB memory, one NVIDIA GeForce RTX
+2070 graphic card, and Windows 10 and Ubuntu 20.04 dual system (64-bit). Floor-level
+
+395
+
+window views were generated with the Cesium (ver. 1.75), a software platform for processing
+and visualization of 3D geospatial data. We adopt Li’s (2022) deep transfer learning-based
+15
+
+window view quantification with the environment of Tensorflow (ver. 2.4), Python (ver. 3.6),
+and Orange 3 (ver. 3.26, a Python machine learning platform). The NEIp measurement and
+multi-scale spatial pattern visualization were implemented with ArcGIS Pro (ver. 2.7.3). Last,
+400
+
+Pareto optimality-based bi-objective optimization analytics was implemented through a
+decision support tool developed on the ArcGIS Pro platform.
+4.2 Results
+Table 1 lists the time cost of all the steps in the case study. The full assessment and
+
+405
+
+analytical process was completed within 21.37 hours. The window view quantification
+consumed > 99.9% of the processing time, while all rest steps consumed < 62 s in total. The
+accuracy of NEIv was satisfactory (R2 > 0.95) according to Li et al. (2022), while the accuracy
+of NEIp was confirmed (RMSE < 0.12) by a normal adult through field tests.
+
+410
+
+Table 1. Computational time of the proposed automatic assessment and analytical method.
+Ref. sect.
+
+Variable to produce
+
+Processing
+
+Software library
+
+Total time
+
+3.1.2
+
+NEIv
+
+View quantification (Li et al.
+
+Cesium, Deeplab V3+,
+
+21.35 h
+
+2022)
+
+and Orange 3
+
+Floor-level aggregation
+
+ArcGIS Pro
+
+2.62 s
+
+3.1.3
+
+NEIp
+
+Closest natural site analysis
+
+ArcGIS Pro
+
+58.16 s
+
+3.1.4
+
+NEIbldg
+
+Building-level aggregation
+
+ArcGIS Pro
+
+0.63 s
+
+3.2.1
+
+P
+
+Pareto optimality-based
+
+ArcGIS Pro
+
+0.52 s
+
+ArcGIS Pro
+
+0.01 s
+
+optimization
+3.2.2
+
+wNEI
+
+Linear weighting analysis
+
+Total
+
+21.37 h
+
+4.2.1 Floor-level results
+NEIv and NEIp were computed and visualized on the 3D building footprints, as shown
+in Figure 7. Figure 7a shows upper building floors often enjoyed high-level nature views,
+415
+
+while inland lower building floors were with less visual exposure to nature. Although some
+floors could have a high-level nature view (FNVI = 0.62), there still existed floors with no
+visual nature exposure. Meanwhile, Figure 7b shows buildings surrounded by natural sites
+tended to own better convenience for physical access. By contrast, building floors in the
+lighter color indicated lower accessibility, in which the maximum t was above 10 min.
+
+16
+
+420
+
+Figure 7. Disparity of exposures to nature. (a) NEIv and (b) NEIp.
+The box plots in Figure 8 suggest that the holistic nature view acquisition of the
+building floors in this area was not high, where the median value of FNVI was approximately
+425
+
+0.16. One-fourth of the building floors were without exposure to nature (FNVI < 0.1) due to
+compact surrounding construction elements. Meanwhile, the median t was approximately 4.5
+mins, with a distribution from 0.14 to 11.86 mins. Travel time from at least one-fourth of the
+building floors to the closest natural site was longer than 5.7 mins. As shown in Figure 8c,
+NEIv nearly had an ignorable negative correlation with NEIp (Spearman’s coefficient ρ =
+
+430
+
+−0.149, p ≤ 0.0001). The ignorable correlation also indicated that it is necessary to use an
+integrated assessment for a more comprehensive understanding of exposure to nature in the
+case area.
+
+435
+
+Figure 8. Statistical results. Box plots for (a) FNVI and (b) t, and (c) Spearman’s correlation
+coefficient of NEIv and NEIp (#: two-tailed significance p ≤ 0.0001).
+
+17
+
+4.2.2 Building-level results
+Figure 9 shows spatial patterns of NEIv_bldg and NEIp_bldg. The distribution of NEIv_bldg
+440
+
+was found to be discrete. Through the validation from 3D photorealistic CIM, unobstructed
+buildings nearby the hills, artificial greenery, or seaside, as shown in circles #1 and #2,
+tended to have a better nature view acquisition. By contrast, the spatial distribution of
+NEIp_bldg was more clustered. For example, buildings in red circle #3 had higher NEIp_bldg,
+whereas NEIp_bldg of buildings in circle #4 was lower. Observation of CIM showed that
+
+445
+
+buildings in circle #3 owned a close-range park in the surrounding environment, while there
+only existed surrounded construction elements for the buildings in circle #4. That is, the
+current natural resource setting has led to an evident disparity of visual and physical nature
+acquisitions for urban dwellers in the context area.
+
+450
+
+Figure 9. Building-level results with observational validation. (a) NEIv_bldg and (b) NEIp_bldg.
+4.2.3 Automatic identification of least-nature-exposure areas for urban planning
+The building-level analytics was implemented as a user-friendly add-on on the
+455
+
+ArcGIS platform, as shown in Figure 10. A user can input NEIv_bldg and NEIp_bldg in Section
+4.2.2, as well as the buffer zone of the Pareto front, acceptable weighting range, and target
+weighting pair for robustness analysis, as shown in Figure 10b. Note that representations of a
+weighting pair (wv, wp), e.g., “0.25, 0.75” and its ratio “0.33” are both acceptable for the
+18
+
+inputs. The analytics outputs comprised three parts: (i) Pareto optimal buildings, namely, the
+460
+
+set of buildings with both low-level visual and physical nature exposures; (ii) probabilistic
+outputs according to acceptable linear weightings; and (iii) robustness of the target weighting
+for an invariant output.
+
+Figure 10. Results of automatic identification. (a) Pareto optimal buildings, (b) NEI-based
+465
+
+building query through an ArcGIS addon, (c) two probabilistic output buildings from a range
+of linear weightings, (d) results of probabilities in the addon, (e) robustness of a target
+19
+
+weighting for an invariant output, and (f) results of robustness in the addon.
+The Pareto optimal solutions included six buildings with the least NEIs using
+470
+
+exhaustive Pareto optimality-based bi-objective optimization (buffer zone range = 0), as
+shown in Figures 10a and 10b. No other buildings could have poorer visual and physical
+nature exposures than the six in red in Figure 10a. Figures 10c and 10d show the probabilistic
+buildings under a target linear weighting ratio range—from wv : wp = 0.33 to 3 set by users.
+Only two buildings were possible to be the final outputs because Atarget covered two weighting
+
+475
+
+ratio ranges (i.e., A2 and A3) as shown in Figure 10c. Figure 10d shows building #110***16
+was selected when the weight ratio ranged between 0.46 and 3, while building #110***94
+represented the ratio from 0.33 to 0.46. Within the acceptable weighting ratio range, building
+#110***16 had a higher possibility (88.12%) to be considered as the final output. By
+contrast, concave points on the Pareto front, such as building #110***08, had zero possibility
+
+480
+
+of being selected when using the acceptable weight ratio range, though they also owned lowlevel visual-physical nature exposures. Table 2 details the values of wNEI for two
+probabilistic buildings using the acceptable maximum and minimum weighting pairs.
+Table 2. List of probabilistic buildings for the acceptable weighting ratio range.
+No.
+
+Building ID
+
+Weighting pair (wv, wp)
+
+Least wNEI
+
+1
+
+110***16
+
+(0.75, 0.25)
+
+0.09
+
+2
+
+110***94
+
+(0.25, 0.75)
+
+0.11
+
+485
+
+Figures 10e and 10f show the robustness analysis of a target weighting ratio wv : wq = 0.33.
+The robustness of the weighting ratio wv : wq = 0.33 was 27.34% to ensure invariance of the
+output (i.e., building #110***94) using Eq. 13. In summary, the in-house developed ArcGIS
+add-on can effectively guide a user to examine buildings’ NEIs, list the probabilistic outputs,
+490
+
+present robustness of a linear weighting, and support explainable decision-making processes.
+4.2.4 Comments from domain experts
+Four domain experts were interviewed independently to validate and evaluate the
+proposed method. Two experts are professors of landscape management, while the other two
+
+495
+
+are urban planners working at planning and redevelopment authorities. Before asking
+questions in the interviews, we introduced and demonstrated NEI and the analytical results
+20
+
+through the case study. The two professors emphasized the integrated 3D quantification of the
+exposure to nature in the vertical metropolis and compared the fixed weight setting method
+with the Pareto optimality-based bi-objective analytics, respectively:
+500
+
+Professor A: “It is promising for guiding urban landscape management and planning,
+especially in high-rise, high-density cities. The integrated 3D nature exposure assessment
+is more comprehensive and effective for understanding the multi-level urban
+environment.”
+Professor B: “Expert knowledge is often used to determine the weight setting. Pareto
+
+505
+
+optimality-based bi-objective optimization method and the linear weighting analysis can
+identify all the building candidates and explain the possible outputs.”
+In the end, both professors suggested that the view is “rather complex than a simple
+proportional indicator.” Views can be “further quantified from in-depth perspectives such as
+view structure in the future.”
+
+510
+
+In comparison, the two planners focused on the potential scenarios and availability for
+decision-making:
+Planner C: “It allows the user to better understand the data relationship, and thus
+minimizes the data size to be studied. The full picture between the linear weightings and
+515
+
+probabilistic outputs gives us a much clearer understanding and decision-making space.”
+Planner D: “It can effectively provide insights on how to enhance the site selection process
+for urban renewal, and to my best knowledge, no bi-objective optimization-based analytics
+was utilized to help the identification of buildings and blocks in need of nature exposure.”
+Although it is promising and practical to identify the “first-needed” area with comprehensive
+
+520
+
+evidence, both suggested other indicators, such as building condition, to supplement NEI for
+more comprehensive decision-making in urban redevelopment and preservation.
+In general, both disciplines of experts confirmed that the proposed method was
+promising for guiding landscape management and urban planning. First, the integrated 3D
+
+525
+
+nature exposure assessment is markedly comprehensive and effective for understanding the
+multi-level urban environment. The proposed analytics can narrow the focus scope, identify
+all building candidates with low-level visual-physical exposures to nature, and explain the
+probabilistic outputs of linear weightings. As far as they were concerned, no bi-objective
+21
+
+optimization-based analytics was available for identifications of buildings and blocks with
+530
+
+low-level visual-physical exposures to nature. In terms of applicability, all experts agreed that
+the Pareto optimality-based bi-objective decision support tool could effectively help inform
+decision-making in both disciplines.
+5 Discussion
+5.1 Significance
+
+535
+
+From a theoretical perspective, the proposed visual-physical NEI definition extends
+the existing studies on isolated nature exposure measurement to an integrated examination
+process. The NEI enables and advocates holistic urban planning and analytics for multidimensional nature exposures. Integrated analytics of visual-nature nature exposures for
+buildings and city blocks is significant in improving the current urban planning paradigm in
+
+540
+
+the high-rise, high-density cities.
+From a methodological perspective, an integrated 3D assessment of visual and
+physical exposures to nature effectively examines the disparity of natural resource possession
+in the multi-level urban environment. NEI-based bi-objective analytics bridges the
+
+545
+
+assessment results with decision-making in landscape management and urban planning. The
+proposed Pareto optimality-based optimization method can ensure all the buildings and
+blocks with low-level visual and physical nature exposures are identified at one time, thereby
+offering an entire picture of the focus scope.
+
+550
+
+For practitioners, the proposed method is easy to use and low-cost. Assessment
+methods can automatically identify buildings and blocks with low-level visual-physical
+nature exposures from holistic perspectives. The analytical results of prioritization of
+buildings for improvement in visual-physical nature exposures are comprehensive and
+explainable with the possible linear weighting schemes. Accordingly, urban planners and
+
+555
+
+other decision-makers are enabled to make a well-informed determination with quantified
+evidence. In summary, the proposed method contributes an integrated visual-physical nature
+exposure assessment using CIM and pedestrian network, and thus provides a low-cost and
+highly explainable analytical tool for landscape management and urban planning.
+
+560
+
+5.2 Limitations and future work
+This study has several limitations. First, NEIv and NEIp in this paper involve neither
+22
+
+window settings nor personalized travel preferences. Thus, NEIv modeled on the
+photorealistic CIM can be extended to represent window settings such as grills and scales
+through Building Information Modeling, while NEIp can be personalized by path weighting,
+565
+
+such as a 50% “psychological” discount on walking time for a clean, familiar, and safe path
+environment. Another future research direction is integrating other representations of
+exposure to nature, e.g., incidental nature interactions on the streets and inverse
+representation of acoustic nature exposure, such as urban noise. Moreover, urban planners
+and landscape architects need to review the exposure suggestions with other indicators, such
+
+570
+
+as availability of lands, maintenance costs, and social concern, to determine the final
+objectives for improvement of the built environment. Another future endeavor is to
+incorporate related indicators and turn the proposed bi-objective optimization analytics into a
+multi-objective decision-making. Besides, despite the acceptable time cost of Pareto
+optimality-based bi-objective analytics, the NEIv computing process is still time-consuming
+
+575
+
+owing to the generation and segmentation of view photos. Thus, given that the proposed
+definition is compatible with various window view quantification techniques, more efficient
+methods will be useful. Last, the aggregation of human-level assessment results of nature
+exposure into buildings and blocks can be more accurate than the floor-level one in this study,
+which can be another direction to advance fine-scale nature exposure modeling in future
+
+580
+
+landscape management and urban planning.
+6 Conclusion
+Natural settings in the urban context are multi-faceted resources for urban dwellers. A
+holistic visual-physical nature exposure assessment is needed for improving the built
+environment. Traditional assessment often focuses on either visual or physical dimension in
+
+585
+
+isolation, and thus fails to identify the buildings and blocks with both low visual and physical
+nature exposures.
+This study defines a Nature Exposure Index (NEI) that has both visual and physical
+components. Thereafter, NEI is measured through floor-level window views and walkability
+
+590
+
+of nearby natural sites. By aggregating the results into building or block levels, a bi-objective
+optimization-based analytics is presented to identify areas with the least visual-physical
+nature exposures. Last, probabilistic output buildings or blocks and robustness of linear
+weightings are gauged through a linear weighting analysis. Our method achieved a
+satisfactory result for a pilot study of 519 buildings in the high-rise, high-density area of Wan
+23
+
+595
+
+Chai in Hong Kong. Comments from experts and planners indicated that the proposed
+method is effective and applicable for better landscape management and urban planning.
+The proposed method is automatic, effective, and scalable up to buildings and city
+blocks. The assessment results of NEI represent a full picture of visual-physical nature
+
+600
+
+exposures. The analytical results of Pareto optimality and weighting analysis enable a holistic
+and in-depth understanding of the buildings and city blocks that need improvement in visualphysical exposures to nature. Future directions include in-depth and comprehensive visualphysical nature exposure examination, more efficient view quantification methods, humanlevel analytics of nature exposure, and incorporating related indicators to the presented addon
+
+605
+
+for a decision-making system.
+Acknowledgment
+This study was supported in part by the Hong Kong Research Grant Council (RGC)
+(Nos. T22-504/21-R, 27200520) and Guangdong-Hong Kong-Macau Joint Laboratory for
+
+610
+
+Smart Cities of the 2020 Guangdong New Innovative Strategic Research Fund, Guangdong
+Science and Technology Department (Project No.: 2020B1212030009).
+
+615
+
+References
+Andersen, M. (2015). Unweaving the human response in daylighting design. Building and
+Environment, 91, 101-117. doi:10.1016/j.buildenv.2015.03.014
+CEN/TC 169. (2018). European Standard EN 17037: Daylight in Buildings. Hørsholm,
+Denmark: European Committee for Standardization.
+
+620
+
+Chen, B., Tu, Y., Wu, S., Song, Y., Jin, Y., Webster, C., Xu, B. & Gong, P. (2022). Beyond
+green environments: multi-scale difference in human exposure to greenspace in
+China. Environment International, 166, 107348. doi:10.1016/j.envint.2022.107348
+Choguill, C. L. (2008). Developing sustainable neighbourhoods. Habitat International, 32(1),
+41-48. doi:10.1016/j.habitatint.2007.06.007
+
+625
+
+CIBSE. (2014). Lighting Guide 10: Daylighting—A Guide for Designers. London, United
+Kingdom: Chartered Institution of Building Services Engineers (CIBSE).
+Coppel, G. & Wüstemann, H. (2017). The impact of urban green space on health in Berlin,
+24
+
+Germany: Empirical findings and implications for urban planning. Landscape and
+Urban Planning, 167, 410-418. doi:10.1016/j.landurbplan.2017.06.015
+630
+
+Cox, D. T., Hudson, H. L., Shanahan, D. F., Fuller, R. A. & Gaston, K. J. (2017). The rarity of
+direct experiences of nature in an urban population. Landscape and Urban Planning,
+160, 79-84. doi:10.1016/j.landurbplan.2016.12.006
+Fan, P., Xu, L., Yue, W. & Chen, J. (2017). Accessibility of public urban green space in an
+urban periphery: The case of Shanghai. Landscape and Urban Planning, 165, 177-
+
+635
+
+192. doi:10.1016/j.landurbplan.2016.11.007
+Fisher-Gewirtzman, D. (2018). Integrating ‘weighted views’ to quantitative 3D visibility
+analysis as a predictive tool for perception of space. Environment and Planning B:
+Urban Analytics and City Science, 45(2), 345-366. doi:10.1177/0265813516676486
+Hartig, T., Mitchell, R., Vries, S. D. & Frumkin, H. (2014). Nature and health. Annual Review
+
+640
+
+of Public Health, 35, 207-228. doi:10.1146/annurev-publhealth-032013-182443
+He, D., Lu, Y., Xie, B. & Helbich, M. (2022). How greenway exposure reduces body weight:
+A natural experiment in China. Landscape and Urban Planning, 226, 104502.
+doi:10.1016/j.landurbplan.2022.104502
+He, D., Miao, J., Lu, Y. S. & Liu, Y. (2022). Urban greenery mitigates the negative effect of
+
+645
+
+urban density on older adults' life satisfaction: Evidence from Shanghai, China. Cities,
+124, 103607. doi:10.1016/j.cities.2022.103607
+Helbich, M., Yao, Y., Liu, Y., Zhang, J., Liu, P. & Wang, R. (2019). Using deep learning to
+examine street view green and blue spaces and their associations with geriatric
+depression in Beijing, China. Environment International, 126, 107-11.
+
+650
+
+doi:10.1016/j.envint.2019.02.013
+HKBA. (2011). Code of Practice for Building Works for Lifts and Escalators 2011. Hong
+Kong: Building Authority.
+HKEMSD. (2021). Particulars of the Use Permit of Lifts. Hong Kong: Electrical and
+Mechanical Services Department, Government of Hong Kong SAR.
+
+655
+
+HKHAD. (2021). Database of private buildings in Hong Kong. Hong Kong: Home Affairs
+Department, Government of Hong Kong SAR.
+HKLandsD. (2014). iB1000 Digital Topographic Map. Hong Kong: Lands Department,
+Government of Hong Kong SAR.
+HKLandsD. (2021). 3D Pedestrian Network. Hong Kong: Lands Department, Government of
+
+660
+
+Hong Kong SAR.
+25
+
+HKLWB. (2006). Public Consultation on the Review of the "Design Manual: Barrier Free
+Access 1997". Hong Kong: Labour and Welfare Bureau, Government of Hong Kong
+SAR.
+HKPlanD. (2018). Hong Kong Planning Standards and Guidelines. Hong Kong: Planning
+665
+
+department, Hong Kong SAR.
+doi:https://www.pland.gov.hk/pland_en/tech_doc/hkpsg/full/pdf/ch2.pdf
+HKPlanD. (2019). 3D Photo-realistic Model. Hong Kong: Planning Department, Government
+of Hong Kong SAR. Retrieved from
+https://www.pland.gov.hk/pland_en/info_serv/3D_models/download.htm
+
+670
+
+HKTPB. (2010). Guidelines on submission of visual impact assessment for planning
+applications to the Town Planning Board. Hong Kong: Town Planning Board.
+doi:https://www.info.gov.hk/tpb/en/forms/Guidelines/TPB_PG_41.pdf
+Huang, B., Fery, P., Xue, L. & Wang, Y. (2008). Seeking the Pareto front for multiobjective
+spatial optimization problems. International Journal of Geographical Information
+
+675
+
+Science, 22(5), 507-526. doi:10.1080/13658810701492365
+Jiang, B., Chang, C.-Y. & Sullivan, W. C. (2014). A dose of nature: Tree cover, stress
+reduction, and gender differences. Landscape and Urban Planning, 132, 26-36.
+doi:10.1016/j.landurbplan.2014.08.005
+Jiang, B., Xu, W., Ji, W., Kim, G., Pryor, M. & Sullivan, W. C. (2021). Impacts of nature and
+
+680
+
+built acoustic-visual environments on human’s multidimensional mood states: A
+cross-continent experiment. Journal of Environmental Psychology, 77, 101659.
+doi:10.1016/j.jenvp.2021.101659
+Kaplan, R. (2001). The nature of the view from home: Psychological benefits. Environment
+and Behavior, 33(4), 507-542. doi:10.1177/00139160121973115
+
+685
+
+Keniger, L. E., Gaston, K. J., Irvine, K. N. & Fuller, R. A. (2013). What are the benefits of
+interacting with nature? International Journal of Environmental Research and Public
+Health, 10(3), 913-935. doi:10.3390/ijerph10030913
+Kuo, F. E. & Sullivan, W. C. (2001). Environment and crime in the inner city: Does
+vegetation reduce crime? Environment and Behavior, 33(3), 343-367.
+
+690
+
+doi:10.1177/0013916501333002
+Labib, S. M., Lindley, S. & Huck, J. J. (2021). Estimating multiple greenspace exposure types
+and their associations with neighbourhood premature mortality: A socioecological
+study. Science of The Total Environment, 789, 147919.
+26
+
+doi:10.1016/j.scitotenv.2021.147919
+695
+
+Laovisutthichai, V., Li, M., Xue, F., Lu, W., Tam, K. & Yeh, A. G. (2021). CIM-enabled
+quantitative view assessment in architectural design and space planning. 38th
+International Symposium on Automation and Robotics in Construction (ISARC 2021).
+Dubai.
+Li, M., Xue, F., Wu, Y. & Yeh, A. G. (2022). A room with a view: Automated assessment of
+
+700
+
+window views for high-rise high-density areas using City Information Models and
+transfer deep learning. Landscape and Urban Planning, 226, 104505.
+doi:10.1016/j.landurbplan.2022.104505
+Li, M., Xue, F., Yeh, A. G. & Lu, W. (2021). Classification of photo-realistic 3D window
+views in a high-density city: The case of Hong Kong. Proceedings of the 25th
+
+705
+
+International Symposium on Advancement of Construction Management and Real
+Estate (pp. 1339-1350). Wuhan: Springer, Singapore. doi:10.1007/978-981-16-35878_91
+Lottrup, L., Stigsdotter, U. K., Meilby, H. & Claudi, A. G. (2015). The workplace window
+view: a determinant of office workers’ work ability and job satisfaction. Landscape
+
+710
+
+Research, 40(1), 57-75. doi:10.1080/01426397.2013.829806
+Lwin, K. K. & Murayama, Y. (2011). Modelling of urban green space walkability: Ecofriendly walk score calculator. Computers, Environment and Urban systems, 35(5),
+408-420. doi:10.1016/j.compenvurbsys.2011.05.002
+Malczewski, J. & Rinner, C. (2015). Multicriteria decision analysis in geographic
+
+715
+
+information science. New York: Springer.
+Malczewski, J. (2006). GIS‐based multicriteria decision analysis: a survey of the literature.
+International Journal of Geographical Information Science, 20(7), 703-726.
+doi:10.1080/13658810600661508
+Oh, K. & Jeong, S. (2007). Assessing the spatial distribution of urban parks using GIS.
+
+720
+
+Landscape and Urban planning, 82(1-2), 25-32.
+doi:10.1016/j.landurbplan.2007.01.014
+Park, Y. & Guldmann, J.-M. (2020). Understanding disparities in community green
+accessibility under alternative green measures: A metropolitan-wide analysis of
+Columbus, Ohio, and Atlanta, Georgia. Landscape and Urban Planning, 200, 103806.
+
+725
+
+doi:10.1016/j.landurbplan.2020.103806
+Rahman, M. M. & Szabó, G. (2021). Multi-objective urban land use optimization using
+27
+
+spatial data: A systematic review. Sustainable Cities and Society, 74, 103214.
+doi:10.1016/j.scs.2021.103214
+Raymond, C. M., Gottwald, S., Kuoppa, J. & Kyttae, M. (2016). Integrating multiple
+730
+
+elements of environmental justice into urban blue space planning using public
+participation geographic information systems. Landscape and Urban Planning, 153,
+198-208. doi:10.1016/j.landurbplan.2016.05.005
+Sun, G., Webster, C. & Zhang, X. (2021). Connecting the city: a three-dimensional pedestrian
+network of Hong Kong. Environment and Planning B: Urban Analytics and City
+
+735
+
+Science, 48(1), 60-75. doi:10.1177/2399808319847204
+Tang, B.-S., Wong, K. K., Tang, K. S. & Wong, S. W. (2021). Walking accessibility to
+neighbourhood open space in a multi-level urban environment of Hong Kong.
+Environment and Planning B: Urban Analytics and City Science, 48(5), 1340-1356.
+doi:10.1177/2399808320932575
+
+740
+
+Tara, A., Lawson, G. & Renata, A. (2021). Measuring magnitude of change by high-rise
+buildings in visual amenity conflicts in Brisbane. Landscape and Urban Planning,
+205, 103930. doi:10.1016/j.landurbplan.2020.103930
+Tobler, W. (1993). Three presentations on geographical analysis and modeling. Santa
+Barbara: National Center for Geographic Information and Analysis.
+
+745
+
+Ulrich, R. S. (1984). View through a window may influence recovery from surgery. Science,
+224(4647), 420-421. doi:10.1126/science.6143402
+USGBC. (2019). LEED v4 for building design and construction (4th ed.). Washington, DC,
+US: U.S. Green Building Council.
+Wolch, J. R., Byrne, J. & Newell, J. P. (2014). Urban green space, public health, and
+
+750
+
+environmental justice: The challenge of making cities ‘just green enough. Landscape
+and Urban Planning, 125, 234-244. doi:10.1016/j.landurbplan.2014.01.017
+Xia, C., Zhang, A. & Yeh, A. G. (2022). The varying relationships between multidimensional
+urban form and urban vitality in Chinese megacities: Insights from a comparative
+analysis. Annals of the American Association of Geographers, 112(1), 141-166.
+
+755
+
+doi:10.1080/24694452.2021.1919502
+Xue, F., Li, X., Lu, W., Webster, C. J., Chen, Z. & Lin, L. (2021a). Big data-driven pedestrian
+analytics: unsupervised clustering and relational query based on Tencent Street View
+photographs. ISPRS International Journal of Geo-Information, 10(8), 561.
+doi:10.3390/ijgi10080561
+28
+
+760
+
+Xue, F., Wu, L. & Lu, W. (2021b). Semantic enrichment of building and city information
+models: A ten-year review. Advanced Engineering Informatics, 47, 101245.
+doi:10.1016/j.aei.2020.101245
+Yang, L., Ao, Y., Ke, J., Lu, Y. & Liang, Y. (2021). To walk or not to walk? Examining nonlinear effects of streetscape greenery on walking propensity of older adults. Journal of
+
+765
+
+Transport Geography, 94, 103099. doi:10.1016/j.jtrangeo.2021.103099
+Ye, Y., Richards, D., Lu, Y., Song, X., Zhuang, Y., Zeng, W. & Zhong, T. (2019). Measuring
+daily accessed street greenery: A human-scale approach for informing better urban
+planning practices. Landscape and Urban Planning, 191, 103434.
+doi:10.1016/j.landurbplan.2018.08.028
+
+770
+
+Zhao, J., Sun, G. & Webster, C. (2020). Walkability scoring: Why and how does a threedimensional pedestrian network matter?. Environment and Planning B: Urban
+Analytics and City Science, 2399808320977871. doi:10.1177/2399808320977871
+
+29
+
+

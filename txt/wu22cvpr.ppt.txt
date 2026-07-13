@@ -1,0 +1,486 @@
+Scan2Floorplan: Floor Layer-based Kernels and
+Pillars of Points (FLKPP)
+Yijie Wu, Maosu Li and Fan Xue
+Faculty of Architecture, The University of Hong Kong
+2nd Workshop on Computer Vision in the Built Environment, CVPR 2022
+19 June 2022, New Orleans, Louisiana, USA.
+Yijie Wu
+22 June 2022
+
+FOA@HKU
+
+Maosu Li
+
+Dr. Fan Xue
+
+1
+
+Who are we?
+Yijie Wu
+
+Yr-1 PhD student, Dept. Real Estate & Construction
+Research interest: Building reconstruction from point clouds
+
+Maosu Li
+
+Yr-3 PhD candidate, Dept. Urban Planning & Design
+Research interest: Semantics in CIM, 3D view assessment
+
+Fan Xue
+
+Yijie Wu
+
+Maosu Li
+
+Fan Xue
+
+Asst Prof, Dept. Real Estate & Construction; Dept. Urban Planning & Design (Part-time)
+Research interest: Digital twin buildings/city, optimization, LiDAR processing, explainable AI
+
+22 June 2022
+
+FOA@HKU
+
+2
+
+Outline
+I.
+
+Background
+
+II. Our method
+III. Results
+IV. Discussion & future work
+
+22 June 2022
+
+FOA@HKU
+
+3
+
+Scan2Floorplan in AECO
+3D scan
+
+Floorplan
+As-designed
+
+As-built
+Scan to BIM
+Scan vs. BIM
+
+※ Consistent with the real layouts
+
+※ Most commonly used in AECO
+
+※ Rich in details and appearance
+22 June 2022
+
+※ Much faster than traditional survey
+
+※ A great amount of achieved floorplans
+FOA@HKU
+
+※ Low acquisition cost
+
+⁜ Boost data-driven methods
+
+4
+
+Challenges in Scan2Floorplan
+3D scan
+
+Floorplan
+
+※Drawn for human interpretation rather than
+machine processing
+
+※ Geometry fitting
+
+※ Semantics understanding
+
+⁜ Flexible layer naming, annotations & topology
+
+※ Data deficiencies
+
+22 June 2022
+
+※ Inconsistent with the real layouts
+
+FOA@HKU
+
+5
+
+Step by step vs. End to end
+Step by step
+
+Preprocessing (e.g., downsampling, axis aligning, outlier/clutter/horizontal structure removal)
+semantic segmentation, RANSAC fitting, topology repairing, …
+Excellent and guaranteed results presented in the 2D leaderboard of last year
+
+End to end
+
+Han et al., 2021
+
+FloorPP-Net in 2021 Scan2BIM 2D Challenge
+Project the point clouds to 2D and learn to output a floorplan (edges)
+
+Without careful network design and parameters tuning, output noisy results
+(3rd place in 2D Challenge last year)
+
+22 June 2022
+
+FOA@HKU
+
+6
+
+FLKPP: A framework with both step-by-step & end-toend
+
+2D edges detection
+
+2D edge repairing
+Output:
+Floorplans
+
+Input:
+Point clouds
+
+Room clustering &
+clutter removal
+
+Preprocessing
+
+22 June 2022
+
+3D semantic segmentation
+
+Learning
+
+FOA@HKU
+
+RANSAC plane fitting
+
+Post-processing
+7
+
+Preprocessing
+(Zoom-in)
+
+※AIMs:
+(Voxels occupied
+by scan data)
+(Indoor
+space
+voxels)
+
+⁜ Room clustering
+⁜ Room-base noise removal
+
+※ Space voxels labeling
+
+※ Region growing to segment rooms
+
+※ Clutter removal (using head levels in rooms)
+
+1. Space voxels
+(closer to Edge, Ceiling, Walls)
+
+E C C C
+W E C C
+W W E C
+22 June 2022
+
+2. Room clustering
+(using voxels 1m to
+ceilings)
+
+FOA@HKU
+
+3.1 rooms
+
+3.2 Above
+head-level
+room cut
+
+8
+
+2D edge detection
+FloorPP-Net
+ConvNet
+Input: Point cloud
+
+22 June 2022
+
+Point pillars of 2D grid
+
+Predicted corners and edges
+
+FOA@HKU
+
+Output: Floorplan
+
+9
+
+2D edge detection
+ConvNet
+Point pillars of 2D grid
+
+Input: Point cloud
+Version of 2021
+
+Version of 2022
+
+22 June 2022
+
+1
+
+1
+
+0 …
+
+R
+
+G
+
+B
+
+1
+
+1
+
+Predicted corners and edges
+
+Points in z-bin or not
+
+(Zhou et al. 2019)
+
+'R' = 1-m layer above head-level
+'G' = 1-m layer below head-level
+'B' = angle homogeneity in point normals
+
+FOA@HKU
+
+LCNN
+
+Output: Floorplan
+
+End-to-End Wireframe Parsing
+10
+
+2D edge detection
+2D edge completion, guided by explainable floorplan objects
+
+Line map predicted by LCNN
+22 June 2022
+
+FOA@HKU
+
+Room map clustered in preprocessing
+
+11
+
+Semantic segmentation of point cloud by KPConv
+
+Input: point cloud after
+clutter removal
+
+22 June 2022
+
+KPConv
+(Thomas et al. 2019)
+
+Output:
+Segmented points of
+walls, doors, and stairs
+
+FOA@HKU
+
+RANSAC plane fitting
+
+2D projection
+
+12
+
+Results
+
+22 June 2022
+
+02_TallOffice_01_F7
+
+08_ShortOffice_01_F1
+
+20 cm pre: 16% | rec: 29% | iou: 85%
+
+20 cm pre: 14% | rec: 21% | iou: 90%
+
+FOA@HKU
+
+13
+
+Results
+
+22 June 2022
+
+11_MedOffice_05_F1
+
+25_Parking_01_F2
+
+20 cm Pre.: 12% | Rec.: 20% | IoU: 50%
+
+20 cm Pre.: 4% | Rec.: 0.12 | IoU: 0.76
+
+FOA@HKU
+
+14
+
+Ablation study
+Clutter removal
+√
+
+√
+
+√
+
+22 June 2022
+
+Sem.
+Seg.
+√
+
+√
+
+LCN
+N
+√
+
+√
+
+FloorPP-Net
+
+IoU @
+
+Pre. @ 20cm
+
+Rec. @
+
+Betti error
+
+√
+
+37.4%
+
+13.2%
+
+1.12
+
+25.1%
+
+25.3%
+
+12.0%
+
+6.5%
+
+38.6%
+
+1.20
+
+20cm
+
+36.4%
+
+√
+
+39.2%
+
+√
+
+FOA@HKU
+
+10.4%
+
+20cm
+
+6.6%
+
+16.6%
+
+1.29
+1.24
+
+15
+
+Discussion & future work
+※Limitations
+⁜ A lot of clutters; missing exterior points
+⁜ The inconsistencies between floorplans and point
+clouds in the 2D edge learning
+⁜ Incomplete topology (connection & closure)
+25_Parking_01_F1
+
+Noisy ceilings
+
+※Suggestions
+
+22 June 2022
+
+※Future work
+
+⁜ To design rules for clutter removal
+⁜ To build a classifier handle the inconsistencies
+⁜ To repair the topology (Learning? Graph? Domain
+knowledge?)
+
+02_TallOffice_01_F3
+
+11_MedOffice_05_F1
+
+Inconsistencies between FP & PCD
+
+Unconnected walls
+
+⁜ Inconsistent metrics? (IoU@20cm = 42%, Pre.@20cm = 4.5%, Rec.@20cm = 3.2%)
+⁜ Evaluation code (Bounding the extent when match the regions | Without classification evaluation)
+FOA@HKU
+
+16
+
+References
+※ Wu, Y., & Xue, F. (2021). FloorPP-Net: Reconstructing Floor Plans using Point Pillars for Scan-to-BIM. arXiv preprint arXiv:2106.10635.
+
+※ Wu, Y., Shang, J., & Xue, F. (2021). Regard: Symmetry-based coarse registration of smartphone’s colorful point clouds with cad drawings for lowcost digital twin buildings. Remote Sensing, 13(10), 1882.
+※ Bosché, F., Ahmed, M., Turkan, Y., Haas, C. T., & Haas, R. (2015). The value of integrating Scan-to-BIM and Scan-vs-BIM techniques for
+construction monitoring using laser scanning and BIM: The case of cylindrical MEP components. Automation in Construction, 49, 201-213.
+
+※ Han, J., Rong, M., Jiang, H., Liu, H., & Shen, S. (2021). Vectorized indoor surface reconstruction from 3D point cloud with multistep 2D
+optimization. ISPRS Journal of Photogrammetry and Remote Sensing, 177, 57-74.
+
+※ Lang, A. H., Vora, S., Caesar, H., Zhou, L., Yang, J., & Beijbom, O. (2019). Pointpillars: Fast encoders for object detection from point clouds.
+In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 12697-12705).
+
+※ Zhou, Y., Qi, H., & Ma, Y. (2019). End-to-end wireframe parsing. In Proceedings of the IEEE/CVF International Conference on Computer Vision (pp.
+962-971).
+
+※ Thomas, H., Qi, C. R., Deschaud, J. E., Marcotegui, B., Goulette, F., & Guibas, L. J. (2019). Kpconv: Flexible and deformable convolution for point
+clouds. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6411-6420).
+
+※ Schnabel, R., Wahl, R., & Klein, R. (2007, June). Efficient RANSAC for point‐cloud shape detection. In Computer graphics forum (Vol. 26, No. 2, pp.
+214-226). Oxford, UK: Blackwell Publishing Ltd.
+
+22 June 2022
+
+FOA@HKU
+
+17
+
+2nd CVPR Workshop and Challenge on Computer Vision in the Built
+Environment
+
+Thank you for listening!
+
+22 June 2022
+
+FOA@HKU
+
+18
+
+

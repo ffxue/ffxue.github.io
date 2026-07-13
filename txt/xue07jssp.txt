@@ -1,0 +1,528 @@
+Multi-agent Optimization Design for
+Multi-resource Job Shop Scheduling Problems
+Fan Xue and Wei Fan
+College of Computer Science and Technology, Civil Aviation University of China,
+Tianjin 300300, P.R. China
+wfan@cauc.edu.cn
+
+Abstract. As a practical generalization of the job shop scheduling problem, multi-resource job shop scheduling problem (MRJSSP) is discussed
+in this paper. In this problem, operations may be processed by a type
+of resources and jobs have individual deadlines. How to design and optimize this problem with DSAFO, a novel multi-agent algorithm, is introduced in detail by a case study, including problem analysis, agent role
+speciﬁcation, and parameter selection. Experimental results show the
+eﬀectiveness and eﬃciency of designing and optimizing MRJSSPs with
+multi-agent.
+
+1
+
+Introduction
+
+A practical generalization of the job shop scheduling problem (JSSP), which
+we call the multi-resource job shop scheduling problem (MRJSSP), is concerned
+in this paper. Informally, the problem can be stated as follows. There are a
+set of jobs and a set of resources. Each job consists of a lattice of operations
+that must be processed in a given order, and has, individually, a job ready time
+and a job deadline. Each operation is given an integeral processing time, and
+a longer resource usage time (plan time) for extra traﬃc (spatial distribution),
+preparation, and reset actions. Each operation needs one resource to process, and
+the processing is uninterruptible. Each resource can process only one operation
+simultaneously. The objective of MRJSSP is to ﬁnd the best scheduling solution
+with minimal resource consumption, i.e. maximal resource utility.
+JSSP has been studied by both academic and industrial society for decades [1],
+however in many practical situations, (i) an operation can be processed by any
+one resource (or machine) from a group; (ii) jobs have individual deadlines; (iii)
+the requirement of no tardiness for any jobs is more important than makespan;
+and (iv) to reduce consumption as much as possible in order to maximize the
+machine utilities. Those are, ﬁtly, the cases of MRJSSPs.
+M. Perregaard (1995) proposed multi-processor job shop scheduling problem
+(MPJSSP), which concerned multiple processing capacity as well, and A. Cesta,
+A. Oddi, and S. F. Smith (2000) developed an iterative improvement search
+approach for it. W. P. M. Nuijten and E. H. L. Aarts (1996) [4] presented another
+problem: multiple capacitated job shop scheduling problem (MCJSSP), which
+D.-S. Huang, L. Heutte, and M. Loog (Eds.): ICIC 2007, LNAI 4682, pp. 1193–1204, 2007.
+c Springer-Verlag Berlin Heidelberg 2007
+
+
+1194
+
+F. Xue and W. Fan
+
+extended MPJSSP by allowing each operation has a size. Nevertheless, both
+MPJSSP and MCJSSP ignored the spatial conditions and supporting handling
+in real-world engineering processes. Furthermore most of scheduling works are,
+practically, pre-scheduled by domain experts, so what we need to optimize is,
+usually, to maximize the resource utility to meet a timetable, not the makespan.
+All of these are well presented in MRJSSP, which is detailed in Section 2.
+The remainder of the paper is structured as follows: Section 2 represents a
+deﬁnition of the multi-resource job shop scheduling problem. Section 3 reviews
+the DSAFO algorithm brieﬂy. Section 4 demonstrates the design procedure via
+a case study. Experimental results appear in Section 5 and a brief conclusion is
+given in Section 6.
+
+2
+
+The Multi-resource Job Shop Scheduling Problem
+
+Deﬁnition 1 (MRJSSP). An instance of multi-resource job shop scheduling
+problem is a tuple F, O, R, T , , D, F, rt, st, ut, et, tt, Ω, γ, s where
+- a set of n jobs;
+J = {j1 , j2 , . . . , jn }
+O = {o1 , o2 , . . . , op } = O1 ∪ O2 ∪ . . . ∪ Om , where ∀ Omi ∩ Omj =Ø
+mi =mj
+
+- a set of p operations in m types (partitions);
+R = {r1 , r2 , . . . , rq } = R1 ∪ R2 ∪ . . . ∪ Rt , where ∀ Rti ∩ Rtj =Ø
+ti =tj
+
+- a set of q resources in t types (partitions);
+C = O1 × Rt1 ∪ O2 × Rt2 ∪ . . . ∪ Om × Rtm
+- processing capabilities;
+ : O → O
+- precedence or equality, decomposing O into
+lattices (specially, chains) of jobs;
+D : J → Z+
+deadline of a job;
+0
+J : O → J
+- job belonging to;
+rt : O → Z+
+- operation ready time;
+0
+st : O → Z+
+- non-zero operation service time;
+ut : O → Z+
+- operation setup time;
+0
+et : O → Z+
+- operation reset time;
+0
+- resource traﬃc time for an operation;
+tt : R × O → Z+
+0
+Ω : R × Z+
+0 → O ∪ {Ø} - which operation is in process at a certain time,
+returns Ø when non-single operations assigned.
+The objective is to ﬁnd two functions: s and γ, where
+γ : O → R - assign resources;
+s : O → Z+
+0 - assign service start time,
+s.t. ∀ [ o, γ(o) ∈ C
+o∈O
+
+∧rt(o) ≤ s(o)
+∧s(o) + st(o) ≤ D(F (o))
+∧ ∀  s(o) + st(o) ≤ rt(o )
+o≺o
+
+∧
+
+∀
+
+Ω(γ(o), τ ) = o]
+
+s(o)−ut(o)−tt(γ(o),o)≤τ <s(o)+st(o)+et(o)
+
+∧|ran(γ)| = min |ran(γi )|,
+γi ∈Γ
+
+Multi-agent Optimization Design
+
+1195
+
+where o ≺ o is abbreviated from o  o ∧o = o , Γ is the set of all valid schedules,
+|ran(γ)| is the range size of function γ.
+MRJSSP is a special case of distributed constraint satisfaction problem (DisCSP), according to the deﬁnition by [6]. Remark that the decision variant of the
+MRJSSP is NP-complete, as (i) it is in NP, because for a given schedule s all
+constraints can be checked in polynomial time, and (ii) the decision variant of
+the JSSP is an NP-complete special case of the decision variant of MRJSSP [5].
+
+3
+
+DSAFO: Overview and Strategies
+
+DSAFO, i.e. Dynamic Scheduling Agents with Federation Organization, which
+had been formalized in [7], is a novel multi-agent approach to Dis-CSP, especially for MRJSSPs. DSAFO employs blackboard mechanism, federation organization, meta-level guided resource borrowing and domain knowledge guided plan
+backtrack. This algorithm is based on run-and-schedule, a dynamic distributed
+scheduling environment, which uninterruptedly observes real-time job data from
+enterprise systems. As shown in Fig. 1, DSAFO runs as follow:
+1. to read real-time job data from run-and-schedule environment;
+2. to decompose jobs into operations;
+3. to divide the solution space dynamically into rational partitions with multiagents;
+4. to conquer each partition with local heuristics;
+5. to optimize the solution simultaneously via coordination among partitions
+from global view;
+6. to dispatch the solution to real world environment simultaneously.
+Internally, DSAFO algorithm can be viewed as a multi-agent approach with
+strategies of local heuristics and global coordination.
+Run−and−schedule
+environment
+Job data
+from ERP
+systems
+
+Blackboard
+agent
+
+Real−time
+data
+collection
+
+Clock
+
+DSAFO
+Resource
+administrator
+agent
+
+resource groups
+Coordinator
+agent 1
+
+Member
+agent 1
+
+Member
+agent 2
+
+Coordinator
+agent m
+
+Member
+agent n
+
+Real world resources
+
+Fig. 1. An overview of DSAFO
+
+1196
+
+F. Xue and W. Fan
+
+There are two parts of local heuristics in DSAFO, both are EDD (Earliest Due
+Date ﬁrst). One is to select the ﬁrst operation to do according to weighted latest
+ﬁnish time, and the other is to assign an operation to a resource from some committed resources according to the earliest committed service start time. However,
+when the problem scale increases, EDD falls, generally, into local minimum. So
+DSAFO employs local heuristics (EDD) in dynamic cooperative agents to jump
+out of local minimum.
+Global coordination is a mechanism that exchanges resource textures of agents
+and realizes a complete resource borrow procedure for agents. And there are
+two kinds of relationships between two Member agents with the same type of
+resources: buddy and competitor. If two Member agents share same type of resources and same type of operations, they are competitors; if they share same
+type of resources but diﬀerent type of operations, they are buddies. A group of
+buddies always help each other, by lending its own resource friendly.
+
+4
+
+Design with DSAFO: A Case Study
+
+Airport ground service is the service process from ﬂight landing to takeoﬀ, including gate assignment, baggage handling, catering, fueling, cleaning, etc. Airport
+ground service scheduling (AGSS) is to schedule many kinds of dynamic ground
+resources (baggage trucks, fuel trucks, etc.), to fulﬁll all constrained service operations of ﬂights timely to meet their arrival and departure deadlines [8]. The
+typical operations for a job, transfer ﬂight service, is shown as Fig. 2.
+
+custom
+transfer bridge/
+passenger stair
+chock
+wheels
+
+commissary
+trucks/ mobile
+belt conveyor
+
+catering
+disembark
+unload
+baggage
+
+boarding
+
+cleaning
+unload
+cargo
+& mail
+
+load
+cargo
+& mail
+
+remove
+bridge/
+stair
+load
+baggage
+
+push
+back
+
+refuel
+portable water & lavatory service
+maintenance check
+power supply/ deicing/ air condition
+
+Fig. 2. Typical operations for a transfer ﬂight
+
+The AGSS problem well meets the qualiﬁcations of the MRJSSP deﬁnition.
+For each type of operations shown in Fig. 2, one (or a group) of certain type(s)
+of materials, engineers, aviation ground support facilities and equipments, and
+transportation equipments are required. For instance, process “cleaning” requires
+cleaners (and cleaners’ bus), “catering” requires catering truck, etc. However,
+AGSS problem has one more constraint: resources, i.e. engineers and equipments,
+have limited job time, e.g. 8 hours for an engineer per day.
+
+Multi-agent Optimization Design
+
+1197
+
+Then we demonstratively design AGSS problem optimization with DSAFO
+in three phases: entity and extra constraint analysis, algorithm speciﬁcation,
+and parameter decision. Similar design procedures could be applied to other
+MRJSSPs.
+In the analysis phase, in AGSS problem the pre-determined ﬂight schedule and
+real-time operation systems (such as Flight Operation Control system, Airport
+Operation Data Base) provide eﬃcient input data (ready time and due date) for
+jobs (ﬂights). The jobs come, commonly, one by one, and peak not too much in
+busy hours. In airports, service support vehicles and engineers must travel along
+speciﬁc roads, load materials, and unload at job-speciﬁc points. These geographic
+distance and the maximal airport ground travel speed (5km/h) could provide us
+eﬃcient traﬃc time estimation on service support actions. Some resources are
+always bounded together, such as a cleaners’ group, they can be considered as
+one resource.
+As to the job time limitation of resources, we should modify the resource allocation mechanism in DSAFO. Another constraint is that in minor cases several
+operations around a physical airplane may conﬂict with each other, we should
+conclude the cases and properly relax these operations in operation dispatching
+process.
+In the speciﬁcation phase, agent roles in DSAFO are assigned with capabilities
+and meanings. We design the Blackboard role to be in charge of decision-making
+of operation dispatch, the ResourceAdmin role to be in charge of decision-making
+of resource allocation, and Member roles to be in charge of making operationresource match-up dynamically. The Coordinator role is, invariably, assigned to
+facilitate cooperations among Member agents.
+The real-time job data are gathered and decomposed into operations by the
+Blackboard role, with considering the possible spatial collision among operations.
+the job time limitation of resources is monitored by the ResourceAdmin role, for
+it controls the allocation of resource. Proper processing plans for resources are
+made by the Member role, according to airport geographic information.
+In the last phase, the parameters are designed, experimented, and analyzed
+one by one. In DSAFO, there are some main parameters: (Member) AgentNumber Blockfactor, Delayfactor, and Syncycle. We choose baggage tractor (BT)
+consumption and related drivers’ 4-hour job optimization to test the parameters, and have spontaneous 250 runs to get the distributions of the solutions in
+each test.
+Parameter Member agent number (accompanied with Reqcycle) stands for
+how many Member agents in DSAFO are maintained for a certain type of resources. And in all the parameters, this number should be notably inﬂuential.
+When Blockfactor=1/12, Delayfactor=1/6, and Reqcycle is from 1/6 to 2 respectively, Fig. 3 and Fig. 4 show the solution distributions with diﬀerent BT Member
+agents in 3D map and contour map, as well as marginal distributions. When the
+number increases from 1 to 4, the solutions are going better, because the coordination strategy makes more insuﬃcient eﬀect when the number increases from
+only one (no coordination). On the contrary, when the number increases from 4
+
+1198
+
+F. Xue and W. Fan
+
+1 BT Agent
+
+2 BT Agents
+
+4 BT Agents
+
+6 BT Agents
+
+8 BT Agents
+
+12 BT Agents
+
+Fig. 3. BT solution distributions with respect to AgentNumber
+
+Multi-agent Optimization Design
+
+Fig. 4. BT solution marginal distributions with respect to AgentNumber
+
+1 BT Member Agent with Blockfactor=1/12
+
+1 BT Member Agent with Blockfactor=1/24
+
+1 BT Member Agent with Blockfactor=1/36
+Fig. 5. BT solution distributions with respect to Blockfactor
+
+1199
+
+1200
+
+F. Xue and W. Fan
+
+Fig. 6. BT solution marginal distributions with respect to Blockfactor
+
+4 BT Member agents with Delayfactor=1/3
+
+4 BT Member agents with Delayfactor=1/6
+
+4 BT Member agents with Delayfactor=1/24
+Fig. 7. BT solution distributions with respect to Delayfactor
+
+Multi-agent Optimization Design
+
+1201
+
+to 12, the solutions are going worse, because too many agents divide the global
+solution into too many fragments, so that local heuristics in these fragments lack
+of enough global viewpoints, and coordination cannot optimize these fragments
+very well.
+Blockfactor is another inﬂuential parameter. We set AgentNumber=1, Delayfactor=1/6, Syncycle=5 and Reqcycle = 1/6, and then we get solution distributions with respect to Blockfactor in 3D map and contour map, and marginal
+distributions, as shown in Fig. 5 and Fig. 6. From the ﬁgures we can conclude
+that when Blockfactor decreases, resource consumption stays the same approximately and 4-hour jobs arranged decrease a bit; and when the Blockfactor goes
+smaller, the solutions distributes turn more centralized, and the algorithm acts
+more similar as a stable algorithm. Specially, we embedded one single Member
+agent in Blackboard agent, i.e. without any unstable factors from communication, to eliminate the interference from network message communication. The
+new embedded algorithm degrades to a deterministic algorithm as shown in
+Fig. 6 (approximately the same as EDD* in Section 5).
+Delayfactor stands for how much time Member agent should delay extra after
+a successful operation commitment, and it is not a very inﬂuential parameter. We
+set AgentNumber=4, Blockfactor=1/12, Syncycle=5 and Reqcycle = 1/2. Then
+we get distributions in 3D map and contour map, and marginal distributions,
+as shown in Fig. 7 and Fig. 8. No signiﬁcant changes are there for 4-hour jobs,
+however the peaks of 3D map and contour map move up-down a bit, which
+means resource consumption is inﬂuenced, faintly.
+
+Fig. 8. BT solution marginal distributions with respect to Delayfactor
+
+5
+
+Experimental Comparison
+
+Ant system have succeeded in many optimization and scheduling areas, and
+MMAS (MAX -MIN ant system) is an improved ant system which gives an
+upper and a lower bound to intensity quantity of trails in ant system [9,10].
+We implemented a MMAS for BT arrangement to compare. m BT related
+
+1202
+
+F. Xue and W. Fan
+
+operations in AGSS problem are transformed into m nodes in trade salesman
+problem (TSP). A distance between two nodes (operations) ri and rj is represented as
+⎧
+⎪
+⎨(DueDaterj − DueDateri )/10, DueDaterj > DueDateri ,
+def
+dri rj = 0.01,
+DueDaterj = DueDateri ,
+⎪
+⎩
+(DueDateri − DueDaterj )/30, DueDaterj < DueDateri .
+And rest parameters of MMAS are: α = 1.5, β = 2, ρ = 0.05, τinit = 1,
+τmax = 100, τmin = 0.01, Nant = n/5 (upper integer), NCmax = 150. And for
+each successful ant run R done by ant i, all of edges in Hamilton circle of R get
+a positive feedback
+
+10
+< ri , rj >∈ circle of R;
+2,
+i
+Δτri rj = (resR +jobR /3)
+0,
+otherwise.
+to reinforce the whole algorithm for fewer resources and jobs.
+Then DSAFO (with parameters: AgentNumberBT =4, Blockfactor=1/12, Delayfactor=1/6, Syncycle=5), EDD* (EDD in run-and-schedule), ERT* (earliest
+ready time ﬁrst in run-and-schedule) and MMAS were tested with real-world
+AGSS test data with 252 transfer ﬂights. We choose BT related operations (1,008
+activities in total) to test performances of these algorithms. A comparison in BT
+consumption and 4-hour BT jobs arrangement is shown in Table 1. Additionally
+we put time cost and average CPU rate in the table. The best value in each
+group is bolded.
+Table 1. Optimization algorithm comparison
+Algorithm
+
+Time
+
+CPU
+
+DSAFO
+≈144 sec <1%
+MMAS ≈ 12 hours ≈100%
+EDD*
+≈43 sec <1%
+ERT*
+≈43 sec <1%
+
+Resources
+4-hour jobs
+MIN MAX AVG MIN MAX AVG
+47
+47
+53
+52
+
+56
+—
+53
+52
+
+49.9 123 130 126.3
+— 141 —
+—
+53 129 129 129
+52 130 130 130
+
+From Table 1, it can be concluded that DSAFO and MMAS both do well in
+resource consumption for MRJSSPs, and DSAFO do better in BT jobs arrangement. Furthermore, DSAFO cost not too much time (several minutes) and very
+low CPU rate, in fact most time is used to maintain eﬀective message transmission. On the contrary, MMAS costs very much time and near 100% CPU rate.
+
+6
+
+Conclusion and Future Works
+
+In this paper, we present a practical general model of the job shop scheduling problem, i.e. multi-resource job shop scheduling problem, and demonstrates
+
+Multi-agent Optimization Design
+
+1203
+
+a design and optimization process on this problem with a novel multi-agent
+algorithm DSAFO. We have shown that this design and optimization process
+is comprehensive for extra scheduling constraints and the experimental results
+shows its eﬀectiveness and eﬃciency.
+One of the future works is to put forward an easy-to-use schedule software
+to simplify the design process. A preliminary development environment AGSAP
+has been developed to apply DSAFO to aid common AGSS optimization in [11].
+In future, more easy-to-use development environments should be put forward for
+general MRJSSPs.
+
+Acknowledgement
+The authors acknowledge the support by National Natural Science Foundation
+of China (NSFC) under Grant No. 60472123.
+
+References
+1. Jain, A.S., Meeran,S.: Deterministic Job-Shop Scheduling: Past, Present and Future. European Journal of Operational Research, 113(2) (1999) 390-434
+2. Perregaard, M.: Branch and Bound Method for the Multiprocessor Jobshop and
+Flowshop Scheduling Problem. Master Thesis, Departement of Computer Science,
+University of Copenhagen, Danemark. (1995)
+3. Cesta, A., Oddi, A., and Smith, S. F: Iterative ﬂattening: a scalable method for
+solving multi-capacity scheduling problems. In Proceedings of the Seventeenth National Conference on Artiﬁcial intelligence and Twelfth Conference on innovative
+Applications of Artiﬁcial intelligence (July 30 - August 03, 2000). AAAI Press /
+The MIT Press (2000) 742-747
+4. Nuijten, W.P.M., Aarts, E.H.L.: A Computational Study of Constraint Satisfaction
+for Multiple Capacitated Job Shop Scheduling. European Journal of Operational
+Research, 90(2) (1996) 269-284
+5. Garey, M.R., Johnson, D.S.: Computers and Intractability - a Guide to the Theory
+of NP-completeness. W.H. Freeman and Company, New York. (1979)
+6. Yokoo, M., Durfee, E.H., Ishida, T., Kuwabara K.: The Distributed Constraint Satisfaction Problem: Formalization and Algorithms. IEEE Transactions on Knowledge and Data Engineering 10(5) (1998) 673-685
+7. Fan, W., Xue, F.: Optimize Cooperative Agents with Organization in Distributed
+Scheduling System. in Second International Conference on Intelligent Computing
+(ICIC 2006), Kunming, China, 2006. D.-S. Huang, K. Li, and G.W. Irwin (Eds.):
+Lecture Notes in Artiﬁcial Intelligence 4114 (2006) 502-509
+8. Xing, J., Liu, S., Fan, W., Ji, L.: Design of Airport Ground Service System Based
+on Multi-Agent. Journal of Civil Aviation University of China. 24(3) (2006) 24–27
+(in Chinese)
+9. Stützle, T., Hoos, H.: The MAX -MIN Ant System and Local Search for The
+Traveling Salesman Problem. In Proceedings of the Fourth International Conference
+on Evolutionary Computation (ICEC’97), IEEE Press. (1997) 308-313
+
+1204
+
+F. Xue and W. Fan
+
+10. Stützle, T., Hoos, H.: Improvements on the Ant System: Introducing MAX –MIN
+Ant system. In Proceedings of the International Conference on Artiﬁcial Neural
+Networks and Genetic Algorithms, Springer Verlag, Wien. (1997) 245-249
+11. Fan, W., Zhang, G., Xue, F.: Design and Implementation of Airline Ground Services Mas Development Platform. In First Conference on Multi-agent Theory and
+Application, Yantai, China. C. Y. Shi, Z. Z. Shi, et al (Eds.): Journal of Computer
+Research and Development 43 (s1) (2006) 414-419.
+
+

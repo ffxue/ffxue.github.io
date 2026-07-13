@@ -1,0 +1,404 @@
+Derivative-free optimization
+Theory and applications in construction management
+19 October 2018
+Tongji University
+Frank Xue
+Dept. of REC, HKU
+HKURBANlab—iLab, HKU
+
+Outline
+
+F. Xue: DFO
+
+1
+
+Introduction to DFO
+
+2
+
+DFO in construction management
+
+3
+
+Discussion
+
+2
+
+Section 1
+
+INTRODUCTION TO DFO
+
+F. Xue: DFO
+
+3
+
+1.1 Fundamentals
+ Optimization (a.k.a. Mathematical programming)
+ the selection of a best element (with regard to some criteria)
+
+from some set of available alternatives.
+
+𝐦𝐦𝐦𝐦𝐦𝐦 𝑓𝑓: ℝ𝑛𝑛 ⟼ ℝ
+An example of optimization
+
+ Nonlinear optimization
+ When objective function or some constraints are nonlinear
+
+ Optima (optimal solutions)
+ A subset of global extrema
+o Boundary of f
+o Non-differentiable points
+o Stationary points, where the first derivative is zero
+First derivative and stationary points
+
+F. Xue: DFO
+
+4
+
+1.1 Derivative-free optimization
+ The derivatives are often unavailable, unreliable, or
+impractical to obtain (Conn et al., 2009; Xue, et al., 2018a)
+ When f is too expensive or unanalyzable
+o E.g., FEM parameter tuning, aircraft wings design
+
+ Challenging (NP-hard usually) and time-consuming
+
+ Derivative-free optimization (DFO) (Conn et al., 2009)
+
+Aerodynamics simulation
+Picture source: mentor.com
+
+ Solves problems using meta models
+ Equivalent to a black-box function regression
+ Succeeded in many science and engineering problems
+
+DFO: Manipulating a black-box
+Picture source: Wikipedia.com
+
+o E.g., Protein folding (Nicosia & Stracquadanio, 2008), aircraft wing
+design (Lee, et al., 2008), optimal adaptation of new materials
+(Miskin & Jaeger, 2013)
+F. Xue: DFO
+
+5
+
+1.2 DFO algorithms
+ Category by meta model
+ Heuristic
+o E.g., Monte Carlo, local search (greedy hill-climbing)
+
+ Meta-heuristic
+o Second-level heuristics for heuristics
+o E.g., EDA, GA, PSO, ABC, etc.
+
+ Quasi-derivative/ trust-region
+
+Nelder-Mead Source: Wikipedia.org
+
+o Temporarily assuming regions are smooth and differentiable
+o E.g., NEWUOA, Nelder-Mead, DIRECT, etc.
+
+ Quasi-derivative + meta-heuristic
+o E.g., CMA-ES (covariance matrix adaptation with evolution
+
+strategy), CMA-VNS (CMA with variable neighborhood
+search) (Xue & Shen, 2017)
+F. Xue: DFO
+
+CMA-ES Source: otoro.net
+
+6
+
+1.2 DFO algorithms
+ In general
+ ‘Quasi-derivative + meta-
+
+heuristic’ > Quasi-derivative >
+meta-heuristics
+ Due to the characteristics of real
+
+world problems
+
+F. Xue: DFO
+
+DFO for symmetry detection (Xue et al., 2018c)
+
+Comparison of DFO algorithms for BBOB-2009 (Auger et al., 2010) Source: Inria
+
+7
+
+Section 2
+
+DFO IN CONSTRUCTION
+MANAGEMENT
+
+F. Xue: DFO
+
+8
+
+2.1 Case 1: DFO-based automatic modeling
+ A dilemma of urban semantics in BIM/GIS
+ Inadequacy: Poor semantics in the models
+ Overload: Rich online open BIM/GIS resources
+o With fact-nongeometric & instructional
+
+ Semantic registration as auto-modeling
+
+Google Map/Earth? ~LOD2
+
+BIMobject.com has >300,000
+parametric BIM objects
+
+ Registering semantics to low LOD models
+ Input 1: 2D Photo /3D point cloud
+ Input 2: Semantic components
+
+ Performance metrics
+
+Semantic
+registration
+
+ Computational time
+ Precision = true positive / registered
+F. Xue: DFO
+
+ Recall = true positive / actual
+
+Semantic registration as a process
+
+HK GRF 17201717, HK$450,000
+HK GRF 17200218, HK$520,000 9
+
+2.1 Problem formulation
+ Semantic registration is a decision prob.
+ Problem formulation (Xue et al., 2018a;b;c)
+ Input 1: E.g., 3D point cloud
+ Variables (X): component transformation parameters
+ Objective function (f):
+o Minimum geometric error (e.g., RMSE)
+
+[n Σp∈𝒞𝒞 d(p, T, 𝒞𝒞)²]
+1
+
+½
+
+o Dissimilarity between pictures (e.g., 1 — SSIM)
+SSIM = structure ⋅ luminance ⋅ contrast
+( 2 µ ˆ µ A +c1 )( 2σ ˆ +c1 )
+AA
+= 2 A2
+,
+( µ ˆ + µ A +c1 )(σ 2ˆ+σ 2A +c2 )
+A
+A
+
+ Constraints (C): Topological regularity
+
+ DFO algorithm: CMA-ES
+F. Xue: DFO
+
+DFO-based Semantic registration (Xue et al., 2018a; 2018b)
+C Example
+scaling_max
+
+Example value Notes
+[1.5, 1.5, 1.5]
+xyz coordinates
+
+[0.8, 0.8, 0.8]
+CI scaling_min
+z_rotation_max π/2
+z_rotation_min 0
+on_top_of
+‘Ground’
+
+Ibid.
+
+CR contains_on
+
+Containment or
+intersection
+
+‘Wall’
+
+min_separation ‘0.5 m’
+
+Adjacency,
+connectivity
+
+Separation
+
+10
+
+2.1 An outdoor case (Xue et al., 2018a)
+ 2D photo + free BIM objects  3D models
+
+ Time: 2.5h
+
+ Automatic, error tolerant, recoverable from wrong objects
+
+ Precision: 0.92
+
+ Segmentation-free, topological relationships involved
+
+ Recall: 0.92
+
+(a) A photo of a demolished building
+
+(c) Approximate building mode
+Door portico
+
+Tree × 2
+
+Wall × 2
+Windows × 2
+(b) Semantic components from web
+F. Xue: DFO
+
+(d) Semantic/topological links
+(Language: C++, Ruby; Data formats: SketchUp, Bmp, Google earth)
+
+11
+
+2.1 An indoor case (Xue et al., 2018b)
+ Point cloud + BIM objects  indoor model
+
+ Time: 6.44s
+
+ Automatic, saved 98% time from manual modeling
+
+ Precision: 1.0
+
+ RMSE = 3.87cm, equal to experienced modelers
+
+ Recall: 1.0
+
+(Language: C++, CLR; Data formats: Autodesk Revit, Stanford polygon)
+F. Xue: DFO
+
+12
+
+2.1 A demo video
+
+F. Xue: DFO
+
+13
+
+2.1 Symmetry detection from 3D point cloud
+ 3D point cloud  symmetry hierarchy (Xue et al., 2018c)
+
+ Time = 98.6s
+
+ A knowledge discovery tool for further 3D modeling
+
+ PCR = 93.7%
+
+F. Xue: DFO
+
+14
+
+2.2 Case 2: Megaproject stakeholder coordination
+ Megaproject
+ Huge amount of investment, long project development cycle,
+ Many stakeholders, and complicated activities
+
+ This project aims
+ 1. To identify and cluster key stakeholder network
+o Using social network analysis (SNA)
+
+ 2. To formulate their relationships and optimize stakeholder
+
+coordination strategy
+o Agent-based model of interests and decision preference
+o NK model of their coordination networks
+o DFO for mutual interests coordination
+
+ 3. To devise a methodology for megaproject coordination
+NSFC 71671156, CNY490,000
+F. Xue: DFO
+
+15
+
+Section 3
+
+DISCUSSION
+
+F. Xue: DFO
+
+16
+
+3.1 Discussion
+ DFO
+ Generic, cross-domain algorithms
+o Many (meta-)heuristics
+o Quasi-derivative methods
+
+ Proven successful in challenging science/engineering problems
+ Applied to 3D modeling processes
+o Pros: Automated, fast, accurate,
+o Cons: Still one or two parameters to tune
+
+E.g., iteration, population size
+With sensitivity analysis and recommended settings provided
+ To be applied to stakeholder network
+o For optimal collaboration
+F. Xue: DFO
+
+17
+
+References
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Auger, A., Finck, S., Hansen, N., and Ros, R. (2010). BBOB 2009: Comparison tables of all algorithms on all noisy functions, INRIA.
+Conn, A. R., Scheinberg, K., & Vicente, L. N. (2009). Introduction to derivative-free optimization. SIAM.
+Lee, D. S., Gonzalez, L. F., Periaux, J. & Srinivas, K. (2008), Robust design optimisation using multi-objective evolutionary algorithms. Computers & Fluids,
+37(5), 565-583.
+Miskin, M. Z., & Jaeger, H. M. (2013). Adapting granular materials through artificial evolution. Nature materials, 12(4), 326.
+National Institute of Building Sciences. (2015). National Building Information Modeling Standard. Version 3, Retrieved from
+https://www.nationalbimstandard.org/
+National Geographic Society. (2012). GIS (geographic information system). http://www.nationalgeographic.org/encyclopedia/geographic-information-systemgis/
+Nicosia, G. & Stracquadanio, G. (2008), Generalized pattern search algorithm for peptide structure prediction. Biophysical Journal, 95(10), 4988-4999.
+Niu, Y., Lu, W., Xue, F., Liu D., Chen, K., Fang, D., & Anumba, C. (2018). Towards the “Third Wave”: An SCO-enabled occupational health and safety
+management system for construction. Safety Science. 111, 213-223.
+Rowley, J. (2007). The wisdom hierarchy: representations of the DIKW hierarchy. Journal of information science, 33(2), 163-180.
+Rowley, J., & Hartley, R. (2017). Organizing knowledge: an introduction to managing access to information. Routledge.
+Xu, J., Chen, K., Xue, F., & Lu, W. (2018). 3D point clouds for architecture, engineering, construction, and operation: A SWOT analysis. Working paper
+Xue, F., & Shen, G. Q. (2017). Design of an efficient hyper-heuristic algorithm CMA-VNS for combinatorial black-box optimization problems. In
+Proceedings of the Genetic and Evolutionary Computation Conference Companion (pp. 1157-1162). ACM.
+Xue, F., Lu, W., Chen, K. (2018a). Automatic generation of semantically rich as-built building information models using 2D images: A derivative-free
+optimization approach. Computer-Aided Civil and Infrastructure Engineering, in press. doi: 10.1111/mice.12378
+Xue, F., Lu, W., Chen, K. & Zetkulic, A. (2018b). From ‘semantic segmentation’ to ‘semantic registration’: A derivative-free optimization-based approach
+for automatic generation of semantically rich as-built building information models (BIMs) from 3D point clouds. Journal of Computing in Civil Engineering.
+Under review
+Xue. F., Chen, K., Lu, W. (2018c). Architectural Symmetry Detection from 3D Urban Point Clouds: A Derivative-Free Optimization (DFO) Approach. CIB
+W78 2018, accepted.
+Zins, C. (2007). Conceptual approaches for defining data, information, and knowledge. Journal of the Association for Information Science and Technology,
+58(4), 479-493.
+
+F. Xue: DFO
+
+18
+
+THANK YOU !
+
+F. Xue: DFO
+
+19
+
+

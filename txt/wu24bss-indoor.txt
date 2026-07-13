@@ -1,0 +1,1368 @@
+BSS-Indoor: Volumetric wall reconstruction using
+
+1
+
+Building Section Skeleton
+
+2
+
+Yijie Wu 1, Siyuan Meng 2, Fan Xue 3
+
+3
+
+This is the authors' version of the paper:
+Wu, Y., Meng, S., & Xue, F. (2025). BSS-Indoor: Volumetric wall reconstruction using Building
+Section Skeleton. Proceedings of the 29th International Symposium on Advancement of
+Construction Management and Real Estate, Springer, in press.
+This file is shared for personal and academic use only, under the license CC BY-NC-ND 4.0
+(Non-Commercial, No Derivatives, and with an Attributed citation when you use). The final
+published version of this paper can be found at: [LINK_TO_SPRINGERLINK]. Any uses other
+than personal and academic purposes must obtain appropriate permissions from Springer first.
+
+15
+
+Abstract. Building Information Modeling (BIM) has become well recognized and increasingly mandated
+in the building sector, where Scan-to-BIM automation shows great potential for BIM users. For the ‘last
+mile’ or ‘last step’ of automatic Scan-to-BIM, parametric reconstruction, existing methods focus on
+surface reconstruction. However, BIM practitioners have to handle architectural elements as volumetric
+instances rather than connected surfaces. This paper proposes a volumetric reconstruction method called
+BSS-Indoor. The method is based on a novel Building Section Skeleton (BSS) theory which pairs the
+parallel and symmetric facades of the building exterior. By adapting BSS from building exteriors to
+interiors, BSS-Indoor reconstructs internal walls as BSS segments. Our method simultaneously locates
+walls and estimates their thicknesses, addressing common issues in existing solutions, such as fragmented
+long walls and merged adjacent walls. Preliminary experiments on a subset of the CV4AEC (3D) dataset
+demonstrate the effectiveness and potential of BSS-Indoor in reconstructing volumetric walls.
+
+16
+
+Keywords: Scan-to-BIM; Volumetric wall reconstruction; Point cloud processing
+
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+
+1 Yijie Wu
+
+Department of Real Estate and Construction, The University of Hong Kong, China
+Email: yijiewu@connect.hku.hk
+2 Siyuan Meng
+Department of Real Estate and Construction, The University of Hong Kong, China
+Email: siyuanm@connect.hku.hk
+3 Fan Xue
+Department of Real Estate and Construction, The University of Hong Kong, China
+Email: xuef@hku.hk
+
+1
+
+17
+
+1
+
+Introduction
+
+18
+
+The Building Information Modeling (BIM) has become significantly important throughout a building’s
+
+19
+
+entire lifespan, covering all phases from initial design to eventual demolition [1]. To streamline the
+
+20
+
+building sector with BIM, automating the creation of BIMs is extremely crucial [2]. Scan-to-BIM, a
+
+21
+
+popular task that converts 3D scans captured by laser scanners or photogrammetry, shows great potential
+
+22
+
+in the creation and uses of as-is BIM [3]. A typical Scan-to-BIM workflow involves four steps: scanning,
+
+23
+
+scan registration, semantic segmentation, and parametric reconstruction. In recent years, solutions and
+
+24
+
+datasets for registration and semantic segmentation of building interiors have rapidly evolving, which
+
+25
+
+significantly boosted the Scan-to-BIM popularity [4]. However, the parametric reconstruction, which is
+
+26
+
+the ‘last mile’ or ‘last step’ of the Scan-to-BIM pipeline, does not yet fulfill the actual requirements of
+
+27
+
+BIM practitioners in the industry [5].
+
+28
+
+Existing methods for reconstructing building interiors focus on surface reconstruction instead of vol-
+
+29
+
+umetric modeling. These methods reconstruct the surfaces of architectural elements, i.e., walls, floors,
+
+30
+
+and ceilings, into lightweight meshes [6, 7]. Simultaneously, rooms and their closed boundaries are
+
+31
+
+extracted [8, 9]. The resulting surface models or floorplans satisfy the requirements of indoor naviga-
+
+32
+
+tion [10] and fit the native geometric representation of CityGML for City Information Modeling [6].
+
+33
+
+However, BIM practitioners in the building sector pay more attention on the individual instances of ar-
+
+34
+
+chitectural elements [5]. Walls and slabs are preferably modeled as volumetric instances enriched with
+
+35
+
+joints and details inside the surfaces rather than separated facets that bound different rooms.
+
+37
+
+Volumetric reconstruction of architectural elements essentially involves locating the volume, outlines
+the volumetric shape and/or estimates the dimensions of the identified volume. For walls and slabs,
+
+38
+
+thickness should be estimated. Meanwhile, walls are usually simplified as cuboids. Volumetric walls can
+
+39
+
+be reconstructed by clustering the wall points produced by semantic segmentation and then estimating
+
+40
+
+the bounding box of each cluster [4]. To achieve a higher reconstruction fitness to the scans, optimiza-
+
+41
+
+tion models were formulated to finetune the locations and dimensions of wall boxes [11]. Moreover,
+
+42
+
+wall thickness can also be predicted by deep learning after projected the point clouds onto horizontal
+
+43
+
+planes [5]. However, as the height information is missing after the projection, the method reconstructs
+
+44
+
+floorplans only. A common aspect among these solutions is that they separate the volume localization and
+
+45
+
+dimension estimation processes. As a result, long walls are prone to being cut into pieces and adjacent
+
+46
+
+walls with different dimensions are prone to being merged into one wall.
+
+36
+
+47
+
+In this paper, we propose a volumetric reconstruction method for walls based on the Building Section
+
+48
+
+Skeleton (BSS) [12]. Our method aims to locate and estimate the thickness of walls simultaneously. BSS
+
+49
+
+is a shape skeleton defined to adapt the morphological characteristics of building exterior boundaries.
+
+50
+
+Each BSS segment corresponds to a pair of parallel vertical planes representing facades or a pair of
+
+51
+
+symmetric incline planes representing roofs. A BSS segment is parameterized with the radius and forms
+
+52
+
+a polyhedron, which is a similar concept of volume thickness. This study transfers the BSS for building
+
+53
+
+exteriors to interiors. Each internal walls are reconstructed as a BSS segment, while the external walls
+
+54
+
+are detected as the parallel facades that bound buildings. Preliminary experiments on the a subset of the
+
+55
+
+CV4AEC (3D) dataset [13] show that our method, named BSS-Indoor, can effectively reconstruct the
+
+56
+
+volumetric walls.
+
+57
+58
+
+The remainder of this paper will introduce our method BSS-Indoor, report preliminary results, as
+well as discuss the strengths and future improvement of BSS-Indoor.
+
+2
+
+59
+
+2
+
+Preliminaries: Building Section Skeleton for wall reconstruction
+
+60
+
+The fundamental concept of the Building Section Skeleton is to capture the parallel and symmetric planes
+
+61
+
+of buildings, building on the classical concept, shape skeleton, in computer graphics. The identified par-
+
+62
+
+allel and symmetric planes can be assembled into 3D volumes which represent the space inside buildings,
+
+63
+
+providing semantic information. These 3D volumes may corresponding to the empty space of building
+
+64
+
+interiors designated for specific functions, such as offices and corridors, or they could also be physical
+
+65
+
+structures, such as walls.
+
+66
+
+BSS are defined at three levels, i.e., atoms, segments, and the relations between segments. A BSS
+
+67
+
+atom is the center of the sphere inscribed by symmetric points on the exterior or interior surfaces of
+
+68
+
+buildings. If the surfaces are vertical, the radius of the sphere and the normals of the inscribed points
+
+70
+
+are attributes of a BSS atom. If the surfaces are not vertical, the intersection height of the two inscribed
+directions and the normals of inscribed points serve as the parameters of a BSS atom. When two points
+
+71
+
+lie on a pair of parallel planes, then the corresponding BSS atom is equivalent to the midpoint of these
+
+72
+
+two points. At the second level in the definition of BSS, a segment is a group of BSS atoms distributed
+
+73
+
+on a same plane, forming a region, and sharing same radius or intersection height and normal. Hence, a
+
+74
+
+BSS segment represents the medial plane of a pair of parallel or symmetric planar regions. Furthermore,
+
+75
+
+by sweeping the medial vertical region of a BSS segment, there is a corresponding volume of a BSS seg-
+
+76
+
+ment, which represents the empty or physical space of buildings. The relations of BSS segments, which
+
+77
+
+constitute the third level of the BSS definition, refer to their topological relations, including intersections
+
+78
+
+and adjacency. For more details on BSS, please refer to [12].
+
+69
+
+80
+
+In the practice application of BSS in Scan-to-BIM, there are two specific designs for wall reconstruction. Although a BSS segment could be the medial planar region of both vertical and incline planes which
+
+81
+
+could be parallel and non-parallel, respectively, the planes involved in wall reconstruction are usually par-
+
+82
+
+allel. Therefore, we solely use BSS for vertical and parallel planes. Moreover, different mechanisms are
+
+83
+
+employed reconstructing interior and exterior walls. As a BSS segment represents the medial plane of
+
+84
+
+a pair of parallel or symmetric planes, the use of BSS assumes the presence of dual planes to bound a
+
+85
+
+space. However, the scanned point clouds for BIM reconstruction may not always include the facades
+
+86
+
+of buildings, leaving only one single plane for an exterior wall. To reconstruct both interior and exterior
+
+87
+
+walls, our method captures dual wall surfaces as close as possible to each other for reconstructing BSS
+
+88
+
+segments for interior walls, and as far apart as possible for reconstructing the interior spaces of buildings.
+
+89
+
+Subsequently, we use the boundaries of the interior spaces to supplement the exterior walls.
+
+90
+
+3
+
+Method
+
+91
+
+3.1
+
+Overview
+
+92
+
+Fig. 1 shows an overview of our method. BSS-Indoor takes the segmented point clouds of architectural
+
+93
+
+elements as inputs and outputs the volumetric walls. Plane detection is performed first to group points as
+
+94
+
+planar primitives. Then, the method clusters the primitives in terms of their normals. In the case shown
+
+95
+
+in Fig. 1, two orthogonal orientations are clustered. After that, two stages, one for proposing, the other
+
+96
+
+for refining, are implemented to reconstruct the walls of each orientations.
+
+79
+
+97
+
+Stage 1 locates the possible walls and outlines their vertical planar boundaries as the initial BSS
+
+98
+
+segments. This stage pairs the parallel planar primitives of each orientation whose distances between
+
+99
+
+each other are close or far apart enough in terms of given thresholds. After pairing, the proposed method
+
+3
+
+Stage 2: Alignment
+Intersections
+
+Planes to pair
+
+Initial BSS segments
+Internal
+
+Projecting and Triangulating
+
+Orientation #2
+
+Plane fitting
+
+Clustering
+
+Planar groups
+
+Intersecting
+
+Orientation #1
+
+Input:
+Semantic points
+
+between different orientations
+
+Aligned BSS segments
+
+External
+
+Internal
+
+Aligned polygons
+
+Triangulation
+
+Integer programming
+
+Stage 1: Pairing and segmentation
+
+Output: Volumetric walls
+
+External
+
+Figure 1: Overview of BSS-Indoor.
+
+100
+
+segments the common regions coarsely of each paired regions in an ascending order for close ones and
+
+101
+
+descending order for far away ones. Note that the common region is the vertical medial region of the
+
+102
+
+paired planes. However, as shown in Fig.1, the initial BSS segments have irregular boundaries. There
+
+103
+
+are also topological errors including intersections and gaps between different BSS segments.
+
+104
+
+Therefore, Stage 2 further refines the BSS segments by aligning the BSS segments of different orien-
+
+105
+
+tations to smooth the boundaries and remove the intersections and gaps. The aligning procedure projects
+
+106
+
+the vertical regions of a BSS segment onto a vertical plane. The method then triangulates the projected
+
+107
+
+extent. Triangles in the extent are labeled as inside or outside the BSS segment. Refining the boundary
+
+108
+
+of a BSS segments now can be conducted by flipping the inside/outside labels of the triangles. An in-
+
+109
+
+teger programming model is formulated to optimize the flipping for a smooth and topologically correct
+
+110
+
+boundary of each BSS segment.
+
+111
+
+After the two stages, internal walls are reconstructed from the BSS segments formed by close paired
+
+112
+
+planes, while external walls are from BSS segments composed by far apart parallel planes. The method
+
+113
+
+extrudes the vertical region of a BSS segment horizontally by the radius of a BSS segment for interior
+
+114
+
+walls or a standard thickness for exterior walls.
+
+115
+
+3.2
+
+116
+
+In Stage 1, parallel planes within each cluster are paired, and the common regions of the paired planes
+
+117
+
+are segmented for each orientation individually.
+
+Stage 1: Pairing and Segmentation
+
+118
+
+Planes within a cluster that are either closer or farther than given thresholds are filtered as potential
+
+119
+
+pairs. Then, the method sorts the pairs with small distances in an ascending order for reconstructing inte-
+
+120
+
+rior walls, while pairs with large distances in descending order for exterior walls. The segmentation of the
+
+121
+
+common regions for interior and exterior walls are performed individually according to their respective
+
+122
+
+orders. Although a plane can be paired with multiple planes, a region of the plane can only be segmented
+
+123
+
+once and paired with one of its pairing candidates. Therefore, within a single orientation cluster, BSS
+
+124
+
+segments and their corresponding volumes cannot intersect with each other. By design, paired planes
+
+4
+
+125
+
+with closer distances are segmented first for interior walls; whereas farther paired planes are prioritized
+
+126
+
+for exterior walls.
+
+127
+
+The segmentation of common regions are based on the Boolean operations of polygons. Our method
+
+128
+
+projects the points of each plane onto a vertical plane and then polygonizes the projected regions by
+
+129
+
+calculating their 2D Alpha shapes. When segmenting the common region for a pair of planes (A, B), the
+
+130
+
+two polygons of each plane are separated into three parts: A ∩ B, A \ B, and B \ A. The region of A ∩ B
+
+131
+
+is segmented out as one of the initial BSS segment. The regions of A \ B and B \ A are retained for the
+
+132
+
+subsequent segmentation with the remaining paired planes of A and B, respectively.
+
+133
+
+After segmenting the region of a BSS segment, our method extrudes the vertical region of a BSS
+
+134
+
+segment horizontally in both orientations by its radius to form a 3D polyhedron, representing the initial
+
+135
+
+interior walls and indoor spaces (presented in the two sub-figures on the left-hand side in the second row
+
+136
+
+in Fig. 1).
+
+137
+
+3.3
+
+138
+
+Stage 2 refines the initial BSS segments by aligning those of different orientations. This process includes
+
+139
+
+smoothing the boundaries of the BSS segments and eliminating intersections and gaps between them.
+
+Stage 2: Alignment
+
+140
+
+The alignment procedure relies on the intersections of BSS segments from various orientations. The
+
+141
+
+method first intersects the medial planes of the initial BSS segments, filtering out intersection lines that
+
+142
+
+are too distant from the segmented regions. Next, for each orientation cluster, our method projects all
+
+143
+
+the segmented common regions from Stage 1, along with the intersection lines, onto the vertical plane
+
+144
+
+orthogonal to the orientation. Constrained triangulation is performed on the projection. The resulting
+
+145
+
+triangles are labeled based on whether they belong to a particular segment or not. Assume there are n
+
+146
+
+segments in a cluster; each triangle is labeled with a k-dimensional binary vector. The refinement of
+
+147
+
+initial BSS segments is then transformed into a problem of flipping the labels of these triangles.
+
+148
+
+A binary optimization model is formulated for the label flipping. The Boolean variables indicate
+
+149
+
+whether a label should be flipped, or equivalently, a triangle should be removed from or added to a BSS
+
+150
+
+segment. The smoothing and topology refinement are achieved by controlling the label distinctions of
+
+151
+
+triangles distributed across the intersection lines. Adjacent triangles sharing edges on the intersection
+
+152
+
+lines are prone to be labeled differently; that is, if one belong to a BSS segment, the other should not
+
+153
+
+belong to the same BSS segment. For adjacent triangles whose common edges are not on the intersection
+
+154
+
+lines, the optimization model tends to label the two triangles in a same way, i.e., both either belong to
+
+155
+
+or do not belong to a BSS segment. As a result, the optimization encourages continuity inside a BSS
+
+156
+
+segment and discontinuity along the intersection lines, which drives the boundaries of the BSS segments
+
+157
+
+to align with the intersection lines. Additionally, the refinement should not deviate significantly from the
+
+158
+
+initial BSS segments. Therefore, the optimization model also minimizes the number of label flipping.
+
+159
+
+4
+
+Preliminary experiments
+
+160
+
+4.1
+
+Data and implementation details
+
+161
+
+To validate the initial effectiveness of BSS-Indoor, six samples from the training set of the CV4AEC 3D
+
+162
+
+dataset were tested. Note that this dataset was captured by laser scanners. As a result, there are missing
+
+163
+
+points for walls and outliers outside the buildings due to windows. The six samples include two typical
+
+164
+
+scenarios: office and parking. For the following experiments, the point clouds were uniformly sampled
+5
+
+165
+
+at an interval of 2cm.
+
+166
+
+The semantic point clouds of architectural elements were segmented by PointContrast [14] which
+
+167
+
+were trained on ScanNet [15] and S3DIS [16]. Plane primitives of the semantic point clouds were de-
+
+168
+
+tected by RANSAC [17]. We employed K-Means for clustering the plane orientations, where users need
+
+169
+
+to provide the number of clusters k in advance. In Stage 1, the Alpha shape polygonization of the plane
+
+170
+
+primitives was implemented based on GEOS [18]. The hyper-parameter α was set to a range from 1 to
+
+171
+
+3 m. In Stage 2, the constrained triangulation was implemented based on CGAL [19]. The optimization
+
+172
+
+of integer programming was solved by Gurobi [20] with a weight factor provided by users to balance the
+
+173
+
+geometric consistency and the degree of alignment.
+
+174
+
+4.2
+
+175
+
+Results were evaluated by the official 3D evaluation code [21] of CV4AEC’s Scan-to-BIM competition.
+
+176
+
+The evaluation metrics include 3D Intersection-over-Union (IoU) and the matching precision, recall, and
+
+177
+
+F1-score of the 2D wall segments. Note that the matching of the 2D segments were evaluated at three
+
+178
+
+different resolutions with matching thresholds of 5, 10, and 20 cm, respectively.
+
+179
+
+4.3
+
+180
+
+The reconstructed volumetric walls and the evaluation results are presented in Fig. 2 and Tab. 1. The
+
+181
+
+average 3D IoU is 20.4 %, with a range of 7.4 % to 28.7 %. At the 10-cm resolution, the average
+
+182
+
+precision, recall, and F1 scores are 41.4 %, 41.2 %, and 40.6 %. The precision and recall show a good
+
+183
+
+balance. The F1-scores at 10-cm resolution range from 21.2 % to 56.1 %. As shown in Fig. 2, some
+
+184
+
+internal walls and their thicknesses are accurately estimated, as BSS-Indoor captured their dual planes
+
+185
+
+correctly. The external walls were also partially reconstructed. However, there are still some noticeable
+
+Evaluation
+
+Results
+
+limitations, particularly for missing walls.
+Table 1: Evaluated results of the 6 samples in CV4AEC 3D dataset. #gt, #pred, #m refer to the
+number of ground truth, prediction (reconstruction), and matched walls, respectively. The matching
+between 2D wall segments were evaluated with three matching thresholds of 5, 10, and 20 cm.
+thresh: 5 cm
+
+thresh: 10 cm
+
+thresh: 20 cm
+
+sample
+
+#gt
+
+#pred
+
+3D IoU
+
+#m
+
+prec.
+
+rec.
+
+F1
+
+#m
+
+prec.
+
+rec.
+
+F1
+
+#m
+
+prec.
+
+rec.
+
+F1
+
+06 B1
+06 F3
+07 F5
+32 F1
+32 F2
+32 F3
+
+496
+976
+904
+528
+656
+688
+
+712
+856
+544
+640
+688
+728
+
+7.4%
+7.5%
+21.0%
+31.3%
+26.3%
+28.7%
+
+68
+169
+198
+214
+249
+301
+
+9.6%
+19.7%
+36.4%
+33.4%
+36.2%
+41.3%
+
+13.7%
+17.3%
+21.9%
+40.5%
+38.0%
+43.8%
+
+11.3%
+18.4%
+27.3%
+36.6%
+37.1%
+42.5%
+
+128
+217
+290
+311
+333
+397
+
+18.0%
+25.4%
+53.3%
+48.6%
+48.4%
+54.5%
+
+25.8%
+22.2%
+32.1%
+58.9%
+50.8%
+57.7%
+
+21.2%
+23.7%
+40.1%
+53.3%
+49.6%
+56.1%
+
+172
+243
+368
+340
+376
+433
+
+24.2%
+28.4%
+67.6%
+53.1%
+54.7%
+59.5%
+
+34.7%
+24.9%
+40.7%
+64.4%
+57.3%
+62.9%
+
+28.5%
+26.5%
+50.8%
+58.2%
+56.0%
+61.2%
+
+Average
+
+/
+
+/
+
+20.4%
+
+/
+
+29.4%
+
+29.2%
+
+28.9%
+
+/
+
+41.4%
+
+41.2%
+
+40.6%
+
+/
+
+47.9%
+
+47.5%
+
+46.9%
+
+186
+
+187
+
+The current BSS-Indoor implementation failed to reconstruct some external walls. As shown in
+
+188
+
+Fig .2, such failures are more significant for Samples 06-B1, 06-F3, and 32-F3. This issue occurred
+
+189
+
+because there might be large empty regions on the external walls where there are large windows. As a
+
+190
+
+result, holes could be observed in the original scans, semantic point clouds, and the initial alpha polygons
+
+191
+
+of the plane primitives, making it difficult to reconstruct the external walls.
+
+192
+
+Significant incompleteness in the semantic point clouds and initial alpha polygons also led to the
+
+193
+
+missing internal walls. These failures could be common due to the heavy occlusions caused by clutter
+
+194
+
+near the walls.
+
+6
+
+06_B1
+
+06_F3
+
+07_F5
+
+F1 = 11.3 %@5 cm, 21.2%@1 cm, 28.5%@20 cm
+
+F1 = 18.4 %@5 cm, 23.7 %@1 cm, 26.5%@20 cm
+
+F1 = 27.3 %@5 cm, 40.1%@1 cm, 50.8%@20 cm
+
+32_F1
+
+32_F2
+
+32_F3
+
+F1 = 36.6 %@5 cm, 53.3%@1 cm, 58.2%@20 cm
+
+F1 = 37.1 %@5 cm, 49.6%@1 cm, 56.0%@20 cm
+
+F1 = 42.5%@5 cm, 56.1%@1 cm, 61.2%@20 cm
+
+Figure 2: Results of the 6 samples. The right sub-figure for each case displays the matching between
+the ground truth (in blue) and reconstruction (in red).
+
+195
+
+5
+
+Discussion
+
+196
+
+We believe that BSS-Indoor has significant potential in calling for research interest on the volumes of 3D
+
+197
+
+objects above points and triangles. Our method separates the reconstruction of the dual-plane walls (usu-
+
+198
+
+ally internal walls) and single-plane walls (usually external walls), offering higher flexibility in thickness
+
+199
+
+estimation. By distinguishing these two situations, the thickness of a dual-plane wall is calculated as
+
+200
+
+the distance between its paired planes, while the thickness of a single-plane wall can be estimated or as-
+
+201
+
+signed by user-specific, average, or standard wall thickness. Furthermore, BSS-Indoor can clearly detect
+
+203
+
+single-plane walls, allowing users to manually review and adjust them if necessary. Importantly, BSSIndoor does not rely on any learning techniques requiring large-scale manual annotations for thickness
+
+204
+
+estimation, which makes it easier for BIM practitioners to adopt our method in the future.
+
+202
+
+205
+
+There are also a lot more details should be improved for the current BSS-Indoor, including (1) fine-
+
+206
+
+tuning the parameters of PointContrast on CV4AEC dataset; (2) adjusting the hyper-parameters of plane
+
+207
+
+detection, Alpha shape polygonization, and the optimization for aligning the BSS segments; (3) debug-
+
+208
+
+ging the current implementation; (4) testing the method on more samples. Addressing these limitations
+
+209
+
+could lead to enhanced performance and more accurate results.
+
+210
+
+6
+
+211
+
+In this paper, we introduced BSS-Indoor, a novel volumetric reconstruction method for walls based on
+
+212
+
+Building Section Skeleton. Our method successfully adapts BSS for building interiors and simultane-
+
+213
+
+ously locates and estimates wall thicknesses. BSS-Indoor differentiates between the reconstruction of
+
+214
+
+dual-plane walls and single-plane walls, enhancing the accuracy and flexibility of wall thickness esti-
+
+215
+
+mation. Preliminary experiments on the CV4AEC (3D) dataset show the effectiveness of BSS-Indoor
+
+216
+
+in reconstructing volumetric walls. Although BSS-Indoor demonstrates potential, further refinement is
+
+217
+
+required to meet the standards necessary for real-world Scan-to-BIM practice in the building sector. Fu-
+
+218
+
+ture work will focus on improving the implementation and addressing the limitations identified in the
+
+219
+
+preliminary experiments.
+
+Conclusion
+
+7
+
+220
+
+Acknowledgments
+
+221
+
+The work described in this paper was supported by the Hong Kong Innovation and Technology Fund
+
+222
+
+(ITF) [grant numbers ITP/004/23LP].
+
+223
+
+References
+
+224
+225
+
+[1] NBIMS-US. National BIM Standard-United States V4. https://www.nationalbimstandard.org/,
+2022. Accessed: 2022-12-29.
+
+226
+
+[2] Mansour Esnaashary Esfahani, Christopher Rausch, Mohammad Mahdi Sharif, Qian Chen, Carl Haas, and
+
+227
+
+Bryan T Adey. Quantitative investigation on the accuracy and precision of scan-to-bim under different mod-
+
+228
+
+elling scenarios. Automation in Construction, 126:103686, 2021.
+
+229
+
+[3] Frédéric Bosché, Mahmoud Ahmed, Yelda Turkan, Carl T Haas, and Ralph Haas. The value of integrating
+
+230
+
+Scan-to-BIM and Scan-vs-BIM techniques for construction monitoring using laser scanning and BIM: The
+
+231
+
+case of cylindrical MEP components. Automation in Construction, 49:201–213, 2015.
+
+232
+
+[4] Yijie Wu, Maosu Li, and Fan Xue. Towards fully automatic scan-to-bim: A prototype method integrating deep
+
+233
+
+neural networks and architectonic grammar. In EC3 Conference 2023, volume 4, pages 0–0. European Council
+
+234
+
+on Computing in Construction, 2023.
+
+235
+236
+
+[5] Weilian Song, Jieliang Luo, Dale Zhao, Yan Fu, Chin-Yi Cheng, and Yasutaka Furukawa. A-scan2bim: Assistive scan to building information modeling. British Machine Vision Conference (BMVC), 2023.
+
+237
+
+[6] Jiali Han, Mengqi Rong, Hanqing Jiang, Hongmin Liu, and Shuhan Shen. Vectorized indoor surface recon-
+
+238
+
+struction from 3d point cloud with multistep 2d optimization. ISPRS Journal of Photogrammetry and Remote
+
+239
+
+Sensing, 177:57–74, 2021.
+
+240
+
+[7] Jiali Han, Yuzhou Liu, Mengqi Rong, Xianwei Zheng, and Shuhan Shen. Floorusg: Indoor floorplan recon-
+
+241
+
+struction by unifying 2d semantics and 3d geometry. ISPRS Journal of Photogrammetry and Remote Sensing,
+
+242
+
+196:490–501, 2023.
+
+243
+244
+
+245
+246
+
+[8] Hao Fang, Florent Lafarge, Cihui Pan, and Hui Huang. Floorplan generation from 3d point clouds: A space
+partitioning approach. ISPRS Journal of Photogrammetry and Remote Sensing, 175:44–55, 2021.
+[9] Hao Fang, Cihui Pan, and Hui Huang. Structure-aware indoor scene reconstruction via two levels of abstraction.
+ISPRS Journal of Photogrammetry and Remote Sensing, 178:155–170, 2021.
+
+247
+
+[10] Pawel Boguslawski, Sisi Zlatanova, Dariusz Gotlib, Michał Wyszomirski, Miłosz Gnat, and Piotr Grzem-
+
+248
+
+powski. 3d building interior modelling for navigation in emergency response applications. International
+
+249
+
+Journal of Applied Earth Observation and Geoinformation, 114:103066, 2022.
+
+250
+
+[11] Mansour Mehranfar, Alexander Braun, and André Borrmann. From dense point clouds to semantic digital mod-
+
+251
+
+els: End-to-end ai-based automation procedure for manhattan-world structures. Automation in Construction,
+
+252
+
+162:105392, 2024.
+
+253
+
+[12] Yijie Wu, Fan Xue, Maosu Li, and Sou-Han Chen. A novel building section skeleton for compact 3d recon-
+
+254
+
+struction from point clouds: A study of high-density urban scenes. ISPRS Journal of Photogrammetry and
+
+255
+
+Remote Sensing, 209:85–100, 2024.
+
+256
+
+[13] Iro Armeni, Erzhuo Che, Martin Fischer, Yasutaka Furukawa, Daniel Hall, Jung Jaehoon, Fuxin Li, Michael
+
+257
+
+Olsen, Marc Polleyfeys, and Yelda Turkan. Computer visionin the built environment. https://cv4aec.
+
+258
+
+github.io/, 2023. Accessed: 2024-3-28.
+
+8
+
+259
+
+[14] Saining Xie, Jiatao Gu, Demi Guo, Charles R Qi, Leonidas Guibas, and Or Litany. Pointcontrast: Unsupervised
+
+260
+
+pre-training for 3d point cloud understanding. In Computer Vision–ECCV 2020: 16th European Conference,
+
+261
+
+Glasgow, UK, August 23–28, 2020, Proceedings, Part III 16, pages 574–591. Springer, 2020.
+
+262
+
+[15] Angela Dai, Angel X Chang, Manolis Savva, Maciej Halber, Thomas Funkhouser, and Matthias Nießner.
+
+263
+
+Scannet: Richly-annotated 3d reconstructions of indoor scenes. In Proceedings of the IEEE conference on
+
+264
+
+computer vision and pattern recognition, pages 5828–5839, 2017.
+
+265
+266
+
+267
+268
+
+269
+270
+
+271
+272
+
+[16] Iro Armeni, Sasha Sax, Amir R Zamir, and Silvio Savarese. Joint 2d-3d-semantic data for indoor scene understanding. arXiv preprint arXiv:1702.01105, 2017.
+[17] Ruwen Schnabel, Roland Wahl, and Reinhard Klein. Efficient ransac for point-cloud shape detection. In
+Computer graphics forum, volume 26, pages 214–226. Wiley Online Library, 2007.
+[18] GEOS contributors. GEOS coordinate transformation software library. Open Source Geospatial Foundation,
+2021.
+[19] Mariette Yvinec. 2D triangulations. In CGAL User and Reference Manual. CGAL Editorial Board, 5.6.1
+edition, 2024.
+
+273
+
+[20] Gurobi Optimization, LLC. Gurobi Optimizer Reference Manual. https://www.gurobi.com, 2023.
+
+274
+
+[21] Sayan Deb Sarkar. 3d building models matching and evaluation code. https://github.com/cv4aec/
+
+275
+
+3d-matching-eval, 2023. Accessed: 2024-3-28.
+
+9
+
+

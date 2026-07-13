@@ -1,0 +1,900 @@
+‘Cognitive facility management’: Definition, system architecture, and
+example scenario
+Jinying Xu1, Weisheng Lu1*, Fan Xue1, and Ke Chen2
+* Corresponding author, email: wilsonlu@hku.hk
+This is the peer-reviewed post-print version of the paper:
+Xu, J., Lu, W., Xue, F., & Chen, K. (2019). ‘Cognitive facility management’:
+Definition, system architecture, and example scenario. Automation in Construction,
+107, in press. Doi: 10.1016/j.autcon.2019.102922
+The final version of this paper is available at: https://doi.org/10.1016/j.autcon.2019.102922.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+
+Abstract:
+Prevailing facility management (FM) discourses have recognized the importance of efficient
+facilities to improve the quality of life and the productivity of business. Advanced technologies
+have elevated facilities from ‘brick and mortar’ to ‘intelligent beings’. To date, facilities have
+become more anthropomorphized, imbued with cognitive capability akin to humans, e.g., able
+to perceive, learn, and act. However, the development of ‘cognitive FM’ remains in its infancy.
+This paper attempts to put forward the concept of cognitive FM by providing a working
+definition and articulating its key elements, including perception, learning, and action. An
+eight-layer system architecture is proposed to facilitate the implementation of cognitive FM.
+Following that, a demonstrative scenario called ‘Event Manager’ is utilized to showcase the
+potential applications of such cognitive FM. The paper contributes to the body of knowledge
+by advancing the stagnant FM discourses defined and subsequently confined by the
+smart/intelligent building language three decades ago. It opens a new avenue for both
+researchers and practitioners to better investigate and value FM as a cognitive system.
+Keywords: Facility; Facility management; Cognitive system; Cognitive facility management;
+Proactive intelligence
+1. Introduction
+A facility is an asset that is built, installed, or established to serve our social and economic
+activities (Kaplan et al., 2004). Facilities include different types of physical infrastructures (e.g.,
+bridges, roads, and stadiums) and buildings (e.g., hospitals, shopping malls, and housing). The
+growing complexity of modern facilities increases the responsibilities and importance of
+1 Department of Real Estate and Construction, Faculty of Architecture, The University of Hong Kong,
+Pokfulam, Hong Kong
+2 Department of Construction Management, Huazhong University of Science and Technology, China
+1
+
+management. The International Standard Organization (ISO) (2017) defines facility
+management (FM) as an organizational function which integrates people, place and process
+within the built environment for the purpose of improving quality of life and productivity of
+business. Drion et al. (2012) asserts that FM is a management function that focuses on how to
+develop, maintain and improve the physical assets needed to support and add value to the
+business processes of organizations, as well as create and maintain a physical workplace that
+provides optimal support to the people and work of the organizations. One of the legitimate
+scopes of FM is to facilitate resources use, enhance organizational effectiveness, and improve
+our living and working environment for social and economic activities (Rondeau et al., 2012).
+Compared with other phases in a facility’s life cycle, FM can last for a relatively longer period,
+roughly thirty to fifty years if not longer (Atkin and Brooks, 2015). FM must be well conducted
+to realize a facility’s designated functions. The efficiency and effectiveness of FM significantly
+affects operation cost (Teicholz, 2013), energy consumption (Bilgen, 2014), indoor comfort
+and in grander scheme global climate (Nielsen et al., 2016). The importance of FM is
+underpinned in Winston Churchill’s famous quote (Cited in O'Toole and Lawler, 2007), “We
+shape our buildings, thereafter they shape us”.
+Over the last three decades or so, smart facilities and their management captured the basis of
+FM discourse, especially concerning the lasting and heated discussion around smart building
+and intelligent building. Adding automation and intelligence features to tradition, standard,
+physical and largely dumb ‘brick and mortar’ renders them ‘intelligent’, providing more
+efficient, responsive, and environmentally friendly services to occupants. Advanced
+technologies, software, and systems directed at FM stimulated a boom in ‘intelligent’ initiatives
+and innovations. Examples of such systems include the widely adopted CMMS (computerized
+maintenance management system), CAFMS (computer-aided facility management systems),
+BAS (building automation system), CAS (communication automation system), SAS (security
+automation system), FAS (firefighting alarm system), pervasively discussed BIM (building
+information modelling) technology, and smart public transportations system.
+Nevertheless, current FM practices, be they routine maintenance or ad hoc event management,
+are largely backward and characterized by a low level of automation and intelligence (Pärn et
+al., 2017; Wu et al., 2014). Only able to operate on preset conditions, they cannot adapt to
+complex scenarios. They often perform passively and in an isolated manner (Lau et al., 2013).
+Different FM systems (e.g., CAS, BAS, FAS, and SAS) do not share information with each
+other. Decision-making involved in current FM relies heavily on manual input, setting and
+operation, which can be fallible due to the limited computation capacity and bounded rationality
+of human beings (Niu et al., 2016). Moreover, current FM generally pays scant attention to the
+differentiated and changing requirements of occupants in a facility. Therefore, it is not
+uncommon that a facility fails to provide satisfactory services to people, organizations, and
+businesses it serves (Wang et al., 2018). These predicaments are resulted from the passiveness
+2
+
+of current FM systems. Various passive FM systems are pre-programmed, which cannot
+respond to complicated, flexible, changing situations in real life. FM needs to be updated with
+intelligence to a higher level akin to human beings’ cognitive capability (e.g., to perceive, to
+learn, and to act). Although some recent research efforts have explored the application of
+cognitive capability to FM, none have been able to provide a detailed, systematic account.
+This study aims to take the very first step to define a new concept, cognitive FM, which
+empowers cognitive capability into traditional facilities and their management. It tries to answer
+the following research questions: (1) what is cognitive FM? (2) what are its key elements? (3)
+what is its system architecture? and (4) how does it influence FM? The remainder of this paper
+is organized as follows. Section 2 reports related work on concepts related to cognitive FM and
+cognitive computing, and emerging computation technology. Section 3 discusses the definition,
+key elements and enabling technologies of cognitive FM. The proposed system architecture of
+cognitive FM is illustrated in Section 4. Section 5 proposes an application scenario of cognitive
+FM. Discussion and conclusions are made in Sections 6 and 7, respectively.
+2. Literature review
+2.1 Concepts related to cognitive facility management
+Smart facilities and their management form the crux of FM literature and practices, especially
+as relates to contentious concepts like the smart home, ambient intelligence, smart building, and
+intelligent building. A ‘smart home’ constitutes a residence able to anticipate and respond to
+the needs of its occupants, enhancing their comfort, convenience, entertainment, and security
+with the support of technology (e.g., Information Communication Technologies [ICTs] or
+Internet of Things [IoT]) in the home environment and connects to the world beyond (Harper,
+2006). A wealth of research and development has been dedicated to smart electronic devices
+and home appliances for smart homes. However, smart homes, by and large, can only react to
+given requirements and conditions. They cannot effectively perform functions outside their
+programmed range.
+‘Ambient intelligence’ characterizes an environment embedded with technologies but in natural
+surroundings. Sensitive, adaptive, and responsive to the presence of people and objects, it
+exploits smart non-explicit assistance to augment activities (Weber and Rabaey, 2005). Using
+sensors or sensor networks, ambient intelligence perceives the state of a setting, situation and
+the people within them. Ambient intelligence can greatly influence people’s lives through
+applications such as health monitoring assistances, emergency services, and intelligent
+workplaces. However, ambient intelligence systems have to interact sensibly with users in a
+variety of sophisticated ways to learn their preferences, intentions, and needs, which brings
+intervention, privacy and security challenges (Cook et al., 2009).
+
+3
+
+‘Smart building’ and ‘intelligent building’ are often used interchangeably. Smart buildings
+integrate and account for intelligence, enterprise, control, and materials and construction as an
+entire building system, with adaptability, for building progression (Buckman et al., 2014).
+Whereas intelligent building refers more to a dynamic and responsive architecture that provides
+every occupant with productive, cost-eﬀective and environmentally approved conditions
+through a continuous interaction among its basic elements, i.e., structures, systems, services
+and management, as well as their interrelations (Ghaffarianhoseini, et al., 2016). These
+definitions suggest that the two terms share similar vision. Their implementations are more on
+the updating of hardware and the adoption of ICTs, and still largely rely on passive control by
+human beings.
+It is difficult to trace the origin of the phrase ‘cognitive building’. In 2016, IBM applied it in
+relation to machine learning, which makes it more of an industry concept than a scholarly
+defined one. Cognitive buildings exhibit an integrated approach to the deployment of
+technologically advanced solutions. They turn data into actionable insights via cognitive
+computing and comprehensive facilities management capability to better manage buildings
+(Ploennigs et al., 2018). Though the concept has propagated widely, no theoretical concepts,
+foundations, or framework have been proposed to formalize it. Nor does the ‘building’ adage
+differentiate unique types of facilities from one another.
+A brief review of the concepts related to cognitive FM helped develop the Venn diagram shown
+in Figure 1 illustrating the relationship between these concepts. Smart home is a subset of smart
+building and intelligent building, which has large overlap between each other (Ghayvat et al.,
+2015). Cognitive building shares a similar scope with smart and intelligent building, but with
+more consideration for people and more intelligence in the loop (Pasini et al., 2016). Ambient
+intelligence, focusing on the ambient environment, somewhat overlaps with the four other
+concepts, but does not solely operate at the home and building level (Hui et al., 2017). FM
+covers smart home, smart building, intelligent building, cognitive building and a large part of
+ambient intelligence (Fairchild, 2019).
+
+4
+
+Figure 1. The relationship between advanced technologies related to cognitive FM
+All these initiatives are stimulated by and rooted in the advancement of IoT, ICT, and the
+growing power of computing. Adopting advanced technologies at the home/building/facility
+level of intelligence succinctly falls into three purpose categories:
+(1) Using data sensing technologies such as sensors, sensor networks, laser scanning and
+photogrammetry to capture the status data of buildings or facilities (Wong et al., 2018).
+They imitate the five senses of human beings, i.e., touch, sight, hearing, taste and smell.
+Typically non-destructive technologies, they collect environmental parameters like
+temperature, humidity, luminance, and air quality (Wu et al., 2016), estimate occupancy
+(Candanedo and Feldheim, 2016), detect events (Sixsmith and Johnson, 2004), and so on.
+Laser scanning and photogrammetry are widely used to access a built environment’s
+geometric information. Furthermore, the information they collect help fabricate as-built
+BIM reconstructions for existing buildings and facilities (Chen et al., 2018).
+(2) Using advanced ICTs such as WiFi, Bluetooth, Zigbee, and NFC (Near Field
+Communication) to report the status of home appliances and control them remotely. Via
+Bluetooth or WiFi, smart devices like mobile phones, watches, or computers can connect
+with televisions, sound devices, air conditioners, lights, refrigerators, and washing machines
+to check their condition (e.g., on, off, operating at certain mode) in real time and change
+that condition (e.g., turn on/off, set to a new mode) with a tap or click (Robles and Kim,
+2010). With these technologies, users can monitor the utilization status, energy
+consumption, or environmental conditions of buildings or facilities nearly instantaneously.
+Moreover, humans and the machines can interact with each other naturally through text,
+voice, gesture, motion, even emotion (Jaimes and Sebe, 2007).
+(3) A clear trend is to develop various smart applications and integrate them into various BIM
+systems/platforms (Lu et al., 2018). The Architecture, Engineering, Construction and
+5
+
+Facilities Management (AEC/FM) domains rely heavily on BIM technology (Liao and Teo,
+2019). It involves digitally constructing an accurate virtual model of a building via BIM
+technology (Azhar, 2011). The model can help improve the performance and productivity
+of design, construction, operation, and maintenance (Love et al., 2013). For new buildings
+or facilities, their BIM models can be created via BIM software in the design stage. While
+for existing buildings or facilities, their BIM models are generated from measurement data
+(e.g., 2D images or 3D point clouds) captured by cameras and laser scanners, respectively
+(Volk et al., 2014). BIM-enabled platforms are increasingly integrating smart applications
+into their features.
+Although the concepts of smart home, ambient intelligence, smart building, intelligent building,
+and cognitive building share some similarities, they also have several obvious differences. First,
+the scopes of FM and smart/intelligent home/building, cognitive building are different. FM
+focuses on not only buildings but also other types of facilities such as highways, utility grids,
+and municipal pipelines. Second, smart/intelligent home/building, cognitive building, and
+ambient intelligence are more from the perspective and ownership of residents, while FM
+consigns the decision-making and control with the facility manger on behalf of clients,
+occupants and tenants. Third, smart/intelligent building/home, allows the automation of
+building systems, ICTs, and security systems separately (Chen et al., 2014) through emerging
+pervasive technologies, while FM emphasizes the integrated management of entire facilities.
+Nevertheless, all these concepts place a solid cornerstone for cognitive FM for this paper to
+explore.
+2.2 Cognitive computing and related technologies
+Cognitive science is the foundation of cognition-related studies including cognitive FM.
+Encompassing psychology, epistemology, linguistics, computer science, economics, and the
+social sciences more generally, cognitive science is the interdisciplinary study of brain
+cognition and its information processing mechanisms (Simon, 1980). Human cognition has
+three accepted main components including perception, action, and learning (Fuster, 2003;
+Haykin, 2012). A cognitive system can reason, use represented knowledge, learn from its
+experience, accumulate knowledge, explain itself, accept directions, be aware of its own
+behavior and capability, as well as respond in a way that loosely mimics the process of cognition
+in the human mind (Sheth, 2016). Cognitive systems have been tested in construction
+engineering and management fields such as construction safety management (Saurin et al., 2008)
+and intelligent business information management (Ogiela and Ogiela, 2014).
+Merging human cognizance with computing machines breeds cognitive computing (CC), which
+basically enables cognitive systems the fuzzy computing ability. An interdisciplinary product,
+it combines cognitive science and computer science to mimic the human thinking process in a
+computerized environment. Cognitive computing manages the low power, small volume, mind6
+
+like function, and real-time performance of the human brain (Preissl et al., 2012). It is trained,
+rather than programmed, to forecast future events with purpose and estimated strength
+(Marchevsky et al., 2017). It has the capability to extract concepts, emotions, objects, keywords,
+and relationships from massive unstructured data, and use artificial intelligence and enhanced
+machine learning algorithms to process analytics, make predictions and hypothesize in a
+scalable way (Dessì et al., 2019). With cognitive computing, a cognitive system can quickly
+learn and improve as it discovers knowledge and acquires profundity in complex environments.
+Cognitive computing is permeating and evolving into such scopes as machine learning (ML),
+deep learning (DL), natural language processing (NLP), computer vision (CV), and artificial
+intelligence (AI) (Capuano and Toti, 2019). Machine learning concerns technology that can
+learn from examples and teach itself how to solve problems without being programmed
+manually (Stanescu et al., 2018). Deep learning, the forefront of ML, constitutes simple but
+non-linear modules that each transform the representation of raw inputs into a representation at
+a higher, slightly more abstract level (LeCun et al., 2015). Natural language processing converts
+human written or spoken language into a formal representation easy for computers to
+manipulate (Hirschberg and Manning, 2015). Computer vision is the transformation of data
+from a still or video camera into either a decision or a new representation (Bradski and Kaehler,
+2008). AI is defined as the simulation of human intelligence onto a machine, so as to make the
+machine proficient at identifying and applying the right piece of “Knowledge” at a given step
+to solve a problem (Konar, 1999). The Venn diagram shown in Figure 2 displays their
+relationships according to the ascertains: DL is a subnet of ML which is a subnet of AI (LeCun
+et al., 2015); NLP and CV are also subnets of AI while using some ML and DL techniques
+(Jordan & Mitchell, 2015; Young et al., 2018); AI falls into a significant part of CC (Chen et
+al., 2016). Embodying the major natural intelligence behaviors of the brain such as thinking,
+inference, learning, and perceptions, cognitive computing is an intelligent technology past the
+imperative and automatic (Wang et al., 2010).
+
+7
+
+Figure 2. The relationship between advanced technologies related to cognitive computing
+A critical review of various concepts discovered that current developments in smart FM have
+stagnated. Passive intelligence, which can only deal with given problems based on pre-defined
+rules, repeatable patterns, and pre-programmed algorithms, remains the norm. FM nowadays
+has to face complex and dynamic situations affected by energy, information, the external and
+internal environment, and occupants’ changing requirements. An elevation in FM is highly
+advantageous and desired from its current state of passive intelligence to one of cognitive
+capability. The advances in cognitive computing provide a strategic opportunity to pursue such
+cognitive FM. However, little research makes up this emerging field, demanding a clear
+definition of cognitive FM and a theory or theoretical framework behind the new concept.
+Espoused by the theories of cognition and FM, this paper aims to fill the gaps by putting forward
+the concept of cognitive FM, presenting a potential system architecture, exemplifying an
+application scenario, and exploring its prospects and challenges.
+3. Cognitive facility management
+3.1 A working definition
+Based on current FM predicaments, emerging technologies development, and the theories
+borrowed from cognitive system, the idea of ‘cognitive FM’ is sprouted. It aims to advance the
+stagnant FM status and add advanced active intelligence that mimics the mechanism of human
+brain information processing to FM. Perception, action, and learning are the primary elements
+in a cognitive system to allow for active intelligence, as illustrated in Figure 3. There are two
+parts in the system architecture, the core system and the external environment that the system
+was contextualized in. Sensors and actuators bridge the system and the environment. Sensors
+take in perceptions of environment and communicate the signals to performance element which
+is responsible for selecting actions based on perceptions and evaluation component. The
+8
+
+evaluation component takes performance standard as input and gives out feedbacks to the
+learning element, which forms the most important distinction between a cognitive agent and
+other general agents. It is responsible for making improvements using feedback from the
+evaluation component on how the system is doing to solve application problems and determines
+how the performance element should be modiﬁed to do better in the future (Russell and Norvig,
+2016). To sum up, perception and action are the two primary components which bridges the
+environment and the system itself. Learning element is the core component which connects
+application, performance, and evaluation.
+
+Figure 3. The architecture of a learning agent in cognitive system (Adapted from Russel and
+Norvig, 2016)
+Based on the theories of cognitive system and facility management, ‘cognitive FM’ is defined
+as:
+The active intelligent management of a facility, which have the ability of perception
+through cognitive systems, learning in the manner of human cognition with the
+power of cognitive computing, and adaptive, adaptive, and efficient action via
+automated actuators, to improve the quality of people’s life and productivity of
+core business.
+There are many elements of cognitive FM, but perception, learning and action are argued as
+the three key definitional characteristics of the new concept.
+
+9
+
+3.2 Key characteristics of cognitive FM
+3.2.1 Perception
+Perception is an active process involving the recognition and interpretation of stimuli which
+register senses made to the environment (Rookes and Willson, 2005). It requires a form of
+expectation, of knowing what is about to confront us and preparing for it (Ratey, 2001).
+Perception provides a system with information about the world it inhabits by interpreting
+sensors (Russell and Norvig, 2016). Perception can be empowered by Cognitive IoT, which
+supports cooperation and interaction between IoT and human beings. Wired or wireless sensors,
+cameras, Auto-IDs, and GPS, smart devices and their connected utilities are the ‘things’ that
+sense the status and environments of facilities. Wireless sensor networks (WSNs) in buildings,
+utilities, and transportation systems can enable real-time collection of sensory data (Huang and
+Mao, 2017). Videos or images captured by cameras are extensively used to gather movement
+and behavioral information for health, safety and security. They are also pervasive sources of
+spatial and geometric data that can help reconstruct digital models of in-use facilities. Auto-IDs
+such as 2D barcode and RFID make real-time localization, tracking and navigation available at
+facility managers’ fingertips (Xue et al., 2018). Capable of collecting different types of data,
+like the ambient environment and user behavior patterns, smart devices have proved vital
+sources of information.
+3.2.2 Learning
+Learning is the accumulation of information in memories, the acquisition of access routes for
+its retrieval, and the discovery of knowledge based on it (Russell and Norvig, 2016). In a
+cognitive system, learning helps recognize objects, categorizations, relationships, events,
+procedures for executing actions, new actions and action sequences to accomplish new tasks
+(Franklin et al., 2014). It provides an enormous source for variation, adaptation, and evolution
+in system action. For example, learning from historic data of indoor temperatures, air
+conditioning controls, and weather helps the system realize occupant preferences and anticipate
+the outside forces that disrupt equilibrium. Disruptions can be natural or human, for example
+an individual changing a room’s temperature controls one time to suit a unique and short-term
+situation. A passive system would stay in that new condition indefinitely. Learning is achieved
+through four approaches, i.e., observation, experience, feedback, and reinforcement (e.g,
+through watching other’s performance and imitating, concluding experiences and recognizing
+patterns, reflecting feedbacks and discovering knowledge, and reinforcing by punishment or
+rewards, respectively) (Illeris, 2004). In real cases, learning is a multimodal process which
+integrates various approaches and mechanisms. Multimodal integration learning combines
+multiple sources of sensory information such as vision, sound and movement to help a cognitive
+system achieve enhanced perceptual clarity and reduced ambiguity regarding its environment
+(Noda et al., 2014).
+
+10
+
+3.2.3 Action
+Action in human cognition instantiates in the brain as motor planning and representation
+(Immordino-Yang, 2008). Action in cognitive FM may include decision-making, sending alerts,
+recommending action, analyzing or visualizing statistics, reconstructing models, service
+provisioning, device actuating, and a combination thereof. Simply being in action can facilitate
+perception of affordances, i.e., what the environment affords the individual, because actions
+provide information about the dynamic capability of the facility (Franchak et al., 2010). In
+cognitive FM, action executes in three ways, i.e., passively, semi-actively and actively (Casciati
+et al., 2012). Passive action aims to assist people to make decisions with an optimum action
+plan based on the real-time situation it perceives. A typical example would be issuing an alert
+that demands a response from facility managers or workers. Semi-active action is an action
+cooperated by humans and machined via human-machine interaction. Active action can actually
+execute the optimum action plan via the facility itself without requiring humans to be in the
+loop. For example, controlling the lights of a room based on occupancy, natural light condition
+and the type of activity in the room is active action. Realization of the action, especially semiactive and active action, is dependent on cognitive computing and automatically controlled
+through actuating devices. Automatically controlled actuating devices comprise motorized
+built-in controllers and robotic actuators, and as this technology matures, they become more
+affordable.
+3.3 Interrelationships of the three key elements of cognitive FM
+In cognitive FM, three key elements have direct and/or indirect influence on one another as
+regards a constantly changing environment and requirements from users. Figure 4 shows the
+details and relationships between these three key elements. Perception and action intricately
+connect. Perception provides the requisite information for selecting and guiding actions
+adaptively (Franchak et al., 2010). Action in turn has concurrent effects on perception (Hecht
+et al., 2001). They form a perception-action cycle through connections between sensory and
+motor structures (Fuster, 2003). The perception-action cycle governs the cognitive interactions
+of a system, be they animate or artificial. This interactive cycle is the basic principle that
+characterizes the dynamic adaptation of the organism to its environment (Fuster, 2003).
+
+11
+
+Figure 4. The interrelationships between the key elements of cognitive FM
+What hides behind the perception-action cycle to make a system cognitive is learning. Learning
+helps the system improve its performance on future actions after making perceptions about the
+internal and external environment (Russell and Norvig, 2016), as well as adapts perception
+modes to the found patterns of actions, reducing sensing, computing, and memory consumption
+(Noda et al., 2014).
+Learning from perceptions empowers reasoning and knowledge discovery about changes in the
+internal and external environment, and in turn shapes the way a system perceives, forming a
+perception-learning cycle (Fiser et al., 2010). This perception-learning cycle facilitates a
+cognitive system’s predictive perception, i.e., ability to predict what an incoming signal might
+mean, respond, or adjust the perception modes. Predictive perception is what differentiates a
+cognitive system from a traditional artificial intelligent system, which perceives based on preset rules or reinforced learning (Otsu et al., 2017).
+Learning from a collection of actions and perception-action cycles enables the system to predict
+actions and select the most appropriate one for a new perception. Learning can also facilitate
+action selection and execution of the system in order to adapt to uncertainties and make
+decisions that maximize the benefits while minimizing the risks (Arashpour et al., 2017). The
+action-learning cycle enables a cognitive system to alter its strategies and behaviors according
+to an ever-changing environment and requirements (Lee et al., 2018). This cycle embodies the
+proactive intelligence and automation of a cognitive system by learning from its own
+12
+
+experiences. Robotics can realize and perfect proactive intelligence and automation being able
+to both read conditions, take actions and learn from experiences (Lee et al., 2018).
+In FM, perception, learning and action form a stable triangle that helps a facility to accurately,
+effectively, and proactively adapt to dynamic environments and various user needs. This
+triangle empowers the proactive intelligence and automation of a facility to better serve users
+in a manner more acceptable to human beings.
+4. System architecture of cognitive FM
+Figure 5 illustrates a system architecture for cognitive FM according to the definition of
+cognitive FM and the interrelationships of its three key elements. Its eight-layer structure
+consists of an (1) environment layer, (2) perception layer, (3) data layer, (4) communication
+layer, (5) computation layer, (6) application layer, (7) action layer, and (8) evaluation layer.
+Each layer is elaborated as follows:
+
+Figure 5. The system architecture of cognitive FM
+
+13
+
+(1) The environment layer entails the internal and external environments of a facility. The
+external environment, including natural and social components, forms the context which
+the facility is positioned in and exposed to. The facility as a whole is the object of cognitive
+FM, therefore its internal environment is the utilities and users within the facility. It is the
+layer where all commercial, residential, and social activities take place, and also the layer
+the system needs to perceive.
+(2) The perception layer consists of various sensing devices that operate in a connected fashion
+to capture the features of the environment layer. Perceptors (e.g., sensors, cameras, LiDAR,
+Auto-IDs, and GPS) sense the environment by processing the incoming stimuli and feeding
+observations to the upper layer (Jung et al., 2019). They can detect the status or
+characteristics of different objects. The information collected by the perceptors is
+interpreted by the cognitive computing behind.
+(3) The data layer denotes various data types generated after perception, including
+environmental indicators, such as temperature, humidity, luminosity, air pressure, or
+particulate matter density. It may also comprise pictures, video or 3D point cloud data of a
+facility or area, the identities of building components, furniture and users, location,
+operation status, user behavior, and other characteristics.
+(4) The communication layer helps upload the sensing data to the database, which acts as base
+memory. Different types of communication protocols may be used. Local and wireless
+communication protocols offer a lot of current applications as well as promise for future
+growth (Tolman et al., 2009). Emerging personal networks (e.g., WPAN) as well as new
+interoperable networks (e.g., WiMAX) will likely popularize as social communication
+happens more and more virtually. BIM is increasingly becoming the hub of this
+communication layer (Chen and Lu, 2019).
+(5) The computation layer effectively analyzes the sensed data from the lower layers to generate
+decision support information through cognitive computing. This essentially embodies
+behaviors like reasoning, interpreting, inferencing, and learning in uncertain, fuzzy and
+complex environments with the help of ML, CV, NLP, SA and NN discussed in Section 2.2.
+(6) The application layer uses the information and knowledge abstracted from the lower layers
+to enable multiple or even massive interactive agents (e.g., facilities or users) to reason,
+plan, and select the most suitable action to support corresponding FM applications.
+(7) The action layer is where actuators proceed to facilitate the applications, control the objects
+and change the perceptron via human-machine interface, robotics, or actuators. The
+actuators directly control the facilities in the object layer, issuing alerts or guidance to
+facility users or managers. Robots with caring, operation or maintenance abilities can also
+execute actions.
+(8) The evaluation layer shares import interfaces with social networks, in which on-demand
+service provision can be shared by facility managers and users to social networks. Novel
+performance metrics are designed to evaluate the services provided. Moreover, the
+14
+
+evaluation results feedback to the application layer to reset the application variables and
+objectives, or to the computation layer to adjust the computing algorithms.
+The eight-layer system architecture of cognitive FM helps recognize and explain its key
+elements, i.e., perception, learning, and action. Cognitive FM energizes multi-sourcing and
+cognitive computing power to support various applications. Through cognitive FM, data
+sensing informs users, facility managers/owners, and facility manufacturers/designers, enabling
+more profound information analysis, decision-making, and application execution. Meanwhile,
+many tedious choices and actions can been performed automatically. The system architecture
+can be put into the complex real-world FM scenarios.
+5. Example scenario of applying cognitive FM
+This section presents an applied scenario of cognitive FM called “Event Manager”. Such “Event
+Manager” is especially important for public and commercial buildings, where events bring
+considerable people flows within a short time, leading to periodic but rapidly growing needs
+from certain facilities (e.g., elevators). Efficient scheduling and utilization of these facilities
+aligned with events is crucial to sustainability, productivity and safe facility operations.
+Through cognitive FM, the “Event Manager” can perceive data (perception ability) including
+facilities operations processes (e.g., elevator traveling to a certain floor), the number of people
+and their status (e.g., in a hurry, anxious, or claustrophobic), even their intentions (e.g., turning
+the thermostat down) with cognitive IoT and other technologies at the perception layer. Such
+data and information will be automatically uploaded into the database via the Internet. Learning
+from experience, best practices, and current information empowered by cognitive computing
+helps attain an optimal schedule plan, which represents the learning ability of cognitive FM
+system. The facilities at a specific place will automatically schedule and take actions to satisfy
+the requirements of users at that time and location (active action). Moreover, the digital model
+will display the real-time statistics on a dashboard or APP for users and facility managers to
+better visualize the data, these applications can intelligently guide users to better plan and
+conduct work, as well as for their evaluation.
+To further illustrate how cognitive FM works, an “Event Manager” of a campus building with
+three elevators is presented. In this scenario, the general system architecture in Figure 5 is
+specified to the one as displayed in Figure 6 (a). The elevators and users belong to the
+environment layer (Figure 6 (b)). A UWB (ultra-wideband) local positioning system serves as
+the perception layer (Figure 6 (c)). The system tracks the real-time location of the users by
+UWB with a precision to 20cm. By installing UWB anchors in the building, the locations of the
+UWB tags can be tracked (Ruiz and Granja, 2017). With the Users’ IDs attached to the UWB
+tags allocated to them when they register the event, the location of the users can be tracked.
+Once a user walked into the area of the building, the UWB tracking system can detect his/her
+location. The most important inputs at the data layer include the event schedule of the building
+15
+
+(e.g., at what time a significant number of people will attend or exit an event on a given floor),
+users’ location, elevators’ features, and floor function. The four major types of entities in the
+system database and their relationships are shown in Figure 6 (d). All the information items are
+connected in the database for the perception of the event and further computing. The user
+location will be communicated via WLAN while elevators’ status can be communicated to the
+database through LAN. The “Event Manager” in the elevator system works following the
+rationality shown in Figure 6 (e). Finally, with the data in the database and the memory and
+fuzzy computing ability, the “Event Manager” can better serve the users with cognition by
+considering the lead time of the elevators to travel from floors to floors, the distribution of users’
+location and arrival time from short-term memory, and the user behavior pattern from longterm memory. The “Event Manager” will take actions by calling the elevators in advance for
+the users and automatically taking the users to their destinations. It will optimize the
+performance of the facility by considering three objectives, i.e., shortening the waiting time,
+improving the operation efficiency of the elevators and building, and saving energy through
+learning. A visualization interface will also show the location of the users and elevators as
+illustrated at Figure 6 (f). The actuation layer is the controlling system of the elevators, see
+Figure 6 (g). The system can generate daily self-report for evaluation; users may also provide
+their experience comments as feedbacks for future improvement, as illustrated by Figure 6 (h).
+This cognitive change, albeit minor, can provide privileged services for the users and upgrade
+the performance of the facilities.
+
+16
+
+Figure 6 Elevator management system of the “Event Manager”
+It should be pointed out that the “Event Manager” as illustrated above is just one of the very
+primitive scenarios of cognitive FM. Future studies are encouraged to develop other scenarios.
+The system architecture proposed in this study provides a general guideline by following which
+other more sophisticated scenarios can be developed. New developments in different layers,
+particularly perception, data, communication, computing, and actuating technologies will
+provide unlimited opportunities to realize cognitive FM. Due efforts should be paid to validate
+such system architecture. The key to this validation work is to develop a real-life cognitive FM
+17
+
+system and define their key performance indicators, including both tangible (e.g., energy saving,
+time saving, or system reliability) and intangible ones (e.g., users satisfactory, ambient
+environment, or productivity enhancement).
+6. Discussion
+This paper put forward a bold proposition – cognitive FM – in the inert body of FM literature.
+It provided the working definition of cognitive FM, and articulated its three key definitional
+characteristics, i.e., perception, learning, and action. A system architecture of eight layers
+provides a cognitive FM framework for the structure and operation of human-like proactive
+intelligence in FM. The highlighted interrelationships and the real-world case, i.e., the ‘Event
+Manager’, were presented in an attempt to illustrate how cognitive FM could push boundary of
+both FM theory and practice. Beyond the ‘Event Manager’ example portrayed, readers of this
+paper should note the wealth of other compelling scenarios such as customized service
+provision and predictive maintenance which fall under the realm of cognitive FM that can be
+explored in the future.
+The advancement of new technologies provides boundless challenges and opportunities to
+realizing cognitive FM. The technologies on the perception layer, e.g., sensor networks, camera,
+Auto-ID, smart devices, and cognitive IoT are developing in an unprecedented pace, which
+allows quickly capturing numerous and various ‘big data’ (known for its 3V, namely, volume,
+velocity, and variety) related to facilities and their occupiers and managers with an affordable
+cost. The communication technologies such as WAN, LAN, and particularly recent fifth
+generation (5G) cellular network, allow quick communication of the facility big data between
+the data layer and the computing layer. Quick development of computing technologies such as
+GPU and clouding computing enables the harness of the power of big data to realize perception
+and learning capability, while the advancement of human-computer interface, robotics, and
+other actuating technologies will allow the realization of autonomous actions of cognitive FM.
+Not only the individual technologies developed (e.g. emerging pervasive technologies (Niu et
+al., 2019)), but also the new system integration philosophies (e.g., edge computing (Shi et al.,
+2016), smart construction objects (Niu et al., 2016)) make the bold proposition of cognitive FM
+feasible than ever. Information and industrial manufacturing conglomerates like Schneider,
+Siemens, and IBM continuously offer more and more cognitive building services (e.g., Watson
+IoT for Buildings and IBM TRIRIGA), which integrate the physical and digital worlds.
+This research deems FM remained dormant and without a literature base to elevate the
+discipline to the science it should be, especially given the new technology and capacities
+available to it. Challenges and opportunities also exist in the development of cognitive science,
+which is the interdisciplinary study of cognition in humans, animals, and machines (Norman,
+1980). Despite the great achievements in cognitive science, very limited actually we know
+about our cognitive capability and process. Cognitive capability such as perception and learning
+18
+
+exclusively possessed either innate or learned by human beings are now facing the challenge to
+be anthropomorphized to facilities to realize cognitive FM. The resurgence of Artificial
+Intelligence (AI), and the technological advancement as exhibited above, all underpin the best
+time to pursue cognitive FM. Research and academia should provide more solid science and
+technological foundation for promoting cognitive FM as a discipline of science.
+While this paper so far has mainly explored the benefits of cognitive FM, its potential
+drawbacks should not be neglected. For example, the benefits (e.g., convenience) that cognitive
+FM brings to occupants should never be achieved at the cost of their security and privacy. If we
+take the pioneering modernist architect Le Corbusier’s view that ‘a house is a machine for living
+in’ in 1923 (Kornberger and Clegg, 2004), now the machine/facility is of human’s cognitive
+capability of perception, learning, and action, all the ethics issues related to human dignity,
+transparency, accountability, or unintended consequences would surface from this new domain
+of FM. Cognitive FM can join the ever-heated debate on AI and robotics ethics to gain a better
+understanding of its domain specific ethics issues.
+Ultimately, development of cognitive FM is determined by the changing dyadic relationship
+between us and the facilities we built. Man has never stopped exploring such relationship. Le
+Corbusier’s view in the 1920s represented the industrialization era where humans have started
+to massively engage machine in production, life, and other activities. We built buildings as a
+machine to serve us. The sociotechnical systems coined at Tavistock Institute (1966), referring
+to the interaction between society's complex infrastructures and human behavior, provides a
+perspective of the dyadic relationship between facilities and humans. The facilities, be they
+machines or intelligent/smart buildings, are alien to us. They have never been treated as a part
+of mankind. Humans never stop trying to make them as cognitive and intelligent as possible to
+free us from routine work and regular decisions. We imbue facilities with cognitive capability.
+We treat a way humans taking care of each other is the way humans need from facility services.
+It reaches to the level that Churchill has seen it, i.e., facilities can shape us. The issue is whether
+humans are ready for it, will allow it happen, or can stop it happen.
+7. Conclusion
+With all due respect, the researchers of this paper are unsatisfied with the stagnant FM
+discourses that have been demarcated by smart/intelligent building for already three decades or
+so. To this end, they put forward the concept of ‘cognitive FM’. Inspired by human cognition
+systems, the definition of cognitive FM was given as actively intelligent management of
+facilities within the built environment, where a facility perceives through a cognitive IoT, learns
+in the manner of human cognition with the power of cognitive computing, and acts actively,
+adaptively, and efficiently via automated actuators to improve the quality of life or productivity
+of business. Unlike passive, pre-setting, and nonreciprocal intelligence of smart/intelligent
+19
+
+building, cognitive FM proposes an active, adaptive and naturally interactive way to give
+intelligence to facilities through three key characteristics, i.e., perception, learning, and action.
+An eight-layered system architecture comprising of environment, perception, data,
+communication, computation, application, actuation and evaluation was developed for better
+realization of cognitive FM. This architecture puts most of the advanced technologies of
+information, communication, computation, and action together in an organic and dynamic
+fashion to realize the cognitive capability of perception, learning, and action. To better illustrate
+what cognitive FM is and how the architecture can guide its implementation, an illustrative
+scenario called ‘Event Manager’ was elaborated. The case study showed that cognitive FM can
+enable human-like cognition, enhancing the value of facilities, and ultimately, better serving
+our health, economic activities, and social behaviour. Other than the ‘Event Manager’, there are
+other compelling scenarios of cognitive FM awaiting researchers and practitioners to explore.
+Cognitive FM tries to imbue existing facilities with human-like cognition in order to deliver
+their designated functions (e.g., keep us warm/cold; save energy; make us comfortable; keeping
+us secure; keeping us healthy; improving quality of life; and enhancing productivity of our
+business). The facility can know what its users want and need, understand their needs and
+preferences, learn and give feedbacks, catch the details the users might miss, distinguish
+between different users, interact with and serve for them like an experienced but agile manager
+with the ability of perception, learning, and action. The definition of cognitive FM, its system
+architecture, and the pervasive supporting technologies as presented in this paper would open
+up a new avenue to empower the traditional FM in the era of AI resurgence. Our understanding
+towards facilities has evolved from the 1920s when Le Corbusier perceived them as machines
+for living in, to intelligent/smart building 30 years ago, and to this cognitive system akin to
+human now. Technological advancement provides unlimited possibilities to realizing cognitive
+FM. But whether a cognitive facility can be a human-like one, or whether we human want it to
+be indistinguishable from us, are the philosophical questions to be answered on this journey to
+develop cognitive FM.
+8. References
+Azhar, S. Building information modeling (BIM): Trends, benefits, risks, and challenges for the
+AEC industry. Leadership and Management in Engineering, 11(3) (2011)241-252,
+10.1061/(ASCE)LM.1943-5630.0000127.
+Bilgen, S. Structure and environmental impact of global energy consumption. Renewable and
+Sustainable Energy Reviews, 38 (2014)890-902, 10.1016/j.rser.2014.07.004.
+Bradski, G., & Kaehler, A. Learning OpenCV: Computer vision with the OpenCV library.
+O'Reilly Media, Inc, 2008, ISBN 97806596616130.
+Buckman, A. H., Mayfield, M., & Beck, BM. S. What is a smart building?. Smart and
+Sustainable Built Environment, 3(2) (2014)92-109, 10.1108/SASBE-01-2014-0003
+
+20
+
+Candanedo, L. M., & Feldheim, V. Accurate occupancy detection of an office room from light,
+temperature, humidity and CO2 measurements using statistical learning models. Energy
+and Buildings, 112(2016) 28-39, 10.1016/j.enbuild.2015.11.071.
+Capuano, N., & Toti, D. Experimentation of a smart learning system for law based on
+knowledge discovery and cognitive computing. Computers in Human Behavior, 92
+(2019)459-467, 10.1016/j.chb.2018.03.034.
+Casciati, F., Rodellar, J., & Yildirim, U. Active and semi-active control of structures–theory
+and applications: A review of recent advances. Journal of Intelligent Material Systems and
+Structures, 23(11) (2012)1181-1195, 10.1177/1045389X12445029.
+Chen, C. Y., Fu, J. H., Sung, T., Wang, P. F., Jou, E., & Feng, M. W. Complex event processing
+for the internet of things and its applications. In 2014 IEEE International Conference
+on Automation
+Science
+and
+Engineering,
+2014,
+pp
+1144-1149,
+10.1109/CoASE.2014.6899470.
+Chen, K., & Lu, W. Bridging BIM and building (BBB) for information management in
+construction: The underlying mechanism and implementation. Engineering, Construction
+and Architectural Management, (2019), 10.1108/ECAM-05-2018-0206.
+Chen, K., Lu, W., Xue, F., Tang, P., & Li, L. H. Automatic building information model
+reconstruction in high-density urban areas: Augmenting multi-source data with
+architectural
+knowledge. Automation
+in
+Construction, 93(2018)
+22-34,
+10.1016/j.autcon.2018.05.009.
+Chen, Y., Argentinis, J. E., & Weber, G. IBM Watson: how cognitive computing can be applied
+to big data challenges in life sciences research. Clinical therapeutics, 38(4) (2016) 688701, 10.1016/j.clinthera.2015.12.001.
+Coccoli, M., Maresca, P., & Stanganelli, L. The role of big data and cognitive computing in the
+learning process. Journal of Visual Languages & Computing, 38 (2016) 97-103,
+10.1016/j.jvlc.2016.03.002.
+Cook, D. J., Augusto, J. C., & Jakkula, V. R. Ambient intelligence: Technologies, applications,
+and opportunities. Pervasive and Mobile Computing, 5(4) (2009) 277-298,
+10.1016/j.pmcj.2009.04.001.
+Dessì, D., Fenu, G., Marras, M., & Recupero, D. R. Bridging learning analytics and Cognitive
+Computing for Big Data classification in micro-learning video collections. Computers in
+Human Behavior, 92 (2019)468-477, 10.1016/j.chb.2018.03.004.
+Ding, G., Wu, Q., Zhang, L., Lin, Y., Tsiftsis, T. A., & Yao, Y. D. An amateur drone
+surveillance system based on the cognitive Internet of Things. IEEE Communications
+Magazine, 56(1) (2018) 29-35, 10.1109/MCOM.2017.1700452.
+Drion, B., Melissen, F., & Wood, R. Facilities management: lost, or
+regained?. Facilities, 30(5/6) (2012) 254-261, 10.1108/02632771211208512.
+Fairchild, A. Twenty-First-Century Smart Facilities Management: Ambient Networking.
+In Guide to Ambient Intelligence in the IoT Environment: Principles, Technologies and
+Applications. Springer, Cham, 2019, ISBN 9783030041724.
+Fiser, J., Berkes, P., Orbán, G., & Lengyel, M. Statistically optimal perception and learning:
+from behavior to neural representations. Trends in cognitive sciences, 14(3) (2010) 119130, 10.1016/j.tics.2010.01.003.
+Franchak, J. M., van der Zalm, D. J., & Adolph, K. E. Learning by doing: Action performance
+facilitates
+affordance
+perception. Vision
+Research, 50(24)
+(2010)2758-2765,
+10.1016/j.visres.2010.09.019.
+Franklin, S., Madl, T., D'Mello, S., & Snaider, J. LIDA: A systems-level architecture for
+cognition, emotion, and learning. IEEE Transactions on Autonomous Mental
+Development, 6(1) (2014) 19-41, 10.1109/TAMD.2013.2277589.
+21
+
+Fuster, J. M. Cortex and mind: Unifying cognition. Oxford university press, New York, 2003,
+ISBN .
+Ghaffarianhoseini, A., Berardi, U., AlWaer, H., Chang, S., Halawa, E., Ghaffarianhoseini, A.,
+& Clements-Croome, D. What is an intelligent building? Analysis of recent interpretations
+from an international perspective. Architectural Science Review, 59(5) (2016)338-357,
+10.1080/00038628.2015.1079164.
+Ghayvat, H., Mukhopadhyay, S., Gui, X., & Suryadevara, N. WSN-and IOT-based smart homes
+and their extension to smart buildings. Sensors, 15(5) (2015) 10350-10379,
+10.3390/s150510350.
+Gibson, J. J. The ecological approach to visual perception: classic edition. Psychology Press,
+New York, 2014, ISBN 9781315740218.Harper, R. (Ed.). Inside the smart home. Springer
+Science & Business Media, London, 2006, ISBN 1852336889.
+Haykin, S. Cognitive dynamic systems: perception-action cycle, radar and radio. Cambridge
+University Press, Cambridge, 2012, ISBN 9780521114363.
+Hecht, H., Vogt, S., & Prinz, W. Motor learning enhances perceptual judgment: A case for
+action-perception
+transfer. Psychological
+Research, 65(1)
+(2001)3-14,
+10.1007/s004260000043.
+Hirschberg, J., & Manning, C. D. Advances in natural language processing. Science, 349(6245)
+(2015) 261-266, 10.1126/science.aaa8685.
+Huang, Q., & Mao, C. Occupancy estimation in smart building using hybrid CO2/light wireless
+sensor
+network. Journal of
+Applied
+Sciences and Arts, 1(2)
+(2017)5,
+https://opensiuc.lib.siu.edu/jasa/vol1/iss2/5, Accessed date: 31 May 2019.
+Hui, T. K., Sherratt, R. S., & Sánchez, D. D. Major requirements for building Smart Homes in
+Smart Cities based on Internet of Things technologies. Future Generation Computer
+Systems, 76 (2017) 358-369, 10.1016/j.future.2016.10.026.
+Illeris, K. Transformative learning in the perspective of a comprehensive learning
+theory. Journal
+of
+Transformative
+Education, 2(2)
+(2004)79-89,
+10.1177/1541344603262315.
+Immordino‐Yang, M. H. The smoke around mirror neurons: Goals as sociocultural and
+emotional organizers of perception and action in learning. Mind, Brain, and Education, 2(2)
+(2008) 67-73, 10.1111/j.1751-228X.2008.00034.x.
+ISO (International Organization for Standardization). Facility management - Vocabulary (ISO
+41011: 2017). https://bit.ly/2MEuxRY, Accessed date: 31 May, 2019.
+Jaimes, A., & Sebe, N. Multimodal human–computer interaction: A survey. Computer Vision
+and Image Understanding, 108(1-2) (2007) 116-134, 10.1016/j.cviu.2006.10.019.
+Jordan, M. I., & Mitchell, T. M. Machine learning: Trends, perspectives, and
+prospects. Science, 349(6245) (2015) 255-260, 10.1126/science.aaa8415.
+Jung, Y., Oh, H. & Jeong, M. M. An approach to automated detection of structural failure using
+chronological image analysis in temporary structures. International Journal of
+Construction Management, 19 (2) (2019) 178-185, 10.1080/15623599.2017.1411457.
+Kaplan, R. S., Kaplan, R. E., Norton, D. P., Norton, D. P., and Davenport, T. H. Strategy Maps:
+Converting Intangible Assets into Tangible Outcomes. Harvard Business Press, Boston,
+2004, ISBN 1591391342.
+Konar, A. Artificial intelligence and soft computing: behavioral and cognitive modeling of the
+human brain. CRC press, Boca Raton, 1999, ISBN: 9781315219738.
+Kornberger, M., & Clegg, S. R. Bringing space back in: Organizing the generative
+building. Organization Studies, 25(7) (2004) 1095-1114, 10.1177/0170840604046312.
+Kotseruba, I., & Tsotsos, J. K. 40 years of cognitive architectures: core cognitive abilities and
+practical applications. Artificial Intelligence Review, (2018)1-78, 10.1007/s10462-0189646-y.
+22
+
+Lau, D., Liu, J., Majumdar, S., Nandy, B., St-Hilaire, M., & Yang, C. S. A cloud-based
+approach for smart facilities management. In Prognostics and Health Management (PHM),
+2013 IEEE Conference, 2013, pp. 1-8, 10.1109/ICPHM.2013.6621459.
+LeCun, Y., Bengio, Y., & Hinton, G. Deep learning. Nature, 521(7553) (2015) 436-444,
+10.1038/nature14539.
+Lee, B. J., Choi, J., Lee, C. Y., Park, K. W., Choi, S., Han, C., ... & Zhang, B. T. Perceptionaction-learning system for mobile social-service robots using deep learning. In ThirtySecond AAAI Conference on Artificial Intelligence, 2018, accessed at:
+https://www.aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/16337/16446.
+Liao, L. H. & Teo, E. A. L. Managing critical drivers for building information modelling
+implementation in the Singapore construction industry: an organizational change
+perspective. International Journal of Construction Management, 19 (3) (2019) 240-256,
+10.1080/15623599.2017.1423165
+Love, P. E., Simpson, I., Hill, A., & Standing, C. From justification to evaluation: Building
+information modeling for asset owners. Automation in Construction, 35 (2013) 208-216,
+10.1016/j.autcon.2013.05.008.
+Lu, Q., Chen, L., Lee, S., & Zhao, X. Activity theory-based analysis of BIM implementation in
+building O&M and first response. Automation in Construction, 85 (2018) 317-332,
+10.1016/j.autcon.2017.10.017.
+Marchevsky, A. M., Walts, A. E., & Wick, M. R. Evidence-based pathology in its second
+decade: toward probabilistic cognitive computing. Human pathology, 61 (2017 1-8,
+10.1016/j.humpath.2016.09.002.
+Mehrdad, A., Abbasi, B., Arashpour, M., Hosseini, M. R., and Yang, R. Integrated management
+of on-site, coordination and off-site uncertainty: theorizing risk analysis within a hybrid
+project setting. International Journal of Project Management, 35(4) (2017) 647-655,
+10.1016/j.ijproman.2017.02.016.
+Nielsen, S. B., Sarasoja, A. L., & Galamba, K. R. Sustainability in facilities management: an
+overview of current research. Facilities, 34(9/10) (2016) 535-563, 10.1108/F-07-20140060.
+Niu, Y., Anumba, C., & Lu, W. Taxonomy and Deployment Framework for Emerging
+Pervasive Technologies in Construction Projects. Journal of Construction Engineering and
+Management, 145(5) (2019) 04019028, 10.1061/(ASCE)CO.1943-7862.0001653.
+Niu, Y., Lu, W., Chen, K., Huang, G. G., & Anumba, C. Smart construction objects. Journal of
+Computing in Civil Engineering, 30(4) (2016) 04015070, 10.1061/(ASCE)CP.19435487.0000550.
+Noda, K., Arie, H., Suga, Y., & Ogata, T. Multimodal integration learning of robot behavior
+using deep neural networks. Robotics and Autonomous Systems, 62(6) (2014) 721-736,
+10.1016/j.robot.2014.03.003.
+Norman, D. A. Twelve issues for cognitive science. Cognitive science, 4(1) (1980) 1-32,
+10.1207/s15516709cog0401_1.
+Ogiela, L., & Ogiela, M. R. Cognitive systems for intelligent business information management
+in cognitive economy. International Journal of Information Management, 34(6) (2014)
+751-760, 10.1016/j.ijinfomgt.2014.08.001.
+O'Toole, J., & Lawler, E. E. The new American workplace. Palgrave Macmillan, New York,
+2007, ISBN 1403969590.
+Otsu, K., Agha-Mohammadi, A. A., & Paton, M. Where to look? Predictive perception with
+applications to planetary exploration. IEEE Robotics and Automation Letters, 3(2) (2017)
+635-642, 10.1109/LRA.2017.2777526.
+23
+
+Pärn, E. A., Edwards, D. J., & Sing, M. C. P. The building information modelling trajectory in
+facilities management: A review. Automation in Construction, 75 (2017) 45-55,
+10.1016/j.autcon.2016.12.003.
+Pasini, D., Ventura, S. M., Rinaldi, S., Bellagente, P., Flammini, A., & Ciribini, A. L. C.
+Exploiting Internet of Things and building information modeling framework for
+management of cognitive buildings. In 2016 IEEE International Smart Cities Conference
+(ISC2), 2016, pp. 1-6, 10.1109/ISC2.2016.7580817.
+Ploennigs, J., Ba, A., & Barry, M. Materializing the promises of cognitive iot: How cognitive
+buildings are shaping the way. IEEE Internet of Things Journal, 5(4) (2018) 2367-2374,
+10.1109/JIOT.2017.2755376.
+Preissl, R., Wong, T. M., Datta, P., Flickner, M., Singh, R., Esser, S. K., Risk, W. P., Simon,
+H. D., & Modha, D. S. Compass: A scalable simulator for an architecture for cognitive
+computing. In Proceedings of the International Conference on High Performance
+Computing, Networking, Storage and Analysis, 2012, no. 54, ISBN 978-1-4673-0804-5.
+Pulvermüller, F., Moseley, R. L., Egorova, N., Shebani, Z., & Boulenger, V. Motor cognition–
+motor
+semantics:
+action
+perception
+theory
+of
+cognition
+and
+communication. Neuropsychologia, 55
+(2014)71-84,
+10.1016/j.neuropsychologia.2013.12.002.
+Ratey, J. J. A user's guide to the brain: Perception, attention, and the four theatres of the brain.
+Vintage Books, New York, 2001, ISBN 0679453091.
+Robles, R. J., & Kim, T. H. Applications, Systems and Methods in Smart Home Technology:
+A Review. International Journal of Advanced Science and Technology, 15 (2010) 37-48, .
+Rondeau, E. P., Brown, R. K., & Lapides, P. D. Facility management. John Wiley & Sons,
+Hoboken, 2012, ISBN 0471210617.
+Rookes, P., & Willson, J. Perception: Theory, Development and Organisation. Routledge,
+London, 2005, ISBN 9780203977408.
+Ruiz, A. R. J., & Granja, F. S. Comparing ubisense, bespoon, and decawave uwb location
+systems: Indoor performance analysis. IEEE Transactions on instrumentation and
+Measurement, 66(8) (2017) 2106-2117, 10.1109/TIM.2017.2681398.
+Russell, S. J., & Norvig, P. Artificial intelligence: a modern approach. Pearson Education
+Limited, Harlow, 2016, ISBN 1292153962.
+Saurin, T. A., Formoso, C. T., & Cambraia, F. B. An analysis of construction safety best
+practices from a cognitive systems engineering perspective. Safety science, 46(8) (2008)
+1169-1183, 10.1016/j.ssci.2007.07.007.
+Sheth, A. Internet of things to smart iot through semantic, cognitive, and perceptual computing.
+IEEE Intelligent Systems, 31(2) (2016) 108-112, 10.1109/MIS.2016.34.
+Shi, W., Cao, J., Zhang, Q., Li, Y., & Xu, L. Edge computing: Vision and challenges. IEEE
+Internet of Things Journal, 3(5) (2016) 637-646, 10.1109/JIOT.2016.2579198.
+Simon, H. A. Cognitive science: The newest science of the artificial. Cognitive science, 4(1)
+(1980) 33-46, 10.1016/S0364-0213(81)80003-1.
+Sixsmith, A., & Johnson, N. A smart sensor to detect the falls of the elderly. IEEE Pervasive
+computing, (2) (2004) 42-47, 10.1109/MPRV.2004.1316817.
+Somov, A., Dupont, C., & Giaffreda, R. Supporting smart-city mobility with cognitive Internet
+of Things. In Future Network and Mobile Summit, 2013, pp. 1-10, ISBN 9781905824373.
+Stanescu, A., Mata-Toledo, R. A., & Gupta, P. Machine learning. In AccessScience. McGrawHill Education, 2018. 10.1036/1097-8542.395250
+Tavistock Institute of Human Relation. Interdependence and Uncertainty: A Study of the
+Building Industry. Tavistock Publications, London, 1966, 0415264375.
+Teicholz, P. (Ed.). BIM for facility managers. John Wiley & Sons, Hoboken, 2013, ISBN
+9781118382813.
+24
+
+Tolman, A., Matinmikko, T., Möttönen, V., Tulla, K., & Vähä, P. The benefits and obstacles of
+mobile technology in FM service procurement. Facilities, 27(11/12) (2009) 445-456,
+10.1108/02632770910980736.
+Volk, R., Stengel, J., & Schultmann, F. Building Information Modeling (BIM) for existing
+buildings—Literature review and future needs. Automation in Construction, 38(2014) 109127, 10.1016/j.autcon.2013.10.023.
+Wang, Y., Baciu, G., Yao, Y., Kinsner, W., Chan, K., Zhang, B., ... & Miao, D. Perspectives
+on cognitive informatics and cognitive computing. International Journal of Cognitive
+Informatics and Natural Intelligence, 4(1) (2010)1-29, 10.4018/jcini.2010010101.
+Wang, Z., de Dear, R., Luo, M., Lin, B., He, Y., Ghahramani, A., & Zhu, Y. Individual
+difference in thermal comfort: A literature review. Building and Environment, 1382018)
+181-193, 10.1016/j.buildenv.2018.04.040.
+Weber, W., & Rabaey, J. Ambient intelligence. Springer Science & Business Media, Heidelberg,
+2005 , ISBN 3540238670.
+Wong, J. K. W., Ge, J., & He, S. X. Digitisation in facilities management: A literature review
+and future research directions. Automation in Construction, 92 (2018) 312-326,
+10.1016/j.autcon.2018.04.006.
+Wu, M., Tan, L., & Xiong, N. Data prediction, compression, and recovery in clustered wireless
+sensor
+networks
+for
+environmental
+monitoring
+applications. Information
+Sciences, 329(2016) 800-818, 10.1016/j.ins.2015.10.004.
+Wu, Q., Ding, G., Xu, Y., Feng, S., Du, Z., Wang, J., & Long, K. Cognitive internet of things:
+a new paradigm beyond connection. IEEE Internet of Things Journal, 1(2) (2014) 129-143,
+10.1109/JIOT.2014.2311513.
+Xue, F., Chen, K., Lu, W., Niu, Y., & Huang, G. Q. Linking radio-frequency identification to
+Building Information Modeling: Status quo, development trajectory and guidelines for
+practitioners. Automation
+in
+Construction, 93(2018)
+241-251,
+10.1016/j.autcon.2018.05.023.
+Young, T., Hazarika, D., Poria, S., & Cambria, E. Recent trends in deep learning based natural
+language processing. IEEE Computational Intelligence Magazine 13(3) (2018) 55-75,
+10.1109/MCI.2018.2840738.
+Zhang, M., Zhao, H., Zheng, R., Wu, Q., & Wei, W. Cognitive internet of things: concepts and
+application example. International Journal of Computer Science Issues, 9(6) (2012) 151158, Retrieved from https://search.proquest.com/docview/1315193015?accountid=14548.
+
+25
+
+

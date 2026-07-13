@@ -1,0 +1,274 @@
+Indoor-outdoor navigation without beacons:
+Compensating smartphone AR positioning errors with
+3D pedestrian network
+9 March 2020
+CRC 2020, Tempe, Arizona, USA
+
+Jinying Xu, Fan Xue, Alain Chiaradia, Weisheng Lu, and Jin Cao
+FoA, HKU, HK SAR
+
+Outline
+1
+
+Introduction
+
+2
+
+The WaNAR Method
+
+3
+
+Discussion
+
+Xu et al.: WaNAR positioning @ CRC2020, Tempe, Arizona
+
+2
+
+1. Motion, position, and indoor positioning
+ Motion & position
+ Core concepts in Newton’s laws
+ With respect to a reference frame
+o E.g., a passenger on a flying maglev train
+
+ Indoor positioning
+
+ “Where am I?” in a building / underground space
+ Important for the AECO industry
+o  but no satellite signals here …
+
+Newton’s Laws (Source: phy-astr.gsu.edu)
+
+ Possible reference frames
+o Building structure
+o Space
+
+o Beacons
+
+Xu et al.: WaNAR positioning @ CRC2020, Tempe, Arizona
+
+Maglev motion
+
+3
+
+1. Related works
+ Beacon-based methods are more expensive ($$$)
+ Vision & Radio Frequency (RFID, Ultra-wideband (UWB), Bluetooth (BLE), & WiFi)
+
+ Beacon-free methods are more prone to errors
+ Sonic & magnetic field: Natural “beacons”
+ PDR stepper & Augmented reality (AR): Integration of motion data over time
+
+ Question: How to position indoor accurately and inexpensively?
+Technique classes
+Sonic
+Magnetic
+Vision
+Radio Frequency (RF)
+Pedestrian Dead
+Reckoning (PDR)
+Augmented reality (AR)
+
+Performance Price
+Examples
+★★★
+★
+★★★
+★★
+★★
+★★★★★ Marker, floor pattern, image-to-location reasoning
+★★★★
+★★★
+Infrared, light, WiFi, BLE, GSM, UWB, etc.
+★
+★★★★★ Step counter + motion sensors
+★★
+
+Xu et al.: WaNAR positioning @ CRC2020, Tempe, Arizona
+
+★★★★★ iPhone 11, Google Tango / Pixel, Huawei Mate 30P
+
+4
+
+1. Opportunity
+ Indoor-outdoor motions are constrained
+ For walking, driving, etc.
+o E.g., No walking through walls
+
+o Restricted in some areas (e.g., locked)
+
+ 3D walkablility network
+
+Indoor motion example
+
+ A digital reference for PDR stepper and AR
+
+HKU Main Campus
+(Source: Google Maps)
+
+ Cheap: From BIM + GIS
+
+ This paper
+ A Walkable Network-based AR (WaNAR) positioning
+o Beacon-free
+
+o Accurate, by compensating AR’s errors
+
+Xu et al.: WaNAR positioning @ CRC2020, Tempe, Arizona
+
+HKU Main Campus 3D walkablility
+Network (partial indoor + outdoor)
+(Sun et al. 2019)
+
+5
+
+2. The WaNAR method
+ Given a true position p0 sensed as pAR
+
+procedure WaNAR_error_compensation:
+
+ The “drifting” can be compensated as:
+
+input translationAR, network3D, drifting_vec
+
+ Green: on the path; Red: in perpendicular
+
+way := nearest_path (network3D, translationAR)
+
+ WaNAR is a loop of three steps
+
+if distance (translationAR, tails_of (way)) > TURNING_BUFFER then
+foot := perpendicular_foot (translationAR, way)
+
+ 1. To “snap” the pAR to a walkable path w
+
+drifting_vec := drifting_vec + (translationAR – foot)
+
+ 2. To compensate the red if w not changed
+
+if || drifting_vec || ≤ OFF_TRACK then
+
+ 3. To compensate the green if w changed
+y
+
+translationAR := translationAR – drifting_vec
+end if
+end if
+
+pAR
+
+w
+
+return translationAR
+
+p0
+
+end procedure
+Figure 2. Pseudo codes of the WaNAR error compensation algorithm
+
+2D example
+Xu et al.: WaNAR positioning @ CRC2020, Tempe, Arizona
+
+x
+6
+
+2. Pilot test
+ 10 minutes walk at HKU Main Campus
+ Outdoor: Knowles Bld.  outdoor  CYM Amenities Center
+ Indoor: …  Knowles Bld. G/F
+
+ Lobby  1/F  2/F
+
+ Android app
+ On Android Studio (version 3.1)
+ 3D walkablility network (Sun et al. 2019)
+ Standard AR API (Google Tango, 2017)
+ Flight mode: (as circled)
+
+(a) Android APP
+
+(b) Error compensation
+
+(c) On slopes
+
+ Active messages: (in boxes)
+o Errors compensated
+o On slopes/steps
+
+Xu et al.: WaNAR positioning @ CRC2020, Tempe, Arizona
+
+7
+
+2. Demo video 1/2 (outdoor)
+ Knowles Bld.  outdoor
+ CYM Amenities Center
+ Flight mode: On
+ No RF signals
+
+ AR drafting was
+compensated
+ Continuously
+ Small
+
+ Accurate, real-time
+ E.g., from cross to cross
+
+Video available
+YouTubeTempe,
+(link in
+CRC Proceedings)
+Xu et al.: WaNAR
+positioningon
+@ CRC2020,
+Arizona
+
+8
+
+2. Demo video 2/2 (indoor)
+ Knowles Bld.
+ G/F Lobby  1/F  2/F
+
+ Flight mode: On
+ Worked well on steps,
+corridors, and doors
+ Failed in lifts
+ Too high acceleration on z
+
+ Limited in an open area
+ Must follow a line
+
+Video available
+YouTubeTempe,
+(link in
+CRC Proceedings)
+Xu et al.: WaNAR
+positioningon
+@ CRC2020,
+Arizona
+
+9
+
+3. Discussion
+ Pros
+ WaNAR is accurate, cheap (a few modeler-hours), AR-ready
+ Taking advantage of the walkability in BIM/GIS models
+
+ Cons
+ A location synchronization before use
+ Limited to linear network in this paper
+ Cannot handle lifts’ acceleration yet
+
+ Future work
+ Automatic location synchronization (e.g., a few BLE, RFID)
+ More types of walkability spaces
+ Integration of rear camera and POIs (e.g., voice navigation for visually impaired)
+Xu et al.: WaNAR positioning @ CRC2020, Tempe, Arizona
+
+10
+
+Let BIM/GIS contribute
+to smart cities!
+For questions, pls Email
+Frank: xuef@hku.hk
+11
+
+

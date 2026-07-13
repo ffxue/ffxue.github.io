@@ -1,0 +1,694 @@
+A study on protocols of cross-chain data synchronization for permission blockchain
+for construction management
+Rui Zhao 1*, Liupengfei Wu 2, Zhe Chen 3, Maohong Tang 4, Weisheng Lu 5, and Fan Xue 6
+This is the authors’ version of the paper:
+Zhao, R., Wu, L., Chen, Z., Tang, M., Lu, W., & Xue, F. (2021). A study on protocols of
+cross-chain data synchronization for permission blockchain for construction
+management. Proceedings of the 26th International Symposium on Advancement of
+Construction Management and Real Estate , Springer, 1090-1101.
+https://doi.org/10.1007/978-981-19-5256-2_85
+This file is shared for personal and academic use only, under the license CC BYNC-ND 4.0 (Non-Commercial, No Derivatives, and with an Attributed citation
+when you use). The final published version of this paper can be found at:
+https://doi.org/10.1007/978-981-19-5256-2_85. Any uses other than personal and academic
+purposes must obtain appropriate permissions from Springer first.
+
+5
+
+10
+
+Abstract: The construction industry is encountering management issues, such as low efficiency,
+inadequate regulation and enforcement, absence of good coordination and knowledge sharing,
+and ineffective billing practices. Blockchain is also gaining momentum as a part of the digital
+transformation in the construction area and response to various challenges. Since various
+blockchain implementations have different specifications for distributed ledger functionality
+(e.g., high throughput, scalability), blockchains currently function as independent knowledge
+islands that cannot access external data or conduct transactions on their own. Such information
+silos must be bridged to create more stable blockchain applications. This research investigates
+data synchronization protocols for cross-chain technologies in construction blockchain. It screens
+the most suitable blockchain frameworks for use in the construction industry to establish a
+consistent approach to support their application in construction blockchain. Finally, a cross-chain
+data interaction protocol for blockchain-based supply chain and IFC chain construction is
+proposed.
+
+1* Rui Zhao: Corresponding author, Department of Real Estate and Construction, The University of Hong Kong, China
+E-mail: jeremyrui.zhao@connect.hku.hk
+2 Liupengfei Wu: Department of Real Estate and Construction, The University of Hong Kong, China
+3 Zhe Chen: Department of Real Estate and Construction, The University of Hong Kong, China
+4 Maohong Tang: Department of Real Estate and Construction, The University of Hong Kong, China
+5 Weisheng Lu: Department of Real Estate and Construction, The University of Hong Kong, China
+6 Fan Xue: Department of Real Estate and Construction, The University of Hong Kong, China
+
+Keywords: Blockchain technology, Cross-chain, Construction blockchain.
+15
+
+1 Introduction
+
+20
+
+By 2022, global construction investment is expected to hit US$12.4 trillion [1]. Low efficiency is
+currently cited as a significant cause of failure in the construction industry[2]. In contrast, it is
+among the most critical sectors for future change. The McKinsey Global Institute estimates a
+$1.6 trillion global productivity deficit that can be closed by enhancing business efficiency[3].
+One of the biggest impediments to the building industry's modernization is its reluctance to
+accept technical advances in contrast to the achievements seen in the logistics, automobile, and
+mechanical engineering sectors [4]. The distributed ledger technology (DLT), also known as
+"blockchain," is thought to have the ability to transform many global markets, including
+construction.
+
+25
+
+30
+
+35
+
+40
+
+45
+
+Blockchain is a distributed database where the data or information is stored with unforgeable,
+traceable, open and transparent, and collectively maintained. Blockchain is a booming
+technology that plays a positive role in promoting data sharing, optimizing business processes,
+reducing operational costs, enhancing collaborative efficiency, and building a trustworthy system
+that cannot be underestimated. [5]. The core hypothesis of blockchain is establishing a digital
+distributed consensus, ensuring that data is distributed decentralized across multiple nodes with
+equal knowledge. No single actor has complete network authority, which increases clarity of
+operation and improves data protection. Blockchain fundamentally reorganizes current process
+paths in every enterprise where it is applied, carrying many benefits such as mutual learning,
+instantaneous data sharing, automatic contract execution, network stability, and increased
+teamwork by putting a focus on trust and cooperation amongst members [1].
+Updating and sharing the Building Information Model (BIM) data is one of the most well-known
+blockchain technology technologies in the construction industry. BIM is a process used in a
+multi-dimensional digital model for stakeholders to visualize a construction project[6].
+International Alliance for Interoperability (IAI) has introduced a protocol named Industry
+Foundation Classes (IFC) to share consistent and precise building information between software
+applications used during the lifecycle of a project or asset. IFC plays a vital role in improving
+interoperability between software and shunning information loss. As a result, end-users can
+better cooperate regardless of which applications they use. [7].
+BIM model has rapidly become a common forum for all parties to collaborate on a single and
+collaborative model in the Architecture, Engineering, and Construction (AEC) industry. The
+BIM maturity level can be used to identify supply chain management problems in BIM [8]. Due
+to a large amount of variability between the modified design of the BIM model and the supply
+
+50
+
+55
+
+60
+
+chain., there is a need to form two separate blockchain networks for the BIM model and the
+supply chain model to interact with data about the parts of the BIM model. The intelligent
+contract structure keeps the data in all chains current in real-time, checking and content and part
+functionality within the model from the design process to the execution phase. A cross-chain
+protocol is needed to solve the confidence function between various blockchains and realize
+knowledge transmission between blockchains.
+The paper is organized as follows: the next section gives an outlook on the prospect of
+blockchain technology in the construction industry, introduces the IFC file-based BIM model,
+and describes the application of blockchain and BIM in the supply chain, followed by a
+comparison to select the most suitable blockchain framework for the construction industry. Then,
+the following section describes the whole process of data interaction in the two chains, the IFC
+chain, and logistics blockchain. The final section concludes and discusses future research needs.
+
+2 Blockchain in construction
+2.1 BIM on chain
+
+65
+
+70
+
+75
+
+80
+
+It is essential to provide compatible resources and assets within the construction industry project,
+where many companies work intensively on ad hoc variations of specific projects. Widespread
+and proven frameworks, ideally based on open standards, are essential for the project members to
+communicate and cooperate without having any special proprietary software. BIM software's
+advanced technologies enable a shift in the construction industry's use of information
+technology, going from a static visual representation of a building to an interactive semantic
+product and process model [7]. Information sharing can be the starting point for using BIM in the
+phase of design, construction, and operation. Information sharing necessitates creating a
+computing system in which users will effectively share data independent of software or data
+place.
+IFC can close the divide between stakeholders and project stages in the construction industry's
+fractured project world. IFC-supported model-based architecture can alter the foundations of the
+construction process. The potential for productivity gains is enormous: transparent
+interoperability of building information models would allow for a continuous flow of design,
+expense, project, manufacturing, and maintenance data, minimizing complexity and increasing
+reliability during a building's life cycle [9]. As a result, the IFC initiative is one of the most
+aggressive IT standardization initiatives in any sector.
+The hierarchical structure of the IFC data model is divided into four layers: resource layer, the
+core layer, interop layer, and domain layer. As shown in Figure 1, the resource layer contains the
+
+85
+
+most basic information. Entities within the same structure at each layer can be referenced to each
+other. They can also be cited by entities of the upper level instead of referenced by entities at the
+lower level. That is, the quotation of entities must follow the principle of top-down or same-level
+reference. Based on this principle, the upper layer changes cannot directly interfere with the
+information of the lower layer, which ensures the stability of the system architecture.
+
+Figure 1. The layers of the IFC data model
+
+90
+
+95
+
+Although data storage space and Internet speeds are becoming more affordable, information
+efficiency and speed must be considered in blockchain BIM models. Due to the high redundancy
+of IFC files and the characteristics of larger files, Xue and Lu [10] propose a semantic
+differential transaction method that minimizes the information redundancy of BIM and
+blockchain integration. Using this approach, one can store the original BIM model in the local
+terminal and store the IFC altered part of the BIM model into the blockchain instead of the whole
+IFC file. This approach reduces the redundancy of IFC files in the blockchain. Also, it takes full
+advantage of the tamper-evident historical data and the traceability of transactions in blockchain
+technology.
+2.2 Supply chain management on chain
+
+100
+
+Each day, billions of goods are produced globally across diverse supply chains that span the
+globe. Even though goods move through an extensive network of manufacturers, dealers,
+transporters, warehousing facilities, and suppliers engaged in the design, processing, delivery,
+
+105
+
+110
+
+115
+
+120
+
+and distribution of goods, these journeys are almost always invisible to us [11]. Supply chains are
+getting more complicated, extensive, and multinational. End-to-end supply chain transparency
+and accountability can aid in modeling product flow from raw materials to manufacturing,
+testing, and finished goods, allowing for new types of organizational, risk, and sustainability
+analysis. [12].
+As a cutting-edge technology, blockchain could bring new changes to supply chain architecture,
+organizational processes, and day-to-day management. The potential of blockchain to ensure the
+reliability, traceability, and validity of information and trustless networks built on smart contracts
+provide a technological reserve for supply chains and supply chain management [13]. In contrast
+to traditional supply chains, there are four key players unique to blockchain networks that
+perform critical functions in blockchain-based supply chain Registrars, providing unique
+identifiers to the network participants. Standards bodies establish system standards for
+blockchain development strategies and technical specifications, thus enabling the possibility of
+fair trade. On the other hand, certificates provide certificates of authorization to a segment of the
+population participating in blockchain-based networks. In addition, the licensed auditor is
+responsible for auditing the stakeholders who are approved to participate in the network, such as
+suppliers, distributors, and consumers [14]. The supply chain removes the need for a trustworthy
+central organization to manage and administer the infrastructure by integrating with blockchain
+technology, allowing consumers to examine an uninterrupted chain of ownership and purchases
+from raw materials to final sales. When transactions occur through these various blockchain
+knowledge dimensions, this information is documented in the ledger and is verifiable [15].
+2.3 Comparison of existing blockchain systems
+
+125
+
+130
+
+There are currently several blockchain systems available, such as Bitcoin [16], Ethereum,
+Hyperledger-Fabric, and IOTA. Proof of work (POW), proof of stake (POS), practice byzantine
+fault resistant (PBFT), and CITA (Tendermint) are examples of mainstream consensus
+algorithms. We compare the functionality, stability, and applicability of popular blockchain
+systems and consensus algorithms in construction scenarios. Li, Greenwood [17] analyzed the
+difficulties and prospects of blockchain applications in the construction industry. They argue that
+one of the challenges is that the BIM models are too large, and the transactions are too
+concurrent. However, simultaneously, blockchain applications will enable the industry to
+manage resources better and reduce costs, project schedules, and payment disputes. We
+identified four conditions for a blockchain framework appropriate for the IoT scenario based on
+previous studies and our Summary, including the ability to include heterogeneous networks,
+consensus algorithms based on BFT, no transaction costs, and scalability.
+
+135
+
+140
+
+145
+
+150
+
+155
+
+First and foremost, blockchain technology can support a diverse network. When designing a
+blockchain network for the construction industry, a heterogeneous network with several subnetworks to manage a range of business logic is needed.
+Secondly, we assume that for construction blockchain scenarios, blockchain networks with
+higher latency, greater scalability, and no transaction fees are more appropriate. Fast transaction
+validation is a critical criterion for building blockchains, which necessitates blockchains reaching
+consensus without forking. This condition can only be met by using the BFT-based consensus
+algorithm. Furthermore, since mature construction blockchain networks must process a vast
+number of transactions every day, transaction fees would place unacceptably high costs on
+customers, which is well addressed by Hyperledger Fabric's zero transaction fee function.
+The third requirement is that the blockchain framework is scalable. Higher performance and
+scalability criteria are enforced on the infrastructure for a building blockchain, such as a large
+number of participants, a large volume of transactions, a large volume of records, or a substantial
+rise in the number of users, and a single-chain implementation would often face issues with
+software architecture or hardware resources. According to the blockchain's framework
+characteristics, attacking nodes on the blockchain will improve the system's fault tolerance and
+the energy spent in credit endorsement of participants without enhancing efficiency.
+A comparison of some significant blockchain networks is shown in Table 1. A thorough analysis
+reveals that no one blockchain will satisfy the whole construction blockchain scenario
+requirements. Therefore, a federated chain such as Fabric, which is different from the Bitcoin
+mechanism and targeted for industry use, is better suited for architectural blockchain
+environments.
+Table 1. Comparison of blockchain systems[18]
+Features
+
+Bitcoin
+
+Ethereum
+
+Hyperledger-Fabric
+
+CITA
+
+Consensus
+
+POW
+
+POW, POS
+
+PBFT
+
+BFT
+
+Consensus finality
+
+
+
+
+
+
+
+
+
+Blockchain forks
+
+
+
+
+
+
+
+
+
+Smart contracts operability
+
+
+
+
+
+
+
+
+
+Fee less
+
+
+
+
+
+
+
+
+
+Scalable
+
+
+
+
+
+
+
+
+
+TX throughput
+
+8 TPS
+
+9-10 TPS
+
+Thousands of TPS
+
+8-11
+
+TPS
+
+3 Cross-chain for blockchain-based supply chain and BIM chain
+160
+
+165
+
+170
+
+175
+
+180
+
+3.1 Cross-chain technology for the construction industry
+Blockchain is a comparatively closed framework as compared to conventional database-based
+data storage. At the moment, the majority of blockchain-based protection implementation
+scenarios use separate blockchain networks that are separated from one another and challenging
+to interconnect and horizontally expand, impeding the efficient transmission and circulation of
+digital assets across systems. With the success of blockchain implementations and their features'
+sophistication, further cross-chain standards are being proposed [19]. Remote verification and
+cross-chain authentication data interoperability are essential in the building field due to the
+generally broad number of players participating in the same project where the authentication
+standards span different security domains in heterogeneous blockchain networks [10]. However,
+there are very few cross-chain technology multi-domain authentication solutions.
+Notary systems, side chains/relays, and hash locking are the three processes that make up crosschain technology. Various cross-chain solutions are appropriate for multiple implementation
+situations. The side chain and relay chain are the preferred cross-chain technologies for multidomain authentication in the construction industry [20]. Lightweight client-side authentication is
+possible with this technology. It assesses the validity of a given authentication case and state in
+the cross-chain scheme using smart contracts to verify the validity of a cryptographic hash tree.
+The open web blockchain network is distributed, and its access protection is critical in the
+construction industry. Conventional authentication of access is focused on PKI in a centralized
+scheme[21]. The majority of the current multi-domain authentication is for large-scale networks of
+the same kind and rarely includes domain authentication of heterogeneous systems. Existing
+inter-domain authentication schemes challenge satisfactory authentication results, particularly for
+
+185
+
+blockchain users on various blockchain platforms. Therefore, we develop the PBFT process
+based on cross-chain technologies and provide a multi-domain data system synchronization
+protocol suitable for blockchain construction to tackle security issues in building blockchain
+authentication [22].
+3.2 Authentication scenario
+
+190
+
+195
+
+200
+
+205
+
+210
+
+The construction blockchain's endpoints are separated into several domains in this case, with
+each domain named after its stored contents. The BIM model domain's blockchain, responsible
+for storing the IFC information in the BIM model, is called the IFC chain. It holds the domain's
+local authentication information and a federated blockchain called SC chain, which contains each
+domain's local authentication data metadata. If cross-domain authentication is required, the
+authenticator may read the federated chain's metadata to verify the access rights of the
+authenticated endpoint.
+The scenario of the interaction between the IFC chain and the blockchain chain for supply chain
+(SC chain) of the BIM model of interest in this paper is shown in Figure 2. The upper part is the
+IFC chain responsible for maintaining the local authentication blockchain, which has multiple
+endpoints in the domain corresponding to BIM clients, customers, architects, building structure
+designers, building service designers, and other professionals. The below part is the SC chain,
+which exists as a federated chain, where all relevant stakeholders in the supply chain system can
+implement and view the BIM models on the chain.
+Overall, cross-chain transactions require the completion of four steps: authentication, consensus,
+packaging, and block storage. The local blockchain first authenticates the identity of the
+requester if cross-domain interaction is needed. Following verification, information for local
+authentication is shared via cross-chain technology to the federated chain. The requesting node's
+authentication is completed on the public authentication blockchain using the PBFT-based
+authentication policy and the distributed authentication algorithm. After the authentication is
+transmitted, cross-chain technologies collect and exchange authentication information into the
+local chains of the other domain to obtain authentication certificates; for more information on the
+authentication method, see below.
+
+Figure 2. The possible authentication scenario
+3.3 Cross-chain data exchange
+
+215
+
+220
+
+225
+
+The side-chain of cross-chain technologies is used to migrate data between the local and
+federated chains. A side-chain is a protocol that enables tokens to switch properties between
+blockchains securely. Thanks to two-way pegging technologies, the main chain's infrastructure
+can be operated to some extent after the connection. Digital objects can be securely moved from
+the first blockchain to the second blockchain using side-chain technology and then safely
+restored from the second blockchain to the first blockchain at a later period [23]. The first
+blockchain is known as the main chain, and the second blockchain is known as the side chain.
+From the single chain of the main chain, the side chain can virtually enhance the main chain's
+performance horizontally and vertically. Through the side chains, the main chain looks like it
+supports these functions as well. By virtualization, it means that although there are horizontal
+and vertical enhancements, the main chain itself does not have any changes. Still, only the many
+side chains help it play a proxy-like role to make it look like the performance is improved [24].
+
+230
+
+235
+
+Via two-way anchoring technology, the side-chain implementation understands cooperation and
+data exchange between the master and slave chains. When a master chain asset is secured, the
+side-chain asset that corresponds to it may be opened. When the side chain's assets are closed,
+the master chain's equivalent assets are opened. The most significant challenge in introducing bidirectional anchoring is that the protocol change must be consistent with the current main chain,
+i.e., it must not interfere with the main chain's functionality. The specific implementation
+methods are the single hosting model, federation model, SPV model, drive chain model, and
+hybrid model[25].
+1)Single Hosting Mode: when the main chain's side chain is synchronized, a trustee is
+appointed to perform information locking, asset synchronization, and unlocking tasks.
+2) Federation Model: the other name is the notary model, in which multiple signatures from
+multiple notaries sign off on transactions that transfer assets, avoiding centralization.
+
+240
+
+3)SPV Mode: By sending a transaction to a particular address on this chain, an SPV certificate
+is automatically created to the side-chain, and a transaction is initiated to unlock the corresponding
+asset on the side-chain
+4)Drive Chain Model: The Drive Chain model uses miners as the custodian of funds and
+issues custody of assets to digital asset miners, who vote on when to unlock the assets and where
+to send them.
+
+245
+
+5)Hybrid Model: The hybrid model is an effective combination of these side-chain
+mechanisms, using the most suitable model for chains with different structures, such as SPV for
+the main chain and drive chain for the side chains.
+3.4 Data structure
+
+250
+
+255
+
+A block is a storage system for storing ledger data. The unforgeable cross-domain certification
+certificates in the block can be checked publicly after encryption with public and private keys.
+The block data structure defines the authentication certificates' description specification, security
+policies, and security level in the cross-chain authentication information sharing: the header and
+data parts of the cross-domain authentication block [26]. Four terms make up the header: (1) the
+previous block's data and the parent block's hash index; (2) a timestamp to record the transaction
+time; (3) Nonce (random number, counter for workload proof algorithm); and (4) Merkle tree
+root data that summarizes and quickly summarizes all the transaction data in the checksum
+block. Figure 3 illustrates the structure of the data. A Merkle tree is essentially a tree-like data
+structure consisting of data blocks, leaf nodes, intermediate nodes, and root nodes. The hashing
+
+260
+
+265
+
+operation used to generate the Merkle tree is a standard cryptographic function in the blockchain.
+Data of arbitrary size and length are hashed to obtain a fixed size and length value, i.e., the hash
+value. The certificate content includes the certificate version number, serial number, certificate
+signature algorithm, message-digest algorithm, and other generation information. The validation
+information for cross-domain authentication is stored in the Merkle tree of the blockchain by
+nodes in the alliance chain [27].
+
+Figure 3. The structure of the certified blockchain
+
+3.5 Certification process
+Figure 4 depicts the cross-domain authentication method, which involves registration,
+authentication order, token transfer, distributed authentication, and authentication passing.
+3.5.1 Register
+
+270
+
+275
+
+In the registration phase, terminal A in the IFC chain initiates registration based on a unique ID
+and triggers the digital signature and encryption mechanism on the local chain. The system
+generates and returns the public key encrypted registration information
+Sign(UUID||timestamp||n1) of the terminal through the certificate of the terminal, where n1 is a
+random number selected by the system. Through the above operation, the IFC file completes the
+registration process.
+3.5.2 Authentication
+
+280
+
+285
+
+290
+
+295
+
+When the terminal on the IFC chain needs to access the resources on the SC chain, the terminal
+initiates the authentication request Request(IDIFC||PubIFC||timestampǁbusinuss_code), which
+includes the IFC file ID where the transition happened, the transaction's public key, and the
+company form. Following validation by the local chain, it establishes a two-way link with the
+authentication SC chain. It synchronously transmits the IFC chain's authentication request
+information and the certificate information to the relay chain, resulting in the relay chain having
+both the IFC chain's authentication certificate and the cross-domain authentication request of this
+terminal.
+3.5.3 Verification
+
+The relay chain's smart contract will conduct distributed authentication of the nodes applying for
+entry. The authentication group is formed by selecting nodes from the relay chain that satisfy the
+threshold number. For distributed authentication, the PBFT consensus algorithm is used. Finally,
+the relay chain stores the authentication data. The authentication result is stored in the relay
+chain's distributed ledger after a smart contract is triggered, after which the relay chain will
+transfer the authentication credential information to the SC chain's blockchain through a twoway hook, allowing the SC chain's nodes to authenticate the terminals on the IFC chain.
+Finally, the IFC chain node verified by the SC chain terminal will obtain the timestamp of the
+IFC file on the SC chain and use the smart contract to compare it with the timestamp when the
+transaction was submitted. If the timestamp on the SC chain shows a time later than when the
+IFC chain introduced the transaction, it proves that a change in the IFC file on the Sc chain that
+was not requested by the IFC chain occurred after the transaction was submitted. Then the
+
+transaction is considered to be risky, and it is recommended to proceed later, although the
+probability of this happening in the construction field is small.
+300
+
+305
+
+3.5.4 Connection creation
+
+After the IFC chain's terminal sends a remote access request to the SC chain's terminal, the SC
+chain's terminal authenticates the request before invoking the SC chain's smart contract to check
+the access request. Since the terminal on the IFC chain has contact authority on the SC chain, the
+terminal on the SC chain will quickly validate the identity and authority of the terminal on the
+IFC chain, and safe communication can be developed after authentication, thanks to the
+distributed consensus of the blockchain and the security property of unforgeability.
+
+Figure 4. Access authentication process
+
+4 Summary
+310
+
+This paper focuses on the cross-chain technology research of blockchain in the construction
+field. In the construction field, the vast BIM will bring tremendous network transmission
+pressure. The data cannot be processed in parallel, bringing more significant trouble for the
+
+315
+
+320
+
+325
+
+stakeholders involved in the construction process. To solve the problem, we analyzed a variety of
+blockchain models with broader circulation. We compare and filter out the most timely coalition
+chain used in the construction field, propose the collapse strategy using two-way anchoring, and
+finally propose an improved network communication protocol. This study can lay the initial
+foundation for cross-chain research in the construction field and pave the way for the subsequent
+technical improvement of cross-chain protocols for blockchains specifically used in the
+construction field.
+Future works are suggested in the following directions. First, a docker cluster is built using
+Kubernetes to join a large amount of actual data for multiple batches of experiments and
+compare with various cross-chain technologies popular nowadays. Second, a blockchain model
+based on this cross-chain protocol and combined with a distributed machine learning paradigm
+called federation learning is used to build efficient machine learning models among multiple
+participants or multiple computational nodes to solve the pervasive information silo problem.
+
+Acknowledgments
+
+330
+
+The work presented in this paper was financially supported by the Hong Kong Research Grants
+Committee (RGC) with the General Research Fund (GRF, 17200221) and the Hong Kong
+Innovation and Technology Commission (ITC) with the Innovation and Technology Fund (ITF)
+(No ITP/029/20LP).
+
+References
+[1]Nawari, N.O. and S. Ravindran, Blockchain technology and BIM process: review and potential
+applications. ITcon, 2019. 24: p. 209-238.
+
+335
+
+[2]Hu, X. and C. Liu, Measuring efficiency, effectiveness and overall performance in the Chinese
+construction industry. Engineering, Construction and Architectural Management, 2018.
+[3]Barbosa, F., Reinventing construction–A route to higher productivity. February 2017. 2017.
+[4]Oesterreich, T.D. and F. Teuteberg, Understanding the implications of digitisation and
+automation in the context of Industry 4.0: A triangulation approach and elements of a
+research agenda for the construction industry. Computers in industry, 2016. 83: p. 121-139.
+
+340
+
+[5]Crosby, M., et al., Blockchain technology: Beyond bitcoin. Applied Innovation, 2016. 2(6-10):
+p. 71.
+
+[6]Fountain, J. and S. Langar, Building Information Modeling (BIM) outsourcing among general
+contractors. Automation in construction, 2018. 95: p. 107-117.
+
+345
+
+[7]Vanlande, R., C. Nicolle, and C. Cruz, IFC and building lifecycle management. Automation in
+construction, 2008. 18(1): p. 70-78.
+
+350
+
+[8]Fitriawijaya, A. and T. Hsin-Hsuan, A blockchain approach to supply chain management in a
+BIM-enabled environment, in Intelligent and Informed - Proceedings of the 24th International
+Conference on Computer-Aided Architectural Design Research in Asia, CAADRIA 2019.
+2019, The Association for Computer-Aided Architectural Design Research in Asia
+(CAADRIA). p. 411-420.
+[9]Laakso, M. and A. Kiviniemi, A review of IFC standardization–interoperability through
+complementary development approaches. 2011.
+
+355
+
+[10]Xue, F. and W. Lu, A semantic differential transaction approach to minimizing information
+redundancy for BIM and blockchain integration. Automation in Construction, 2020. 118: p.
+103270.
+[11]Abeyratne, S.A. and R.P. Monfared, Blockchain ready manufacturing supply chain using
+distributed ledger. International Journal of Research in Engineering and Technology, 2016.
+5(9): p. 1-10.
+
+360
+
+[12]Min, H., Blockchain technology for enhancing supply chain resilience. Business Horizons,
+2019. 62(1): p. 35-45.
+[13]Saberi, S., et al., Blockchain technology and its relationships to sustainable supply chain
+management. International Journal of Production Research, 2019. 57(7): p. 2117-2135.
+[14]Steiner, J. and J. Baker. Blockchain: The Solution for Transparency in Product Supply Chains.
+2015; Available from: https://www.provenance.org/whitepaper.
+
+365
+
+[15]Pazaitis, A., P. De Filippi, and V. Kostakis, Blockchain and value systems in the sharing
+economy: The illustrative case of Backfeed. Technological Forecasting and Social Change,
+2017. 125: p. 105-115.
+[16]Nakamoto, S., Bitcoin: A peer-to-peer electronic cash system. 2019, Manubot.
+
+370
+
+[17]Li, J., D. Greenwood, and M. Kassem, Blockchain in the built environment and construction
+industry: A systematic review, conceptual models and practical use cases. Automation in
+Construction, 2019. 102: p. 288-307.
+
+[18]Makhdoom, I., M. Abolhasan, and W. Ni. Blockchain for IoT: The challenges and a way
+forward. in ICETE 2018-Proceedings of the 15th International Joint Conference on eBusiness and Telecommunications. 2018.
+375
+
+[19]Moinet, A., B. Darties, and J.-L. Baril, Blockchain based trust & authentication for
+decentralized sensor networks. arXiv preprint arXiv:1706.01730, 2017.
+[20]Li, X., et al., Two-layer Adaptive Blockchain-based Supervision model for off-site modular
+housing production. Computers in Industry, 2021. 128: p. 103437.
+
+380
+
+[21]Millán, G.L., et al., PKI-based trust management in inter-domain scenarios. Computers &
+Security, 2010. 29(2): p. 278-290.
+[22]Wu, L., W. Lu, and F. Xue. Construction Inspection Information Management with
+Consortium Blockchain. in Proceedings of the 25th International Symposium on Advancement
+of Construction Management and Real Estate (CRIOCM2020). 2020. Springer.
+
+385
+
+[23]ElMessiry, M. and A. ElMessiry. Blockchain framework for textile supply chain management.
+in International Conference on Blockchain. 2018. Springer.
+[24]Wang, H., Y. Cen, and X. Li. Blockchain router: A cross-chain communication protocol. in
+Proceedings of the 6th international conference on informatics, environment, energy and
+applications. 2017.
+
+390
+
+[25]Li, D., et al., Research on Multidomain Authentication of IoT Based on Cross-Chain
+Technology. Security and Communication Networks, 2020. 2020.
+[26]Nofer, M., et al., Blockchain. Business & Information Systems Engineering, 2017. 59(3): p.
+183-187.
+[27]Li, C.Z., et al., A blockchain-and IoT-based smart product-service system for the sustainability
+of prefabricated housing construction. Journal of Cleaner Production, 2021. 286: p. 125391.
+
+395
+
+

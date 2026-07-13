@@ -1,0 +1,1927 @@
+This is the Pre-Published Version.
+Netnomics manuscript No.
+(will be inserted by the editor)
+
+A Learning-based Variables Assignment Weighting Scheme
+for Heuristic and Exact Searching
+Fan Xue · C.Y. Chan · W.H. Ip · C.F. Cheung
+
+Received: date / Accepted: date
+
+Abstract Many search algorithms have been successfully employed in combinatorial optimization in logistics practice. This paper presents an attempt to weight the
+variables assignments through supervised learning in subproblems. Heuristic and exact searching methods can therefore test promising solutions first. The Euclidean
+Traveling Salesman Problem (ETSP) is employed as an example to demonstrate the
+presented method. Analysis shows that the rules can be approximately learned from
+the training samples from the subproblems and the near optimal tours. Experimental
+results on large-scale local search tests and small-scale branch-and-bound tests validate the efficiency and effectiveness of the approach, especially when it is applied to
+industrial problems.
+Keywords Supervised learning · Metaheuristics · Euclidean traveling salesman
+problem · Class association rules · Large-scale optimization
+1 Introduction
+The search for a “best” configuration of a set of variables to achieve certain goals
+plays a pivotal role in many important combinatorial optimization problems in logistics practice, such as vehicle routing, warehouse location decision, production planning and scheduling.
+Many heuristic (including metaheuristic) and exact search algorithms have been
+developed, for example Laporte surveyed classes of algorithms for the vehicle routing problem [1]. Each search algorithm has its own strategy of exploiting the search
+space. The strategies can be categorized into different classes, such as random sampling, greedy (e.g., first-come-first-served), metaheuristic update (e.g., neighborhood
+F. Xue · C.Y. Chan(†) · W.H. Ip · C.F. Cheung
+Department of Industrial and Systems Engineering,
+The Hong Kong Polytechnic University,
+Hunghom, Kowloon, Hong Kong
+Tel: +852 2766 4980
+E-mail: mfcychan@inet.polyu.edu.hk
+
+2
+
+F. Xue et al.
+
+of local search, and mutation and crossover of genetic algorithm), systematic enumeration (e.g., branch-and-bound), exhaustive enumeration.
+Apart from the algorithms aforementioned, machine learning techniques have received increasing attention. The supervised learning, a class of machine learning,
+aims at building a concise model of the distribution of class labels in terms of predictor features [2]. Some supervised learning techniques have been successfully adopted
+in logistics optimization applications, e.g. in scheduling [3,4, 5, 6], in production control [7] and in binpacking [8].
+This paper presents a fast supervised-learning-based approach to determine a priori weights for the assignments of each variable. Based on the weights derived, many
+search algorithms can test promising solutions first.
+The remainder of this paper is organized as follows. In Section 2, the variables
+assignment weighting approach is presented. In Section 3, the Euclidean traveling
+salesman problem (ETSP) is introduced as an example. The parameters of learning,
+the sizes of subproblems, and the complexity of the approach are discussed in Section
+4. Section 5 presents numerical results and analysis of experiments of local search
+metaheuristics on large-scale ETSPs and those of branch-and-bound on small-scale
+ETSPs. Conclusions are finally given in Section 6.
+2 The variables assignment weighting scheme
+In the proposed weighting approach, the objective is to advise assignments for all
+variables, while the learning is only carried out on a subset of variables in a subproblem. It is assumed that every variable is “homogeneous,” or obeying the same patterns
+of decision making. The assumption is naturally held in many optimization problems,
+such as vehicle routing and location decision. In fact the assumption may also enable
+learning from near optimal solutions, especially if most variable assignments in the
+optimal solutions can be found in the near optimal solutions.
+The proposed method consists of four phases, as shown in Fig. 1:
+1. Start with a problem P,
+2. Learn pattern of decision making from a small representative subproblem P∗ and
+its solution S∗ ,
+3. Interpret the patterns to weights (or weight-based sorting or interchanges) of possible assignments of the variables,
+4. Reform the assignment process of a heuristic or exact search algorithm h in the
+problem P.
+The pattern of decision making, the key of this method, can usually be represented
+in the forms of rules or statistical values. In this paper, the class association rules
+(CARs) [9,10] are employed to represent the pattern. The learning results are therefore a set of CARs. Each CAR is in the form of “A ⇒ c,” where c denotes a class
+attribute related to the variables assignments, A ⊂ A stands for some decision attributes, and A denotes all decision attributes. There are two typical parameters for
+the CAR learning: the minimum confidence and the minimum support. The two parameters can be easily determined in this paper: they are set to very low, e.g., minimum confidence = 0.01, minimum support = 0.001 for a set of ten thousand training
+
+A Learning-based Variables Assignment Weighting Scheme
+
+3
+h
+S
+
+P
+Weights,
+sortings, M
+interchanges
+
+h*
+P*
+
+S*
+
+M
+Knowledge
+Search discovery
+restriction
+rules
+
+Fig. 1 The variables assignment weighting scheme
+
+samples. It is because the rules with different confidences and different supports can
+be potentially useful to weight and order the assignments.
+The learning phase is carried out in a representative subproblem P∗ and its solution S∗ . The representativeness denotes the similarity between the CARs learned from
+P∗ and S∗ and those learned from the given problem P. The algorithm h∗ that solves
+P∗ can be certain effective exact or heuristic algorithm, such as linear programming.
+If the size of P∗ is much smaller than the size of original problem, the time cost of
+solving P∗ and learning can usually be very low.
+The learned CARs can be interpreted to different forms of weights compatible
+with different search algorithm h. Examples are:
+– Numeric weights for greedy assignments (see dispatching rules),
+– Sorting for tests of a local search heuristic, and
+– Grouping for a rank-based constructive heuristic.
+In the first example of interpretations, the top weighted possible assignment of
+each variable can be chosen greedily. It is very close to learning dispatching rules, see
+[3, 4,5,6]. Weights in some other cases, e.g. the the second example, can be involved
+in more sophisticated search algorithms.
+Besides the idea of weighting assignments, other researchers have proposed different cooperation plans between learning and search algorithms, e.g. a general framework of guiding constructive search with learning [11], employing genetic procedures
+to control neighborhood functions1 , and the adaptive combinatorial search for complex problems2 .
+3 The Euclidean traveling salesman problem
+The traveling salesman problem (TSP) aims at finding the shortest possible tour in
+which each given city is visited exactly once. This problem is one of the most comprehensively studied problems in operational research, theoretical computer science,
+and industrial engineering. The Euclidean TSP (ETSP), in which the distance between two cities is the Euclidean distance, is the most common form of the TSP.
+1
+2
+
+See http://www.info.univangers.fr/pub/saubion/PHD/PHddetails.htm.
+See http://www.msr-inria.inria.fr/Projects/adaptive-comb-search.
+
+4
+
+F. Xue et al.
+
+The industrial applications of the ETSP include vehicle routing, electric power cable
+networks, and VLSI (Very-Large-Scale Integration) chip fabrication. [12, 13].
+The ETSP is known in N P-complete (Non-deterministic Polynomial time complete) class [14]. Nevertheless, as a result of decades of research, the ETSP, can be
+viewed as well-handled in practice. On one hand, codes that find provably optimal
+tours are now capable of handling relatively large instances, e.g., the Concorde code
+solved the 85,900 cities in 136 CPU-years using 2.4 Ghz processors [13]. On the
+other hand, fast heuristics typically can quickly find tours within a few percent of optimal on real-world instances [15], and more sophisticated heuristics can get within
+1% of optima in reasonable amounts of time [16,17].
+It is believed that one of the major reasons for the efficiencies of the heuristics,
+especially local search, is the high effectiveness of the edge candidate set structures.
+The main concern of the candidate set is that it is not possible for most of very long
+edges to appear in optimal tours. So a candidate set usually suggests a limited number
+of promising edges for each city according to the geometry. Popular candidate sets
+includes the Nearest-neighbor-first [18], the Delaunay [19], the k-quadrant [20], and
+the α -nearness [16].
+The following show how the presented variables assignment weighting scheme
+can be employed in the ETSP.
+
+3.1 Learning from subproblems
+According to experiences and tests, the representativeness of a subproblem P∗ is
+highly associated with its density of cities. The density of the subproblem should
+be close to that of the given ETSP in order to find the closet rules. It is not difficult
+to find such a subproblem with a known density from a given ETSP. Linear time
+algorithms for finding such subproblems can be easily developed.
+The size (number of cities) of the subproblem is another parameter to determine.
+In this paper the size is set to 3,000 (cities) according tests, see Subsection 4.2 for
+details.
+When the subproblem is determined, it can be solved by effective algorithms.
+In this paper the algorithm is the Bentley’s Greedy heuristic tour construction [21]
+followed by a 5-Opt local search by the LKH3 [16] over an α -nearness candidate set.
+The parameters of the local search are set to the suggested values in literature [16,
+22]. The trials of the local search is set to 300 and the number of runs is set to 1. The
+solution S∗ can be typically found in tens of seconds for a 3,000 ETSP and the tour
+quality is typically within 1% over the optimum.
+Decisions of assigning variables in the ETSP can be viewed as: “what kind of
+(short) edges can outperform other competitors departing from one city.” Fourteen
+prima-facie geometric decision attributes and one label are selected for the CAR
+learning, as listed in Table 1. Without loss of generality, all the edge candidates departing from a city ci are put in an ordered set:
+{
+}
+Nci = ⟨ci , n1 ⟩, ⟨ci , n2 ⟩, . . . , ⟨ci , nki ⟩ ,
+(1)
+3
+
+Available at:http://www.akira.ruc.dk/~keld/research/LKH/, Version 2.0.3.
+
+A Learning-based Variables Assignment Weighting Scheme
+
+5
+
+where the distances obey d(ci , n1 ) ≤ d(ci , n2 ) ≤ · · · ≤ d(ci , nki ). The asymmetry should
+be noted: an edge ⟨ci , c j ⟩ may be contained in Nci and out of Nc j .
+Table 1 Definitions of attributes and label for the edge-selection function for edge ⟨ci , n j ⟩
+Id
+
+Type
+
+Definition
+
+Remarks
+
+G1 Boolean G1 = 1, iff. ∀
+
+∀
+
+d(ci , n j ) ≤ d(cx , cy ) Globally nearest
+
+cx ∈C cy ∈C −{cx }
+
+G1 = 0, otherwise
+R1 Integer R1 = LenIdx(ci , n j , n1 ) †
+R2 Integer R2 = LenIdx(ci , n j , n2 )
+R3 Integer R3 = LenIdx(ci , n j , n3 )
+S1 Boolean S1 = 1, iff. d(ci , n1 ) ≤ d(ci , n2 )/2
+S1 = 0, otherwise
+S2 Boolean S2 = 1, iff. d(ci , n2 ) ≤ d(ci , n3 )/2
+S2 = 0, otherwise
+P1 Integer P1 = LenIdx(n j , ci , m1 ), iff. ci ∈ Nn j
+P1 = −1, otherwise
+P2 Integer P2 = LenIdx(n j , ci , m2 ), iff. ci ∈ Nn j
+P1 = −1, otherwise
+P3 Integer P3 = LenIdx(n j , ci , m3 ), iff. ci ∈ Nn j
+P1 = −1, otherwise
+Q1 Boolean Q1 = 1, iff. d(n j , m1 ) ≤ d(n j , m2 )/2
+Q1 = 0, otherwise
+Q2 Boolean Q2 = 1, iff. d(n j , m2 ) ≤ d(n j , m3 )/2
+Q2 = 0, otherwise
+Ag Integer Ag = round(MinDirGap(ci , Nci ) × 15/π ) ‡
+Ah Integer Ah = round(MaxDirGap(ci , Nci ) × 15/π )
+An Integer An = NumO f Dir(ci , Nci ) ∗
+Opt Boolean Opt = 1, iff. ⟨ci , n j ⟩ is in the given tour
+Opt = 0, otherwise
+
+Length index against n1 for ci
+Length index against n2 for ci
+Length index against n3 for ci
+n1 is significant closer than n2 for ci
+n2 is significant closer than n3 for ci
+Length index against m1 for n j
+Length index against m2 for n j
+Length index against m3 for n j
+m1 is significant closer than m2 for n j
+m2 is significant closer than m3 for n j
+Minimal angular gap around ci
+Maximal angular gap around ci
+Number of directions around ci
+Appearing in the training sample
+
+: LenIdx(cx , cy , cz ) = min (⌊d(cx , cy )/d(cx , cz ) × 3⌋, 10), returns an index of relative length,
+: MinDirGap (MaxDirGap) returns the minimal (maximal) gap of included angles among the
+edges candidates, in a resolution of π /15;
+∗
+: NumO f Dir returns how many directions (in a resolution of π /15) the edges distribute, if they
+are considered as vectors from ci .
+†
+
+‡
+
+Seven attributes (G1, R1, R2, R3, P1, P2, P3) are length indices which denote the
+competitiveness on distance. The rest decision attributes stand for some geometric
+features of the departure city and destination city, for example Ah = π means the
+departure city is on some side of the map. The label Opt stands for whether the edge
+is a part of the tour S∗ or not. The attributes are applicable for all the ETSPs, and
+some of them are compatible to general TSPs. However it should be noted that they
+may not always maintain the best distinguishability in every problem. For example
+in printed circuit problems, attributes such as the “same y coordinate” might be an
+optional attribute.
+Supervised training examples can be populated according to the attributes and the
+subproblem. Apriori [9,23], a well known CAR learning algorithm, can obtain rules
+from the training examples. The Apriori in this paper is partially based on implementation by Borgelt4 [24]. The CARs in the form of “A ⇒ Opt=1” are employed
+to represent the pattern. The CARs implying “Opt=0” are omitted, because they are
+complementary. A few types of redundancy reductions were implemented, for example, if a rule is “A, B ⇒ Opt=1” and another rule is “A ⇒ Opt=1,” and the confidence
+4
+
+Available at http://www.borgelt.net/apriori.html, version 5.8.
+
+6
+
+F. Xue et al.
+
+of the first rule is equal or less than that of the latter; the first rule will be omitted as
+a useless (dominated) rule in this paper. The size of the body (left part of a rule) is
+also limited to a constant |A|max , so a CAR “A ⇒ c” will be omitted if the cardinality
+|A| > |A|max . More tests and analysis of |A|max can be found in Subsection 4.1.
+Table 2 shows a set of examples of the discovered CARs. For instance, the No. 30
+rule in Table 2 stands for: “globally shortest edges should be in the optimal tour(s)”
+and it has a confidence of 0.913. This is what the Greedy heuristic follows first. In
+fact more rules relevant to conventional heuristics can be found in the full version of
+such a table.
+Table 2 Samples of discovered CARs
+Id
+
+Rule
+
+1
+2
+3
+.
+.
+.
+30
+.
+.
+.
+983
+
+R1=3, S1=1, Q1=1 ⇒ Opt=1
+P1=3, S1=1, Q1=1 ⇒ Opt=1
+R1=3, S1=1, Q2=0 ⇒ Opt=1
+.
+.
+.
+G1=1 ⇒ Opt=1
+.
+.
+.
+R3=8 ⇒ Opt=1
+
+Support
+
+Confidence
+
+0.013
+0.013
+0.012
+.
+.
+.
+0.022
+.
+.
+.
+0.048
+
+1.000
+1.000
+1.000
+.
+.
+.
+0.913
+.
+.
+.
+0.010
+
+3.2 Interpreting the learning results
+Each learned CAR carries a confidence and covers certain edge candidates. For each
+edge candidate ⟨ci , c j ⟩, a promising possibility p̃i j can be set to the highest confidence
+from the rules covering the edge. The probabilities of the excluded edges are set to
+0. It should be noted that the possibilities are asymmetric, e.g., a promising possibility judged on behalf of ⟨ci , c j ⟩ does not necessarily the same as that of ⟨c j , ci ⟩. In
+practice, the promising possibility can be set to the greater one between the two for
+convenience.
+For each city, only two edges can be chosen out of a set of edge candidates.
+However there usually are a lot of non-zero possibilities. It means every edge with
+a non-zero probability has a chance to be a part of the optimal tour(s), while every
+edge with a less-than-one probability has a chance to fail.
+The conventional tour construction methods for the ETSP hardly make use of
+probability. So one way of taking advantage of the probabilities is to transform them
+into different weights, such as:
+– Setting the weight to the promising possibility,
+– Weighted distance (WD) = Euclidean distance × (1− promising possibility), and
+– Ranking candidates to Level A, B, and C.
+In this paper, the WD is studied. The WD can be a substitution of the Euclidean
+distance in many heuristic construction and test procedures. Some search algorithms,
+such as the nearest-neighbor insertion and the shortest fragment merge, could directly
+
+A Learning-based Variables Assignment Weighting Scheme
+
+7
+
+work on the WD; while others such as the local search could indirectly be benefited,
+e.g., from a reformed testing neighborhood by the WD. There are some search techniques that are not directly based on the Euclidean distance, such as the α -nearness
+candidate set which is based on the α -nearness values. Pseudo-distances can be introduced in such cases to facilitate the presented method, for example a transform for
+the non-negative α -values:
+pseudo distance = ln(α -value + 1).
+
+(2)
+
+4 Parameters and time cost analysis
+The parameters of the presented method were tested and discussed in this section.
+Two indicators are used to measure the capability of the ordered edge candidates
+in including the optimal tour’s edges (OEs). The minimal population of candidates
+(Candmin ) stands for the least number of edge candidates to fully cover the 2N OEs.
+The average index of OEs (IOEavg ) denotes the average position of the OEs. The two
+indicators are not independent, but the first one emphasizes the range of coverage,
+and the second stresses average depth. Smaller values stand for better capability for
+both indicators. Their lower bounds can easily be obtained as 2N and 1.5 respectively.
+
+4.1 Parameters of CAR learning
+The CAR learning in this paper involves three parameters: the maximal cardinality
+of condition attributes (|A|max for CARs in form of A ⇒ c), the minimum support
+(σ ), and the minimum confidence (γ ). The |A|max is relatively independent, whereas
+σ and γ are correlated.
+The maximal cardinality of condition attributes |A|max was tested on two benchmark problems E10k.0 and xmc10150. The first problem, from the DIMACS TSP
+Challenge benchmark data sets5 , consists of 10,000 random cities; the second one
+comes from the VLSI data set6 and contains 10,150 cities. In the tests, σ was temporarily set to 0.001 and γ was temporarily set to 0.01. The sizes of the subproblems
+were set to the same sizes as the given problems. The input tours were two near optimal tours with lengths of 71,867,264 (0.002% excess best known) and 28,387 (best
+known) respectively. The learning were based on 50 quadrant edge candidates (50Quad). Four indicators, including the number of discovered CARs, learning time,
+IOEavg and Candmin , were considered to determine an appropriate cardinality for
+large-scale ETSPs, as shown in Figure 2.
+Figure 2 seems to suggest |A|max =5 as an appropriate value. When |A|max > 5,
+despite the increasing amount of the learning time, the rest indicators seem not to be
+significantly changed. It could be hoped that if the learning time is sufficient, |A|max =6
+can also be a possible alternative.
+5
+6
+
+Available at: http://www.research.att.com/~dsj/chtsp/.
+Available at: http://www.tsp.gatech.edu/vlsi/.
+
+8
+
+F. Xue et al.
+
+CARs learning time (s)
+
+Number of CARs discovered
+
+4000
+
+3000
+
+2000
+
+xmc10150
+E10k.0
+
+1000
+
+0
+2
+
+3
+
+4
+
+5
+|A|max
+
+6
+
+7
+
+8
+
+1
+
+2.25
+
+35
+
+2.2
+
+30
+xmc10150
+E10k
+xmc10150 without learning
+E10k.0 without learning
+
+2.15
+
+xmc10150
+E10k.0
+
+9
+
+Candmin/N
+
+IOEavg
+
+1
+
+200
+180
+160
+140
+120
+100
+80
+60
+40
+20
+0
+2
+
+3
+
+4
+
+5
+|A|max
+
+6
+
+7
+
+8
+
+9
+
+xmc10150
+E10k.0
+
+25
+
+20
+
+2.1
+1
+
+2
+
+3
+
+4
+
+5
+|A|max
+
+6
+
+7
+
+8
+
+9
+
+15
+1
+
+2
+
+3
+
+4
+
+5
+|A|max
+
+6
+
+7
+
+8
+
+9
+
+Fig. 2 Trends of the indicators against the maximal cardinality of condition attributes (|A|max )
+
+Thresholds σ and γ were also tested on the same base candidate sets on the two
+problems, where |A|max =5. The main objective of the CAR learning is to harbor more
+CARs and cover more OEs. So the main performance indicator of the CARs was the
+coverage of OEs. The percentage trends of the covered OEs can be seen in Figure 3
+against the combination of the values of σ and γ .
+Figure 3 shows that σ should be less than 0.05 to approximately fully cover the
+OEs in the two problems. Further when σ ≤ 0.01, the majority (about 80%) of OEs
+can be covered by the rules with high confidence (approximately 0.7), as shown as
+the area between the 0% coverage curve and the 80% coverage curve in Figure 3. So
+0.01 seemed an upper limit for σ in practice. However, a too small value of σ may
+bring overfitting of the CARs. So another lower bound N −1 is suggested for σ , where
+N is the number of the cities. In practice, σ can be set to 0.001 if N ≥ 1, 000, or to
+N −1 if N < 1, 000.
+The minimum confidence γ is easier to determine. According to Figure 3, γ should
+be no more than about 0.07 to cover all the OEs. In practice, it is suggested to be 0.01.
+4.2 Sizes of subproblems
+The sizes of the subproblems were tested on the E10k.0 and the xmc10150. The
+possible edge candidates are set to the 50 quadrant candidates. Figure 4 shows the
+changes of the indicators when different sizes (N′ ) of subproblems were selected.
+It can be determined that the CARs were not abundantly discovered when N ′ <
+1, 000, where N ′ was the number of cities in a subproblem. It is mainly because of
+
+A Learning-based Variables Assignment Weighting Scheme
+
+9
+
+1
+
+0.8
+
+0% OEs covered
+80% OEs covered
+95% OEs covered
+99% OEs covered
+99.5% OEs covered
+100% OEs covered
+
+0.6
+γ
+0.4
+
+0.2
+
+0 −4
+10
+
+10−3
+
+10−2
+σ
+(a) E10k.0
+
+10−1
+
+100
+
+1
+
+0.8
+
+0% OEs covered
+80% OEs covered
+95% OEs covered
+99% OEs covered
+99.5% OEs covered
+100% OEs covered
+
+0.6
+γ
+0.4
+
+0.2
+
+0 −4
+10
+
+10−3
+
+10−2
+10−1
+σ
+(b) xmc10150
+
+100
+
+Fig. 3 OEs covered in combinations of different σ and γ
+
+the increasing threshold N ′−1 when N ′ decreases from 1,000. In general, the overall
+time cost increases steadily when N ′ increases. According to experience, the time for
+finding a near optimal tour usually took an increasingly large share of the overall time
+cost.
+The charts also show that IOEavg and Candmin curves gradually become flat when
+N ′ increases. It means the WD obtained from the middle sizes of subproblems are
+not much different from those from the complete problems. Therefore it is feasible
+to find discover the patterns of large-scale ETSPs from their subproblems, without
+significant losses of effectiveness. The two indicators IOEavg and Candmin seems not
+much affected by the size of the subproblem when N ′ > 100.
+
+10
+
+F. Xue et al.
+
+Number of CARs discovered
+
+400
+
+Overall time (s)
+
+4000
+3000
+2000
+xmc10150
+E10k.0
+
+1000
+
+200
+
+100
+
+0
+
+0
+0
+
+5000
+N0
+
+0
+
+1×104
+
+2.25
+
+35
+
+2.2
+
+30
+Candmin /N
+
+IOEavg
+
+xmc10150
+E10k.0
+
+300
+
+xmc10150
+E10k
+xmc10150 without learning
+E10k.0 without learning
+
+2.15
+
+5000
+N0
+
+1×104
+
+xmc10150
+E10k.0
+
+25
+
+20
+
+2.1
+0
+
+5000
+N0
+
+1×104
+
+15
+0
+
+5000
+N0
+
+1×104
+
+Fig. 4 Trends of indicators against the size of the subproblem (N ′ )
+
+Experience shows the trends are general in large-scale ETSPs and almost independent from the size N of the original problems. So an appropriate constant, e.g.
+N ′ = 3, 000, can be determined as a general size for subproblems when solving largescale ETSPs. Therefore one can solve a constant size of a subproblem to provide
+metric weights for a given large-scale ETSP.
+
+4.3 Expected time cost
+If the size of the subproblem is a constant, the time cost of the presented method can
+be bounded in time O(Nkmax log kmax ), where N is the size of the given ETSP, and
+kmax is the max number of edge candidates for one city. The upper bounds of the
+running time of the sub procedures are listed in Table 3 in detail. The most expensive
+sub procedure in this approach is weighting and reordering the edge candidate sets.
+
+5 Experimental results
+Several popular Euclidean data sets were selected as the sources of the test problems,
+including the VLSI industrial data sets, the Euclidean random (E) data sets from the
+DIMACS TSP Challenge, and the TSPLIB data sets7 from various industries and
+geographic maps. A number of ETSPs from the data sets were selected and clustered
+7
+
+Available at: http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/.
+
+A Learning-based Variables Assignment Weighting Scheme
+
+11
+
+Table 3 Upper bounds of the running time of the sub procedures if the size of the subproblem is a constant
+No Procedure
+
+Upper bound of time
+
+1 Finding a subproblem
+2 Solving the subproblem
+3 Generating training examples
+4 Learning CARs
+5 Examining promising probabilities
+6 Weighting and reordering edge candidates
+7 Reducing the sizes of the edge candidates (optional)
+
+O(N)
+O(1)
+O(1)
+O(1)
+O(Nkmax )
+O(Nkmax log kmax )
+O(N)
+O(Nkmax log kmax )
+
+Overall
+
+by their size into different categories: 3k, 10k, . . ., 1M, as shown in Table 4. The
+“BKS” stands for the best known solution. Some BKSs of the E problems came from
+Helsgaun’s results8 . Using BKSs instead of Held-Karp lower bounds in this paper
+mainly aims at a comparable metric of heuristics improvement over different data
+sets.
+
+Table 4 The selected large-scale ETSPs for experiments
+Category
+3k
+
+10k
+31k
+100k
+316k
+1M
+∗
+
+VLSI (BKS)
+
+E (BKS)
+
+TSPLIB (Optimum)
+
+lsn3119 (9114∗ )
+lta3140 (9517∗ )
+fdp3256 (10008∗ )
+dga9698 (27724)
+xmc10150 (28387)
+pbh30440 (88328)
+xib32892 (96757)
+sra104815 (251433)
+ara238025 (578775)
+lra498378 (2168067)
+lrb744710 (1612132)
+
+E3k.0 (40634081∗ ) E3k.1 (40315287∗ )
+E3k.2 (40303394∗ ) E3k.3 (40589659∗ )
+E3k.4 (40757209)
+E10k.0 (71865826) E10k.1 (72031630)
+E10k.2 (71822483)
+E31k.0 (71865826)
+E31k.1 (72031630)
+E100k.0 (225787421)E100k.1 (225659006)
+E316k.0 (401307462)
+
+pr2392 (378032)
+pcb3038 (137694)
+fnl4461 (182566)
+pla7397 (23260728)
+brd14051 (469385)
+pla33810 (66048945)
+pla85900 (142382641)
+—
+
+E1M.0 (713189834)
+
+—
+
+: Also proved optimal.
+
+The tests were conducted on an Intel Core2 Duo E6750 (2.66GHz) CPU on a
+Ubuntu Linux 8.04.1 (Kernel 2.6.24-19, 64-bit) with 4 Gbytes of memory. A method
+of normalization of running time was described by Johnson, et al.[17], so that results
+on any machine could be compared with other published results. A set of tests of
+the CPU speed were carried out, in comparison to a 500 MHz EV6 Compaq Alpha
+processor, as shown in Table 5. In the following, all the running time are normalized
+to a 500 MHz Alpha.
+
+Table 5 Results of running time (in seconds) of the Greedy [17] heuristic on different CPUs
+
+8
+
+CPU
+
+3k×316
+
+10k×100
+
+31k×32
+
+100k×10
+
+316k×3
+
+1M×1
+
+Intel Core2 Duo E6750 (2.66GHz)
+Compaq ES40 Alpha (500 MHz)
+
+2.735
+14
+
+2.809
+16
+
+3.330
+23
+
+5.466
+36
+
+8.187
+55
+
+11.247
+88
+
+Available at: http://www.akira.ruc.dk/~keld/research/LKH/DIMACS_results.html.
+
+12
+
+F. Xue et al.
+
+The tests were conducted on different candidate sets: 5 nearest neighbors (5-NN),
+5 quadrant nearest candidates (5-Quad), 5 α -nearest candidates (5-α ), and edge candidates by weighted distances 5-WDNN , 5-WDQ , and 5-WDα . The later three candidate sets were weighted, reordered and trimmed by the presented approach on some
+larger candidate sets in the subproblems, i.e. the 50-NN, the 50-Quad, and the 50α candidate sets, respectively. In the learning and reordering phases, the parameters
+were: N ′ = 3, 000, |A|max =5, σ =0.001, γ =0.01.
+The normalized running time of the preparations of edge candidates on different
+categories of E problems are shown in Figure 5. because the curves were very close to
+other data sets. It can be observed that the time cost increased as expected. The faction
+of the presented approach kept decreasing when the size of the problem increased,
+especially for the α -nearness candidate set.
+
+Normalized time (s)
+
+105
+
+104
+5-NN
+5-WDNN
+5-Quad
+5-WDQ
+
+103
+
+5-α
+5-WDα
+
+102
+
+101
+
+100
+104
+
+105
+
+106
+
+N
+
+Fig. 5 Typical normalized running time of the presented approach and well known candidate sets
+
+Two local search algorithms were employed to examine the presented method.
+One algorithm was the Bentley’s Greedy heuristic tour construction followed by a 5Opt local search of LKH, Greedy+5-Opt in short. The other was the Greedy followed
+by a 2-Opt (Greedy+2-Opt), a simplified version. Each algorithm ran 100 times independently for each problem. The average tour qualities and the running time of the
+algorithms are grouped by the categories, as shown in Tables 6, 7, 8, and 9 respectively. The “Imp” columns in the tables stand for the significance (in percentage) of
+the tour length (or time) improvements.
+It can be seen from Table 6 and Table 7 that the industrial ETSPs benefit more
+from the metric weights, and the Greedy+5-Opt benefit more that Greedy+2-Opt from
+the metric weights, except for those on the nearest neighbor candidate sets. A possible reason could be that more nontrivial information can be found in the industrial
+problems than in random problems. Another possible reason can be that the redressed
+and reordered edge candidates are more compatible with stronger search algorithms.
+
+A Learning-based Variables Assignment Weighting Scheme
+
+13
+
+Table 6 Results of average tour qualities of the Greedy+5-Opt algorithm on different candidate sets (100
+runs)
+Data set
+
+VLSI
+
+E
+
+TSPLIB
+
+Category
+
+3k
+10k
+31k
+100k
+316k
+1M
+3k
+10k
+31k
+100k
+316k
+1M
+3k
+10k
+31k
+100k
+
+Average percentage excess over BKS or optimum
+5-NN
+
+5-WDNN
+
+Imp (%)
+
+5-Quad
+
+5-WDQ
+
+Imp (%)
+
+5-α
+
+5-WDα
+
+Imp (%)
+
+3.889
+4.236
+4.169
+6.657
+9.959
+4.682
+0.703
+0.862
+1.262
+1.851
+1.660
+1.176
+0.456
+2.878
+2.297
+2.065
+
+2.663
+3.300
+2.913
+6.467
+7.950
+4.385
+0.487
+0.490
+0.659
+0.646
+0.679
+0.911
+0.358
+2.234
+1.677
+1.476
+
+31.5
+22.1
+30.1
+2.9
+20.2
+6.3
+30.7
+43.1
+47.8
+65.1
+59.1
+22.5
+21.4
+22.4
+27.0
+28.5
+
+0.695
+0.863
+0.814
+0.842
+1.183
+0.857
+0.346
+0.375
+0.527
+0.438
+0.43
+0.381
+0.34
+0.427
+0.913
+0.761
+
+0.649
+0.693
+0.642
+0.752
+0.917
+0.762
+0.338
+0.370
+0.526
+0.434
+0.422
+0.379
+0.321
+0.395
+0.517
+0.445
+
+6.7
+19.7
+21.2
+10.7
+22.5
+11.1
+2.3
+1.4
+0.2
+0.9
+1.9
+0.5
+5.4
+7.6
+43.4
+41.5
+
+0.361
+0.526
+0.454
+0.339
+0.156
+0.179
+0.343
+0.252
+0.143
+0.253
+0.560
+0.932
+
+0.327
+0.503
+0.437
+0.328
+0.156
+0.178
+0.341
+0.250
+0.134
+0.278
+0.617
+0.978
+
+9.3
+4.5
+3.7
+3.2
+0.3
+0.2
+0.6
+0.8
+6.5
+-10.1
+-10.2
+-4.9
+
+Table 7 Results of average tour qualities of the Greedy+2-Opt algorithm on different candidate sets (100
+runs)
+Data set
+
+VLSI
+
+E
+
+TSPLIB
+
+Category
+
+3k
+10k
+31k
+100k
+316k
+1M
+3k
+10k
+31k
+100k
+316k
+1M
+3k
+10k
+31k
+100k
+
+Average percentage excess over BKS or optimum
+5-NN
+
+5-WDNN
+
+Imp (%)
+
+5-Quad
+
+5-WDQ
+
+Imp (%)
+
+5-α
+
+5-WDα
+
+Imp (%)
+
+5.196
+5.949
+5.660
+8.101
+11.503
+6.125
+2.250
+1.849
+2.007
+2.320
+2.764
+2.235
+1.735
+3.832
+3.176
+3.017
+
+4.234
+4.943
+4.221
+7.945
+4.942
+5.710
+1.616
+1.575
+1.648
+1.611
+2.370
+1.884
+1.470
+3.371
+2.610
+2.591
+
+18.5
+16.9
+25.4
+1.9
+57.0
+6.8
+28.2
+14.8
+17.9
+30.6
+14.3
+15.7
+15.3
+12.0
+17.8
+14.1
+
+2.177
+2.716
+2.421
+2.472
+3.004
+2.505
+1.412
+1.439
+1.604
+1.553
+2.154
+1.452
+1.554
+1.817
+2.469
+2.211
+
+2.019
+2.144
+2.162
+2.344
+2.746
+2.380
+1.645
+1.495
+1.678
+1.550
+2.179
+1.460
+1.433
+2.040
+2.232
+2.022
+
+7.3
+21.1
+10.7
+5.2
+8.6
+5.0
+-16.5
+-3.8
+-4.6
+0.2
+-1.2
+-0.6
+7.8
+-12.3
+9.6
+8.5
+
+1.376
+2.101
+1.675
+1.244
+0.791
+0.756
+0.881
+0.791
+0.793
+1.177
+1.694
+1.589
+
+1.625
+1.956
+2.052
+2.006
+0.996
+1.113
+1.314
+1.237
+0.751
+1.485
+1.914
+1.978
+
+-18.1
+6.9
+-22.5
+-61.3
+-25.8
+-47.3
+-49.1
+-56.5
+5.3
+-26.1
+-13.0
+-24.5
+
+It can be observed that the presented approach was very competitive in the 316k and
+1M groups of problems, where the α -nearness candidate set cost too much time.
+According to Table 8, the running time of the Greedy+5-Opt algorithm on the
+5-WDQ candidate sets was significantly shorter in industrial problems than those on
+the 5-Quad, as well as those on the 5-α , while the 5-WDQ and the 5-Quad seemed
+not have significant differences in the random problems. However the same running
+time of the Greedy+2-Opt algorithm seemed not so competitive.
+Another algorithm tested was a simple exact branch-and-bound search. In this
+algorithm, a string of cities were gradually tested and appended. Iterated minimum
+spanning 1 trees were examined at each branch to obtain a lower bound of the tours
+that contains the string. If the lower bound was no less than the best tour length which
+had been obtained, the branch would not be expanded for further search.
+
+14
+
+F. Xue et al.
+
+Table 8 Average normalized time cost of the Greedy+5-Opt on different candidate sets (100 runs)
+Data set
+
+VLSI
+
+E
+
+TSPLIB
+
+Category
+
+3k
+10k
+31k
+100k
+316k
+1M
+3k
+10k
+31k
+100k
+316k
+1M
+3k
+10k
+31k
+100k
+
+Average normalized time cost (s)
+5-NN
+
+5-WDNN
+
+Imp (%)
+
+5-Quad
+
+5-WDQ
+
+Imp (%)
+
+5-α
+
+5-WDα
+
+Imp (%)
+
+2.20
+8.09
+33.20
+88.57
+479.84
+1123.66
+2.60
+9.86
+41.81
+140.30
+503.66
+2141.66
+2.71
+12.88
+97.50
+149.99
+
+2.27
+7.84
+31.79
+86.00
+421.65
+949.97
+2.47
+10.28
+45.40
+156.68
+568.11
+2432.96
+2.68
+13.57
+97.02
+159.61
+
+-3.1
+3.2
+4.3
+2.9
+12.1
+15.5
+5.1
+-4.2
+-8.6
+-11.7
+-12.8
+-13.6
+1.3
+-5.3
+0.5
+-6.4
+
+1.93
+8.72
+37.66
+147.62
+675.39
+1665.11
+1.68
+7.94
+37.18
+141.62
+601.57
+2986.15
+2.18
+12.60
+81.40
+174.31
+
+1.48
+6.64
+29.40
+133.05
+649.52
+1500.81
+1.87
+7.56
+36.69
+139.84
+596.53
+3033.61
+1.84
+11.17
+65.16
+166.20
+
+23.0
+23.9
+21.9
+9.9
+3.8
+9.9
+-11.6
+4.8
+1.3
+1.3
+0.8
+-1.6
+15.6
+11.3
+19.9
+4.7
+
+2.32
+10.32
+42.88
+158.95
+1.98
+8.91
+47.20
+161.85
+1.88
+13.40
+84.44
+134.96
+
+2.21
+9.69
+46.18
+169.7
+2.08
+8.56
+43.73
+167.15
+4.07
+13.57
+97.27
+150.73
+
+4.6
+6.1
+-7.7
+-6.8
+-5.3
+3.9
+7.4
+-3.3
+-116.7
+-1.3
+-15.2
+-11.7
+
+Table 9 Average normalized time cost of the Greedy+2-Opt on different candidate sets (100 runs)
+Data set
+
+VLSI
+
+E
+
+TSPLIB
+
+Category
+
+3k
+10k
+31k
+100k
+316k
+1M
+3k
+10k
+31k
+100k
+316k
+1M
+3k
+10k
+31k
+100k
+
+Average normalized time cost (s)
+5-NN
+
+5-WDNN
+
+Imp (%)
+
+5-Quad
+
+5-WDQ
+
+Imp (%)
+
+5-α
+
+5-WDα
+
+Imp (%)
+
+0.30
+1.42
+9.21
+32.23
+170.32
+460.39
+0.48
+2.53
+12.20
+48.62
+205.92
+914.88
+0.36
+1.56
+7.00
+15.27
+
+0.30
+1.36
+7.33
+31.02
+156.59
+341.91
+0.57
+2.72
+12.38
+54.44
+212.52
+932.81
+0.4
+1.76
+5.85
+15.01
+
+0
+4.1
+20.4
+3.8
+8.1
+25.7
+-20.0
+-7.6
+-1.5
+-12.0
+-3.2
+-2.0
+-11.1
+-13.0
+16.5
+1.8
+
+0.28
+1.16
+6.97
+26.58
+137.81
+275.1
+0.53
+2.70
+11.73
+50.53
+222.06
+1175.30
+0.36
+1.62
+4.91
+13.39
+
+0.30
+1.33
+7.37
+26.58
+148.35
+297.95
+0.72
+2.91
+13.90
+51.11
+232.22
+1141.33
+0.40
+1.94
+5.20
+16.15
+
+-7.1
+-15.0
+-5.7
+0
+-7.6
+-8.3
+-36.4
+-7.9
+-18.5
+-1.1
+-4.6
+2.9
+-11.1
+-19.6
+-5.9
+-20.6
+
+0.24
+1.10
+6.21
+22.74
+0.31
+1.72
+8.34
+33.61
+0.24
+1.22
+4.41
+13.79
+
+0.30
+1.27
+4.27
+28.06
+0.35
+2.08
+10.25
+48.62
+0.30
+1.59
+5.34
+16.55
+
+-25.0
+-15.8
+31.3
+-23.4
+-11.5
+-21.3
+-22.9
+-44.6
+-25.0
+-31.0
+-21.3
+-20.0
+
+The branch-and-bound algorithm can not solve large-scale ETSPs as the previous
+local search algorithms. It can typically return the optimum of an ETSP with 30 cities
+around 10 normalized seconds, but unable to find the optimum of an ETSP with 40
+cities in thousands of normalized seconds. Therefore some small-scale problems were
+generated, as listed in Table 10. The group of Euclidean random instances (E) were
+conducted by the DIMACS TSP Euclidean random generator. The group of VLSI
+problems were selected as subproblems from the VLSI industrial data sets.
+The algorithm was tested with two orders of edge candidates. The first was the
+ascending order of Euclidean distance. The other was the ascending order of the
+weighted distance. The parameters of learning the weights were set as follows. The
+sizes of the subproblems were set to 15 (a half size of the given problems). |A|max
+was set to 5. The minimum confidence and the minimum support were set to 0.01
+and 0.05 (around 15−1 ) respectively.
+
+A Learning-based Variables Assignment Weighting Scheme
+
+15
+
+Table 10 The selected small-scale ETSPs for experiments
+Category
+
+VLSI (source)
+
+E (source)
+
+30
+
+xqf30 (xqf131)
+xqg30 (xqg237)
+pma30 (pma343)
+pka30 (pka379)
+bcl30 (bcl380)
+
+E30.0 (generator)
+E30.1 (generator)
+E30.2 (generator)
+E30.3 (generator)
+E30.3 (generator)
+
+The results of the tests can be shown in Table 11. The algorithm guarantees optima, so the number of expanded branches is the main indicator for comparison. The
+time cost however is a less accurate indicator than the number of branches.
+Table 11 Number of branches and time cost comparison of the branch-and-bound algorithm
+Data set
+
+Random
+
+VLSI
+
+Problem
+
+E30.0
+E30.1
+E30.2
+E30.3
+E30.4
+xqf30
+xqg30
+pma30
+pka30
+bcl30
+
+Optimum
+
+4620393
+4539405
+4778537
+4779040
+4739803
+128
+158
+195
+184
+149
+
+Expanded branches
+
+Time
+
+BnB
+
+BnB-WD
+
+Imp (%)
+
+Imp (%)
+
+957
+1370
+327
+835
+610
+258
+379
+866
+563
+46
+
+287
+1135
+141
+61201*
+976
+214
+143
+645
+547
+45
+
+70.01
+17.15
+56.88
+-7329.46
+-60.00
+17.05
+62.27
+25.52
+2.84
+2.17
+
+61.46
+31.84
+37.50
+-80.92
+-84.87
+5.19
+36.90
+15.33
+8.35
+4.23
+
+*: Extraordinarily large.
+
+It can be observed from Table 11 that the branch-and-bound can significantly
+benefit from the learned weights, but risks might be there especially when problem is
+small and the subproblem is even smaller. Similarly to the results in the large-scale
+tests, the average improvements in the industrial instances are more significant than
+those in the random instance.
+In conclusion, the results show that the presented method is effective and efficient
+in learning and reforming the ETSP variables assignments. Both heuristic and exact
+search algorithms can benefit from the results. The industrial problems can typically
+benefit more than random problems. The presented method can also provide competitive results in large-scale problems where the α -nearness candidate set may take too
+much time to set up.
+
+6 Conclusion
+This paper presents an attempt to incorporate a supervised learning technique, CAR
+learning, into searching heuristics in the ETSP. The results obtained suggests that the
+presented approach can provide nontrivial information to determine some weights
+for variable assignments, if appropriate decision attributes can be defined. The determined weights can help heuristic and exact search algorithms in certain forms.
+
+16
+
+F. Xue et al.
+
+It is hoped that the presented research has made a preliminary contribution to take
+advantage of the power of machine learning in combinatorial optimization.
+One of the significant results obtained is that rules can be approximately learned
+from subproblems and near optimal tours. This finding successfully restricts the expense of the auxiliary learning in large-scale problems.
+It would be interesting to discover new decision attributes and learning procedures
+that can be applied to other combinatorial problems. Perhaps future studies can also
+be conducted for determining domain-specified (or even company-specific) decision
+attributes in practical industrial problems.
+Acknowledgements The work described in this paper was fully supported by a grant from the Department
+of Industrial and Systems Engineering of The Hong Kong Polytechnic University (No. RP1Z).
+
+References
+1. Laporte, G.: Fifty years of vehicle routing. Transportation Science 43(4), 408–416 (2009)
+2. Kotsiantis, S.B.: Supervised machine learning: A review of classification techniques. Informatica 31,
+249–268 (2007)
+3. Koonce, D.A., Tsai, S.C.: Using data mining to find patterns in genetic algorithm solutions to a job
+shop schedule. Comput. Ind. Eng. 38(3), 361–374 (2000)
+4. Li, X., Olafsson, S.: Discovering dispatching rules using data mining. Journal of Scheduling 8(6), 515–
+527 (2005)
+5. Sha, D.Y., Liu, C.H.: Using data mining for due date assignment in a dynamic job shop environment.
+The International Journal of Advanced Manufacturing Technology 25(11), 1164–1174 (2005)
+6. Olafsson, S., Li, X.: Learning effective new single machine dispatching rules from optimal scheduling
+data. International Journal of Production Economics 128(1), 118–126 (2010)
+7. Kwak, C., Yih, Y.: Data-mining approach to production control in the computer-integrated testing cell.
+IEEE Transactions on Robotics And Automation 20(1), 107–116 (2004)
+8. Boyan, J., Moore, A.: STAGE learning for local search. Neural computing surveys 3, 35–38 (2000),
+available at: http://ftp.icsi.berkeley.edu/ftp/pub/ai/jagota/vol3_1.pdf
+9. Agrawal, R., Imieliński, T., Swami, A.: Mining association rules between sets of items in large
+databases. In: SIGMOD ’93: Proceedings of the 1993 ACM SIGMOD international conference on Management of data. pp. 207–216. ACM, New York, NY, USA (1993)
+10. Liu, B., Hsu, W., Ma, Y.: Integrating classification and association rule mining. In: Proceedings of the
+Fourth International Conference on Knowledge Discovery and Data Mining (KDD). pp. 80–86 (1998)
+11. Telelis, O., Stamatopoulos, P.: Guiding constructive search with statistical instance-based learning.
+International Journal on Artificial Intelligence Tools 11(2), 247–266 (2002)
+12. Punnen, A.P.: The traveling salesman problem: Applications, formulations and variations. In: Gutin,
+G., Punnen, A.P. (eds.) The Traveling Salesman Problem and Its Variations, chap. 1, pp. 1–28. Kluwer
+Academic Publishers, Netherland (2002)
+13. Applegate, D.L., Bixby, R.E., Chvátal, V., Cook, W.J.: The traveling salesman problem : a computational study. Princeton Series in Applied Mathematics, Princeton University Press, Princeton, N.J.
+(2006)
+14. Papadimitriou, C.H.: The euclidean traveling salesman problem is NP-complete. Theor. Comput. Sci.
+4(3), 237–244 (1977)
+15. Johnson, D.S., McGeoch, L.A.: Local search in combinatorial optimization, chap. Traveling Salesman
+Problem: A Case Study in Local Optimization, pp. 215–310. John Wiley and Sons, Ltd. (1997)
+16. Helsgaun, K.: An effective implementation of the lin-kernighan traveling salesman heuristic. European Journal of Operational Research 126(1), 106–130 (oct 2000)
+17. Johnson, D.S., McGeoch, L.A.: The traveling salesman problem and Its Variations, Combinatorial
+Optimization, vol. 12, chap. Experimental analysis of heuristics for the STSP, pp. 369–444. Kluwer,
+Netherlands (2002)
+18. Lin, S., Kernighan, B.W.: An effective heuristic algorithm for the travelling-salesman problem. Operations Research 21, 498–516 (1973)
+
+A Learning-based Variables Assignment Weighting Scheme
+
+17
+
+19. Reinelt, G.: The Traveling Salesman: Computational Solutions for TSP Applications, Lecture Notes
+in Computer Science, vol. 840. Springer-Verlag, New York (1994)
+20. Miller, D.L., Pekny, J.F.: A staged primal-dual algorithm for perfect b-matching with edge capacities.
+ORSA Journal on Computing 7, 298–320 (1995)
+21. Bentley, J.L.: Fast algorithms for geometric traveling salesman problems. ORSA Journal on Computing 4, 387–411 (1992)
+22. Helsgaun, K.: General k-opt submoves for the Lin-Kernighan TSP heuristic. Mathematical Programming Computation 1(2), 119–163 (2009)
+23. Mannila, H., Toivonen, H., Verkamo, A.I.: Efficient algorithms for discovering association
+rules. In: Fayyad, U.M., Uthurusamy, R. (eds.) AAAI Workshop on Knowledge Discovery
+in Databases (KDD-94). pp. 181–192. AAAI Press, Seattle, Washington (1994), available at:
+http://citeseer.ist.psu.edu/mannila94efficient.html
+24. Borgelt, C., Kruse, R.: Induction of association rules: Apriori implementation. In: Proceedings of the
+15th Conference on Computational Statistics. pp. 395–400. Physica Verlag, Berlin, Germany (2002),
+available at: http://www.borgelt.net/papers/cstat_02.pdf
+
+

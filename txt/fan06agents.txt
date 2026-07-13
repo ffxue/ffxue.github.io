@@ -1,0 +1,427 @@
+Optimize Cooperative Agents with Organization
+in Distributed Scheduling System
+Wei Fan and Fan Xue
+Software Technology Research Center, Civil Aviation University of China,
+Tianjin 300300, China P.R.
+fanxinhui@eyou.com
+Abstract. DSAFO (Dynamic Scheduling Agents with Federation Organization) is a novel multi-agent constraint satisfaction algorithm for
+AGSS problem (a NP-hard scheduling problem). This paper improves
+on DSAFO by employing a resource requisition strategy, and models this
+parallel multi-agent algorithm in polyadic π-calculus. The time complexity of the improved DSAFO is O(n3 ) + O(n2 ) × ttrans . Experiments show
+improved DSAFO performs well in AGSS consumptions optimization of
+resources and man-days. Though it is unstable, improved DSAFO makes
+good probability to ﬁnd better solutions than classical heuristics and
+its distributed and parallel agents viewpoint is potential to deal with
+distributed dynamic troubles in real applications.
+
+1
+
+Introduction
+
+Airport ground service is a service process from ﬂight landing to takeoﬀ, including gate assignment, baggage handling, catering, fueling, cleaning, etc. AGSS
+(Airport ground service scheduling) is to schedule many kinds of dynamic ground
+resources (baggage trucks, fuel trucks, etc.), to fulﬁll all constrained service subtasks of ﬂights timely to meet their arrival and departure deadlines [1].
+AGSS problem is a NP-hard problem. Moreover, it could be viewed as either
+a JSSP (Job-Shop Scheduling Problem) [2] Jm |rj , prmp|Σwj Uj [3] or a Dis-CSP
+[4], because of the ways that real subtasks and resources are organized. In real
+AGSS, most resources are ample except some prepared for accidents. Consequently the scheduling target Σwj Uj = 0 is not diﬃcult to achieve, however how
+many resources and man-days consumed are important to airports and airlines.
+The algorithm in this paper optimizes the resources and man-days consumptions.
+DSAFO (Dynamic Scheduling Agents with Federation Organization) [1] is a
+novel multi-agent algorithm for Dis-CSP (Distributed Constraint Satisfaction
+Problem), especially for AGSS problem under high constraint. DSAFO employs
+blackboard mechanism, federation organization, meta-level guided resource borrowing and domain knowledge guided plan backtrack. The principle of DSAFO
+is coordinating distributed resources with cooperative agents.
+The remainder of the paper is structured as follows: Chap. 2 represents the
+improved DSAFO in form of polyadic π-calculus to precisely describe the parallel
+essence of improved DSAFO. Chap. 3 analyzes the time complexity. Experiment
+results appear in Chap. 4 and a brief conclusion is given in Chap. 5.
+D.-S. Huang, K. Li, and G.W. Irwin (Eds.): ICIC 2006, LNAI 4114, pp. 502–509, 2006.
+c Springer-Verlag Berlin Heidelberg 2006
+
+
+Optimize Cooperative Agents with Organization
+
+2
+
+Improved DSAFO
+
+2.1
+
+Polyadic π-Calculus
+
+503
+
+The polyadic π-calculus developed by Milner [5] is a very powerful tool to
+model processes in parallel systems such as multi-agent systems and mobile
+systems. The most primitive entity in polyadic π-calculus is a name. Names, inﬁnitely many, are x, y, . . . ∈ χ; they have no structure. The other kind of entity,
+a process, is built from names by syntax
+P ::= Σi∈I πi .Pi | P |Q |!P | (ν x)P
+In this paper, we model DSAFO in π-calculus and usually abbreviate name
+sequences in π-calculus to vector names, e.g. a subtask tuple structure may be
+−−→
+abbreviated to “task”. A name in vector name could be accessed using “”, e.g.
+the LFT (Latest Finish Time) of a task is task  LF T .
+2.2
+
+DSAFO: An Overview
+
+DSAFO is based on several parameters such as Heartbeat. And it implements a
+unique Blackboard, a unique ResAdmin, some Coordinators and more Members.
+def
+
+DSAFO = (Schtasks, Agentst , Resources, T skinresr , Heartbeat, Clockzero)
+(ν queryta , inf ormat , requestat , replyta , cancelta, synbuddyta , ackbuddyta ,
+borrowta , lendat , ref useat , syndemandat , ackdemandat , reqresat , allotat ,
+releaseat ) (BLACKBOARD|RESADMIN|MEMBERat
+
+|COORDINATORr ) (t ∈ Schtasks, a ∈ Agentst , r ∈ Resources)
+Channels among agents are organized as Fig. 1.
+query
+inform
+request
+reply
+
+ResAdmin
+
+Blackboard
+
+cancel
+release
+allot
+borrow
+lend
+reqres
+
+Member t11
+
+refuse
+
+Member t22
+
+syndemand
+ackdemand
+
+...
+
+Member t31
+
+(similar channels)
+ackbuddy
+synbuddy
+
+1
+
+Coordinator
+
+2
+
+Coordinator
+
+forward channel
+similar grouped channel
+
+Fig. 1. channel organization of DSAFO
+
+...
+
+504
+
+W. Fan and F. Xue
+
+2.3
+
+Blackboard Agent
+
+The unique agent BLACKBOARD perceives information of ﬂights coming in
+half an hour, decomposes them into subtasks and assigns subtasks with plans
+from member agents.
+BLACKBOARD = (F lights, Subtaskstf )
+def
+
+(BbF unc|RespQueryta|RespReqta |RespCancelta)
+(t ∈ Schtasks, a ∈ Agentst , f ∈ F lights)
+BLACKBOARD has four sorts of behaviors responding messages from members. For example, RespQueryta receives signals from channel Queryta and then
+responses with the top of ready subtasks and the most delayed subtask.
+−→ −→
+−→
+RespQueryta ≡ !queryta .(ν c)(readytaskt c|c(tsk).[tsk = nil]inf ormat tsk)
+−−→ −−→
+−−→
+.(ν uc)(delaytaskt uc|uc(utsk).[utsk = nil]inf ormat utsk)
+−−→
+RespReqta ≡ !requestat (plan).(ν ch)(getplanch, plan  f no, plan  tsk
+−−−−−→ −−−−−→
+−−→
+−−→
+|ch(myplan).[myplan = nil](assignplan.replyta syn, plan))
+−−→
+RespCancelta ≡ !cancelta(plan).(ν ch)(getplanch, plan  f no, plan  tsk
+−−−−−→ −−−−−→ −−→
+|ch(myplan).[myplan = plan]f reeplan  f no, plan  tsk)
+2.4
+
+ResAdmin
+
+Agent RESADMIN is a resource administrator. When received resources request,
+RESADMIN would search free resources and allot one if possible. After half
+a man-day (4-hour work), the resource would be free again. Additionally, one
+resource serves no more than one and a half man-days.
+RESADMIN = (reslistr , historylistr )(RaF unc|Respreqta |Respreleaseat)
+def
+
+(r ∈ Resources, t ∈ Schtasks, a ∈ Agentst )
+Behaviors Respreqta and Respreleaseat do resources allocation and recovery.
+→
+Respreqta ≡ !resreqta (begintm).(ν ch)(gettopf reerest ch, begintm|ch(−
+res)
+→ = nil]allotares  name, begintm)
+.[−
+res
+
+t
+a
+a
+Respreleaset ≡ !releaset (resname).(ν ch)(getresf romhashch, resname
+
+→ −
+→ = nil]loghistory−
+→
+−
+→
+|ch(−
+res).[
+res
+res.releaseres
+res)
+
+2.5
+
+Member
+
+A member agent MEMBERat is in charge of subtask t. It always has a desire to handle subtasks. After MEMBERat received available subtask goals from
+
+Optimize Cooperative Agents with Organization
+
+505
+
+BLACKBOARD, it intends to make suitable plans and request for them. Every
+member agent always has an open hand when others need help.
+MEMBERat = (Resourceat , Remoteresat )(M bF unc
+def
+
+|ActQryta |M kP lanat|CallBdat |Ackresat |T ryLendat |AckLendat )
+(t ∈ Schtasks, a ∈ Agentst )
+
+Cyclic behavior ActQueryta is inﬁnite (but ﬁnite in practical scheduling). It
+sends subtask requests to drive the DSAFO and releases expired resources. The
+behaviors M akeP lanat perceives subtask information and try to make plans
+for them. If the subtask cannot be locally scheduled, CallBdat , T ryLendat and
+AckLendat cooperate to perform resource borrowing. After all resources borrowing failed, it would send resource request to RESADMIN, and behavior Ackresat
+would receive the coming resource.
+−−−−→
+ActQryta ≡ (queryta .blockta Heartbeat.(ν ch)(getexpiredresat ch|ch(reslist)
+−−−−→
+−−−−→
+.[reslist = nil]releasealltareslist).)+∞
+−→
+−→
+→
+M kP lana ≡ !inf orma (tsk).(ν ch)(makenullplan ch, tsk|ch(−
+n ))
+t
+
+t
+
+t
+
+−−→
+−−→
+−
+.(ν p)(locallyplanp, →
+n |p(plan, res).([res = null]requestatplan
+−−→
++ [res = null]synbuddyta(plan)))
+−−−→ −
+→
+−−−→ −
+→
+−
+→
+CallBdat ≡ !(ackbuddyta (uplan, lst)|ref useat (uplan, lst)).(ν c)(topof c, lst
+−−→
+−−−→ −−→
+|c(next, nlist).([next = null]nextuplan, nlist, lendat , ref useat 
++ [next = null]reqresuplan  EST − 1))
+Ackresat ≡ !allotat (name, begintm).(ν ch)(genrest ch, name, begintm, 239
+→
+→ −
+→ = nil]addres2locallist−
+res)
+|ch(−
+res).[
+res
+
+−−−→ −
+→
+−−−→
+T ryLendat ≡ !borrowta (uplan, lst, succ, f ail).(ν ch)(locallyplanch, uplan
+−−→
+−−→
+−−→
+|ch(plan, res).([res = null]assignatplan.succplan
+−−−→ −
+→
++ [res = null]f ailuplan, lst))
+−−→
+−−→
+−−→
+AckLendat ≡ !lendat (plan).assignremoteplan.requestat plan
+2.6
+
+Coordinator
+
+A coordinator agent COORDINATORr coordinates all member agents having
+resource r. After elimination of plan backup mechanism, it has several behaviors
+on information synchronization and buddy list making up.
+CORDINATORr = (M etainf or , Syncycle)(CooF unc|Synchr |Storeat |RespBdat )
+def
+
+(r ∈ Resources, t ∈ T skinResr , a ∈ Agentst )
+
+506
+
+W. Fan and F. Xue
+
+Synchr and Storeat cyclically collect meta-level information of member agents
+which belong to it. Behavior RespBdat tells a member buddy list sorted by metalevel information.
+Synchr ≡ (synallr .blockr Syncycle × Heartbeat.)+∞
+Storeat ≡ !ackdemandat (dm).(ν ch)(setvalch, dm|ch(demandsat )
+.removelistdemandsat .insertsortdemandsat )
+−−→
+−−
+→
+RespBdat ≡ !synbuddyta .(ν ch)(genbuddylisttch|ch(blst).ackbuddyta blst))
+
+3
+
+Complexity
+
+First of all, we abbreviate the number of ﬂights F lights to “n” as well as
+24 × 60 × Heartbeat to “WholeDay”.
+3.1
+
+Preparation
+
+For any subtask t, there are n jobs to do at most. And there must be a minimal
+for t. The resource expectation res∗t
+completion time ctmin
+t
+O(n) = n × ctmin
+/WholeDay ≤ res∗t ≤ n = O(n)
+t
+Hence, res∗t = O(n) (t ∈ Schtasks)
+For each resource r, there is a constant set T skinresr . By summing it up one
+by one, we have expectation of each resource r ∈ Resources is res∗r = O(n).
+In fact, resources to allocate usually approximates the expectations O(n), so we
+assume the number of each resource r ∈ Resources is resr = O(n).
+Because the agents number aﬀects the complexity, we assume there are O(n)
+agents to compute the upper bound of complexity.
+3.2
+
+Time Complexity
+
+Time complexity of improved DSAFO is mainly from two parts: resource borrowing and demand synchronization. The rest processes are less complex.
+Resource Borrowing. In the worst case, there are O(n) searches and O(n)
+borrowing message transmissions to fulﬁll every subtask. All O(n) subtasks cost
+tborrow = O(n2 ) × tsearch + O(n2 ) × ttrans = O(n3 ) + O(n2 ) × ttrans .
+Demand Synchronization. Demand synchronization is a cyclic action. Each
+member has only one coordinator in federation organization, therefore, each synchronization transmits O(n) messages and do O(n×n) sorts. The synchronization
+costs
+
+
+WholeDay
+= O(n2 ) + O(n) × ttrans
+tsyn = O(n) × ttrans + O(n2 ) ×
+Heartbeat × Syncycle
+To sum up, the upper bound of complexity tDSAFO = O(n3 ) + O(n2 ) × ttrans .
+
+Optimize Cooperative Agents with Organization
+
+4
+
+507
+
+Experiment Result
+
+We implemented DSAFO in JADE [6], a multi-agent development environment,
+and implemented the channels on FIPA ACL [7].
+In classical JSSP, EDD (Earliest Due Date ﬁrst) and FCFS (First Come Fist
+Serve, also well known as ERT, Earliest Ready Time) are two powerful heuristic
+algorithms for minimal uncompleted jobs scheduling [3]. We tested these algorithms with a 282 transfer ﬂights problem under normal constraint.
+As a multi-agent algorithm, DSAFO is an unstable algorithm. Consequently
+we gave spontaneous 250 runs to get the distribution of the solutions. Figure 2
+shows the baggage truck solution distribution for trucks and man-days consumed
+by DSAFO with 8 baggage truck agents.
+
+Fig. 2. Distribution of DSAFO (8 agents) solutions for baggage trucks
+
+Furthermore, we tested DSAFO in diﬀerent quantities of MEMBER agents.
+The results were accumulated in Fig. 3 and 4. From the marginal distributions
+in Fig. 3, we can see that 76.8% resource solutions of DSAFO with 8 agents are
+not worse (59.6% better) than EDD and FCFS, the probabilities are 54% and
+32% with 12 agents and 16 agents. But the best solutions of the three are nearly
+the same. And so is in Fig. 4. It means when the number of agents increases,
+probabilities of good solutions decrease, but the best solution seems stable.
+Figure 5 shows the simultaneous serving resources of solutions done by diﬀerent optimization algorithms.
+
+508
+
+W. Fan and F. Xue
+
+Fig. 3. Marginal distribution of baggage trucks consumed
+
+Fig. 4. Marginal distribution of 4-hour baggage truck works
+
+Fig. 5. Simultaneously serving baggage trucks by diﬀerent optimization algorithms
+
+Optimize Cooperative Agents with Organization
+
+5
+
+509
+
+Conclusion
+
+AGSS problem is a typical dynamic distributed scheduling problem. To optimize
+AGSS consumptions of resources and man-days is diﬃcult, but it is important
+to economy. DSAFO is a novel multi-agent constraint satisfaction algorithm for
+AGSS problems.
+We improved DSAFO for optimizing consumptions of resources and man-days
+by incorporating a resource allocation strategy. Experiments show that improved
+DSAFO performs well in optimization. And when the number of agents increase,
+probabilities of good solutions would decrease but the best solution would be
+stable.
+Though improved DSAFO is unstable, it makes good probability to ﬁnd better
+solutions than classical heuristics, and its construction of distributed and parallel
+agents is potential to deal with distributed dynamic troubles in real applications.
+Furthermore, DSAFO may be allied to common dynamic distributed scheduling
+problems for its low complexity and sound eﬀect.
+Acknowledgements. The authors acknowledge the support by National Natural Science Foundation of China (NSFC) under Grant No. 60472123.
+
+References
+1. Xing, J., Fan, W., Ji, L.: Design of Airport Ground Service System Based on Multiagent. Journal of Civil Aviation University of China, 24 (2006) (in Chinese).
+2. Modi, P. J.: Distributed Constraint Optimization for Multiagent Systems. Ph.D.
+Dissertation. University of Southern California, USA (2003)
+3. Tang, H., Zhao, L.: Introduction to Scheduling Theory. Chapter 2. Chinese Acdemic
+press, Beijing (2002) (in Chinese).
+4. Yokoo, M.: Distributed Constraint Satisfaction: Foundation of Cooperation of Multiagent System. Springer Verlag, Heidelberg, Berlin (2001)
+5. Milner, R.: The Polyadic π-calculus: A Tutorial. Tech. Report ECS-LFCS-91-180.
+University of Edinburgh, UK (1991)
+6. Bellifemine, Poggi, F., Rimassa, A., Jade, G.: A FIPA2000 Compliant Agent Development Environment. In Proceedings of The Fifth International Conference on
+Autonomous Agents (AGENT01), Montreal, Canada, ACM Press, New York (2001)
+216-217.
+7. FIPA: FIPA ACL Message Structure Speciﬁcation. Document No. 00061, Geneva,
+FIPA, http://www.ﬁpa.org/specs/ﬁpa00061/SC00061G.pdf (2002)
+
+

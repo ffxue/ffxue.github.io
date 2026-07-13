@@ -1,0 +1,420 @@
+Digital Twinning buildings and cities with
+3D point clouds: A semantics perspective
+Fan “Frank” Xue
+PhD, MACM, SMCGS, MIEEE, MHKGISA
+Dept. of Real Estate and Construction
+University of Hong Kong
+25 Nov 2022
+
+0 HKU iLab: The urban big data hub
+ HKUrbanLan—iLab
+ Director: Prof. Wilson Lu
+
+Deputy director: Dr. Frank Xue
+
+ Urban big data hub at Faculty of Architecture, HKU
+ multi-dimensional and multi-disciplinary urban big data
+
+collection, storage, analysis, and presentation to inform decisionmaking in urban development
+ Focusing on Information Technology (IT)
+
+https://frankxue.com
+https://ilab.hku.hk
+
+o BIM, GIS, GNSS, Urban Remote Sensing, IoT
+
+iLabHKU
+
+o Blockchain (BC/DLT)
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+Lab workshop
+
+2
+
+Section 1
+
+INTRODUCTION
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+3
+
+1.1 Urban point cloud
+ Point 點
+ A location in space, 0D (no width, length, or thickness)
+ Structured format: {x, y, z}, [R, G, B, Nx, Ny, Nz, Cls, Int., …]
+
+0D
+
+1D
+
+2D
+
+3D
+
+ Cloud 雲
+ An unstructured collection [of water droplets or ice crystals]
+ Dense when looking at a distance, sparse closely
+
+ Urban point cloud 城市點雲
+
+A point cloud of HKU Campus (Source: Author, 2019)
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+A close look of cloud at
+Mount Hua (Source: Author)
+
+4
+
+1.1 Sources and applications
+ SAR 合成孔徑雷達
+
+ Use cases
+
+ mm-accuracy
+ Coverage
+
+ LiDAR 激光雷達
+ mm/cm/dm
+
+Ground settlement, building deformation (Wu et al. 2020a; 2020b)
+
+ No distortion
+ Intensity
+
+ Photogrammetry 攝影測量
+
+Roof albedo (Xue et al. 2019f), indoor CFD simulation (Source: Author, 2022)
+
+ cm-accuracy
+ Colorful
+ Cheaper
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+Kowloon Wall City 3D model
+(Source: patrick-@sketchfab.com)
+
+HKU @MineCraft (Source: Author, 2021)
+5
+
+1.2 Digital Twin
+ DT 數字孿生 (數位雙生)
+ “a virtual representation of a physical object or system
+o across its lifecycle, using real-time data
+o to enable understanding, learning, and reasoning.”
+
+ -- UK National Infrastructure Commission (2017)
+
+ DTing buildings/city is a systems/semantics approach
+ Building systems
+o Structure, envelope, services
+
+Scope of digital twinning
+(Xue et al. 2020)
+
+ City systems:
+o Transportation, space, green-blue infrastructure, etc.
+
+ Required semantics: Class, symmetry, object, relationship, etc.
+
+ Challenge: Semantics in unstructured urban points
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+Building systems
+(L to R: envelope, structure, services)
+(Sources: Wikipedia.org, wbdg.org)
+6
+
+Section 2
+
+DETECTING SEMANTICS IN
+URBAN POINT CLOUDS
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+7
+
+2.1 Classification of urban points
+ Supervised Deep learning
+ Adds a ‘label’ to each point
+
+DL
+
+o “Wall”, “columns”, “tree”…
+
+Trains
+
+ Point-level semantics
+
+ High-rise high-density dataset
+
+FLKPP (Wu et al, 2022)
+(2nd place of Scan2BIM
+Challenge, CVPR2022)
+
+ 150 tiles of HKI and KLN
+An HRHD urban dataset (on-going)
+
+o From LandsD/PlanD’s city model
+
+ Sampled and annotated for city objects
+
+Supports
+
+ To be open-sourced soon
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+8
+
+2.2 Symmetry and similarity
+ Symmetry 對稱
+ Reflectx(C) ≈ C
+
+鏡面對稱
+
+ Similarity 相似
+ AffineTransx (C1) ≈ C2 仿形變換
+
+ Guided by design/engineering laws
+
+(Xue et al, 2019d)
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+9
+
+2.2 Symmetry in points: Methods and data
+ Symmetry detection
+Category
+Pairwise votingclustering
+Heuristic feature
+matching
+Our parameter
+optimization
+
+ Test data
+
+Accuracy (less
+geometric error)
+
+Efficiency (Using
+less time)
+
+Types of
+symmetries
+
++
+
+−
+
+All (++)
+
+−
+
+++
+
+Limited by the
+features (−)
+
+++
+
++
+
+(a) The Hung Hing Ying Building at (b) 250 aerial photos taken with a
+HKU main campus
+UAV (model: DJI Inspire 1)
+
+(d) The slices for fast verifying reflections on rooftop in the pilot case
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+All (++)
+
+(c) A dense cloud of 1,413,211
+points of the building rooftop
+min f(x) = f𝒞𝒞 (x) +10𝒜𝒜(x)
+1
+= Σ177
+|𝒞𝒞i|·MNND𝒞𝒞i (x)
+n 𝑖𝑖=1
++10 [ 𝒜𝒜g(x) + 𝒜𝒜t(x) ]
+s.t. x = ( ρ, φ ),
+ρ ∈ ℝ+ ∪ {0}, φ ∈ (–π, π].
+(e) The formulated problem
+
+Main Building, University of
+Hong Kong* (29,756;
+86.56%)
+
+Dublin City Hall† (459,386;
+86.14%)
+
+Hung Hing Ying Building,
+University of Hong Kong‡
+(1,413,211; 96.04%)
+
+One George’s Quay Plaza,
+Dublin† (1,170,122; 95.50%)
+
+47-51 O’Connell Street
+Upper, Dublin† (395,818;
+97.18%)
+
+Western District Fruits
+Wholesale Market, Hong
+Kong (44,699; 96.97%)
+
+Samuel Beckett Bridge,
+Dublin† (570,338; 97.52%)
+
+Seán O’Casey Bridge,
+Dublin† (223,213; 99.55%)
+
+Two piers at Victoria
+Harbor, Hong Kong*
+(12,631; 94.84%)
+
+10
+
+2.2 Symmetry detection: Results
+ PCR = 93.7%, Time = 98.6s (Xue et al. 2019d)
+
+ Updated in (Xue et al. 2019a)
+
+Asymmetries
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+11
+
+2.2.1 Case 1: Symmetry-guided BIM texture map
+ Wu et al. (2021)
+ Merit Award, Hong Kong OpenBIM / OpenGIS Award
+
+2022
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+12
+
+2.2.2 Case 2: Sim-guided many chairs
+
+(Xue et al. 2019c)
+
+ Multi-modal algorithm
+ For noisy data
+
+ F1 > 0.9
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+13
+
+2.3 Cross-section clustering for object types
+ Symmetry-based cross-sections 對稱截面 (Xue et al. 2020)
+ 1. Ground removal
+ 2. Connectedness
+ 3. Major symmetry
+o 3.1 Section #1
+
+ 4. Perpendicular
+o 4.1 Section #2
+
+ 5. Voxelization
+
+ For unknown objects
+無需訓練數據
+ Symmetric
+ Above ground
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+14
+
+2.3 Cross-section clustering for object types (cont.)
+ Similarity for clustering unknown 聚類
+ 1. Cross-section-based registration
+ 2. Clustering using least RMSE
+
+ Similarity to sections of known
+3D objects
+ 1. Filters (Width, Height, Depth)
+
+Input PCD
+
+Output: Closest 3D object
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+(2022 Featured article,
+ISPRS P&RS )
+
+15
+
+2.4 Similarity for objects and relations (Xue et al. 2016; 2019b)
+ Time = 6.44s (Manual = 300s), RMSE = 3.87 cm
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+16
+
+2.4 Two demo videos
+Fitting BIM objects for location, rotation, and
+relational semantics (Xue 2019)
+
+Fitting 3D columns at a carpark
+(Wu et al. 2022)
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+17
+
+Section 3
+
+SUMMARY
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+18
+
+3.1 A recap
+ Urban point cloud
+ Has advantages for buildings/urban applications
+ Semantics is a must-to-do for DT
+
+ Semantics: Class labels, symmetry, objects, relationship
+ Can be detected in urban point clouds
+o With / without training data sets
+o With / without existing 3D resources
+
+ Powerful for understanding a point cloud if detected
+o Sometimes better than the factual (e.g., cars, chairs)
+
+ Auto DTing of buildings/city in early stage
+ Wide frontier of urban semantics to explore toward 100% autonomy
+ More values lie in simulation/optimization
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+19
+
+Acknowledgement
+ Funding support
+ HK RGC GRF/ECS (17201717, 17200218, 27200520)
+ Guangdong Key R&D (2019B010151001)
+ Shenzhen-HK-Macau TRP (C) (SGDX20201103093600002)
+
+ Students and alumni involved
+ Yijie Wu
+ Maosu Li
+ Zhe Chen
+ Cao Jin
+
+ References details on requests
+
+Xue: DT. Leica Geosystems Hong Kong 2022, 25 Nov. 2022.
+
+20
+
+Let computers ‘see’ urban
+semantics through ‘01s’ !
+Q&A
+
+

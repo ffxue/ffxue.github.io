@@ -1,0 +1,452 @@
+Remote sensing of 4D point cloud (4DPC) for digital twin
+construction: A time-dynamic, occlusion-minimized data
+source exploiting low-cost LiDAR sensors
+5
+
+Fan Xue 1*, Yibo Wang 2, Yijie Wu 3, Zhe Chen 4, Sou-Han Chen 5 and Dong Liang6
+This is the authors’ version of the paper:
+Xue, F., Wang, Y., Wu, Y., Chen, Z., Chen, S.-H. & Liang, D. (2025).
+Remote sensing of 4D point cloud (4DPC) for digital twin construction: A
+time-dynamic, occlusion-minimized data source exploiting low-cost LiDAR
+sensors. Proceedings of the 29th International Symposium on Advancement of
+Construction Management and Real Estate, Springer, in press.
+This file is shared for personal and academic use only, under the license
+CC BY-NC-ND 4.0 (Non-Commercial, No Derivatives, and with an
+Attributed citation when you use). The final published version of this paper can be
+found at: [LINK_TO_SPRINGERLINK]. Any uses other than personal and academic
+purposes must obtain appropriate permissions from Springer first.
+
+10
+
+Abstract: In the era of smart construction, many sensing technology systems, such as the Internet
+of Things, AI cameras, and terrestrial laser scanning, have been applied to collect data on multiobjective and highly time-dynamic construction activities on site. However, these systems are
+handicapped in computing for civil engineering by various issues, such as cost, data coverage,
+accuracy, and battery life. This paper presents a novel time-dynamic 4D (x, y, z and time) point cloud
+(4DPC) data streaming system for highly time-dynamic construction activities. The 4DPC sensing
+device in this paper integrates an edge computer and self-driving car’s low-cost LiDAR sensor at
+1* Xue, F., PhD
+
+Corresponding author, 512 Knowles Building, Department of Real Estate and Construction, The University of
+Hong Kong, Pokfulam, Hong Kong;
+E-mail: xuef@hku.hk
+Tel: +852 3917 4174
+2 Wang, Y., MSc
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong; e-mail:
+yibo@hku.hk
+3 Wu, Y., MSc
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong; e-mail:
+yijiewu@connect.hku.hk
+4 Chen, Z., MSc
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong; e-mail:
+cz77@connect.hku.hk
+
+5 Chen, S.-H., MSc
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong; e-mail:
+hankchen@connect.hku.hk
+Liang, D., MSc
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong; e-mail:
+leodong@connect.hku.hk
+
+6
+
+15
+
+20
+
+less than US$1,000. The 4DPC platform employs a cloud server collecting 4DPC data streams from
+multiple devices offline or via Wi-Fi or 5G, and visualizes the data streams on a GIS platform. In
+contrast with the existing technologies, the presented platform offers a novel, low-cost, timedynamic, and occlusion-minimized 4DPC data source that opens a new avenue to various digital
+twin construction applications.
+Keywords: 4D point cloud (4DPC); digital twin construction; time-dynamic LiDAR data source;
+sensor fusion; cloud-edge system
+
+1 Introduction
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+Smart construction aims to adopt and develop information technology to improve productivity,
+reduce costs, and monitor risks at construction sites. Digital twin construction (DTC), which
+promises understanding and reasoning, gained increasing attention in recent years (Zhao et al. 2023).
+To facilitate the development of smart construction, researchers and experts focused on how to use
+novel sensors such as the Internet of Things (IoT), Artificial Intelligence (AI) cameras, and
+terrestrial laser scanning to replace a portion of management or survey work in the construction
+industry (Štefanič & Stankovski 2018). However, IoT sensors and AI cameras have several
+limitations (Liang & Xue 2022). IoT technology is vulnerable to poor networks and high costs (AlSharekh & Al-Shqeerat 2019), and AI cameras lack depth (Chen et al. 2017).
+With the rapid development of sensing technologies, LiDAR sensing evolves swiftly for smart
+city applications, such as robotics and self-driving cars. There are a variety of Light Detection And
+Ranging (LiDAR) data, of which the time-dynamic 4D (xyz and time) point clouds (4DPC) can
+simultaneously collect both spatial and temporal information (Liang & Xue 2022). The LiDAR
+sensors also became affordable due to the scale effect. However, the volume of the 4DPC data can
+be huge, thereby leading to high bandwidth during transmission or local storage. Furthermore, there
+can be strong occlusion, or obstruction of laser ‘eyesight’, leading to large ‘shadow’ areas in the site
+area. Also, the common 4DPC LiDAR sensors are designed for moving objects, such as robots and
+cars. In summary, there is a gap in the literature on how to integrate 4DPC remote sensing into the
+scenarios of digital twin construction.
+This paper presents a 4DPC data streaming platform to address the three limitations above for
+monitoring highly time-dynamic construction activities for DTC. This platform includes multiple
+4DPC sensing edge devices and one cloud service. First, 4DPC data is captured by an edge computer
+with a self-driving car’s low-cost LiDAR sensor. Then, multiple 4DPC edge devices are planned to
+minimize occlusion before the construction activities. Finally, a cloud server collects the 4DPC data
+streams offline or via WiFI or 5G with data compression options enabled. The platform's feasibility
+was validated with a couple of real-world pilot projects. As far as we are concerned, the multi-sensor
+fusion architecture of the presented 4DPC platform is the first of this kind of research, which
+contributes to the body of knowledge of real-time site monitoring and data source of DTC.
+
+2 Related Works
+There exist schools of smart technologies at construction sites, especially for large civil engineering
+projects. The management and coordination of construction projects using an IoT cloud-based
+platform were validated by real-world data under realistic conditions (Bucchiarone et al. 2019). In
+addition, real-time video surveillance captured by AI cameras was applied to avoid the arisen of
+construction accidents (Luo et al. 2020). An edge-based solution for video surveillance in the smart
+construction site assisted by a graph neural network was presented to address the limitations of video
+surveillance (Ming et al. 2022). However, the high-resolution camera has an inevitable limitation in
+that it cannot work at night because of the need for illumination (Vargas et al. 2021). Point clouds
+generated from photogrammetry and laser scanning were compared and utilized for smart heavy
+equipment planning (Moon et al. 2019). Besides, the benefits of the use of 5G technology in the
+construction industry were analyzed and a global framework for the application of 5G technology
+was also presented (Mendoza et al. 2021).
+
+65
+
+70
+
+75
+
+Compared with traditional 3D point clouds collected by fixed-point laser scanning (Tang et al.
+2022; Zhang & Arditi 2020), 4DPC collected by compact and portable LiDAR sensors can
+simultaneously capture the spatial and temporal information of highly time-dynamic activities.
+Some sensor models, such as DJI Livox Mid-70, have detection range at 260 m, angular resolution
+at 0.1°, and 10~20 frames per second. Therefore, 4DPC gained increasing attention in various
+industries. The construction site monitoring typically needs in-person inspections, thereby resulting
+in high labor costs. To overcome this limitation, 4DPC can be used for automatic monitoring (Cheng
+et al. 2022). 4DPC data can also be used to conduct semantic registration for monitoring cranerelated activities on the construction site (Liang et al. 2023). However, the previous research mainly
+focused on the usage and postprocessing of 4DPC, and the capture of 4DPC data is still on-site. It
+should be noted that 5G technologies can be employed to improve the data transmission speed,
+thereby facilitating data collection remotely. Therefore, remote sensing technologies of 4DPC data
+in the construction industry can be further explored and researched.
+
+3 The proposed 4D point cloud (4DPC) sensing platform for DTC
+3.1 The general framework
+
+80
+
+Figure 1 shows the architecture of the proposed 4D point cloud (4DPC) sensing platform. In general,
+the architecture of the platform has three layers, as shown in Figure 1. The following subsections
+describe the details.
+
+Figure 1. Architecture of the proposed 4D point cloud (4DPC) sensing platform.
+
+3.2 4DPC sensing device
+85
+
+90
+
+95
+
+Each 4DPC sensing device has one sensor and one edge device. There are multiple choices in the
+market for collecting 4DPC. We selected a low-cost LiDAR sensor model, the DJI Livox Mid-70.
+The sensor has an appropriate view angle (about 70° cone field of view) and depth (up to 260m). It
+emits an infrared laser for range detection, so it works well for nighttime construction work. The
+edge device was a Raspberry Pi 4. A set of device cost about USD 993 (Liang et al. 2024). The edge
+device runs a lightweight Linux OS and is good for programable extensions. The 4DPC data
+protocol was the Livox SDK (https://github.com/Livox-SDK/Livox-SDK) over HTTP protocol. The
+CPU load and temperature are also collected and reported in addition to 4DPC data.
+Multiple edge devices can be installed at different sensor locations (xi, yi, zi) and heading
+directions to. 4DPC data from different edge devices can be merged into the universal xyz-time
+coordinate, according to the sensor pose and synchronized time. An optimized multi-sensor fusion
+plan can minimize occlusion. Indoor-outdoor fusion is also enabled by a multi-sensor fusion plan.
+
+3.3 4DPC data transmission and streaming
+
+100
+
+The collected 4DPC data can be streamed to a cloud server via WiFi or 5G. If Internet is not available
+at the site, the data can also be transmitted offline via a USB drive. Whether online streaming or
+offline transmission, the data volume is enormous, leading to possibly expensive 5G data plans.
+The platform implements two value functions to handle the costs of uploading massive volume
+of 4DPC data. The first function is a Zip/7-Zip-based 4DPC file-level compression. The file-level
+compression does not change the bytes of Livox SDK’s format, but does reduce the file size and
+
+105
+
+bandwidth considerably. The other function is a streaming-on-demand function that streams live
+data only for user-demanded (short) periods of time, such as five-minute crane hoisting events or 1minute daily progress checking (in the early morning every day).
+
+3.4 Integrated 4DPC source and exchange
+
+110
+
+A cloud server integrates and exchanges the 4DPC data with DTC and end users. First, it receives
+4DPC from edge devices with the sensor poses. The sensor poses are presumed to be fixed locations,
+as demonstrated in Figure 2a. A user can set up the sensor pose according standard coordinate system,
+e.g., the Hong Kong 1980 Grid System (EPSG:2326) shown in Figure 2a. The edge device’s CPU
+load and temperature are also readable from the cloud server, as shown in Figure 2b.
+
+Figure 2. Integration of multiple 4DPC edge devices
+
+115
+
+120
+
+Then, the cloud server employs a technological pipeline, as shown in Figure 3, to convert the
+4DPC data format. The conversion starts from the .7z archive format and unzips the Livox native
+files (.lvx). Then, the 4dPC data is registered to standard coordinates concerning the sensor pose, as
+shown in Figure 2a, to be converted to a common LiDAR format .las for exchange. A part of this
+conversion was reported in Liang et al. (2023). In addition, the 4DPC data is geo-referenced and
+converted to the .pnts format for live visualization on the Cesium platform. The visualization effects
+were reported in Liang et al. (2024).
+
+Figure 3. 4DPC data format conversion pipeline on the platform
+
+4 Pilot Tests
+4.1 Cases description
+125
+
+Two cases studies were conducted in Hong Kong. The first case was a footbridge construction
+project at midnight on June 28, 2022. The aims of first case test were edge device planning for
+occlusion minimization, offline transmission, and visualization. The other case was an excavation
+project in November 2023, where the aims of test included unattended 4DPC streaming and remote
+edge device control.
+
+130
+
+4.2 Results of occlusion minimization, transmission and visualization in pilot 1
+We planned two edge devices to cover the target site area, as shown in Figure 4. The site was small,
+so that the sensor detection range achieved far beyond the site. More details can be found in Liang
+et al. (2023; 2024).
+
+135
+
+140
+
+145
+
+Figure 4. 4DPC edge device planning for occlusion minimization (Liang et al. 2023; 2024)
+
+Each edge device recorded about 1.4 MB of 4DPC data per second. However, we found one
+device did not work stably. The No. 1 edge device attached to the fourth floor’s 220V power supply
+recorded the whole period of 6.5 hours of construction activities. In contrast, the same edge device
+(No. 2) attached to the site’s 220V power rebooted from time to time. The main reason could be the
+voltage surges caused by heavy construction equipment.
+Figure 5 shows the visualization of 4DPC on the Cesium. The offline transmitted 4DPC data
+was integrated to Hong Kong’s local grid system. The 4DPC files were successfully converted to .las
+formats and .pnts formats for exchange and visualization. In addition, 3D building information
+models and Geographical Information System objects were programable compatible with the timedynamic 4DPC data.
+
+Figure 5. Visualization of 4DPC of pilot case #1 on Cesium
+
+4.3 Results of unattended 4DPC streaming and remote device control in pilot 2
+150
+
+Table 1 lists the comparison of online 4DPC data streaming methods. The original Livox file format
+(.lvx) was about 1.4 megabytes (MB) per second, or 11.4 megabits per second (Mbps) bandwidth.
+In contrast, the Zip files achieved a 1:0.334 compression ratio, without any data loss. The best results
+were from 7-Zip and XZ Utils. Both achieved a 1:0.235 compression ratio, which indicated a 76.5%
+
+saving in terms of 5D data plan.
+
+155
+
+160
+
+165
+
+Table 1. Comparison of online data streaming with file compression methods
+Group
+Method
+File size (KB) Compression ratio
+Original .lvx
+–
+1388
+1:1
+Gzip
+558
+1:0.402
+Zip
+bzip2
+463
+1:0.334
+XZ Utils
+326
+1:0.235
+Advanced zip
+7-Zip
+326
+1:0.235
+
+The remote sensing device control functions in Figure 2 worked well as designed. An edge
+device can be set up the sensor pose and checked for the latest system loads. A user could request
+all sensors to stream 4DPC data for a period of time, e.g., 3 seconds, 1 minute, or 3 minutes, by
+clicking the buttons on the platform UI.
+However, we encountered one issue of accumulated latency of on-demand 4DPC streaming,
+as shown in Figure 6. The 30-second 4DPC data started streaming with a latency at 6 seconds, and
+ended with a latency increased to 30 seconds. The latency showed a continuous increase in the test.
+Possible reasons included the complex electromagnetic environment at the construciton site and
+unable 4G/5G connection.
+
+Figure 6. Accumulated latency in seconds using 4G/5G network (screenshot of cloud database)
+
+4.4 Discussions
+170
+
+175
+
+The two tests validated the feasibility of the proposed 4DPC sensing platform. In summary, the first
+pilot test showed that the proposed 4DPC platform employs edge sensing devices for time-dynamic
+4DPC data, integrates multiple devices for occlusion minimization, and converts 4DPC data into
+various formats for exchange and visualization. The second test confirmed the 4DPC streaming with
+a latency issue and remote edge device control.
+In comparison to traditional AI camera surveillance solutions, the 4DPC platform has several
+advantages. First, the 4DPC data offers accurate depth and 3D information. Also, the 4DPC sensors
+work perfectly without good lighting at midnight. The fusion of 4DPC data streams from multiple
+sensors is natural and precise, thanks to standard geospatial coordinate systems.
+Disadvantages of the 4DPC platform, nevertheless, were also found. The first was the vast data
+
+180
+
+185
+
+190
+
+195
+
+200
+
+volume of 4DPC, which led to large disk size and live streaming latency. Although the 7-Zip was
+proven useful in saving 76.5% of the size, the compressed data volume streaming was still
+unsatisfactory and accumulated over time. Thus, stronger and domain-specific 4DPC compression
+is a promising future research direction. Another one was the low-level point density outside the
+center of the cone field of view of LiDAR sensors. The fast-evolving LiDAR hardware may resolve
+this problem in the future. The third drawback is the lack of colors in the 4DPC in this paper. Industry
+practitioners can supplement a camera to the 4DPC edge device in this paper.
+Several challenges have also been identified in downstream DTC applications. First is the
+difficulty in object detection and activity monitoring using the 4DPC data source. One recent work
+can be referred to (Liang et al. 2024). Another one is the complexity of DTC, barring proactive risk
+identification and smart responses.
+
+5 Conclusion
+The time-dynamic 4DPC stream is a promising data source for DTC. This paper presents a cloudedge system architecture for construction sites’ 4DPC sensing that exploits self-driving cars’ lowcost LiDAR sensors. The platform employs three layers: (i)_4DPC sensing edge devices, (ii) data
+transmission and streaming, and (iii) 4DPC integration and exchange. Two pilot tests confirmed that
+the platform collects occlusion-minimized 4DPC data and works unintendedly for 4DPC streaming.
+The proposed 4DPC streaming platform is the first of its kind in the literature, as far as we are
+concerned. In contrast with the existing technologies, the presented platform offers a novel, lowcost, time-dynamic, and free-of-occlusion 4DPC data source that opens a new avenue to various
+digital twin construction applications. Future work includes testing advanced 4DPC sensors,
+advanced 4DPC data compression methods, integration with RGB camera, semantic object
+detection and pose estimation for construction activities in 4DPC, and proactive risk identification
+and smart responses.
+
+Acknowledgement
+This study in this paper was supported by The University of Hong Kong (No. 2307102469).
+205
+
+210
+
+215
+
+220
+
+225
+
+References
+Al-Sharekh, S. I. & Al-Shqeerat, K. H. (2019). Security Challenges and Limitations in IoT
+Environments. IJCSNS International Journal of Computer Science and Network Security,
+19(2), 193-199.
+Bucchiarone, A., Sanctis, M. D., Hevesi, P., Hirsch, M., Abancens, F. J., Vivanco, P. F., Amiraslanov,
+O. & Lukowicz, P. (2019). Smart Construction: Remote and Adaptable Management of
+Construction Sites through IoT. IEEE internet of things magazine, 2(3), 38-45.
+doi:10.1109/IOTM.0001.1900044
+Chen, J., Fang, Y. & Cho, Y. K. (2017). Real-time 3D crane workspace update using a hybrid
+visualization approach. Journal of Computing in Civil Engineering, 31(5), 04017049.
+doi:10.1061/(ASCE)CP.1943-5487.0000698
+Cheng, S. Y., Liu, L., Hou, W., Hart, J. R. & Yong, Y. M. (2022). Smart Construction Monitoring
+Using Photogrammetry and LiDAR-derived 4D Digital Model: A Case Study from the
+Tung Chung New Town Development of Hong Kong. AIJR Proceedings (pp. 129-140).
+AIJR. doi:10.21467/proceedings.133.11
+Liang, D. & Xue, F. (2022). Applications of 4D Point Clouds (4DPC) in Digital Twin Construction:
+A SWOT Analysis. Proceedings of the 27th International Symposium on Advancement of
+Construction Management and Real Estate (pp. 1231-1238). Singapore: Springer.
+doi:10.1007/978-981-99-3626-7_95
+Liang, D., Chen, S.-H., Chen, Z., Wu, Y., Chu, L. Y. & Xue, F. (2024). 4D point cloud-based spatialtemporal semantic registration for monitoring mobile crane construction activities.
+Automation in Construction, 165, 105576. doi:10.1016/j.autcon.2024.105576
+Liang, D., Chen, Z., Kong, L., Wu, Y., Chen, S.-H. & Xue, F. (2023). 4D Point Cloud (4DPC)-driven
+real-time monitoring of construction mobile cranes. European Conference on Computing
+in Construction (pp. 0-0). Flemish Region, Belgium: European Council on Computing in
+
+230
+
+235
+
+240
+
+245
+
+250
+
+255
+
+260
+
+Construction (EC3). doi:10.35490/EC3.2023.258
+Luo, H., Liu, J., Fang, W., Love, P. E., Yu, Q. & Lu, Z. (2020). Real-time smart video surveillance
+to manage safety: A case study of a transport mega-project. Advanced Engineering
+Informatics, 45. doi:10.1016/j.aei.2020.101100
+Mendoza, J., de-la-Bandera, I., Álvarez-Merino, C. S., Khatib, E. J., Alonso, J., Casalderrey-Díaz,
+S. & Barco, R. (2021). 5G for Construction: Use Cases and Solutions. Electronics, 10(14),
+1713. doi:10.3390/electronics10141713
+Ming, Z., Chen, J., Cui, L., Yang, S., Pan, Y., Xiao, W. & Zhou, L. (2022). Edge-Based Video
+Surveillance With Graph-Assisted Reinforcement Learning in Smart Construction. IEEE
+Internet of Things Journal, 9(12), 9249 - 9265. doi:10.1109/JIOT.2021.3090513
+Moon, D., Chung, S., Kwon, S., Seo, J. & Shin, J. (2019). Comparison and utilization of point cloud
+generated from photogrammetry and laser scanning: 3D world model for smart heavy
+equipment
+planning.
+Automation
+in
+Construction,
+98,
+322-331.
+doi:10.1016/j.autcon.2018.07.020
+Štefanič, M. & Stankovski, V. (2018). A review of technologies and applications for smart
+construction. Proceedings of the Institution of Civil Engineers-Civil Engineering, 172(2),
+83-87. doi:10.1680/jcien.17.00050
+Tang, X., Wang, M., Wang, Q., Guo, J. & Zhang, J. (2022). Benefits of Terrestrial Laser Scanning
+for Construction QA/QC: A Time and Cost Analysis. Journal of Management in
+Engineering, 38(2). doi:10.1061/(ASCE)ME.1943-5479.0001012
+Vargas, J., Alsweiss, S., Toker, O., Razdan, R. & Santos, J. (2021). An Overview of Autonomous
+Vehicles Sensors and Their Vulnerability to Weather Conditions. Sensors, 21(16), 5397.
+doi:10.3390/s21165397
+Yang, J., Park, M.-W., Vela, P. A. & Golparvar-Fard, M. (2015). Construction performance
+monitoring via still images, time-lapse photos, and video streams: Now, tomorrow, and the
+future. Advanced Engineering Informatics, 29(2), 211-224. doi:10.1016/j.aei.2015.01.011
+Zhang, C. & Arditi, D. (2020). Advanced Progress Control of Infrastructure Construction Projects
+Using Terrestrial Laser Scanning Technology. Infrastructures, 5(10), 83.
+doi:10.3390/infrastructures5100083
+Zhao, R., Chen, Z. & Xue, F. (2023). A blockchain 3.0 paradigm for digital twins in construction
+project
+management.
+Automation
+in
+Construction,
+145,
+104645.
+doi:10.1016/j.autcon.2022.104645
+
+

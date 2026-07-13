@@ -1,0 +1,1383 @@
+A Blockchain-based Model with An Incentive Mechanism for Cross-border
+Logistics Supervision and Data Sharing in Modular Construction
+Liupengfei Wua, Xiao Lia*, Rui Zhaoa, Weisheng Lua, Jinying Xua, and Fan Xuea
+a
+
+Department of Real Estate and Construction, The University of Hong Kong, Hong Kong, China
+
+*Corresponding author: Email: xl1991@hku.hk
+This is the peer-reviewed post-print version of the paper:
+Wu, L., Li, X., Zhao, R., Lu, W., Xu, J. & Xue, F. (2022). A blockchain- and IoT-based
+smart product-service system for the sustainability of prefabricated housing
+construction. Journal of Cleaner Production, 375, 133460. Doi:
+10.1016/j.jclepro.2022.133460
+The final version of this paper is available at: https://doi.org/10.1016/j.jclepro.2022.133460.
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+
+Abstract
+Sustainability in cross-border logistics requires issues such as fragmented management to be
+addressed. Particular challenges arise in cross-border logistics in modular construction (CLMC)
+because supervision is inefficient, primarily due to continued use of paper-based documentation.
+5
+
+Researchers have developed digital platforms that integrate accurate prefabricated module location
+information but their centralized operation creates information security issues such as tampering.
+Blockchain technology can overcome this limitation but relies on user participation. This study,
+therefore, develops a blockchain-based supervision (BBS) model with incentives for application
+in CLMC. The BBS model is developed using a design science research approach to enhance
+
+10
+
+supervision of CLMC and motivate users to share data promptly, and then a prototype system is
+developed and evaluated in a CLMC case. The results show that the system brings a positive
+change in product accountability (df=8, t=0.6601, p=0.528) compared with current paper-based
+recording process (df=8, t=0.0035, p=0.997), and a positive change in data traceability (df=8,
+t=1.468, p=0.180) compared with existing process (df=8, t=0.042, p=0.967). In addition, this study
+
+15
+
+obtains higher scores (552) than others in evaluating the incentive mechanisms. The security
+analysis is also discussed through data immutability, non-repudiation, authentication, and
+
+1
+
+authorization. The ﬁndings of this study pave the way for a tamper-proof, incentive-enabled
+supervision mechanism in modular construction.
+Keywords: Blockchain; Modular construction; Cross-border logistics; Sustainability; Incentive
+20
+
+mechanism
+
+1. Introduction
+The construction industry is a major cause of sustainability challenges through its consumption of
+energy and materials (Lu et al., 2018). Widely advocated as a more sustainable alternative to
+25
+
+traditional in-situ construction, modular construction involves fabrication of freestanding
+integrated modules under controlled off-site conditions and transportation of the large units to
+building sites for assembly (Wu et al., 2022a). It offers social, economic, and environmental
+benefits, including enhanced safety and productivity and reduced waste (Lu et al., 2018). However,
+successful modular construction project delivery involves complex logistics with multiple
+
+30
+
+processes and stakeholders (Lu et al., 2022). This is especially true in territories like Hong Kong
+where high construction costs and labor shortages mean that modular housing production is
+outsourced to factories in Guangdong Province, Mainland China, requiring cross-border logistics
+(Li et al., 2021b). To ensure an efficient transition from production to on-site assembly, proper
+technologies must be adopted to facilitate the cross-border logistics process.
+
+35
+
+The key to efficient cross-border logistics in modular construction (CLMC) is transparency of
+information for involved entities (Chang et al., 2020a). With increasingly fierce competition in
+the global construction market, advanced project management software such as enterprise resource
+planning systems (Wang et al., 2020) and building information modeling (BIM) and geographic
+40
+
+information system (GIS) technologies have been adopted to facilitate information sharing and
+decision support in CLMC (Li et al., 2022). However, current information systems or platforms
+work in a centralized way, leading to information security issues (Xue & Lu, 2020). BIM, for
+example, cannot ensure a single point of trust for any modification, creating a risk of tampering.
+Where module quality becomes a focus of cross-border disputes in CLMC, logistics information
+
+45
+
+cannot be secured.
+2
+
+Blockchain technology has the potential to create a shift in information management practices
+prevalent in construction. A blockchain is a distributed database of records linked with
+cryptography and reliant on a decentralized consensus that effectively records and endorses
+50
+
+transactions between participants (Xue and Lu, 2020). Its benefits, therefore, include reinforced
+security and traceability (Chang et al., 2020a). Blockchains also promote information sharing
+through distributed networks and reduce costs by removing intermediaries (Li et al., 2021a). In
+construction, blockchain technology has potential applications in internal administration (Wang et
+al., 2020), self-executing transactions with smart contracts (Lu et al., 2021b), immutable records
+
+55
+
+of transactions (Li et al., 2021b), secure payment (Das et al., 2021), and in combination with BIM
+and Internet of Things (IoT) (Lee et al., 2021). Blockchains have also been adopted for information
+management in prefabricated construction (e.g., Zhang et al., 2020). However, in current
+blockchain solutions, unwillingness of users to share data presents a challenge. Compared with
+prefabricated components though, prefinished modules are larger and more valuable, requiring
+
+60
+
+better quality supervision and more efficient data sharing when using blockchain in CLMC.
+
+Thus, this study aims to develop a blockchain-based supervision (BBS) model with incentives for
+CLMC. The objectives of this study are: (1) to develop a BBS model to enhance the CLMC
+supervision process; (2) to improve the willingness of BBS model users to share data; and (3) to
+65
+
+evaluate the proposed model through prototype system development. The rest of this paper is
+organized as follows. Section 2 is a literature review of blockchain technology for information
+management, logistics, and incentive mechanism. Section 3 reviews the current business process
+of CLMC. Section 4 presents the research methodology. Section 5 gives the details of the BBS
+model. Section 6 shows the prototype system and evaluates its performance. Section 7 offers our
+
+70
+
+discussion, and Section 8 concludes this research.
+
+2. Literature Review
+2.1 Blockchain Technology for Information Management
+
+3
+
+Blockchain technology has found information management applications in several spheres. Fan et
+75
+
+al. (2018) developed a blockchain-based system for medical information sharing, but privacy
+issues compromised the willingness of users to share information. Recently, Nguyen et al. (2021)
+used a deep belief network with a residual network model to secure blockchain-enabled systems
+in healthcare. Cui et al. (2021) adopted 5G and blockchain to realize traceable vehicle-to-vehicle
+information sharing, pointing out that vehicles may be reluctant to share data with others but failing
+
+80
+
+to explain how to solve this problem. Esposito et al. (2021) proposed a novel solution for
+distributed management of identity in smart cities using blockchain but, again, encouraging
+citizens to upload their identity information on the new platform would be a challenge. Mohan and
+Gladston (2020) integrated Merkle Tree-based cloud audit and a blockchain-based recording
+system to manage cloud data auditing results, but the system lacked incentives for users to upload
+
+85
+
+verification results to the system. Blockchain technology has also been used to manage Android
+permission histories (Ouaguid et al., 2018) and donor profiles (Lamba et al., 2019). In all cases,
+however, in the process of data sharing the fundamental problem of unwillingness to share is yet
+to be overcome.
+
+90
+
+In construction, blockchain conceptual models and proof-of-concept work related to information
+management have recently been investigated. For example, blockchain technology has been used
+to share different types of construction information, including records related to design (Pradeep
+et al., 2021), production (Li et al., 2021b), quality verification (Zhong et al., 2020), scheduling
+(Zhang et al., 2020), on-site assembly (Wu et al., 2022a), equipment maintenance (Pan et al., 2022),
+
+95
+
+disputes (Saygili et al., 2022), carbon emission (Shu et al., 2022), and safety (Wu et al., 2022b).
+While data sharing on the blockchain can reduce duplication of data collection and processing
+efforts, again studies assume that users are willing to share their data. In addition, Das et al. (2021)
+and Wu et al. (2022c) developed similar blockchain-based systems to manage payment
+information for preventing late payment, but as payment verification is a manual process
+
+100
+
+participants have to be motivated to upload verification results on time. Hamledari and Fischer
+(2021) attempted to improve construction payment automation using blockchain-enabled smart
+contracts and robotic reality capture technologies. However, due to the complex and dynamic
+
+4
+
+nature of construction sites, the applicability of this innovation is limited to certain building
+elements (e.g., columns).
+105
+
+Lee et al. (2021) and Li et al. (2022) integrated the IoT, BIM, and blockchain technology to support
+automatic information sharing in construction projects. However, quality verifications at each
+checkpoint during the construction process involve manual upload, so sharing verification results
+on time is still an issue. Scott et al. (2021) reviewed 121 academic documents on blockchain in the
+110
+
+construction industry. The review chapter presented 33 application categories and was organized
+into seven subject areas. An identified gap in research for further studies is the lack of an incentive
+mechanism for blockchain data sharing.
+
+2.2 Blockchain Technology for Logistics
+115
+
+In logistics, blockchains are mainly used to record product quality. For example, Singh et al. (2020)
+used blockchain technology to record the transportation status of medicines in pharmacy logistics
+but did not investigate the willingness of drivers to share information. Choi (2019) developed a
+blockchain platform in luxury logistics and, Sreenu et al. (2022) developed a blockchain-based
+ecosystem for vaccine logistics, and Saurabh and Dey (2020) have developed blockchain
+
+120
+
+architectures for tracing food quality. Blockchain-based supervision also covers e-commerce
+logistics (Li et al., 2019a), air logistics (Choi et al., 2019), and port logistics (Ahmad et al., 2021).
+Again, investigations of the willingness of users to share information are lacking in these studies.
+In cross-border logistics, blockchain research is minimal. Li and Li (2020) proposed a blockchain
+model for customs clearance of cross-border logistics without considering information-sharing
+
+125
+
+incentives, and Liu and Li (2020) proposed a blockchain-based framework for cross-border ecommerce logistics, pointing out the need to investigate incentive mechanisms in the future
+research. Chang et al. (2020a) provided a holistic overview of the blockchain state-of-the-art,
+challenges, gaps, and opportunities in cross-border logistics. They emphasized that government
+agencies should study how to motivate private sectors to upload information to blockchains.
+
+130
+
+5
+
+In construction logistics, blockchains have mainly been adopted to ensure the traceability of
+products en route to construction sites. Shemov et al. (2020) and Tezel et al. (2021), however,
+focused on testing blockchain security instead of evaluating the level of user participation. The
+same is true in precast construction, where Wang et al. (2020) developed a blockchain-based
+135
+
+framework for improving logistics traceability, and in the development by Li et al. (2021a) of a
+blockchain-based system to improve information transparency of prefabricated housing
+construction. A literature search reveals few blockchain applications in cross-border logistics. Lu
+et al. (2022) developed an e-Inspection 2.0 system for cross-border modular construction logistics.
+However, their system application and testing are focused on the production phase rather than the
+
+140
+
+transportation phase. Given the larger physical volume and higher price of prefabricated modules
+than components, stakeholders inevitably require better quality supervision and efficient data
+sharing in CLMC, particularly as cross-border dispute resolution can be time-consuming and
+expensive.
+
+145
+
+2.3 Incentive Mechanisms in Blockchains
+Blockchain success depends on the contributions of users. Ren et al. (2018) used digital currency
+as an incentive to encourage participants to share data in a blockchain for wireless sensor networks
+but did not provide an evaluation. He et al. (2018) proposed a blockchain-based incentive
+mechanism for distributed P2P applications, which applies cryptocurrencies to incentivize user
+
+150
+
+cooperation. However, cryptocurrencies are restricted by many governments. Xuan et al. (2020)
+proposed an incentive mechanism for data sharing based on blockchain technology and Chang et
+al. (2020) for edge-computing-based blockchain, neither of which were evaluated in real-life
+practice. Huang et al. (2020) demonstrated a reputation-based incentive mechanism to encourage
+users to endorse blockchains transactions, while Wang et al. (2018) developed native tokens as a
+
+155
+
+financial incentive for blockchain user participation in the consensus mechanism.
+
+In construction, only a few studies involve incentive mechanisms in blockchains. Lu et al. (2021a)
+demonstrated a blockchain-based supervision model with reputational and financial incentives for
+recording project information, including logistics, but does not provide a detailed explanation
+6
+
+160
+
+about the incentive mechanism nor test it. Lu et al. (2021b) proposed a smart construction objects
+(SCOs)-enabled blockchain oracles framework and designed an incentive mechanism to reward
+stakeholders who deploy SCOs during the process, but detailed information about the effectiveness
+of the incentive mechanism is lacking.
+
+165
+
+Thus, the research gaps identified can be summarized as follows. Firstly, there is a lack of a model
+to guide the establishment of an efficient supervision mechanism for CLMC and to help endorse
+the information (e.g., loading conditions and status, customs clearance status, and arrival
+conditions and status) at each checkpoint for clear product accountability and traceability in crossborder logistics. Secondly, a mechanism to increase user willingness to share data in blockchains
+
+170
+
+has not been investigated for CLMC. Thus, this study aims to develop a BBS model for CLMC.
+
+3. Analysis of the Business Process of Cross-border Logistics in Modular Construction
+The CLMC business process usually involves logistics preparation, execution, and completion
+(Figure 1). The scope of the CLMC process has been identified as follows: (1) the entry criterion
+175
+
+is that the manager of the prefabrication manufacturer signs the bills of transportation to start the
+delivery; (2) the inputs are the loading lists and related details for the logistics tasks; (3) the exit
+criterion is that the vehicle drivers return the signed delivery dockets to the manufacturer; and (4)
+the outputs are the quality assured modules.
+
+7
+
+180
+
+Figure 1. The business processes of cross-border logistics in modular construction: (a)
+preparation; (b) execution and completion
+
+8
+
+Several existing information management issues have been found in the business process of CLMC:
+185
+
+•
+
+Unclear product accountability: The product accountability in the module loading and
+unloading stages is unclear, mainly due to the use of paper. Manual recording (e.g., paperbased inspection records and handwriting) often leads to input error.
+
+•
+
+Low real-time traceability of cross-border logistics records: The customs clearance status
+is not notified to all stakeholders in a timely manner, resulting in information asymmetry
+among participants.
+
+190
+
+•
+
+Lack of incentives for data sharing: Due to the tight logistics schedule and repetitiveness of
+verification works, operators and drivers are unwilling to share verification records promptly.
+This problem worsened during the COVID-19 pandemic, as CLMC drivers must submit more
+information (e.g., the receipt of nucleic acid tests) to local governmental agencies.
+
+195
+
+•
+
+Logistics file loss and data manipulation: Current logistics file records may be lost or even
+modified without strict supervision
+
+As shown in Table 1, blockchain has several advantages over existing approaches that can address
+these issues. It can securely provide user authentication and authorization to prevent impersonation
+200
+
+(Esposito et al., 2021). Blockchain provides a timestamp for each recorded transaction to ensure
+that stakeholders can track logistics history and a decentralized network that can enhance recorded
+timestamps to prevent loss (Chang et al., 2020a). Blockchain offers different options for
+implementing incentive mechanisms, such as cryptocurrency-based incentives or combined with
+external incentive models (Lu et al., 2021a). The distributed ledges of blockchain are scattered in
+
+205
+
+many places in a shared manner to log logistics data. Unlike traditional solutions that may suffer
+from tampering risks or require the continued purchase of servers, blockchain can prevent data
+loss because the same copy of the data record is replicated, encrypted, and stored in the peer
+network (Pradeep et al., 2021). For these reasons, blockchain can be exploited to realize CLMC
+supervision.
+
+210
+
+Table 1. Existing methods for addressing issues in CLMC and blockchain advantages
+Issues
+
+Existing tools
+
+Blcokchain advantages
+
+References
+
+Unclear product
+accountability
+
+Paper-based documentation,
+Barcodes, QR codes
+
+Blocckahin can provide secure user
+authentication and authorization
+
+Esposito et al.
+(2021)
+
+9
+
+Low real-time
+traceability
+
+Radio-frequency
+identiﬁcation (RFID) tags
+
+Lack of
+incentives for
+data sharing
+
+Incentive policies
+
+Logistics file loss
+and data
+manipulation
+
+Multi-server system, Cloud
+system
+
+Blockchain can provide the records
+with a timestamp through a
+decentralized network
+Blcockhain can provide
+cryptocurrency-based incentives or
+be integrated with external
+incentive model
+Blockchain can offer distributed
+ledgers with encryption
+
+Chang et al.
+(2020a)
+Lu et al. (2021a)
+
+Pradeep
+(2021)
+
+et
+
+al.
+
+4. Research Methodology
+In this study, the design science research (DSR) approach was adopted to develop a BBS model
+215
+
+for CLMC. DSR is a scientific knowledge production philosophy that tries to produce creative
+constructs that address real-world issues (Pradeep et al., 2021). Our study used three steps as shown
+in Figure 2.
+
+10
+
+Figure 2. Research methodology
+
+220
+
+4.1 Designing Model
+In the first step, to design a BBS model to meet the research objectives, the research team
+brainstormed in four meetings in January 2021, analyzing and synthesizing knowledge obtained
+225
+
+from the literature. This process was non-linear and required multiple iterations to develop a
+11
+
+promising solution (because some solutions are feasible but not the most promising) for which the
+model was developed.
+4.2 Developing and Implementing the Prototype
+230
+
+The second step involved a two-phase development of the prototype system. In the first phase,
+blockchain type, development platform, and consensus mechanism were selected to implement the
+system. Among blockchain types (public, private, and consortium), the consortium blockchain was
+selected because CLMC involves various organizations and only approved project members can
+join the network. Then, Hyperledger Fabric was adopted as the development platform because it
+
+235
+
+provides developers with security-enhanced alternatives and resources (Li et al., 2021b). Then, the
+crash fault tolerance (CFT) consensus was selected. CFT can avoid network crashes and partitions
+(Li et al., 2021b) and is relatively fast compared to Byzantine fault tolerance (Lu et al., 2021a).
+In the second phase, front- and back-end prototypes were develop in Linux version 5.4.0-58-
+
+240
+
+generic-lpae (5.4.0-58.64~18.04.1) (Ubuntu 18.04.1 LTS). The back-end prototype was
+implemented using SpringBoot (version 2.4.0) allowing the research team to quickly develop
+database management systems and web servers. AdminLTE (version 3.0) was used to develop
+front-end prototypes to enable the user interfaces. Hyperledger Fabric Explorer was used to
+provide users with browsing access to information on the blockchain.
+
+245
+
+4.3 Evaluating the Model Performance
+In the third step, four evaluations were conducted in a modular construction case to demonstrate
+that the model operates as intended. The case project involves two 17-story student residence tower
+buildings on top of a 3-story podium structure, as shown in Figure 3(a). A total of 1008 modules
+250
+
+(excluding mock-up modules) of five types were delivered from Foshan, Mainland China, to Hong
+Kong for assembly (see Figure 3(b)). The typical floor plan is shown in Figure 3(c).
+
+12
+
+Figure 3. The case project
+255
+
+Firstly, we aimed to evaluate whether the model can improve the CLMC supervision processes in
+terms of product accountability by allowing users to record operations promptly. The evaluation
+was done through comparative analysis of use of paper records and the BBS system over six weeks.
+In previous studies (e.g., Farzan et al., 2008), comparative analysis has been used to test the
+260
+
+effectiveness of various information systems. Twenty-eight drivers confirm departure from Foshan,
+posting the status of customs clearance at the border, and reporting on arrival at the site (see Figure
+4). At each delivery, drivers should submit transactions for hold points. Every driver is assigned
+one CLMC delivery per week. These 28 participants are called the control group and are instructed
+13
+
+to record on paper the six weeks of operations. Meanwhile, 28 drivers from the experimental group
+265
+
+use the same method to record the exact operations in the first three weeks and then switch to the
+developed system in the last three weeks. Five evaluation indicators proposed by Li et al. (2019b)
+were used to test the effectiveness of the system; that is, the time to record vehicle information,
+driver information, module quality information, cross-border permit documents, and logistics
+status.
+
+270
+
+Figure 4. The evaluation scenario for product accountability
+14
+
+Secondly, we aimed to evaluate whether the developed model can improve the CLMC supervision
+275
+
+processes in terms of data traceability by allowing users to query operations promptly. Similar to
+the evaluation of the product accountability, five indicators were used to test the effectiveness of
+the system; that is, the time to query vehicle information, driver information, module quality
+information, cross-border permit documents, and logistics status.
+
+280
+
+Thirdly, a multi-factor scoring (MFS) method was used to evaluate whether the designed incentive
+mechanism was more efficient than existing mechanisms encouraging users to publish transactions
+promptly in blockchains. Based on the study conducted by Zuo et al. (2012), the first-level
+indicators (Ii) for measuring the performance of an incentive mechanism were proposed (see Figure
+5). Then, a list of detailed performance indicators was formulated built upon Li et al. (2019b).
+
+285
+
+After that, a workshop was conducted in late July 2021 with the logistics company involved in the
+surveyed project to assess the suitability of the second-level indicators (Ii-j) and establish the values
+of the relative weighting parameters Wi of Ii and wij of Ii-j. Next, a 3-part questionnaire was sent
+to the logistics company in early August 2021. In Part I of the questionnaire, five incentive
+mechanisms (including the incentive mechanism designed in this study) were explained to
+
+290
+
+respondents. Part II of the questionnaire gathered the demographic characteristics of the
+respondents. In Part III, respondents were asked to score Ii-j based on the scaling statements (0,
+Inferior; 3, Poor; 6, Fair; 9, Good; 12, Superior) for each mechanism. The score 𝑆𝑆𝑖𝑖 (the weighted
+
+score from assessing Ii-j) was determined using Equation 1:
+295
+
+𝑆𝑆𝑖𝑖 = ∑𝑥𝑥𝑗𝑗=1 𝑤𝑤𝑖𝑖𝑖𝑖 𝑆𝑆𝑖𝑖𝑖𝑖
+
+(1)
+
+where x denotes the number of second-level indicators under Ii. The final value of each incentive
+mechanism is defined as the total score collected from the assessment results on Ii-j, which are
+subdivided from Ii. The final values were calculated by using Equation 2:
+
+300
+
+Final value = ∑𝑛𝑛𝑖𝑖=1 𝑊𝑊𝑖𝑖 𝑆𝑆𝑖𝑖
+
+(2)
+
+where n denotes the number of first-level indicators. Of the questionnaires distributed, we received
+78 responses, but some were abandoned due to incompleteness. The remaining 56 were output and
+analyzed in Excel spreadsheets. Regarding demographic characteristics, 85% of respondents held
+15
+
+a bachelor’s degree or above. About 50% had 1–5 years’ experience in the logistics industry, 17.9%
+305
+
+had 6–10 years’ experience, and 32.1% had more than 10 years’ experience.
+
+Figure 5. Indicators of the multi-factor scoring (MFS) system
+
+310
+
+Finally, we aimed to discuss the security of the proposed blockchain-based model. According to
+Lu et al. (2021b) and Li et al. (2021b), the security analysis of the proposed model can be discussed
+through data immutability, non-repudiation, authentication and authorization. The analysis results
+were disseminated to audiences in modular construction.
+
+315
+
+5. The BBS Model for CLMC
+5.1 The BBS Model
+The proposed BBS model has two parts: (a) an incentive mechanism (see Figure 6(a)); and a
+blockchain-based supervision mechanism (see Figure 6(b)). The proposed model includes four
+organizations: owner, manufacturer, transporter, and contractor, and every involved organization
+
+320
+
+has many operators to record their operation transactions. According to the delivery schedule, the
+manufacturer’s operators first load the prefinished modules onto the delivery vehicles and record
+16
+
+the condition and status of modules. Then, the operators (e.g., drivers) of the transporter confirm
+the condition of the loaded modules and deliver them to the border. After customs clearance, the
+transporter’s operators should update the status of delivery and deliver modules to the site. The
+325
+
+contractor’s operators (e.g., site engineers) will verify the delivered modules (e.g., quality, quantity)
+and sign the delivery dockets.
+
+Figure 6. The blockchain-based supervision model for cross-border logistics in modular
+330
+
+construction: (a) incentive mechanism; (b) supervision mechanism
+17
+
+In the BBS model, the project owner can supervise the entire CLMC process by including an
+information record-track supervision pattern and a consensus mechanism. Thus, transaction
+information such as logistics preparation, execution, and completion can be recorded, published,
+335
+
+endorsed, and tracked. Logistics preparation information contains data about module ID,
+production date, type, conditions, status, signature, and loading finishing time. Logistics execution
+information includes data about transportation operations, while logistics completion information
+includes the data about the receiving verification operations.
+
+340
+
+5.1.1 Model Structure
+The first part of the model is a points-based incentive mechanism. The points system can motivate
+users to make contributions in enterprise social networking as points can turn their participation
+into a value for themselves (Farzan et al., 2020). Table 2 shows the calculation principles of the
+system. In BBS, users will receive a point for each recorded transaction. Each recorded transaction
+
+345
+
+published within one hour of finishing the operation will help users earn an extra 30 points. The
+total points are the sum of points received from recording transactions and publishing on time.
+Five reputation statuses (fail, pass, credit, distinction, and high distinction) are also defined. The
+reputation incentive is a long-lasting incentive mechanism, benefits of which include more
+business opportunities, cost-free advertising, and higher company value (Huang et al., 2020). The
+
+350
+
+mechanism is also integrated with financial incentives to improve participant attitudes to sharing
+data promptly and drive the progress of projects (Lu et al., 2021a). In the BBS model, each point
+obtained by the user can be traded for three dollars from the owner. All transaction records are
+stored in the blockchain to achieve a transparent and immutable incentive mechanism. The
+incentive reward will be canceled if a participant cheats. Further, if modules are damaged, and the
+
+355
+
+difference between the actual cost and compensation payment received from the insurance
+company exceeds 1,500 dollars, the corresponding participant will not obtain the incentives.
+
+Table 2. A points-based incentive mechanism
+
+18
+
+Participants
+
+Reward point
+
+Total number
+
+No. of transactions
+
+Reward points
+
+Total
+
+for each
+
+of transactions
+
+recorded on time*
+
+per transaction
+
+points**
+
+published
+
+published
+
+(no. of transactions not
+
+(on-time)*
+
+(T)
+
+transaction
+
+(variable)
+
+recorded on time)
+
+Manufacturer A
+
+1
+
+O
+
+X (O−X), where X≤O
+
+30
+
+1×O+X×30
+
+Transporter B
+
+1
+
+P
+
+Y (P−Y) , where Y≤P
+
+30
+
+1×P+Y×30
+
+Contractor C
+
+1
+
+Q
+
+Z (Q−Z) , where Z≤Q
+
+30
+
+1×Q+Z×30
+
+*Transactions published within 1 h after corresponding operations are completed.
+
+360
+
+**Total points < 500: fail; 500 ≤ total points < 650: pass; 650 ≤ total points < 750: credit; 750 ≤ total points < 850:
+distinction; and 850 ≤ total points: high distinction.
+
+The second part of the model is a blockchain-based supervision mechanism. The blockchain
+consists of two layers. The lower layer includes three sidechains to manage information related to
+365
+
+logistics preparation, logistics execution, and logistics completion. These three sidechains are held
+by the manufacturer, the transporter, and the contractor, respectively. The data frame structure in
+the sidechain can be seen in Figure 7(a). Each transaction consists of a timestamp, a hash pointer
+of the current transaction, a hash pointer of the previous transaction, and data. The data contains a
+key-value pair, where the key gives the operation category, including “Logistics Preparation”,
+
+370
+
+“Logistics Execution”, and “Logistics Completion”. The value shows the data content, such as
+module ID and custom clearance status. Under this data frame structure, operation transactions can
+be converted to the same format. The upper layer is the main blockchain. Each block in the
+mainchain contains a header and a set of transactions. The block header includes an index (the
+sequence of blocks in the chain), a timestamp, a signature validator, and hash pointers of current
+
+375
+
+and previous blocks. Figure 7(b) shows that three categories of transactions from the sidechains
+can be published to the mainchain, and the owner can also track records from the mainchain.
+
+19
+
+Figure 7. Transaction and blockchain: (a) data frame structure in sidechains; and (b) block
+structure in the mainchain
+380
+
+5.1.2 Incentive and Supervision Processes in the BBS Model
+The BBS model has three main processes to implement incentive and supervision mechanisms:
+registration, supervision, and incentive, as shown in Figure 8.
+
+20
+
+385
+
+Figure 8. Incentive and supervision processes in the blockchain-based supervision model
+
+(1) Member Registration and Incentive Principle Notificaiton
+Member registration is essential for access control in the BBS network. Participants first need to
+390
+
+verify their identities by sending membership registration requests to the owner (see Figure 8(a)).
+The owner can then issue certificates to eligible participants and register them as network members.
+21
+
+Member registration ensures that participants are reviewed and given permissions, as well as
+detailed information on the incentive mechanism for those who need to record and publish
+transactions.
+395
+
+(2) Supervision Processes
+A publish-track supervision pattern is adopted in the second process to allow members to publish
+CLMC transactions to the main blockchain (see Figure 8(b)). The owner can also supervise the
+CLMC processes by tracking the transactions. For instance, when the transporter’s operators begin
+400
+
+to deliver the modules to the site, the owner can track the transaction records of logistics execution.
+The operators of the transporter then record and hash each operation in the logistics execution
+information sidechain. Next, these operators publish the transaction hashes to the owner for
+supervision. Similarly, the owner can establish this publish-track supervision pattern with the
+manufacturer and the contractor.
+
+405
+
+The BBS model employs an ordering service to form orderly blockchains. The owner acts as an
+ordering node in the network, ordering transaction hashes published by operators and packaging
+them into new blocks. The ordering service cannot access the data in transactions, nor can it update
+unapproved blocks. Instead, it can only deliver the packed blocks to participants for endorsements.
+410
+
+The BBS model adopts a CFT consensus algorithm to help participants to endorse logistics
+transactions. Both valid and invalid transactions are recorded in blocks. Afterward, members will
+be notified of the endorsement results.
+
+(3) Incentive Implementation
+415
+
+The third process is to implement the incentive mechanisms (see Figure 8(c)). After the operator
+completes the specified operation and publishes the transaction, the owner will calculate his/her
+points, reputation status, and financial incentives based on the records in the BBS. For instance,
+the transporter’s operator needs to record 40 transactions, of which 35 are recorded and published
+22
+
+within one hour of finishing the operations. According to Table 1, this operator will earn 1,090
+420
+
+points (1 × 40 + 35 × 30), a high distinction reputational reward, and a financial reward of $3,270.
+
+6. Prototype System and Evaluation
+6.1 Prototype System
+A prototype system was developed to implement the BBS model for CLMC, containing four
+425
+
+organizations: (i) owner; (ii) manufacturer; (iii) transporter; (iv) contractor. The configuration
+information of these four organizations is shown in Figure 9(a). Participants were registered as
+members by using the cryptogen in Hyperledger Fabric to issue certificates (see Figure 9(b)). To
+initialize the ordering service, the genesis block was configured (see Figure 9(c)). Subsequently,
+Hyperledger Explorer was established to allow users to browse the blockchain network internally
+
+430
+
+(see Figure 9(d)).
+
+23
+
+Figure 9. System configuration: (a) organizations; (b) certificates; (c) genesis block; and (d)
+explorer
+435
+
+The development of the front-end prototype makes the interfaces available to users. For example,
+when a driver delivers a batch of modules to the border and passes through customs, the driver can
+record and publish logistics execution information such as the driver ID, vehicle number, quantity,
+module ID, customs clearance status, completion time, and the driver’s COVID-19 test report, as
+440
+
+shown in Figure 10(a). The JavaScript Object Notation (JSON) form plug-in will convert the
+recorded information into a JSON ﬁle and store it in the sidechain. Then, the file will be hashed
+and published to the owner in the mainchain. After reaching a consensus, the file will be appended
+as the latest block to the participants’ blockchain.
+24
+
+445
+
+(a) Transporter’s interface for publishing transactions
+
+(b) Owner’s interface for tracking operations
+Figure 10. User interfaces
+450
+
+25
+
+The project owner can supervise the CLMC process by tracking logistics transaction information.
+For example, the owner can use the interface shown in Figure 10(b) for tracking historical
+operations. Corresponding information related to modules such as transaction ID, transaction
+category, operation name, publisher ID, and publish time can be viewed through the interface. The
+455
+
+owner can also check the block details by clicking on any recorded transaction. These details
+include a block index, timestamp, operator signature, and the hash pointers of the current and
+previous blocks.
+6.2 System Performance Evaluation
+
+460
+
+6.2.1 Evaluation Results of the Product Accountability
+The time spent by the control and the experimental groups to record the five types of information
+during the supervision processes is shown in Figure 11. For the control group, the recording time
+for each kind of information remained constant for six weeks. In contrast, after introducing the
+system in the 4th week, the experimental group spent less time recording each type of information
+
+465
+
+(see Figure 11). The t-test was used to compare the recording time spent by each group between
+week 3 and week 4. The results showed almost no difference in the recording time spent by the
+control group between weeks 3 and 4 (df=8, t=0.0035, p=0.997), whereas there was a change in
+recording time spent by the experimental group after the system was introduced (df=8, t=0.6601,
+p=0.528). Thus, the developed system implements effective product accountability for CLMC.
+
+26
+
+470
+
+Figure 11. Evaluation results of the product accountability
+
+6.2.2 Evaluation Results of the Data Traceability
+The time spent by the control and the experimental groups to trace the five types of information
+475
+
+during the supervision processes is shown in Figure 12. The amount of time the control group
+spent tracing each type of information remained constant. After introducing the system, the time
+27
+
+the experimental group spent on tracing information decreased significantly. The t-test showed
+only a small difference in the tracking time spent by the control group between weeks 3 and 4
+(df=8, t=0.042, p=0.967), whereas there was a statistically significant difference between weeks 3
+480
+
+and 4 in the experimental group (df=8, t=1.468, p=0.180). Thus, the developed system implements
+effective data traceability for CLMC.
+
+Figure 12. Evaluation results of the data traceability
+28
+
+485
+
+6.2.3 Evaluation Results of the Incentive Mechanism
+The evaluation results of the incentive mechanisms is presented in Table 3. Compared with Xuan
+et al. (2020) and Huang et al. (2020), the first three studies meet physiological needs by introducing
+financial rewards, encouraging users to share information promptly. Due to the use of blockchain,
+all studies received close scores in meeting security needs. Chang et al. (2020b) received the lowest
+
+490
+
+score in terms of social needs. This may be because their incentive mechanism is designed to
+encourage fierce competition, leading to discordant relationships. The first and fifth studies
+obtained higher scores than others for the fourth dimension because they considered reputational
+incentives. Also, the first study received the highest scores for meeting self-realization needs,
+mainly because points can turn participation into value for participants. Overall, the incentive
+
+495
+
+mechanism proposed in this study received the highest value.
+
+Table 3. Evaluation results of the incentive mechanism
+No.
+
+Selected studies
+
+W1S1
+
+W2S2
+
+W3S3
+
+W4S4
+
+W5S5
+
+Final value
+
+1
+
+This study
+
+273.03
+
+157.65
+
+57.27
+
+39.92
+
+24.13
+
+552
+
+2
+
+Wang et al. (2018)
+
+179.70
+
+144.51
+
+56.70
+
+18.03
+
+16.06
+
+415
+
+3
+
+Chang et al. (2020b)
+
+181.06
+
+159.14
+
+22.81
+
+11.30
+
+15.78
+
+390
+
+4
+
+Xuan et al. (2020)
+
+84.55
+
+157.45
+
+56.77
+
+18.27
+
+15.96
+
+333
+
+5
+
+Huang et al. (2020)
+
+58.54
+
+158.65
+
+50.30
+
+38.59
+
+23.92
+
+330
+
+6.2.4 Analysis Results of the System Security
+500
+
+The security analysis of the proposed system is discussed through data immutability, nonrepudiation, authentication and authorization.
+•
+
+Data immutability and non-repudiation: For a transaction to have data immutability, it
+cannot be modified during its transmission. All exchanged transactions in the system are
+tamper-proof with timestamps. Furthermore, to prevent “man in the middle” attacks and
+otherwise secure communications, Transport Layer Security (TSL) in Hyperledger Fabric
+
+505
+
+facilitates a transaction immutability check among participants.
+•
+
+Authentication: Authentication mechanisms rely on digital signatures requiring each
+participants to hold a cryptographical key pair: a public key is made widely available and
+29
+
+acts as an authentication anchor, and a private key is used to produce digital signatures on
+transactions.
+
+510
+
+•
+
+Authorization: This study uses membership service provider (MSP) in Hyperledger
+Fabric to prove authorized peers’ identity. Only authorized peers can record and trace
+corresponding CLMC data.
+
+515
+
+7. Discussion
+In CLMC, numerous operation records need to be recorded, endorsed, and tracked, and failure of
+supervision may lead to costly and protracted cross-border litigation. The first contribution of this
+research is to examine the business process of CLMC, identify its information management
+problems, and define the scope of supervision on three types of logistics operation records, i.e.
+
+520
+
+preparation, execution, and completion.
+
+Although construction stakeholders have begun to explore blockchain technology as a means of
+enhancing traceability of construction supply chain management, an incentive mechanism to
+increase users’ willingness to share data is lacking. The second novel contribution of this research
+525
+
+is to propose a BBS model that enhances supervision of CLMC while improving the willingness
+of users to share data. The incentive mechanism uses points to turn participation into an activity
+that is essential to users. Reputational and financial incentives are integrated with the points system
+to further motivate users to share data within the predefined period. The third novel contribution
+of this study is that the BBS model is an adaptive structure that can extend applications to off-site
+
+530
+
+production and on-site assembly in modular construction. It can also include other participants
+such as governmental agencies and consultants.
+
+The study has several limitations. First, the operation data recorded on the blockchain is uploaded
+by humans, so there is a risk of opportunistic behavior. Second, the designed incentive mechanism
+535
+
+is not dynamic in nature. For example, the reputation status needs to be adjusted manually based
+on the total number of uploaded transactions. Third, the proposed model lacks automation for
+implementing incentives.
+30
+
+8. Conclusions
+540
+
+Sustainability issues have prompted the construction industry to seek ways to mitigate the impacts
+of inefficient operations. In modular construction, supervision of cross-border logistics is
+challenging because the wide adoption of paper-based documentation means that information
+verification is inefficient. Although digital platforms (e.g., BIM and GIS) have been developed to
+improve the supervision of CLMC, they work in a centralized way, leading to information security
+
+545
+
+issues such as tampering. If module quality becomes the focus of cross-border dispute, the logistics
+information cannot be secured. Blockchain technology has the potential to improve information
+security and support CLMC supervision, but requires investigation of incentive mechanisms to
+increase user willingness to share data.
+
+550
+
+This study develops a blockchain-based supervision (BBS) model with incentives for CLMC. The
+model is developed using a DSR approach to enhance supervision of CLMC and motivate users to
+share data promptly. The proposed model achieves the research objectives through three stages:
+member registration and incentive principle notification, supervision processes, and incentive
+implementation. A prototype system is developed to evaluate the proposed model in a CLMC case.
+
+555
+
+The results show a positive change in recording time spent by the experimental group in terms of
+product accountability after the system was introduced (df=8, t=0.6601, p=0.528). Also, the
+evaluation results show a statistically significant difference between weeks 3 and 4 in the tracing
+time spent by the experimental group in terms of data traceability (df=8, t=1.468, p=0.180). In
+addition, this study obtains higher scores (552) than others in evaluating the incentive mechanisms.
+
+560
+
+The security analysis is discussed through data immutability, non-repudiation, authentication, and
+authorization. Thus, the system implements effective supervision for CLMC through product
+accountability and data traceability. It also achieves efficient data sharing and security for CLMC.
+
+The limitations of this study provide opportunities for future research. More research is needed on
+565
+
+the blockchain oracles that connect the off-chain and cyber worlds. Lu et al. (2021b) recently
+explored SCOs as blockchain oracles to provide a data authenticity mechanism. Future research
+31
+
+can integrate the proposed model with the SCO-enabled blockchain oracles and evaluate the
+integrated solution in real-life projects. For example, researchers can explore decentralized SCOs
+to protect data for secure upload to BIM and blockchain. Future research can also focus on dynamic
+570
+
+incentive mechanisms to further maintain user participation. Das et al. (2020) used smart contracts
+to improve the efficiency of construction payments. Therefore, future studies can explore the
+combined application of the BBS model and smart contracts to reward users. Researchers can also
+integrate the BBS model with BIM, GIS, and 5G technologies. Finally, the model can be extended
+to industries other than construction.
+
+575
+
+Data Statement
+Some or all data, models, or code that support the findings of this study are available from the
+corresponding author upon reasonable request. (Blockchain prototype code).
+
+580
+
+Acknowledgments
+The work presented in this paper was financially supported by the Hong Kong Innovation and
+Technology Commission (ITC) with the Innovation and Technology Fund (ITF) (No.
+ITP/029/20LP).
+
+585
+
+References
+Ahmad, R. W., Hasan, H., Jayaraman, R., Salah, K., & Omar, M. (2021). Blockchain applications
+and architectures for port operations and logistics management. Research in Transportation
+Business & Management, 100620.
+Chang, Y., Iakovou, E., & Shi, W. (2020a). Blockchain in global supply chains and cross border
+
+590
+
+trade: a critical synthesis of the state-of-the-art, challenges and opportunities. International
+Journal of Production Research, 58(7), 2082-2099.
+Chang, Z., Guo, W., Guo, X., Zhou, Z., & Ristaniemi, T. (2020b). Incentive mechanism for edgecomputing-based blockchain. IEEE Transactions on Industrial Informatics, 16(11), 71057114.
+32
+
+595
+
+Choi, T. M. (2019). Blockchain-technology-supported platforms for diamond authentication and
+certification in luxury supply chains. Transportation Research Part E: Logistics and
+Transportation Review, 128, 17-29.
+Choi, T. M., Wen, X., Sun, X., & Chung, S. H. (2019). The mean-variance approach for global
+supply chain risk analysis with air logistics in the blockchain technology era. Transportation
+
+600
+
+Research Part E: Logistics and Transportation Review, 127, 178-191.
+Cui, J., Ouyang, F., Ying, Z., Wei, L., & Zhong, H. (2021). Secure and Efficient Data Sharing
+Among Vehicles Based on Consortium Blockchain. IEEE Transactions on Intelligent
+Transportation Systems.
+Das, M., Luo, H., & Cheng, J. C. (2020). Securing interim payments in construction projects
+
+605
+
+through a blockchain-based framework. Automation in Construction, 118, 103284.
+Esposito, C., Ficco, M., & Gupta, B. B. (2021). Blockchain-based authentication and authorization
+for smart city applications. Information Processing & Management, 58(2), 102468.
+Farzan, R., DiMicco, J. M., Millen, D. R., Dugan, C., Geyer, W., & Brownholtz, E. A. (2008).
+Results from deploying a participation incentive mechanism within the enterprise. In
+
+610
+
+Proceedings of the SIGCHI conference on Human factors in Computing Systems (pp. 563572).
+Fan, K., Wang, S., Ren, Y., Li, H., & Yang, Y. (2018). Medblock: Efficient and secure medical
+data sharing via blockchain. Journal of Medical Systems, 42(8), 1-11.
+He, Y., Li, H., Cheng, X., Liu, Y., Yang, C., & Sun, L. (2018). A blockchain based truthful
+
+615
+
+incentive mechanism for distributed P2P applications. IEEE Access, 6, 27324-27335.
+Huang, C., Wang, Z., Chen, H., Hu, Q., Zhang, Q., Wang, W., & Guan, X. (2020). Repchain: A
+reputation based secure, fast and high incentive blockchain system via sharding. IEEE Internet
+of Things Journal, 8(6), 4291 – 4304.
+Hamledari, H., & Fischer, M. (2021). Construction payment automation using blockchain-enabled
+
+620
+
+smart contracts and robotic reality capture technologies. Automation in Construction, 132,
+103926.
+Lamba, R., Gupta, Y., Kalra, S., & Sharma, M. (2019). Preventing waiting list manipulation and
+black marketing of donated organs through Hyperledger Fabric. 2019 International
+Conference on Computing, Communication, and Intelligent Systems (ICCCIS) (pp. 280-285).
+
+625
+
+IEEE.
+33
+
+Lee, D., Lee, S. H., Masoud, N., Krishnan, M. S., & Li, V. C. (2021). Integrated digital twin and
+blockchain framework to support accountable information sharing in construction projects.
+Automation in Construction, 127, 103688.
+Li, M., Shen, L., & Huang, G. Q. (2019a). Blockchain-enabled workflow operating system for
+630
+
+logistics resources sharing in E-commerce logistics real estate service. Computers &
+Industrial Engineering, 135, 950-969.
+Li, X., Shen, G. Q., Wu, P., & Yue, T. (2019b). Integrating building information modeling and
+prefabrication housing production. Automation in Construction, 100, 46-60.
+Li, X., & Li, Q. (2020). The Model of Blockchain Application in the Customs Clearance of Cross-
+
+635
+
+Border Logistics from the Perspective of “The Belt and Road”. Design Engineering, 661-671.
+Li, C. Z., Chen, Z., Xue, F., Kong, X. T., Xiao, B., Lai, X., & Zhao, Y. (2021a). A blockchain-and
+IoT-based smart product-service system for the sustainability of prefabricated housing
+construction. Journal of Cleaner Production, 286, 125391.
+Li, X., Wu, L., Zhao, R., Lu, W., & Xue, F. (2021b). Two-layer Adaptive Blockchain-based
+
+640
+
+Supervision model for off-site modular housing production. Computers in Industry, 128,
+103437.
+Li, X., Lu, W., Xue, F., Wu, L., Zhao, R., Lou, J., & Xu, J. (2022). Blockchain-enabled IoT-BIM
+platform for supply chain management in modular construction. Journal of construction
+engineering and management, 148(2), 04021195.
+
+645
+
+Liu, Z., & Li, Z. (2020). A blockchain-based framework of cross-border e-commerce supply chain.
+International Journal of Information Management, 52, 102059.
+Lu, W., Chen, K., Xue, F., & Pan, W. (2018). Searching for an optimal level of prefabrication in
+construction: An analytical framework. Journal of Cleaner Production, 201, 236-245.
+Lu, W., Wu, L., Zhao, R., Li, X., & Xue, F. (2021a). Blockchain Technology for Governmental
+
+650
+
+Supervision of Construction Work: Learning from Digital Currency Electronic Payment
+Systems. Journal of Construction Engineering and Management, 147(10), 04021122.
+Lu, W., Li, X., Xue, F., Zhao, R., Wu, L., & Yeh, A. G. (2021b). Exploring smart construction
+objects as blockchain oracles in construction supply chain management. Automation in
+Construction, 129, 103816.
+
+34
+
+655
+
+Lu, W., Wu, L., Xu, J., & Lou, J. (2022). Construction E-Inspection 2.0 in the COVID-19
+Pandemic Era: A Blockchain-Based Technical Solution. Journal of Management in
+Engineering, 38(4), 04022032.
+Mohan, A. P., & Gladston, A. (2020). Merkle tree and Blockchain-based cloud data auditing.
+International Journal of Cloud Applications and Computing (IJCAC), 10(3), 54-66.
+
+660
+
+Nguyen, G. N., Le Viet, N. H., Elhoseny, M., Shankar, K., Gupta, B. B., & Abd El-Latif, A. A.
+(2021). Secure blockchain enabled Cyber–physical systems in healthcare using deep belief
+network with ResNet model. Journal of Parallel and Distributed Computing, 153, 150-160.
+Ouaguid, A., Abghour, N., & Ouzzif, M. (2018). A novel security framework for managing
+android permissions using blockchain technology. International Journal of Cloud
+
+665
+
+Applications and Computing (IJCAC), 8(1), 55-79.
+Pradeep, A. S. E., Yiu, T. W., Zou, Y., & Amor, R. (2021). Blockchain-aided information
+exchange records for design liability control and improved security. Automation in
+Construction, 126, 103667.
+Pan, X., Zhong, B., Sheng, D., Yuan, X., & Wang, Y. (2022). Blockchain and deep learning
+
+670
+
+technologies for construction equipment security information management. Automation in
+Construction, 136, 104186.
+Ren, Y., Liu, Y., Ji, S., Sangaiah, A. K., & Wang, J. (2018). Incentive mechanism of data storage
+based on blockchain for wireless sensor networks. Mobile Information Systems, 2018,
+6874158.
+
+675
+
+Singh, R., Dwivedi, A. D., & Srivastava, G. (2020). Internet of things based blockchain for
+temperature monitoring and counterfeit pharmaceutical prevention. Sensors, 20(14), 3951.
+Saurabh, S., & Dey, K. (2020). Blockchain technology adoption, architecture, and sustainable agrifood supply chains. Journal of Cleaner Production, 124731.
+Shemov, G., de Soto, B. G., & Alkhzaimi, H. (2020). Blockchain applied to the construction supply
+
+680
+
+chain: A case study with threat model. Frontiers of Engineering Management, 7(4), 564-577.
+Saygili, M., Mert, I. E., & Tokdemir, O. B. (2022). A decentralized structure to reduce and resolve
+construction disputes in a hybrid blockchain network. Automation in Construction, 134,
+104056.
+
+35
+
+Shu, Z., Liu, W., Fu, B., Li, Z., & He, M. (2022). Blockchain-enhanced trading systems for
+685
+
+construction industry to control carbon emissions. Clean Technologies and Environmental
+Policy, 1-20.
+Scott, D. J., Broyd, T., & Ma, L. (2021). Exploratory literature review of blockchain in the
+construction industry. Automation in construction, 132, 103914.
+Sreenu, M., Gupta, N., Jatoth, C., Saad, A., Alharbi, A., & Nkenyereye, L. (2022). Blockchain
+
+690
+
+based secure and reliable Cyber Physical ecosystem for vaccine supply chain. Computer
+Communications, 191, 173-183.
+Tezel, A., Febrero, P., Papadonikolaki, E., & Yitmen, I. (2021). Insights into Blockchain
+Implementation in Construction: Models for Supply Chain Management. Journal of
+Management in Engineering, 37(4), 04021038.
+
+695
+
+Wang, Z., Wang, T., Hu, H., Gong, J., Ren, X., & Xiao, Q. (2020). Blockchain-based framework
+for improving supply chain traceability and information sharing in precast construction.
+Automation in Construction, 111, 103063.
+Wang, J., Li, M., He, Y., Li, H., Xiao, K., & Wang, C. (2018). A blockchain based privacypreserving incentive mechanism in crowdsensing applications. IEEE Access, 6, 17545-17556.
+
+700
+
+Wu, L., Lu, W., Zhao, R., Xu, J., Li, X., & Xue, F. (2022a). Using Blockchain to Improve
+Information Sharing Accuracy in the Onsite Assembly of Modular Construction. Journal of
+Management in Engineering, 38(3), 04022014.
+
+705
+
+Wu, H., Zhong, B., Li, H., Chi, H. L., & Wang, Y. (2022b). On-site safety inspection of tower
+cranes: A blockchain-enabled conceptual framework. Safety Science, 153, 105815.
+Wu, L., Lu, W., & Xu, J. (2022c). Blockchain-based smart contract for smart payment in
+construction: A focus on the payment freezing and disbursement cycle. Frontiers of
+Engineering Management, 1-19.
+Xuan, S., Zheng, L., Chung, I., Wang, W., Man, D., Du, X., ... & Guizani, M. (2020). An incentive
+mechanism for data sharing based on blockchain with smart contracts. Computers & Electrical
+
+710
+
+Engineering, 83, 106587.
+Xue, F., & Lu, W. (2020). A semantic differential transaction approach to minimizing information
+redundancy for BIM and blockchain integration. Automation in Construction, 118, 103270.
+Zhang, Z., Yuan, Z., Ni, G., Lin, H., & Lu, Y. (2020). The quality traceability system for
+prefabricated buildings using blockchain: An integrated framework. Frontiers of Engineering
+
+715
+
+Management, 7(4), 528-546.
+36
+
+Zuo, W., Wang, Q., & Yang, P. (2012). Research on the current situation of peasant-workers in
+construction industry based on AHP. Systems Engineering Procedia, 5, 405-411.
+
+37
+
+

@@ -1,0 +1,598 @@
+Architectural symmetry detection
+from 3D urban point clouds
+A derivative-free optimization (DFO) approach
+CIB W78 2018 @ Chicago
+2 October 2018
+Frank F Xue*, Leo K Chen & Wilson WS Lu
+Dept. of REC, HKU
+iLab, HKURBANlab, HKU
+
+Outline
+1
+
+Background & Opportunity
+
+2
+
+DFO-based symmetry detection
+
+3
+
+Discussion
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+2
+
+Section 1
+
+BACKGROUND & OPPORTUNITY
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+3
+
+1.1 Symmetry
+“The chief forms of beauty are order and symmetry and definiteness,
+which the mathematical sciences demonstrate in a special degree.”
+ Aristotle, Metaphysics, 3-1078b
+
+ Symmetry is fundamental, from quarks to animals to galaxies
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+Symmetry (Photo source Mitra et al. (2013))
+
+4
+
+1.1 Symmetry in constructions
+ Universal
+ Across various eras, continents, and cultures
+
+(a) Reflection (Mirror)
+(The Taj Mahal, India)
+
+(b) Rotation
+(The Pentagon, USA)
+
+(e) Scaling × rotation
+(f) Rotation × translation
+(The Pantheon dome, Italy) (The Gherkin, UK)
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+(c) Translation
+(The Great Wall, China)
+
+(d) Translation × scaling
+(Fractal-like) (Hindu temples
+
+(g) Translation × reflection
+(Sugar Hill Project, USA)
+
+(Note: Some photos are
+adapted from wikipedia.org,
+original work shared by
+Yann, Livioandronico2013,
+D. B. Gleason, Evancahill,
+Ashish Nangia, and Aurelien
+Guichard, licensed under
+CC-BY-SA 2.0/3.0/4.0)
+5
+
+1.1 Reasons for the symmetry in constructions
+ Not accidental, but the results of
+ Mechanics
+o e.g., vertical plane axis of reflection for loads and stability
+
+ Functions and climate
+
+ Economics and manufacture, and
+ Aesthetics, psychology, and cognition
+
+(a) Gravity (e.g., moment can(b) Local climate (e.g., tropical(c) Required functions
+pull down a leaning wall)
+roofs and stilts against rains) (e.g., strongholds for defense)
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+(Note: Some photos are
+adapted from wikipedia.org,
+original work shared by Mr.
+Wabu and Mikehume,
+licensed under CC-BY-SA
+2.0/3.0)
+6
+
+1.2 Data: Point clouds of constructions
+ Increasingly affordable, large-scale urban point clouds
+SAR
+(Synthetic Aperture Radar )
+
+Spaceborne
+Airborne
+
+Airborne
+Point
+Cloud
+Sensing
+
+LiDAR
+(Light Detection And
+Ranging)
+
+Terrestrial
+
+HKU Campus, 4 points/m² (Chen et al. 2018a)
+
+Mobile
+Spaceborne
+Photogrammetry
+
+Airborne
+Mobile
+
+A taxonomy of urban point clouds (Xu et al., 2018)
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+The HHY Building, HKU, > 2,000 points/m²
+
+7
+
+1.3 Existing methods for symmetry detection
+ Three categories, according to the methodology
+ Pairwise voting-clustering
+o Hough-like transform parameter space
+
+ Heuristic feature matching
+ Parameter optimization
+
+o Hill climbing on the parameter space
+
+Category
+
+Pairwise votingclustering
+
+General methodology
+
+Hough transform (image source Wikipedia)
+
+Accuracy (less Efficiency (Using
+geometric error)
+less time)
+
+Types of
+symmetries
+
+Collection of pairwise votes of all the
+points in the parameter space
+
++
+
+−
+
+All (++)
+
+Heuristic feature Matching features (e.g., lines, planes,
+matching
+spheres) to infer symmetries
+
+−
+
+++
+
+Limited by the
+features (−)
+
+Parameter
+optimization
+
+++
+
++
+
+All (++)
+
+Solving abstracted optimization models
+over the parameter space
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+++: Very satisfactory; +: satisfactory; −: not satisfactory.
+
+8
+
+1.3 Challenges
+ Pairwise voting-clustering
+ inherited proneness to noise of Hough-like (Brown, 1983),
+ ineffective recognition of local symmetries (Bokeloh et al., 2009),
+ low efficiency (exponential to the number of parameters), and
+ limited cardinality n (Berner et al., 2008)
+
+ Heuristic feature matching
+ availability of a priori rules of the point clouds, and
+ abundance of suitable features (Lipman et al., 2010)
+
+ Parameter optimization
+ very complex (e.g., n > 106) and expensive (time-consuming in
+
+evaluation) in the dense point clouds of real architectures
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+9
+
+1.4 Opportunity: Derivative-free optimization
+(DFO)
+ Derivatives are often too expensive
+ Many known methods are not working
+
+ Where Derivative-free optimization
+(DFO) algorithms may help
+ Surrogate methods
+o CMA-ES and its variants are
+
+competitive
+
+ Trust-region methods
+
+o DIRECT, NEWUOA, etc.
+
+ Metaheuristics (GA, PSO, VNS, etc.)
+ Hyper-heuristics, data mining
+ … and Monte Carlo
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+Comparison of algorithms for BBOB-2009 (Black-Box Optimization
+Benchmarking, higher is better) (Auger et al., 2010) Image source: Inria
+10
+
+1.5 Aim and contribution of this research
+ Aim
+ A novel DFO approach for
+o architectural symmetry detection (ASD),
+
+o processing of large-scale point clouds of constructions
+
+ Contribution
+
+ A novel formulation of ASD
+o With effective approximation
+
+ Evaluation with a modern DFO algorithm
+ For BIM/CIM, and related disciplines
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+11
+
+Section 2
+
+DFO-BASED SYMMETRY
+DETECTION
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+12
+
+2.1 Preliminary formulas
+ Symmetry group
+The symmetry group ∘ : function composition
+The set of all symmetries
+A given point cloud
+
+ Practical descriptors for noisy clouds from real world
+(relaxed condition)
+
+(Approximate) point correspondence rate
+Mean-squared error
+
+ Architectural symmetry
+The target subset
+Geometric regularity
+Topological requirements
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+13
+
+2.2 The problem of ASD
+ ASD
+
+A weighted sum objective
+
+ Computational complexity
+ O(k n log n)
+o k iterations, O(n log n) for each iteration (using kdtree-based FLANN)
+
+ Performance metrics of problem-solving
+f
+ Computational time
+ PCR (Eq. 32)
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+14
+
+2.3 A pilot study
+ The HHY Building at HKU campus (Fig. (a))
+ 250 photos taken by a UAV (Fig. (b))
+ 1.4 million points (Fig. (c)) obtained by Autodesk ReCap
+ Two-storey neoclassical redbrick building
+o Symmetry axes/planes are vertical (𝒜𝒜g)
+
+Approximated using z-slices (Fig. (d))
+
+ Formulation in Fig. (e)
+
+ Algorithm
+ CMA-ES (Hansen 2009)
+ Default parameters
+o Iteration = 200
+
+(a) The Hung Hing Ying Building at (b) 250 aerial photos taken with a
+HKU main campus
+UAV (model: DJI Inspire 1)
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October
+2018
+, Chicago
+(d) The
+slices
+for fast verifying reflections on rooftop in the pilot case
+
+(c) A dense cloud of 1,413,211
+points of the building rooftop
+min f(x) = f𝒞𝒞 (x) +10𝒜𝒜(x)
+1
+= Σ177
+|𝒞𝒞i|·MNND𝒞𝒞i (x)
+n 𝑖𝑖=1
++10 [ 𝒜𝒜g(x) + 𝒜𝒜t(x) ]
+s.t. x = ( ρ, φ ),
+ρ ∈ ℝ+ ∪ {0}, φ ∈ (–π, π].
+15
+(e) The formulated problem
+
+2.4 The automatic ASD process, visualized
+ Was a descent of
+objective value of
+the problem (e)
+ Figure (i)
+
+ Also a hill-climbing
+in the parameter
+setting landscape
+ Figure (ii)
+
+ Also an adaptive
+ASD from points
+ Figure (iii)
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+16
+
+2.5 The results
+ Encouraging
+ Outperformed
+
+existing methods
+o Correctness
+o Accuracy
+o Time
+
+ Application in BIM
+ Useful in building
+
+modeling
+o Applied to
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+Chen et al.
+(2018)
+
+17
+
+2.6 Summary
+ A new method for ASD
+ For large-scale point clouds with certain noises
+
+ Accuracy
+ better than conventional methods
+
+ Automation and efficiency
+ Fully, inexpensive, very fast
+
+ Applications
+ Building/city modeling and beyond
+
+ Intrinsic knowledge discovered
+ Symmetry of symmetries
+ Co-hierarchy analysis
+
+Design “genes”
+
+Xue, Chen & Lu:
+ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+18
+
+Section 3
+
+DISCUSSION
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+19
+
+3.1 Recent progress of the research
+ A systematic determination of voxel size (𝛿𝛿)
+
+Heritage
+building
+
+ Adapted more than 40 DFO algorithms
+ Benchmarked on a test set of 9 constructions
+
+Cor.=86.29% (BK=86.56%)
+
+Cor.=85.09% (BK=86.14%)
+
+Cor.=95.95% (BK=96.04%)
+
+Cor.=95.44% (BK=95.50%)
+
+Cor.=97.11% (BK97.18%)
+
+Cor.=95.25% (BK=96.97%)
+
+Cor.=97.51% (BK=97.52%)
+
+Cor.=99.32% (BK=99.55%)
+
+Cor.=94.60% (BK=94.84%)
+
+Modern
+building
+
+ Parameters’ sensitivity analysis
+ Adoption recommendation
+
+Infrastructure
+
+ It is open source now
+ https://github.com/ffxue/odas
+
+(a) 𝛿𝛿 = 1
+
+(b) 𝛿𝛿 = 2
+
+(c) 𝛿𝛿 = 3
+
+(d) 𝛿𝛿 = 4
+
+(e) 𝛿𝛿 = 5
+
+(j) Original cloud
+(f) &
+𝛿𝛿 =Lu:
+6 ASD from
+(g)3D
+𝛿𝛿 = urban
+7
+𝛿𝛿 =W78
+8
+𝛿𝛿 = 9
+Xue, Chen
+PCs, (h)
+CIB
+2018, 2(i)October
+2018, Chicago
+
+(a) Average correspondence (higher is better)
+
+(b) Average computational time (lower is better)
+
+20
+
+3.2 Urban semantics in a broader view
+Urban semantics for
+BIM/CIM/GIS/CV
+
+(spatial)
+
+BIM
+(temporal)
+
+Second
+
+Day
+
+Year
+
+GIS
+
+CIM
+Robotics/CV(real-time)
+Comp.
+
+Room
+
+Building
+
+Novel AI methods
+
+Architecture/
+construction/
+industry users
+
+Uncontrolled
+real world data
+
+Area/city
+
+The spatial-temporal matrix of the interests of BIM, GIS, CIM, CV
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+The inter-disciplinary view of smart, resilient
+development for humanity
+21
+
+References
+ Auger, A., Finck, S., Hansen, N., and Ros, R. (2010). BBOB 2009: Comparison tables of all algorithms on all noisy functions,
+
+INRIA.
+ Chen, K., Lu, W., Xue, F., Tang, P., & Li, L. H. (2018a). Automatic building information model reconstruction in high-density
+urban areas: Augmenting multi-source data with architectural knowledge. Automation in Construction, 93, 22-34.
+ Chen, K., Lu, W. S. ., Xue, F, Zheng, L. Z., & Liu, D. D. (2018b). Smart Gateway for Bridging BIM and Building. In Proceedings of
+the 21st International Symposium on Advancement of Construction Management and Real Estate (pp. 1307-1316). Springer,
+Singapore.
+ Deb, K., Pratap, A., Agarwal, S. & Meyarivan, T.A.M.T., (2002). A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE
+transactions on evolutionary computation, 6(2), pp.182-97.
+ Hansen, N., (2009). Benchmarking a BI-Population CMA-ES on the BBOB-2009 Function Testbed. In Workshop Proceedings of the
+GECCO Genetic and Evolutionary Computation Conference., 2009. ACM.
+ Hansen, N., Müller, S.D. & Koumoutsakos, P., (2003). Reducing the time complexity of the derandomized evolution strategy with
+covariance matrix adaptation (CMA-ES). Evolutionary computation, 11(1), pp.1-18.
+ Hough, P.V., (1959). Machine analysis of bubble chamber pictures. In Proceedings of International Conference on High Energy
+Accelerators and Instrumentation (HEACC 1959). Geneva, 1959. CERN.
+ Jones, D.R., Perttunen, C.D. & Stuckman, B.E., (1993). Lipschitzian optimization without the Lipschitz constant. Journal of
+Optimization Theory and Applications, 79(1), pp.157-81.
+ Karaboga, D. & Basturk, B., (2007). A powerful and efficient algorithm for numerical function optimization: artificial bee colony
+(ABC) algorithm. Journal of global optimization, 39(3), pp.459-71.
+ Kucherenko, S. & Sytsko, Y., (2005). Application of deterministic low-discrepancy sequences in global optimization. Computational
+Optimization and Applications, 30(3), pp.297-318.
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+22
+
+References (cont.)
+ Mitra, N.J., Guibas, J. & Pauly, M., (2006). Partial and approximate symmetry detection for 3D geometry. ACM Transactions on
+
+Graphics, 25(3), pp.560-68.
+ Mitra, N.J., Pauly, M., Wand, M. & Ceylan, D., (2013). Symmetry in 3D geometry: Extraction and applications. Computer Graphics
+Forum, 32(6), pp.1-23.
+ National Institute of Building Sciences. (2015). National Building Information Modeling Standard. Version 3, Retrieved from
+https://www.nationalbimstandard.org/
+ Poli, R., Kennedy, J. & Blackwell, T., (2007). Particle swarm optimization. Swarm intelligence, 1(1), pp.33-57.
+ Xu, J., Chen, K., Xue, F., & Lu, W. (2018). 3D point clouds for architecture, engineering, construction, and operation: A SWOT
+analysis. Working paper
+ Xue, F., Lu, W., Chen, K. (2018a). Automatic generation of semantically rich as-built building information models using 2D images:
+A derivative-free optimization approach. Computer-Aided Civil and Infrastructure Engineering, in press.
+ Xue, F., Lu, W., Chen, K. & Zetkulic, A. (2018b). From ‘semantic segmentation’ to ‘semantic registration’: A derivative-free
+optimization-based approach for automatic generation of semantically rich as-built building information models (BIMs) from 3D
+point clouds. Journal of Computing in Civil Engineering. Under review
+ Xue, F., Chen, K., Lu, W., Huang, GQ. (2018c). Linking radio-frequency identiﬁcation to Building Information Modeling: Status
+quo, development trajectory and guidelines for practitioners. Automation in Construction, in press.
+ Xue, F., Chiaradia, A., Webster, C., Chen, K., Lu, W. (2018d). Personalized Walkability Assessment for Pedestrian Paths: An Asbuilt BIM Approach Using Ubiquitous Augmented Reality (AR) Smartphone and Deep Transfer Learning. CRIOCM 2016. to
+appear.
+
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+23
+
+THANK YOU !
+Please send your Questions via
+Email: xuef@hku.hk or
+RG page: https://bit.ly/2RcKQqS
+Xue, Chen & Lu: ASD from 3D urban PCs, CIB W78 2018, 2 October 2018, Chicago
+
+24
+
+

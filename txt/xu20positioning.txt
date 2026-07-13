@@ -1,0 +1,871 @@
+Indoor-outdoor navigation without beacons: Compensating smartphone
+AR positioning errors with 3D pedestrian network
+Jinying XU1, Fan XUE2, Alain CHIARADIA3, Weisheng LU4 and JIN CAO5
+This is the authors’ version of the publication:
+Xu, J., Xue, F., Chiaradia, A., Lu, W., & Cao, J. (2020). Indoor-outdoor navigation
+without beacons: Compensating smartphone AR positioning errors with 3D
+pedestrian network. Proceedings of ASCE Construction Research Congress 2020,
+ASCE, in press. Doi: LINK_TO_INSERT
+
+5
+
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+
+1
+
+PhD candidate, Department of Real Estate and Construction, The University of Hong
+Kong, Pokfulam, Hong Kong SAR; PH (852) 6025-1696; FAX (852) 2559-9457;
+email: jinyingxu@connect.hku.hk
+2
+Assistant Professor, Department of Real Estate and Construction, The University of
+Hong Kong, Pokfulam, Hong Kong SAR; PH (852) 3917-4174; FAX (852) 25599457; email: xuef@hku.hk
+3
+Associate Professor, Department of Urban Planning and Design, The University of
+Hong Kong, Pokfulam, Hong Kong SAR; PH (852) 3917-2721; FAX (852) 25590468; email: alainjfc@hku.hk
+4
+Associate Professor, Department of Real Estate and Construction, The University of
+Hong Kong, Pokfulam, Hong Kong SAR; PH (852) 3917-7981; FAX (852) 25599457; email: wilsonlu@hku.hk
+5
+Research Assistant, Department of Real Estate and Construction, The University of
+Hong Kong, Pokfulam, Hong Kong SAR; PH (852) 5225-5190; FAX (852) 25599457; email: caojin@hku.hk
+ABSTRACT
+Despite the extensive use of positioning and navigation in outdoor space, indoor
+positioning and navigation systems, essential for intelligent building and smart city
+services, are unsatisfactory in either performance or price, sometimes in both. This
+paper analyzes and compares the performances and prices of existing indoor
+positioning technologies that are categorized into a few classes according to their
+spatial sensing and referencing methods. Based on the previous work in walkability,
+this paper proposes a novel Walkability network-based Augmented Reality (WaNAR)
+method using smartphones with AR positioning function for positioning and
+navigation. In WaNAR, drifting of the AR positioning signals are corrected
+continuously by the ground-truth 3D indoor/outdoor walkability network (e.g., nobody
+is supposed to walk through a wall) in a 3D model. The error at the vertical axis of the
+walking direction is corrected continuously and that of the walking direction is
+compensated at every turn. WaNAR can be used in both indoor and outdoor navigation,
+1
+
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+
+its performance and price are proved to be largely improved compared to existing
+technologies. The only investment for a typical building is a 3D drawing of indoor
+walkable space in a few staff-hours. WaNAR has broad application prospects at various
+positioning and navigation scenarios.
+Keywords
+Augmented reality positioning, pedestrian network, error compensation, indoor
+navigation, indoor-outdoor integration
+INTRODUCTION
+Location is becoming a prerequisite for various smart applications, be they
+navigation or weather reporting services. Therefore, the sensing of locations has
+attracted vast interests from both researchers and practitioners. Actually, the contactless
+location-sensing technologies have developed rapidly within recent years. GPS (Global
+Positioning System) is the most widely used technology in positioning and navigation.
+However, it is suffering from its weakness in indoor positioning (Xu et al., 2019). To
+overcome such limitations, radio signal based technologies including RFID, Ultrawideband (UWB), Bluetooth, and WiFi are meanwhile explored to be used for
+positioning, mainly at indoor environments. Relying on specific radio devices and a
+remote server makes such approaches expensive and not hard to use and therefore
+hinders their widespread use. With the emerging of AR (augmented reality), a new ARbased positioning solution was proposed. AR, as a real-time interactive user interface
+technology that augments the user’s real environment with computer generated virtual
+entities in 3D (Xue et al., 2018), is widely embedded in smartphones. AR applications
+can thus benefit from smartphone sensors, e.g., accelerometers and magnetometers, to
+facilitate positioning. Most AR positioning solutions use object detection and
+recognition techniques and consequently require reference databases of 3D virtual
+objects or images, which is time-consuming and not accurate (Paucher & Turk, 2010).
+3D walkable network is the 3D network of walkable roads, streets, tunnels,
+footbridges, stairs, elevators, lifts, etc (Sun et al., 2019). It contains the connectivity,
+Euclidean and geometric relationship between pedestrian path segments (e.g.,
+sidewalk, crosswalk, and footpath), as well as other path characteristics such as, for
+example, path width. It is believed to have the potential in a variety of applications such
+as pedestrian navigation systems/services, urban planning and urban design. However,
+2D map services usually fail to provide accurate and interactive 3D walkable network
+for pedestrians. 3D maps also suffer from the lack of mature integrated indoor-outdoor
+navigation technology. Pedestrians have to explore by themselves or ask for other
+pedestrians in a complex and 3D high density city. A visible and interactive 3D
+walkable network is in desperate demand.
+This paper aims to develop an accurate and novel Walkability network-based
+Augmented Reality (WaNAR) positioning method using calibration of ad hoc 3D
+pedestrian network for seamless indoor-outdoor positioning and navigation at a very
+low cost. In WaNAR, drifting of the AR positioning signals is corrected continuously
+(every 5 seconds) by the ground-truth 3D indoor/outdoor walkability network (e.g.,
+nobody is supposed to walk through a wall). The calibration eliminates the vertical
+distance of the pedestrian ad hoc location and his/her nearest walkable line and directly
+adjust his/her location to the nearest walkable line. By doing so, two hidden
+2
+
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+
+assumptions are made: pedestrians always walk along with the walkability network,
+and the deviation of AR positioning along a walkable line is within 5%. WaNAR is
+very accurate, easy to implement, and inexpensive, where the only investment for a
+typical building is a 3D drawing of walkable indoor space in a few staff-hours. In
+contrast, the popular radio frequency (RF) beacon-based methods such as Bluetooth
+Low-Energy (BLE) and UWB are expensive, heavy in carbon footprint, and hard to
+manage. It can be used for seamless indoor-outdoor navigation, facility management,
+and intelligent business.
+The rest of the paper is organized as follows. Followed by the Introduction,
+related works on AR positioning methods, indoor positioning and indoor-outdoor
+integration methods, and 3D model-based error calibration methods are reviewed.
+Afterward, the algorithm of compensating smartphone AR positioning errors with 3D
+pedestrian networks are introduced. A method is then presented thoroughly based on
+AR smartphone hardware and software architecture, with a pilot study carried out at a
+university campus. Finally, a conclusion and future work are drawn.
+RELATED WORK
+AR Positioning Methods
+AR, augmenting the user’s real environment with computer-generated 3D
+virtual entities, is often jointly used with location sensors for mobile applications,
+especially for facility maintenance (Koch et al., 2014) and emergency management
+(Bellini et al., 2014). Those mobile applications are mainly designed for smartphones,
+which are ubiquitously embedded with various advanced sensors and technologies. The
+ever-enhancing hardware and computing capacities make smartphones perfect
+platforms for high-tech applications. Therefore, mobile AR applications can take
+advantage of smartphone sensors such as gyroscopes, digital compasses,
+accelerometers, and magnetometers to improve its performance and facilitate user
+tracking (Paucher & Turk, 2010).
+In AR community, there are several methods used to do positioning, including
+marking, pose estimation, and SLAM (simultaneous localization and mapping). The
+most used one is marking the objects in the environment with a unified code. This
+method is robust and requires low computing capacity, but meanwhile requires
+additional marking works and thus leads to the increase of investment and difficulties
+of promotion (Paucher & Turk, 2010). The pose estimation method is also very
+commonly used with the pervasive adoption of 6 DoFs (degree of freedoms) position
+sensor and the increasing computing capacity of smartphones. It also requires an image
+database of the environment and thus is constrained in large and unknown
+environments. The SLAM method tracks the user’s location by constructing a map onthe-fly using several different sensors, mainly optical sensors such as 2D camera or 3D
+laser scanner. It is widely used in unknown environments for robots, UAV (unmanned
+aerial vehicles), and self-driving cars, etc. Since the sensing and processing of the
+mapping and positioning data require powerful computers, such an approach is now
+more available for small scenarios. To conclude, most current AR-based positioning
+and navigation methods rely on either high-quality tracking of a small, constrained
+
+3
+
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+
+157
+158
+159
+160
+161
+162
+163
+
+environment with given tracking devices or low accuracy outdoors environment only
+with GPS that delivers positional information worldwide.
+Indoor Positioning and Indoor-outdoor Integration Methods
+Despite the extensive use of positioning and navigation in outdoor space, indoor
+positioning and navigation systems, vital for 3D cities, are unsatisfactory in either
+performance or price, sometimes in both. Existing indoor positioning technologies can
+be categorized into a few classes according to their spatial sensing and referencing
+methods, see Table 1. We compared the performance (accuracy and easiness to use)
+and price (from the user side) of different techniques. Sonic signals can be divided into
+audible sound and ultrasound, though they are cheap in use but can only reach a
+decimeter level accuracy. Magnetic signals are accessible for users with smartphone
+magnetometers but easy to be affected by magnetic field anomalies (Li et al., 2012).
+Vision analysis can also be used for indoor positioning, but its performance is
+questionable, and the initial investments on cameras can be quite high (Kawaji et al.,
+2010). There are lots of radio frequency based indoor positioning and navigation, such
+as Infrared, light, GSM, WiFi, BLE, RFID, and UWB (Deng et al., 2019). These
+techniques are capable of reaching centimeter accuracy, but initial investments on RF
+devices, system development and maintenance can be high (Xu et al., 2019). Pedestrian
+Dead Reckoning (PDR) is also applied in smartphones and smartwatches; however, it
+suffers from very low-performance accuracy (Kang & Han, 2014). Current AR
+methods, as discussed above, also suffer from low performance problems and requires
+high initial investments of databases and high-profile AR smartphones. The WaNAR
+we proposed can function very accurately and easily with any low-profile AR
+smartphones.
+Table 1. Comparison between different indoor positioning techniques
+Technique classes Performance
+Price
+Examples
+Sonic
+Magnetic
+Vision
+
+★★★
+★★★
+★★
+
+★
+★★
+★★★★★
+
+Radio Frequency
+(RF)
+Pedestrian Dead
+Reckoning (PDR)
+Augmented reality
+(AR)
+Our WaNAR
+
+★★★★
+
+★★★
+
+★
+
+★★★★★
+
+★★
+
+★★★★★
+
+★★★★★
+
+★★★★
+
+Marker, floor pattern, imageto-location reasoning
+Infrared, light, WiFi, BLE,
+GSM, UWB, etc.
+Step counter + motion sensors
+iPhone 11, Google Tango /
+Pixel, Huawei Mate 30P
+Ditto.
+
+Apart from indoor positioning, another heated research topic is the integration
+of indoor and outdoor positioning information and systems. With people moving
+seamlessly between buildings and surrounding areas, positioning and navigation tools
+should support seamlessly integrated indoor-outdoor scenarios instead of merely
+outdoor or indoor guidance (Vanclooster et al., 2016). A plethora of research works on
+the integration of GPS, the preferred outdoor positioning and navigation technology,
+4
+
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+
+and other indoor positioning technologies. For example, Cheng et al. (2014) proposed
+a seamless outdoor/indoor pedestrian navigation system where GPS serves for stable
+and continuous outdoor navigation and WiFi as a reliable and stable indoor navigation
+technique. Other emerging technologies such as BIM (building information modeling),
+stereo-vision are also applied for indoor-outdoor integrated positioning. Stereo-vision
+based navigation system for unknown indoor and outdoor environments was designed
+and introduced for both flying robots and pedestrians. Again, these solutions are
+dependent on specific equipment and constrained by initial investment and precision
+problems.
+Related 3D Model-based Error Calibration Methods
+The 3D model-based error calibration method used in this paper is not a newlycreated one. Eisert (2002) used synthesis analysis to calibrate extrinsic and intrinsic
+camera parameters based on a 3D computer graphics model. Sochor et al. (2017)
+calibrated traffic surveillance camera by 3D model bounding box alignment for
+accurate vehicle speed measurement. The model-based error calibration method is also
+widely applied in robot calibration, in which it can be divided into four parts, i.e., robot
+kinematic definition, robot position measurement, robot kinematic model
+identification, and compensation of position errors (Bai, 2007). When adopted in other
+scenarios, the steps are more or less the same. The compensation is based on the
+deviation between the real-time value and the model. If it is assured that the kinematic
+features are based on the predefined model, then the deviation can be eliminated within
+a preset tolerance scope.
+THE PROPOSED METHOD
+The research methods of this study is shown in Figure 1. There are two inputs
+prior to the study. One is literature review which helps conclude and compare different
+error compensation methods and AR positioning methods. The other input is a 3D
+walkability network. Under the ground-truth assumption that people only walk along
+horizontal lines such as roads, paths, corridors and slopes including stairs of qualified
+walking conditions and go through doors that can be opened, the 3D walkability
+network can be drawn based on surveying. Based on the methods reviewed and the
+linear features in the walkability network, a WaNAR error compensation algorithm is
+designed for consistent mitigation of drifting errors in AR positioning. Accordingly,
+coding work builds the prototype application in an Android APP. After debugging and
+testing, the APP is ready for pilot studies. By gathering and revising with the validation
+data and feedbacks from pilot studies, the WaNAR application can be upgraded and
+deployed.
+The WaNAR error compensation algorithm, as shown as pseudo codes in
+Figure 2, is the core part of the propose method. It receives two inputs at any time: one
+is the translations on x, y, z axes (translationAR), and the other is a set of 3D lines of the
+walkability network (network3D). There is a drifting vector drifting_vec recording the
+accumulated errors from comparing the AR motions to the walkability network. Before
+the compensation, the vector of drifting error is assumed as zero. First, the nearest line
+of walkable way is selected and the perpendicular foot from the AR-sensed translation
+to the line is computed. The distance from the foot to the AR-sensed translations is the
+estimated drifting error. However, if the translation is too close to the end of the line
+5
+
+211
+212
+213
+214
+
+(i.e., within the constant value of TURNING_BUFFER) or too far away from the
+nearest line (i.e., meeting the constant value of OFF_TRACK), the compensation will
+be dropped due to arrival at a possible turning point or unfollowing the guided
+pedestrian network.
+
+215
+
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+
+Figure 1. Research methods of this study
+For realizing the WaNAR algorithm in a beacon-free AR positioning method
+and demonstrating the replicability, we used a Google Tango (model: Lenovo PB2690Y) smartphone with Android 4.4. In the prototype Android APP, the 3D translation
+(positions on x, y, z axes) and the rotation (on x, y, z axes) of the AR phone pose are
+consistently read from the Tango API TangoSupport.getPoseAtTime(). The vector of
+translation is an input to the WaNAR algorithm (translationAR in Figure 2) subjecting
+to correction, while the rotation of camera pose is used for the graphic display of the
+APP via updateRenderCameraPose() to synchronize the AR experience. It should be
+noted that although Google Tango phone is very powerful in “area learning” through
+infrared distance sensor, the “area learning” options are disabled to simulate a low-end
+AR phone. That is, only the position and rotation vectors data collected and integrated
+from inertial motion sensors (including the accelerator and gyroscope) are used in the
+realization of the method.
+procedure WaNAR_error_compensation:
+input translationAR, network3D, drifting_vec
+way := nearest_path (network3D, translationAR)
+if distance (translationAR, tails_of (way)) > TURNING_BUFFER then
+foot := perpendicular_foot (translationAR, way)
+drifting_vec := drifting_vec + (translationAR – foot)
+if || drifting_vec || ≤ OFF_TRACK then
+6
+
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+
+translationAR := translationAR – drifting_vec
+end if
+end if
+return translationAR
+end procedure
+Figure 2. Pseudo codes of the WaNAR error compensation algorithm
+BEACON-FREE AR POSITIONING WITH A PILOT STUDY
+Experimental Setup
+A pilot study, as shown in Figure 3, was conducted at an area around the Main
+Campus, the University of Hong Kong (HKU). The study area is a hilly area with
+compact campus buildings and complex vertical and horizontal connections between
+the buildings. Therefore, a 3D walkability network for guidance and navigation is much
+desired. We employed a 3D walkability network developed in Sun et al. (2019). The
+network covers the whole outdoor pedestrian paths and some indoor areas.
+
+243
+
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+
+(a) The study area around HKU Main (b) The 3D walkability network, warmer
+Campus
+color indicates higher altitude
+Figure 3. 3D walkability network in the study area
+Android APP Demonstration
+Figure 4 shows the user interface of the prototype APP which was called “HKU
+Walk.” The development environment was Android Studio (version 3.1). The 3D
+walkability network-based error calibration is made to compensate for the error of AR
+positioning. The results of error compensation were showed regularly as messages, as
+shown in Figure 4.b. And the APP can sense slopes and stairs (0.05 ≤ Δz / ||Δlocation||
+≤ 0.7) and elevators (Δz / ||Δlocation|| > 0.7), as shown in Figure 4.c. After some trials
+and errors, the two constant values were also set for a fluent navigation experience,
+where TURNING_BUFFER = 0.5m and OFF_TRACK = 0.5m. By using such passive
+methods, no RF beacon signals are required.
+
+256
+
+7
+
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+
+(a) Android APP
+(b) Error compensation
+(c) On slopes
+Figure 4. HKU Walk demonstration snapshots
+User can rotate and pan the screen to attach the green ball, which represents
+one’s location, to the 3D walkability network as the start location; so it is the same with
+the re-position on demand. The accumulated vector drifting_vec will be reset to [0, 0,
+0] at the mean time. After starting from a specific point, the APP can guide the
+navigation by keep compensating the error.
+Results and validation
+We conducted an indoor-outdoor walking test for about 10 minutes. A video
+about the test results was recorded during the test, of which the full version is available
+at: https://www.youtube.com/watch?v=jFy_MFYSgBY. In the test, the user walked
+from the Knowles Building, G/F to the entrance of Chong Yuet Ming Cultural Centre,
+back to Knowles Building, G/F, then walking upstairs to 1/F and 2/F. The “Flight
+mode” was on through the test, so the conventional radiofrequency signals including
+GSM, WiFi, Bluetooth, GPS, and RFID, were disabled.
+The results showed that the indoor/outdoor positioning by AR and WaNAR was
+accurate all through the test path in the 10-minute period. With the error compensation
+algorithm, the proposed WaNAR method can mitigate the sensor drifting and maintain
+AR sensing accuracy at a subcentimeter level, which is much better than most of the
+other positioning techniques. Therefore, the pilot study validated the technological
+feasibility of the WaNAR method. The application can even notice pedestrians the
+slopes and stairs and elevators.
+We also had a few findings regarding the implementation. Firstly, during the
+test, users are asked to walk along the center line of the roads which will lead to smaller
+error. Secondly, the better the drifting error is compensated, the more precise the APP
+works. Thirdly, most walkable roads indoor is not very wide. Therefore, the 0.5 meter
+is an acceptable value for the parameter OFF_TRACK in the pilot case.
+Limitations and Discussion
+For the scalability, any phone with simple motion sensors and basic AR
+function can run and utilize the application very well even under the flight mode. And
+the error compensation requires no external beacon signals, which means the WaNAR
+solution has no on-cost in maintenance. The only prerequisite is a 3D indoor-outdoor
+8
+
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+
+map which can be released by the building’s owner and promoted to users via WiFi
+access points or so.
+However, due to the linear 3D pedestrian network, the WaNAR method
+performs the best in linear indoor-outdoor spaces, and cannot well cover large open
+areas such as a podium. Another drawback is the presented method may lead to a small
+error if the user is not walking on the center line. In addition, the functionality of the
+demonstration APP requires user’s manual re-positioning.
+There are future development directions to resolve the above problems. First,
+the linear 3D pedestrian network can be extended with areas. Secondly, the infrared
+depth sensor can offer the depth image (as 3D point cloud) of the path, which can be
+processed automatically for the symmetry, center line, and iconic 3D objects (Xue et
+al., 2019a; 2019b) for additional error compensations, e.g., perpendicular to the guide
+walkability line and iconic environment object-based re-positioning. Thirdly, for
+automatic repositioning and the new comers who is not acquainted with the
+environment, we expect to integrate passive beacons, such as QR code or near-field
+communication (NFC) tags, for the start point and re-positioning in complex indooroutdoor navigation.
+CONCLUSION AND FUTURE WORK
+This paper developed a straightforward, beacon-free error compensation
+method for precise smartphone AR positioning based on previous works of AR
+positioning, indoor positioning, indoor-outdoor positioning integration, and 3D modelbased error calibration. It was proven to be more effective, accurate, and cheaper than
+other positioning methods in the pilot study in both indoor and outdoor positioning as
+long as the 3D walkability network covers. Different from other AR positioning
+methods which require high-profile AR phones with more sensors and big databases to
+store the images or models of the environment, our method just needs low-end AR
+phones with basic motion sensors and several manual hours to draw a 3D walkability
+network for a building.
+However, it also has some obvious limitations. First of all, it may not work in
+small and complex environments such as an equipment room because walkability
+network in such an environment is hard to draw. Besides, for very wide roads and areas,
+several parallel lines should be drawn to ensure diversity of route choice.
+Even though, it has great potential in areas including seamless indoor-outdoor
+navigation, facility management, and any other location-based services. When
+integrating with map services, it can contribute to the precise and seamless indooroutdoor integration for positioning and navigation. It enables facility managers to
+provide better indoor navigation services for users which will furtherly enhance the
+convenience for users and efficiency of businesses. It also has excellent potential in
+location-based services such as shop searching in shopping malls, UAV navigation in
+unmanned warehouses, and office navigation in hospitals.
+Future research directions include walkability areas in 3D map, infrared depth
+sensor and on-the-fly 3D path recognition, and integration of inexpensive beacons like
+NFC tags. Further development work includes rich navigation functions, map services
+integration, and automated walkability network generation.
+
+336
+
+9
+
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+
+REFERENCES
+Bai, Y. (2007). “On the comparison of model-based and modeless robotic calibration
+based on a fuzzy interpolation method.” The International Journal of Advanced
+Manufacturing Technology, 31(11-12), 1243-1250.
+Bellini, P., Nesi, P., Simoncini, M., and Tibo, A. (2014). “Maintenance and emergency
+management with an integrated indoor/outdoor navigation support.” Journal of
+Visual Languages & Computing, 25(6), 637-649.
+Cheng, J., Yang, L., Li, Y., and Zhang, W. (2014). “Seamless outdoor/indoor
+navigation with WIFI/GPS aided low cost Inertial Navigation
+System.” Physical Communication, 13, 31-43.
+Deng, Z., Fu, X., Cheng, Q., Shi, L., and Liu, W. (2019). CC-DTW: An Accurate
+Indoor Fingerprinting Localization Using Calibrated Channel State Information
+and Modified Dynamic Time Warping. Sensors, 19(9), 1984.
+Eisert, P. (2002). “Model-Based Camera Calibration Using Analysis by Synthesis
+Techniques.” In Vision, Modeling, and Visualization 2002, Erlangen, Germany,
+307-314.
+Kang, W., and Han, Y. (2014). “SmartPDR: Smartphone-based pedestrian dead
+reckoning for indoor localization.” IEEE Sensors Journal, 15(5), 2906-2916.
+Kawaji, H., Hatada, K., Yamasaki, T., and Aizawa, K. (2010). “Image-based indoor
+positioning system: fast image matching using omnidirectional panoramic
+images.” Proceedings of the 1st ACM International Workshop on Multimodal
+Pervasive Video Analysis, Firenze, Italy, pp. 1-4.
+Koch, C., Neges, M., König, M., and Abramovici, M. (2014). “Natural markers for
+augmented
+reality-based
+indoor
+navigation
+and
+facility
+maintenance.” Automation in Construction, 48, 18-30.
+Li, B., Gallagher, T., Dempster, A. G., and Rizos, C. (2012). “How feasible is the use
+of magnetic field alone for indoor positioning?.” 2012 International
+Conference on Indoor Positioning and Indoor Navigation (IPIN), 1-9.
+Paucher, R., and Turk, M. (2010). “Location-based augmented reality on mobile
+phones.” 2010 IEEE Computer Society Conference on Computer Vision and
+Pattern Recognition-Workshops. IEEE. 9-16
+Sochor, J., Juránek, R., and Herout, A. (2017). “Traffic surveillance camera calibration
+by 3d model bounding box alignment for accurate vehicle speed
+measurement.” Computer Vision and Image Understanding, 161, 87-98.
+Sun, G., Webster, C., and Zhang, X. (2019). “Connecting the city: A three-dimensional
+pedestrian network of Hong Kong.” Environment and Planning B: Urban
+Analytics and City Science, in press.
+Vanclooster, A., Van de Weghe, N., and De Maeyer, P. (2016). “Integrating indoor and
+outdoor spaces for pedestrian navigation guidance: A review.” Transactions in
+GIS, 20(4), 491-525.
+Xu, J., Lu, W., and Wang, J. (2019). “The gateway to integrating user behavior data in
+‘cognitive facility management’.” 4th International Conference on Civil and
+Building Engineering Informatics (ICCBEI). Sendai, Japan.
+Xue, F., Chiaradia, A. J. F., Webster, C. J., Liu, D., Xu, J., and Lu, W. (2018).
+“Personalized walkability assessment for pedestrian paths: An as-built BIM
+10
+
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+
+approach using ubiquitous augmented reality (AR) smartphone and deep
+transfer learning.” In Proceedings of the 23rd International Symposium on the
+Advancement of Construction Management and Real Estate, in press, Springer.
+Xue, F., Lu, W., Chen, K., and Zetkulic, A. (2019a). “From semantic segmentation to
+semantic registration: Derivative-Free Optimization–based approach for
+automatic generation of semantically rich as-built Building Information Models
+from 3D point clouds.” Journal of Computing in Civil Engineering, 33(4),
+04019024.
+Xue, F., Lu, W., Webster, C. J., and Chen, K. (2019b). “A derivative-free optimizationbased approach for detecting architectural symmetries from 3D point clouds.”
+ISPRS Journal of Photogrammetry and Remote Sensing, 148, 32-40.
+
+11
+
+

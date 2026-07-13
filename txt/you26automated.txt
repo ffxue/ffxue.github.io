@@ -1,0 +1,2549 @@
+Automated Scan-to-BIM for Construction Digital Transformation: Conceptual
+Framework, Processing Methods and Best-Practice Guidelines
+Ke You a,b, Ke Chen c, Fan Xue a,b*
+This is the peer-reviewed post-print version of the paper:
+You, K., Chen, K., & Xue, F. (2026). Automated scan-to-BIM for construction
+digital transformation: Conceptual framework, processing methods and best-practice
+guidelines. Automation in Construction, 182, 106755. Doi:
+10.1016/j.autcon.2025.106755
+The final version of this paper is available at: https://doi.org/10.1016/j.autcon.2025.106755
+The use of this file must follow the Creative Commons Attribution Non-Commercial No
+Derivatives License, as required by Elsevier’s policy.
+
+5
+
+10
+
+a. Department of Real Estate and Construction, The University of Hong Kong, Pokfulam,
+Hong Kong, China
+b. National Center of Technology Innovation for Digital Construction Hong Kong Branch,
+The University of Hong Kong, Pokfulam, Hong Kong, China
+c. School of Civil and Hydraulic Engineering, Huazhong University of Science and
+Technology, Wuhan, Hubei, China.
+* Corresponding author. Fan Xue. E-mail addresses: xuef@hku.hk
+Abstract
+The global Architecture, Engineering, and Construction (AEC) industry has witnessed
+surging demand for Construction Digital Transformation (CDT) over the past decade. Scan-
+
+15
+
+to-BIM delivers accurate as-is conditions and reconstructs detailed BIM for diverse CDT
+applications. Researchers have proposed automated scan-to-BIM using algorithms and AI to
+minimize labor demands, but a comprehensive review with systematic guidelines is lacking.
+This paper presents a conceptual model of scan-to-BIM processes and reviews development
+patterns and trends based on 58 cases. Based on the model, this paper offers a four-step
+
+20
+
+guideline for AEC practitioners to adopt automated scan-to-BIM effectively. The
+contribution of this paper is three-fold. First, the conceptual model offers a comprehensive
+and simplified overview of scan-to-BIM processes for beginners. Secondly, trends emerge,
+e.g., transformation from rigid rules to AI methods. Thirdly, the best-practice guidelines
+empower AEC practitioners to maximize scan-to-BIM advantages tailored to their needs.
+
+25
+
+Keywords
+Building Information Modeling (BIM); Scan-to-BIM; Systematic review; Guidelines; Digital
+transformation
+1
+
+30
+
+1 Introduction
+The Architecture, Engineering, and Construction (AEC) is a pillar industry in almost every
+nation’s economy, and occupies a central position in global sustainable development [1, 2].
+Construction Digital Transformation (CDT) is pivotal to the development of the AEC
+industry [3, 4]. The core of CDT lies in integrating digital technologies throughout the entire
+
+35
+
+lifecycle of construction projects, aiming to enhance efficiency, enhance sustainability and
+increase resilience, thereby advancing the United Nations Sustainable Development Goals
+(SDGs) [5]. CDT encompasses the key stages of design, construction, operation, and
+maintenance, each stage relying on advanced technologies such as Building Information
+Modeling (BIM), the Internet of Things (IoT), and Artificial Intelligence (AI) to optimize
+
+40
+
+processes, while BIM provides comprehensive services throughout the entire lifecycle [6].
+With its increasing success and deep use, such as BIM Level 2/3 in the UK [7], over 20
+mandatory BIM uses in Hong Kong [8], and ‘positive design’ in mainland China, BIM has
+demonstrated significant advancements. Among the top BIM uses, scan-to-BIM has become
+essential, as highlighted by the Hong Kong Construction Industry Council (HKCIC), which
+
+45
+
+lists it among the 6 most popular BIM uses [9].
+Despite these advancements, there are often many deviations between the as-designed
+BIM and the as-built BIM, which poses challenges to the operation and maintenance of
+buildings. Technical barriers stem from manual operations in traditional scan-to-BIM, which
+are prone to errors and labor-intensive. Findings show that 60% of a building’s lifecycle costs
+
+50
+
+focus on the operation phase, but manually creation of as-built BIM can delay maintenance
+[10].The creation and application of as-built BIM models has gradually become a research
+hotspot [6, 11, 12]. Scan-to-BIM is the main method for obtaining as-built BIM, which can
+provide digital assets for the construction, maintenance of buildings [13-15]. During the
+construction phase, scan-to-BIM can be used for progress monitoring and quality inspection
+
+55
+
+to ensure that the construction process proceeds as planned [16]. During the maintenance
+phases, scan-to-BIM can provide detailed building information to support facility
+management (FM) and maintenance [17, 18].
+Scan-to-BIM involves acquiring the current building data through light detection and
+ranging (LiDAR) or other 3D capture technologies, and then converting the data into a digital
+
+60
+
+BIM model [6]. Traditional scan-to-BIM relies on manual operations by engineers, which is
+often time-consuming and labor-intensive, and prone to human errors. With the development
+of artificial intelligence, these manual tasks can be gradually completed automatically by
+2
+
+computers [19, 20]. Ideal automated scan-to-BIM involves the automation of data collection
+and data processing. Based on the automatic semantic segmentation and clustering of 3D
+65
+
+point clouds, automatic object detection can be achieved by combining spatial relationships,
+and then BIM can be automatically obtained using parametric algorithms [21]. Due to
+extensive research efforts, the application scenarios of automated scan-to-BIM processes are
+also constantly expanding, covering many fields such as historical building protection [2224], urban planning [25, 26], and construction progress monitoring [27].
+
+70
+
+Automated scan-to-BIM is a complex but demanded task. The initial stage of this
+process involves the collection of 3D point cloud data, which can capture high-precision 3D
+representations of buildings or construction sites [28, 29]. Although the raw data points are
+dense and rich in geometric information, they also contain a lot of noise and redundant
+information. Consequently, data cleaning and down-sampling form a critical step [30-32].
+
+75
+
+Data cleaning aims to remove noise, erroneous points and redundant data to ensure the
+accuracy and efficiency of subsequent processing [33, 34]. Down-sampling regularizes the
+density of point cloud data and reduces the amount of data while maintaining the geometric
+structure [31]. Then, semantic segmentation is conducted to identify various architectural
+elements and structures from 3D point clouds, thereby enriching the model with semantic
+
+80
+
+information, and adding to the geometric data [35-37]. The final stage involves converting
+the processed 3D point clouds into a BIM model through parametric modeling, along with
+model layout and registration [6, 38].
+Many general architectural elements, such as walls, floors, or ceilings, equip with
+vertical or horizontal extrusions from regular 2D shapes. Rule-based methods, therefore, can
+
+85
+
+extract the vertical or horizontal geometries and topological information from 3D point
+clouds using algorithms like random sample consensus (RANSAC) or geometric hashing.
+RANSAC searches for the minimum bounding box of a point cloud to infer the shape of the
+object [39], while geometric hashing generates lines or surfaces from the point cloud
+distribution to determine object shapes [40]. Although rule-based methods have high
+
+90
+
+classification performance for defined elements [41], they have great limitations for objects
+with special structures, such as chairs or tables [42]. Occlusion during the scanning process
+poses additional challenges for extracting information from 3D point clouds [43, 44].
+Semantic segmentation based on deep learning can extract information from point clouds
+where various objects coexist, effectively making up for the shortcomings of rule-based
+
+95
+
+methods [45-47]. 3D point cloud semantic segmentation, as a core step in automation, faces
+3
+
+challenges such as reliance on large-scale training data, difficulty in handling complex
+structures (such as irregular building elements), and occlusion problems.
+Existing reviews and surveys on scan-to-BIM in the literature have primarily focused on
+specific aspects of the technology, including its principles, methods, and typical applications.
+100
+
+Volk et al. [48] analyzed the Scan-to-BIM applications for existing buildings. Rashdi et al.
+[49] focused on the impact of scanning technologies such as LiDAR and oblique photography
+on Scan-to-BIM. Bassiere et al. [50] reviewed the existing methods for reconstructing BIM
+walls in an unsupervised manner. In addition, case studies mainly focus of existing research
+[51], such as rule-based scan-to-BIM method [41], and the scan-to-BIM workflow for
+
+105
+
+cultural heritage [52]. However, there is still a significant gap in the comprehensive
+understanding of the automation processes involved in scan-to-BIM, especially the
+integration of advanced artificial intelligence (AI) technologies and the optimization of the
+scan-to-BIM process. Existing literature often lacks a detailed comparative analysis of the
+latest automation methods, including their advantages, limitations, and practical
+
+110
+
+implementation challenges. In practice, AEC practitioners lack clear guidelines, which
+hinders the selection of suitable technologies for project scenarios and leads to inefficient
+resource use.
+This paper aims to address three research questions as follows: (1) What are the core
+components, technical approaches, and their interrelationships in automated scan-to-BIM? (2)
+
+115
+
+What are the recent trends and research hotspots in automated scan-to-BIM? (3) How can
+best-practice guidelines be formulated to accommodate varied applications and project
+requirements? In order to answer these questions, this paper aims to comprehensively review
+the latest advances in automated scan-to-BIM. A conceptual model is proposed to provide a
+comprehensive and abstract overview of the scan-to-BIM process for newcomers. Then, a
+
+120
+
+technological analysis summarizes recent trends, such as a paradigm shift from rigid decision
+rules to artificial intelligence approaches. Finally, this paper compiles best practice guidelines
+that enable AEC practitioners to benefit the most from adopting scan-to-BIM processes based
+on the given work scenario and application needs. The rest of the paper consists of four
+sections. Section 2 introduces the research methodology, Section 3 compares the automated
+
+125
+
+scan-to-BIM processes, and Section 4 gives guidance for selecting a suitable automated scanto-BIM processes. Section 5 is the conclusion of this review.
+
+4
+
+2. Research methods
+This study employed an archival study framework comprising five steps: (1) Development of
+130
+
+conceptual model; (2) Literature collection and case interpretation; (3) Bibliometric analysis;
+(4) Comparative evaluation of different technologies; and (5) Compilation of the bestpractice guideline.
+2.1 Conceptual model
+Fig. 1 shows the generalized conceptual model of automated scan-to-BIM workflow to
+
+135
+
+elucidate the research objectives and provide supporting materials for the guideline. This
+conceptual model comprises five interrelated components: (1) data acquisition method, (2)
+data processing and semantic enrichment, (3) general architectural elements (AEs) and
+detailed BIM objects, (4) software, and (5) CDT stage.
+
+140
+
+Fig. 1. Guiding conceptual model of scan-to-BIM.
+The data collection of 3D point cloud data is realized through the use of LiDAR
+technology. The LiDAR system calculates the distance of the target object by emitting laser
+pulses and measuring their return time, thereby generating accurate 3D coordinates. LiDAR
+can be fixed on different mobile platforms such as unmanned aerial vehicles (UAVs) and
+
+145
+
+robots, or can be utilized as handheld equipment for data collection. Given the substantial
+5
+
+volume of 3D point clouds, it is necessary to process the raw data with data cleaning and
+down-sampling. The semantic information of the 3D point clouds needs to be obtained, and
+deep learning-based algorithms have proven to be effective for the automated processing of
+semantic enrichment.
+150
+
+Geometric representations of general AEs, such as walls, floors, and beams, can be
+generated using plane fitting or surface fitting techniques. However, for architectural
+elements with complex structures, such as chairs, sofas, and tables, the processes of surface
+fitting and parametric modeling can be time-consuming and cumbersome. To address this,
+registration is employed to match the 3D point cloud data with the BIM model. This involves
+
+155
+
+using sampling algorithms to generate 3D point cloud data from the surface of the BIM
+model. Common sampling methods include uniform sampling, random sampling and
+curvature-based sampling. Subsequently, feature extraction and comparison are performed to
+obtain accurate BIM models of architectural elements with intricate structures through point
+cloud registration. The components within the conceptual model can be further categorized
+
+160
+
+by different classifications, as illustrated in Table 1.
+Table 1. Descriptors of five components of scan-to-BIM conceptual model.
+Component
+Scene
+Data acquisition
+method
+
+Semantic
+segmentation of scans
+BIM Software
+CDT stage
+
+Descriptor
+Infrastructure
+Buildings
+Handheld Laser Scanners
+Terrestrial Laser Scanners
+Mobile Scanning Systems
+UAV-based Scanning Systems
+Robotic Scanning Systems
+Established dataset
+Handcrafted Annotation
+Rule-based
+Traditional Machine Learning
+Deep learning
+Commercial
+Open
+Construction
+Operation and maintenance
+Conservation of historical buildings
+
+Code
+Infra.
+Bldgs.
+HLS
+TLS
+MSS
+USS
+RSS
+ED
+HA
+RB
+TML
+DL
+Comm.
+Open
+Const.
+O&M
+CHB
+
+Examples
+Bridges, Tunnels
+Apartment Building, Office
+Geosys PX-80
+Faro Focus 3D X 130
+Nav-Vis M6
+DJI Phantom Four
+Boston Dynamics BigDog
+S3DIS
+HDBSCAN
+PointNet
+Autodesk Revit
+Blender
+-
+
+Data acquisition method encompasses handheld equipment, mobile systems, UAV-based
+platforms, robot-based systems, and terrestrial laser scanning (TSL). A significant challenge
+impeding the automation of the scan-to-BIM process is the semantic segmentation of 3D
+165
+
+point clouds. Although algorithms such as PointNet [53] and Mask3D [45] have
+demonstrated commendable performance on public datasets, the software-assisted acquisition
+of semantic information from 3D point clouds remains a prevalent method in contemporary
+research. The use of software significantly enhances the automation capabilities of the scan6
+
+to-BIM process. Commonly utilized commercial software includes Autodesk Revit, Autodesk
+170
+
+Recap, and Trimble RealWorks, whereas open-source platforms include Blender and
+CloudCompare. Current research primarily focuses on the application of automated scan-toBIM in infrastructure, industrial facilities, and urban architecture. Additionally, these
+applications involve the preservation of historical buildings, as well as the construction
+management and maintenance of existing buildings
+
+175
+
+2.2 Literature collection
+Based on the criteria provided by the preferred reporting items for systematic reviews and
+meta-analyses (PRISMA), a literature search was conducted using the keywords mentioned in
+the conceptual model. The databases used for the literature search included Web of Science,
+Google Scholar, and Scopus database. The search strategy of this study covers popular
+
+180
+
+algorithms involved in AI by focusing on keywords such as semantic segmentation and point
+cloud classification. The query strings were "scan-to-BIM" ("Scans to Parametric BIM*" OR
+"Scan-vs-BIM") AND "Point Cloud Modelling" ("3D laser scanning*" OR "Scanning
+Technologies*" OR "LiDAR") OR "3D point clouds classification" ("Semantic
+Segmentation*" OR "Instance segmentation") OR "artificial intelligence" ( "deep learning*"
+
+185
+
+OR "machine learning"). The search results of this review covered journal and conference
+papers, books, dissertations, and reports published in recent years, but did not include patents
+and legal cases. The screening and data extraction for this review were performed
+independently by two researchers to reduce the risk of human error and subjective bias. The
+search period was from 2015.01 to 2025.08, and the search language was English.
+The initial search yielded 812 articles, and initial screening was performed by examining
+
+190
+
+titles, abstracts and keywords, which resulted in 369 articles. Studies not related to the AEC
+industry, such as agriculture or medicine, were excluded. All articles were subjected to fulltext screening based on specific eligibility criteria. The criteria were (1) original research
+contributions rather than literature reviews, and (2) incorporation of automated scan-to-BIM
+195
+
+into practical applications within the AEC industry, described in sufficient detail in the
+literature. The automated scan-to-BIM within 58 publications were analyzed, guided by the
+conceptual model, and data were extracted using the basic information of the selected
+empirical studies presented in Table 1 to produce Table 2.
+Table 2. List of 58 actual cases of automating scan-to-BIM.
+No.
+
+Reference
+
+Year
+
+Scene
+
+1
+
+Mahmoud et al. [55]
+
+2025
+
+Bldgs.
+
+Data
+acquisition
+method
+HLS
+7
+
+Semantic
+segmentation
+of scans
+DL
+
+BIM
+Software
+
+CDT
+stage
+
+Comm.
+
+O&M
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+
+Luo et al. [56]
+Elsharkawi et al. [57]
+Patil et al. [58]
+Liu et al. [59]
+Ma et al. [51]
+Kang et al. [60]
+Elsharkawi et al. [57]
+Chen et al. [42]
+Cho et al. [61]
+Rocha et al. [62]
+Yang et al. [63]
+Mahmoud et al. [54]
+Pan et al. [64]
+Pepe et al. [65]
+Wang et al. [66]
+Rocha et al. [67]
+Birkeland et al. [68]
+Zhu et al. [69]
+Kellner et al. [32]
+Kim et al. [70]
+Stanga et al. [71]
+Aftab et al. [72]
+Jarzabek et al. [73]
+Abreu et al. [74]
+Martens et al. [75]
+Hu et al. [76]
+Kim et al. [77]
+Croce et al. [78]
+Xie et al. [79]
+Campagnolo et al. [80]
+Wang et al. [81]
+Park et al. [47]
+Pan et al. [82]
+Ma et al. [83]
+Qiu et al. [31]
+Truong et al. [84]
+Geyter et al. [85]
+Perez et al. [86]
+Kang et al. [41]
+Andriasyan et al. [87]
+Ma et al. [88]
+Nieto-Julián et al. [89]
+Cai et al. [90]
+Bosché et al. [91]
+Barazzetti et al. [92]
+Laefer et al. [93]
+Macher et al. [94]
+Adan et al. [95]
+Wang et al. [96]
+Wang et al. [14]
+Capone et al. [97]
+Mellado et al. [98]
+Rocha et al. [33]
+Pepe et al. [99]
+Croce et al. [100]
+Pepe et al. [99]
+Perez et al. [36]
+
+2025
+2025
+2025
+2025
+2025
+2025
+2025
+2024
+2024
+2024
+2024
+2024
+2024
+2024
+2024
+2024
+2024
+2024
+2023
+2023
+2023
+2023
+2023
+2023
+2023
+2023
+2023
+2023
+2023
+2023
+2022
+2022
+2022
+2022
+2022
+2022
+2022
+2021
+2020
+2020
+2024
+2024
+2024
+2015
+2016
+2017
+2017
+2018
+2018
+2019
+2019
+2019
+2020
+2020
+2021
+2021
+2021
+
+Infra.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Infra.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Infra.
+Infra.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Infra.
+Bldgs.
+Bldgs.
+Bldgs.
+Infra.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Infra.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Bldgs.
+Infra.
+Bldgs.
+Bldgs.
+Bldgs.
+
+USS
+Multi
+ED
+MSS
+ED
+USS
+USS
+HLS
+Multi
+USS
+Multi
+MSS
+Multi
+HLS
+TLS
+Multi
+TLS
+TLS
+TLS
+ED
+Multi
+TLS
+TLS
+TLS
+TLS
+RSS
+TLS
+TLS
+TLS
+ED
+ED
+TLS
+TLS
+TLS
+TLS
+TLS
+Multi
+ED
+Multi
+TLS
+ED
+Multi
+ED
+TLS
+TLS
+TLS
+TLS
+Multi
+TLS
+TLS
+Multi
+Multi
+Multi
+TLS
+TLS
+Multi
+TLS
+
+200
+
+8
+
+RB
+DL
+DL
+DL
+DL
+DL
+HA
+TML
+HA
+HA
+TML
+DL
+DL
+HA
+DL
+HA
+DL
+DL
+DL
+DL
+DL
+HA
+HA
+HA
+RB
+DL
+DL
+TML
+DL
+DL
+DL
+DL
+DL
+TML
+RB
+RB
+DL
+DL
+RB
+RB
+DL
+TML
+DL
+HA
+HA
+TML
+RB
+RB
+HA
+HA
+HA
+HA
+HA
+HA
+TML
+HA
+TML
+
+Comm.
+Comm.
+Open
+Open
+Comm.
+Comm.
+Comm.
+Open
+Comm.
+Comm.
+Multi
+Comm.
+Comm.
+Open
+Comm.
+Comm.
+Comm.
+Comm.
+Multi
+Multi
+Multi
+Comm.
+Open
+Open
+Multi
+Multi
+Comm.
+Comm.
+Comm.
+Comm.
+Multi
+Multi
+Comm.
+Multi
+Multi
+Comm.
+Comm.
+Multi
+Comm.
+Multi
+Comm.
+Comm.
+Comm.
+Comm.
+Multi
+Comm.
+Multi
+Open
+Open
+Open
+Comm.
+Multi
+Multi
+Multi
+Multi
+Multi
+Comm.
+
+O&M
+O&M
+O&M
+O&M
+O&M
+O&M
+Const.
+O&M
+O&M
+CHB
+O&M
+O&M
+CHB
+CHB
+O&M
+CHB
+O&M
+O&M
+O&M
+O&M
+CHB
+O&M
+O&M
+O&M
+O&M
+Const.
+O&M
+CHB
+O&M
+CHB
+O&M
+O&M
+O&M
+O&M
+O&M
+Const.
+O&M
+Const.
+Const.
+CHB
+O&M
+CHB
+Const.
+Const.
+CHB
+O&M
+O&M
+O&M
+Const.
+O&M
+CHB
+O&M
+CHB
+CHB
+CHB
+CHB
+O&M
+
+Data acquisition method (DAM), software used, semantic enrichment methods, research
+scenarios, and applications were coded for each article. For instance, Mahmoud et al. [54]
+collected 3D point cloud data of indoor scenes using a mobile platform (Nav-Vis M6),
+performed down-sampling, and applied plane detection based on RANSAC to identify room
+205
+
+boundary segments. They conducted semantic segmentation of the 3D point clouds using the
+RandLA-Net algorithm. The dataset utilized was S3DIS, and the Dynamo plug-in was
+integrated with Autodesk Revit software to implement the BIM parametric algorithm for
+automatic 3D model reconstruction, thus providing a technical basis for the application of
+smart cities and digital twins.
+
+210
+
+2.3 Bibliometric analysis
+This paper uses bibliometric analysis to quantitatively analyze the structure and dynamics of
+current academic research, through keyword co-occurrence, and cluster-based topic analysis.
+These methods systematically reveal the research trends and hotspots within a specific field,
+providing researchers with a comprehensive perspective. The keywords in an article are a
+
+215
+
+highly condensed summary of the research content. By drawing a knowledge domain map of
+the literature's keywords, the focus and potential development trajectory of current scan-toBIM processes can be intuitively displayed. Cluster-based topic analysis can divide a large
+number of documents into several topic groups, helping researchers understand the main
+directions of the scan-to-BIM processes and their interrelationships, and facilitating the
+
+220
+
+discovery of potential research gaps and future research trends.
+Based on the literature collection in section 2.2, this review utilizes CiteSpace software
+to calculate the co-occurrence frequency among keywords, thereby obtaining the cooccurrence matrix and constructing the keyword co-occurrence network. The nodes in the
+network represent keywords, and the edges represent the co-occurrence relationship between
+
+225
+
+these keywords, with the edge weights typically corresponding to the co-occurrence
+frequencies. Based on the keyword co-occurrence network map, K-means clustering is used
+to divide the keywords into several topics according to their co-occurrence relationships. This
+approach allows for the analysis of the characteristics of each theme, thereby revealing the
+foundational of current scan-to-BIM process and providing direction for future studies.
+
+230
+
+Through the above-mentioned bibliometric analysis, this review can provide theoretical
+guidance for AEC practitioners, clarify research topics, and enhance efficiency and
+effectiveness in practical work.
+
+9
+
+2.4 Technological analysis
+Based on technological analysis, this paper explores the various technical methods and their
+235
+
+applications involved in automated scan-to-BIM processes, which can reveal the current
+development and cutting-edge trends. Technological analysis can help researchers and
+practitioners understand the advantages and limitations of various technical approaches,
+providing a scientific basis for technology selection and optimization. We conduct a
+systematic technical analysis from the dimensions of research trends and data collection, data
+
+240
+
+cleaning and down-sampling, semantic segmentation of scans, layout and registration, and
+BIM software.
+Before data collection, equipment evaluation is essential to select appropriate equipment
+that meet the project requirements. The evaluation involves candidate scanning equipment’s
+characteristics across multiple dimensions, such as scanning range, portability, as well as
+
+245
+
+storage and processing costs. During data collection, data quality control on completeness,
+density, uniformity, and geometric accuracy has to be maintained [28]. Data cleaning and
+down-sampling can further enhance point data quality (e.g., better uniformity) and processing
+efficiency, which also save storage and processing costs. Methods such as statistical filtering,
+radius filtering, and conditional filtering are employed for data cleaning, while voxel grid,
+
+250
+
+random, and uniform methods are used for data down-sampling. These techniques ensure the
+efficiency of subsequent model construction and analysis. Semantic segmentation of scans
+helps to identify and distinguish categories of 3D point clouds. Commonly used semantic
+segmentation methods include deep learning models such as convolutional neural networks
+(CNNs) and graph convolutional networks (GCNs). The operations of layout and registration
+
+255
+
+are essential to match specific BIM objects. Analysis of BIM software can determine the
+suitable tools for the scan-to-BIM process, by assessing the functionality, compatibility, and
+user-friendliness of the software, we can ensure the efficiency and accuracy of data
+processing and BIM modeling.
+Technical analysis provides the basis for the compilation of the best-practice guideline.
+
+260
+
+Through these analyses, it is possible to ensure the selection of the appropriate technical
+solutions during the implementation of scan-to-BIM processes, thereby enhancing the
+efficiency and accuracy of data acquisition, processing, and modeling.
+2.5 Compilation of the best-practice guideline
+Constructing a standardized and adaptable set of best-practice guideline for automated scan-
+
+265
+
+to-BIM, which can help solve the problem of technology fragmentation in the AEC industry,
+10
+
+and improve automation efficiency. The development of compiling such a guide requires the
+division of steps, the necessity of each step, the target users, and the final deliverable format.
+The first step in developing the guide is to conduct a needs analysis and scope definition.
+The purpose of this step is to identify pain points in the existing workflows, such as data
+270
+
+acquisition method and software incompatibility issues in the automated scan-to-BIM
+process. Clear objectives and boundaries ensure that the development of the guide is welltargeted. The subsequent step involves literature review and benchmark analysis, which
+integrates mature methods from academic research and case studies to establish an evidencebased recommendation framework. This step can provide a foundation for drafting the guide.
+
+275
+
+During the drafting phase, it is essential to translate consensus into actionable steps. Through
+actual project testing and iterative optimization of the guidelines, it is possible to identify and
+correct any deficiencies, ensuring the guide's feasibility and practicality.
+The target users of the guide include project managers, software developers, and
+researchers. The final deliverable format of the guide should be an instruction document,
+
+280
+
+which includes a decision tree for user selection and the necessary textual descriptions.
+Finally, the disclaimer of the guide is that the guidelines proposed in this review are only
+suggestions and need to be adjusted according to project constraints. The authors are not
+responsible for errors resulting from misuse or tool deficiencies, and users are required to
+independently verify compliance with local regulations.
+
+285
+
+3. Analytical results
+Based on a systematic analysis of practical cases, this section employed Sankey diagram
+visualization and bibliometric methods. Building on this, the distribution characteristics of
+current automated Scan-to-BIM across different dimensions are revealed. By identifying a
+290
+
+significant paradigm shift in the field from traditional rule-driven approaches to AI-driven
+approaches, this analysis provided an empirical basis for subsequent technical analysis and
+the development of practical guidelines.
+3.1 Selection patterns of automated scan-to-BIM system
+An overview of the 58 automated scan-to-BIM projects is presented in the form of a Sankey
+
+295
+
+diagram in Fig. 2. The five main components of the conceptual model are shown from left to
+right, namely, scene, data acquisition method, semantic segmentation of scans, BIM software,
+and construction digital transformation (CDT) stage.
+
+11
+
+Fig. 2. Sankey chart of automated scan-to-BIM.
+300
+
+In the Sankey chart diagram, the size of the rectangle indicates the number of cases
+involving different labels, and the curved "flow" between components represent the
+frequency of co-occurrence in the 58 cases. Analysis of Table 2 and Fig. 2 reveals that the
+selection mode of the automated scan-to-BIM system can be summarized as follows:
+(1) The current scan-to-BIM case scenarios are mainly (50 out of 58) focused on the
+
+305
+
+exterior or interior structure of buildings. Since there are often differences between the design
+model and the as-build BIM, by capturing detailed geometric information of indoor MEP [79,
+81] and air-conditioning and mechanical ventilation (ACMV) [42], it can better support the
+operation and management of buildings. Scan-to-BIM technology in the infrastructure field is
+mainly used for digital modeling and management of large structures such as bridges [63,
+
+310
+
+101] and tunnels [47]. Some infrastructure, such as the Toppoli Bridge [102], also belongs to
+the category of historical buildings. Based on scan-to-BIM, not only the geometric
+information of the building is preserved, but also detailed data such as materials, structure
+and decoration can be included, providing a scientific basis for restoration and maintenance
+work [25, 71, 103, 104].
+
+315
+
+Apart from the on-site collection of 3D point clouds, commonly used established
+datasets include Stanford Large-Scale 3D Indoor Spaces (S3DIS) [89] and ModelNet40
+[105]. The S3DIS dataset is a large-scale 3D indoor space dataset created by Stanford
+12
+
+University. This dataset comprises 3D scan data collected from six different buildings,
+covering various indoor scenes such as offices, conference rooms, and hallways. ModelNet40
+320
+
+is a widely-used 3D CAD model dataset created by Princeton University, which contains 3D
+object models from 40 different categories.
+(2) Terrestrial laser scanning (TLS) is the most prevalent method for 3D point cloud
+acquisition, featuring in nearly half (26 out of 58) of the cases. TLS is usually mounted on a
+tripod, and is favored for its high accuracy and density. Common models include the Leica
+
+325
+
+RTC360 [31, 66] and the Faro Focus3D S120 [62, 67]. Handheld laser scanning (HLS) is
+lightweight and easy to carry, allow operators to directly hold the equipment for scanning
+[42]. Mobile scanning systems (MSS), installed on vehicles, ships, or other mobile platforms,
+can continuously collect 3D point cloud data while moving [27]. In addition, based on drones
+[26, 61, 62] or robots [76], through pre-programmed paths or autonomous navigation
+
+330
+
+functions, can perform 3D laser scanning tasks in special scenarios. The drone- and robotborne methods are particularly suited for rapid scanning of large areas, as well as hard-toreach or hazardous locations.
+However, LiDAR point cloud acquisition of small, openings or glass objects faces
+inherent limitations. Limited spatial resolution of lasers, particularly for distant objects,
+
+335
+
+results in incomplete capture of small objects like fire sprinklers; Transparent and reflective
+surfaces can cause laser signal loss or scattering, and leads to voids or noises in the point
+cloud, respectively. Utilizing multiple data acquisition equipment or methods can mitigate
+these constraints by reducing coverage gaps and measurement errors in the literature. The
+inclusion of high-definition imagery, for example, can enhance the semantic richness of 3D
+
+340
+
+datasets for accurate object classification, material identification, and comprehensive
+interpretation of complex environments [66].
+(3) Nearly 43.1% (25 out of 58) of the cases use deep learning-based methods to
+achieve semantic segmentation of 3D point clouds. Existing semantic segmentation
+algorithms based on deep learning can be generally divided into the following categories: (i)
+
+345
+
+Point convolutional network. PointNet [53] is one of the earliest deep learning models used
+for point cloud classification and segmentation. It achieves classification by learning global
+and local features of point clouds [83]. PointNet++ [106] introduces a hierarchical structure
+on this basis, further improving the segmentation effect [68, 76]. (ii) Voxel-based methods
+divide the point cloud into voxel grids and then perform convolution operations on each
+
+350
+
+voxel [73, 74], with models like VoxNet [107] and 3D U-Net [32, 108]. (ii) Graph-based
+13
+
+methods treat point clouds as graph structures and use graph neural networks (GNNs) to
+capture the relationship between points, with models such as GAPointNet [109] and GraphCNNs [30].
+(4) Commercial BIM software usually provides more comprehensive functions and
+355
+
+professional technical support, while open-source software has higher flexibility and
+customizability. Autodesk ReCap and Revit are two commercial software that are currently
+widely used. Autodesk ReCap [62, 67] is mainly used for pre-processing of point cloud data,
+such as data cleaning, noise reduction, and preliminary geometric reconstruction. Autodesk
+Revit [41, 85] is a BIM software widely used in the AEC industry. It supports full-process
+
+360
+
+management from design to construction to operation and maintenance. Its main functions
+include 3D geometric mapping and object-based modeling. Some software needs to be used
+in conjunction with specific models of 3D point cloud acquisition equipment, such as Trimble
+RealWorks [61], which supports full-process management from data acquisition to final
+model generation. In addition, Blender's open-source characteristics and active community
+
+365
+
+support make it a highly customizable and extensible tool suitable for projects that require
+flexible processing and innovative solutions.
+(5) As-built BIM is an essential digital asset supporting the operation and maintenance
+(O&M) of buildings, enhancing information management across various stages of the
+building lifecycle, particularly in facility management and space management [36, 69]. Scan-
+
+370
+
+to-BIM is an effective method for obtaining as-built BIM, enabling construction quality
+monitoring, reducing human errors, and accelerating project delivery during the construction
+(const.) phase [41, 86]. The digital twin based on scan-to-BIM can also reduce material waste
+and rework, saving both costs and time. For newly constructed buildings, such as indoor
+scenes of university buildings, evaluating the geometric uncertainty of the created BIM
+
+375
+
+model supports operational and maintenance management of building projects, especially in
+civil engineering fields that require high precision [73]. For aging concrete buildings, the
+purpose of scan-to-BIM is to improve safety inspection processes, supporting efficient
+maintenance decision-making [60]. In the conservation of historical buildings (CHB), scanto-BIM is utilized to record and analyze, connecting different databases to support the
+
+380
+
+preservation, management, and restoration of cultural heritage [99, 100, 110].
+3.2 Keyword co-occurrence and cluster analysis
+Keywords provide a concise overview of an article’s research content. In this review, we
+visualize a knowledge domain map of literature keywords to highlight current research
+14
+
+focuses and potential future directions. As shown in Fig. 3, a collaborative analysis of
+385
+
+keywords was implemented, which clearly illustrates the research dynamics of the automated
+scan-to-BIM processes. In this Figure, the importance of keywords is reflected by the font
+size. The larger the font, the higher the frequency of the keyword. The strength of the
+association between keywords is represented by the thickness of the connecting line. The
+thicker the line, the closer the relationship between the keywords.
+
+390
+
+As illustrated in Fig. 3, scan-to-BIM is integrally linked to established domains such as
+3D point cloud processing, semantic segmentation, and building information modeling for
+construction. Moreover, it demonstrates substantial interactions with emerging technologies,
+including advanced laser scanning and 3D reconstruction. In particular, "culture heritage" and
+"facility management" reflect the application potential of scan-to-BIM processes in
+
+395
+
+engineering. Additionally, Fig. 3 reveals a dense cluster centered on "point cloud,"
+underscoring the high importance of this topic in the relevant literature. These keywords form
+the core concept and technical application of 3D point cloud data in scan-to-BIM processes,
+enabling the automatic detection and extraction of architectural elements through highprecision data acquisition and processing. The above analysis indicates that scan-to-BIM
+
+400
+
+serves a bridge connecting the physical world and the digital world. Future research should
+explore the use of advanced artificial intelligence methods to optimize scan-to-BIM
+processes. Concurrently, emphasis should be placed on interdisciplinary collaboration to
+foster the deep integration of theory and practice.
+
+15
+
+Fig. 3. Co-occurrence network mapping of keywords.
+
+405
+
+By performing cluster-based topic analysis on the literature, the association of hidden
+characteristic topics can be revealed in different literature, which is crucial for conducting a
+systematic review. The cluster topic analysis was performed using the log-likelihood ratio
+(LLR) algorithm in CiteSpace software, with the results presented in Fig. 4. Each group is
+410
+
+marked with a unique color code. By exploring these different clusters or topics, the objective
+is to identify the research hotspots and challenges encountered by automated scan-to-BIM
+processes.
+The largest cluster (labeled as "#0") is centered around "point clouds," this cluster is
+connected to several other clusters such as "terrestrial laser scanning", "3D semantic
+
+415
+
+segmentation", "classification", "progress tracking", "quality assessment". These clusters
+represent different aspects of the scan-to-BIM processes, including data acquisition,
+processing, analysis, and management. The cluster "scan to BIM" (#6) serves as a key node
+in the network, and it is associated with various other keywords such as "architectural
+heritage", "facilities management", "quality", and "reverse engineering". The network
+
+420
+
+visualization provides insights into key topics and trends in research on automated scan-toBIM processes, highlighting areas that require further investigation to address challenges and
+advance the technology.
+16
+
+Fig. 4. Cluster-based topic distribution.
+425
+
+3.3 Research trends
+In recent years, research on Scan-to-BIM has exhibited concurrent trends of diversification
+and intelligent development. A comprehensive analysis reveals a steady increase in the
+number of related publications, as illustrated in Fig. 5. The focus of research has evolved
+430
+
+from an early reliance on terrestrial laser scanning [67-69] to a broader adoption of various
+methods, including handheld laser scanning [42] and mobile scanning systems [27], in order
+to meet the requirements of different application scenarios in terms of accuracy, efficiency
+and accessibility. In particular, advances in unmanned aerial vehicle and robotic technologies
+[76] have led to significant breakthroughs in acquisition of point clouds within high-risk
+
+435
+
+environments. To address the storage and processing burdens associated with high-density
+point clouds, data cleaning and down-sampling techniques have been continuously refined
+[111], encompassing statistical filtering, radius filtering, and conditional filtering, as well as
+voxel grid, random, and uniform down-sampling, with the aim of improving both data quality
+and processing efficiency [114].
+17
+
+440
+
+In the stages of semantic and instance segmentation, deep learning approaches have
+significantly improved accuracy in complex scenes [118]; however, challenges remain in
+environments with high density and occlusions. In terms of building layout reconstruction
+and component matching, research has progressively shifted from traditional geometric
+feature extraction toward deep learning-based methods [127, 128], incorporating 3D feature
+
+445
+
+learning networks into matching and registration processes to enhance robustness. Regarding
+software support, developments included the seamless integration between Autodesk ReCap
+and Revit to the flexible plugin ecosystems of open-source platforms such as Blender, which
+reflected an increasing demand for cross-platform and cross-format data exchange and
+collaborative modeling [62, 67]. Overall, the Scan-to-BIM domain is rapidly progressing
+
+450
+
+toward multi-source data fusion, higher levels of automation, and intelligent processing. The
+dual driving forces of hardware diversification and algorithmic intelligence continue to
+expand its application potential in the management of the entire lifecycle of buildings.
+
+Fig. 5. Research trends and data acquisition equipment, Jan. 2015-Aug. 2025.
+455
+
+Therefore, systematically summarizing the guiding principles of Scan-to-BIM is
+essential for coordinating diversified equipment selection, optimizing data processing
+workflows, and improving the accuracy of semantic segmentation and model generation.
+Guidelines for adopting Scan-to-BIM processes can serve as standardized references for
+18
+
+practice amid rapid technological advancement, thereby facilitating the transition of industry
+460
+
+applications from experimental research toward large-scale, engineering-oriented
+implementation.
+4. Technological analysis and guidelines
+Building on the preceding systematic literature review and case analyses, this section
+
+465
+
+undertook the technical exploration and formulates practice-oriented guidelines. A multidimensional technical analysis enables an evaluation of the applicability of current research.
+By integrating different construction stages, a clearly structured four-step implementation
+framework is proposed, which aims to provide AEC practitioners with comprehensive
+decision support spanning from technology selection to practical implementation.
+
+470
+
+4.1 Technological analysis results
+The technical analysis provided an in-depth review of the core stages within the automated
+Scan-to-BIM pipeline, covering five areas: data acquisition hardware, data cleansing and
+down-sampling, semantic segmentation of scans, layout estimation and registration, and
+widely used software tools.
+
+475
+
+4.1.1 Data acquisition equipment
+The initial step in implementing a scan-to-BIM system is to select appropriate equipment for
+acquiring 3D point cloud of the real world. This involves evaluating various scanning
+methods and factors such as accuracy, scanning range, portability, and cost to determine
+which technology that suits the project's requirements.
+
+480
+
+Terrestrial laser scanning (TLS) provides high measurement accuracy and resolution,
+and are particularly suitable for scenarios where detailed documentation of the interior and
+exterior structures of buildings is required [67-69]. Such equipment are usually fixed in one
+position and rotate to obtain 3D point cloud data of the surrounding environment. Despite
+their accuracy advantages, TLS equipment has some drawbacks, including lengthy setup
+
+485
+
+times and complex data processing requirements. Additionally, they are non-portable and
+relatively expensive. Handheld laser scanning (HLS) is renowned for its portability and
+flexibility, making it suitable for scanning of small-scale spaces [42]. However, the accuracy
+of handheld equipment can be constrained by the stability of the operator's hand, and may not
+be practical for scanning large areas. From a cost perspective, HLS equipment is economical
+
+490
+
+for smaller projects with limited budgets.
+Mobile scanning systems (MSS) integrate vehicles with laser scanning technology to
+19
+
+collect large amounts of 3D point cloud data while in motion, making MSS ideal for scanning
+urban infrastructure, roads, and outdoor spaces [27]. MSS is highly efficient and offers wide
+coverage area, but is also costly. UAV-based scanning systems (USS) are particularly
+495
+
+suitable for areas that are difficult to access or present hazardous conditions [26]. USS can
+scan large areas of terrain and buildings from high altitudes, providing comprehensive data
+coverage while being portable. However, their performance is significantly impacted by
+weather conditions. Robotic scanning systems (RSS) utilize automated robots equipped with
+laser scanning equipment, which can navigate along a predefined path and complete scanning
+
+500
+
+tasks [76]. RSS are suitable for hazardous environments or tasks that require repeated
+scanning, such as inspections of the internal structures of nuclear power plants. Robotic
+systems can provide stable data collection and minimize human error, but the initial
+investment cost is high and professional technical support may be required. Based on this
+analysis, the selection of data acquisition equipment should align with specific project
+
+505
+
+scenarios and constraints at different construction stages, as summarized in Fig. 6. The figure
+illustrates the correlations and decision-making between equipment selection, construction
+stages (CDT), and specific scenarios, including factors such as access difficulty, hazard level,
+and environment type (e.g., infrastructure, buildings).
+
+510
+
+Fig. 6. Decision tree for DAM selection.
+4.1.2 Data cleaning and down-sampling
+The inherent complexity of raw 3D point clouds induces computational burdens throughout
+storage and processing pipelines, consequently compromising the integrity of downstream
+processes ranging from reconstruction to the generation of topologically consistent. Within
+20
+
+515
+
+the field of scan-to-BIM processes, effective data cleaning and down-sampling methods are
+crucial for enhancing data quality and processing efficiency [30, 32].
+The presence of noise points and outliers can adversely affect the accuracy of
+subsequent data processing and modeling [111]. Common data cleaning methods include
+statistical filtering, radius filtering, and conditional filtering. Statistical filtering identifies and
+
+520
+
+removes noise points by calculating the local density of point cloud data [112], radius
+filtering determines and removes outliers based on the neighborhood radius of each point in
+the point cloud [113], and conditional filtering selects data points that meet the requirements
+according to preset conditions [114].
+Down-sampling is first designed to control the volume and increase uniformity of point
+
+525
+
+cloud data, while it well preserves the geometry, thereby enhancing data processing and
+storage efficiency [115]. Common down-sampling methods encompass voxel grid downsampling, random down-sampling, and uniform down-sampling. Voxel grid down-sampling
+reduces the amount of data by partitioning the point cloud into fixed-size 3D grids and
+retaining a representative point within each grid [84]. Random down-sampling involves the
+
+530
+
+random selection of a subset of points from the point cloud, making it suitable for scenarios
+with lower accuracy requirements [116]. Uniform down-sampling selects data points at
+regular intervals and is employed for point clouds characterized by large volumes and
+uniform distribution [117].
+
+535
+
+4.1.3 Semantic segmentation of scans
+Semantic segmentation establishes a comprehensive partitioning of scenes at the semantic
+level by assigning category labels (such as wall, floor, ceiling, etc.) to each point cloud.
+Instance segmentation extends this capability by precisely delineating and distinguishing
+different object instances (such as different chairs or different tables) that share identical
+
+540
+
+semantic classifications. In recent years, the rapid advancement of deep learning has led to the
+prominence of semantic segmentation based on convolutional neural networks (CNNs), graph
+convolutional networks (GCNs), and other deep learning models. Notable examples include
+models such as PointNet [53], PointNet++ [106], and PointCNN [118]. Additionally, deep
+learning methods based on multi-view representations have also demonstrated substantial
+
+545
+
+progress in enhancing the performance of point cloud semantic segmentation.
+Instance segmentation is more complex than semantic segmentation because it not only
+needs to identify the category of points, but also needs to distinguish different instances in the
+21
+
+same category. Currently, there are two main types of instance segmentation methods:
+grouping-based methods and detection-based methods. Grouping-based methods, such as
+550
+
+similarity group proposal network (SGPN) [119] and generative shape proposal network
+(GSPN) [120], group points of the same instance together by learning the relationship
+between points; while detection-based methods, such as 3D semantic instance segmentation
+(3D-SIS) [121] and VoteNet [122], first detect the bounding box of the instance, and then
+perform instance-level point cloud segmentation. PointGroup [123] and PointRCNN [124]
+
+555
+
+significantly improve the accuracy and robustness of segmentation by introducing attention
+mechanism and multi-stage detection strategy. Although these methods improve the accuracy
+of instance segmentation to a certain extent, there are still challenges when dealing with
+dense, complex, severely occluded, and dynamic scenes.
+4.1.4 Layout and registration
+
+560
+
+The reconstruction of general AEs focuses on extracting and reconstructing the main
+structure and layout of the building, such as walls, floors, and ceilings, from 3D point cloud
+data. The matching and registration of detailed BIM objects refine this process to specific
+building components, such as doors, windows, pipes, and furniture. The accuracy and
+efficiency of these two steps directly impact the quality and utility of the final BIM model.
+
+565
+
+In terms of general AEs layout reconstruction, traditional methods usually rely on the
+extraction and rule matching of geometric features, such as plane detection algorithms, line
+segment detection, and surface fitting techniques to identify and reconstruct basic elements
+such as walls, floors, and ceilings [125, 126]. These methods perform well when dealing with
+simple and regular building structures, but often have limited performance when faced with
+
+570
+
+complex and irregular building layouts. In recent years, layout reconstruction methods based
+on deep learning have gradually emerged, such as using convolutional neural networks
+(CNNs) and generative adversarial networks (GANs) to automatically extract and reconstruct
+architectural elements [127, 128]. These methods have shown great potential in dealing with
+complex scenes and improving reconstruction accuracy.
+
+575
+
+Matching and registration of detailed BIM objects refers to matching specific building
+components in point cloud data with predefined BIM object libraries and accurately
+registering them to their actual locations. Traditional matching and registration methods
+mainly include feature-based matching, such as SIFT [129], SURF [130], etc., and
+optimization-based registration, such as ICP [131], GICP [132]. These methods are more
+
+580
+
+effective when dealing with simple objects, but the matching accuracy and efficiency will be
+22
+
+affected when faced with occlusion, noise and complex backgrounds. In order to solve these
+problems, matching and registration methods based on deep learning have emerged in recent
+years, such as using 3D convolutional neural networks and point cloud feature learning
+networks to automatically extract and match high-dimensional features, thereby improving
+585
+
+the accuracy and robustness of registration [133].
+4.1.5 Software
+This paper reviews several commonly used software and explores their applications and
+advantages in the scan-to-BIM processes, as shown in the Fig. 7. Autodesk ReCap is mainly
+used for data preprocessing of point cloud data, such as data cleaning, noise reduction, and
+
+590
+
+preliminary geometry reconstruction [62, 67]. It can be seamlessly integrated with Autodesk
+Revit, allowing users to use the processed point cloud data directly in Revit for detailed BIM
+modeling. Revit has powerful parametric modeling capabilities, can efficiently create and edit
+building information models, and supports export in multiple formats, such as IFC and RVT,
+which facilitates data exchange and collaboration with other BIM software [41, 85].
+
+595
+
+Fig. 7. Decision tree for software selection.
+Blender is an open-source 3D modeling and rendering software with powerful modeling,
+animation, rendering, and visual effects capabilities [63, 134]. Although Blender was not
+originally designed for building information modeling, its flexible plug-in system and
+600
+
+powerful Python script support enable it to adapt to various point cloud data processing and
+BIM authoring needs. Blender's point cloud processing plug-ins, such as BlenderGIS and
+Point Cloud Visualizer, can help users import, visualize, and process point cloud data.
+23
+
+Through compatible plug-ins with other BIM software, Blender can export files in multiple
+formats, such as OBJ, FBX, and IFC, which facilitates data exchange and collaboration with
+605
+
+other BIM software.
+Bentley Systems' ContextCapture and MicroStation are also commonly used 3D
+reconstruction software. ContextCapture generates high-precision 3D models through
+photogrammetry technology, which is suitable for data processing of large-scale and complex
+building scenes [27, 74]. The created model can be imported into MicroStation for further
+
+610
+
+BIM modeling and editing. MicroStation has powerful 3D modeling and data management
+capabilities, supports the import and export of multiple file formats, such as DGN and IFC,
+and is suitable for the data exchange and collaboration needs of complex engineering
+projects. Trimble's RealWorks [61] provides a variety of point cloud processing functions,
+such as point cloud stitching, cleaning, and classification, and can efficiently process large-
+
+615
+
+scale point cloud data. SketchUp is widely popular among users for its easy-to-use interface
+and powerful modeling functions. Through plug-ins, SketchUp can exchange data with other
+BIM software, such as exporting to IFC file format.
+4.2 Guidelines for adopting scan-to-BIM processes
+
+620
+
+Based on the preceding analysis and the 58 cases examined in this review, we have
+summarized the guidelines for automated scan-to-BIM processes, which are organized into
+four key steps as shown in Fig. 8.
+
+Fig. 8. Four-step guidelines for choosing appropriate scan-to-BIM processes.
+625
+
+Step 1: The first step is determining the data acquisition method. The implementation of
+24
+
+the automated scan-to-BIM process requires the selection of appropriate equipment to acquire
+3D point cloud data from the real world. In the construction stage, some scenes are difficult
+to access or hazardous, so robotic scanning systems or UAV-based scanning systems can be
+630
+
+appropriate. Robotic scanning systems is suitable for dangerous environments or tasks that
+require repeated scanning, and robotic scanning systems can navigate along a predefined path
+[76]. UAV-based scanning can scan large areas of terrain and buildings from high altitudes
+[26], but is greatly affected by weather conditions.
+During the O&M stage, robotic scanning systems is suitable for difficult-to-access or
+
+635
+
+dangerous scenarios, otherwise (noted as “o.w.”) handheld laser scanner or mobile scanning
+systems can be selected. Handheld laser scanners are known for its portability and flexibility,
+and is suitable for scanning small-scale spaces [42]. Mobile scanning systems can collect
+large amounts of 3D point cloud data while on the move, making it ideal for scanning urban
+infrastructure, roads, and a wide range of outdoor spaces [27]. For the remaining stages, such
+
+640
+
+as CHB, it can be selected between terrestrial laser scanners, handheld laser scanners, or
+UAV-based scanning systems, to ensure efficient and accurate data collection. TLS provide
+high measurement accuracy and resolution, and are particularly suitable for scenarios that
+require detailed recording of the internal and external structures of buildings [67-69].
+However, terrestrial laser scanners lack portability and require extended data collection times.
+
+645
+
+Fig. 9. Decision tree for data storage selection.
+Fig. 9. shows the decision tree for data storage selection at various CDT stages. During
+the construction stage, the primary data to be processed is BIM model, which are typically
+stored in the cloud to facilitate collaboration and access. In the O&M stage, the data to be
+25
+
+650
+
+managed are predominantly 3D point cloud data, which are large and needs to be accessed
+quickly, so local storage is usually selected. For other works, the data handled are multimodal, including images, videos, and sensor data, which require flexible storage solutions to
+meet the diverse needs of different projects.
+Step 2: The next step involves selecting suitable algorithms for data processing. The
+
+655
+
+detailed data processing workflow includes data cleaning and down-sampling, semantic
+segmentation of scans, and layout and registration, as discussed in detail in Sections 4.1.2–
+4.1.4. Raw 3D point cloud data often contains noise, outliers, and redundant information,
+which not only increases the costs of data storage and processing, but also negative impacts
+on subsequent model construction and analysis. Therefore, applying effective data cleaning
+
+660
+
+and down-sampling during the scan-to-BIM process is essential for ensuring data quality and
+processing efficiency [30, 32].
+The automation of scan-to-BIM is closely associated with semantic enrichment.
+Semantic segmentation aims to classify each point into a specific category (e.g., walls or
+windows), while instance segmentation further distinguishes between different instances
+
+665
+
+within the same category (e.g., different chairs). The rapid advancement of deep learning
+techniques in recent years has facilitated the widespread adoption of semantic segmentation
+methods utilizing deep learning models, such as CNNs [53, 106] and GCNs [30].
+Retrieval‑augmented generation (RAG)‑based segmentation has emerged as a promising
+approach, leveraging external knowledge retrieval to enhance segmentation performance
+
+670
+
+[134, 135].
+Traditional layout and registration methods rely on the extraction of geometric features
+for rule-based matching. Examples include plane detection algorithms, line segment
+identification, and surface fitting techniques [125, 126]. In recent years, deep learning-based
+layout methods have gradually emerged, for instance, application of GANs to automatically
+
+675
+
+extract and reconstruct architectural elements [127, 128]. Registration refers to matching
+specific building components in the point cloud data with predefined BIM object libraries.
+Commonly algorithms for registration include ICP [131] and SIFT [129]. These
+advancements contribute to increased precision and efficiency in Scan-to-BIM processes.
+Step 3: The third step involves selecting appropriate data processing software and
+
+680
+
+storing the results. During the data preprocessing stage, commonly used commercial software
+includes Autodesk ReCap and ContextCapture, while frequently utilized open-source
+software comprises CloudCompare and Blender. These software tools are primarily
+26
+
+employed for point cloud data cleaning, noise reduction, and preliminary geometric
+reconstruction [62, 67].
+685
+
+In the BIM modeling stage, commonly used commercial software includes Autodesk
+Revit and SketchUp. These software packages possess parametric modeling capabilities,
+which allow for the efficient creation and editing of BIM. They also support exporting in
+multiple formats, facilitating collaboration with other BIM software [41, 85]. Additionally,
+the open-source software Blender is equipped with modeling and rendering capabilities. It
+
+690
+
+can adapt to various point cloud data processing and BIM modeling requirements through its
+flexible plugin system and robust support from Python scripting [63, 136].
+Step 4: The final step involves applying the results for further utilization. During the
+construction phase, Scan-to-BIM is suitable for scenarios such as verification and
+deformation monitoring [41, 86]. In the O&M phase, digital twin technology based on Scan-
+
+695
+
+to-BIM can reduce material waste and rework, thereby saving costs and time. In the field of
+infrastructure, Scan-to-BIM is primarily used for the digital modeling and management of
+large structures such as bridges [63, 101] and tunnels [47]. For infrastructure like bridges,
+researchers have proposed an integrated Scan-to-BIM-to-Sim framework to support structural
+performance analysis and evaluation [137]. In addition, point cloud completion techniques
+
+700
+
+are being explored to further improve the integrity and precision of model reconstruction
+[138]. In the context of historic building preservation, Scan-to-BIM is employed for
+documentation and analysis. By integrating various databases, it supports the conservation,
+management, and restoration of cultural heritage [52, 99, 110]. At the stage of building
+demolition, the coupling of Scan-to-BIM data and robotics enables the automated sequencing
+
+705
+
+of reinforced concrete structure disassembly, thereby supporting the sustainable reuse of
+components [139].
+5. Conclusion
+BIM is a crucial digital asset for enhancing the digitization level of AEC, and automated
+
+710
+
+scan-to-BIM offer an effective system of obtaining as-built BIM. This paper summaries a
+conceptual model to demonstrate the current status and development trajectory of automated
+scan-to-BIM processes, based on the systematic analysis of 58 real cases. Terrestrial laser
+scanning is identified as the most prevalent method for collecting 3D point clouds, and there
+is a growing trend towards the use of deep learning-based methods for the semantic
+
+715
+
+segmentation of 3D point clouds. However, point cloud data quality remains a significant
+27
+
+bottleneck in practice, particularly in complex, occluded, and dynamic environments. The
+generalizability of deep learning across different architectural styles and construction
+environments needs further validations. Commercial software offers comprehensive functions
+and professional technical support, whereas open-source software provides flexibility and
+720
+
+customizability. Automated scan-to-BIM serves not only as a bridge connecting the physical
+and digital worlds but also as a significant driving force for the development and application
+of construction management.
+Guidelines has been developed to assist future practitioners in selecting and
+implementing appropriate automated scan-to-BIM processes, thereby maximizing their
+
+725
+
+capabilities in AEC. The guidelines encompass four main steps: (1) Determining the data
+acquisition equipment, interested target, and information storage plan; (2) Determining which
+algorithm should be utilized; (3) Choosing appropriate data processing software and storing
+the results; and (4) Applying results in further utilization. These steps have been
+demonstrated to be effective in actual applications in construction projects.
+
+730
+
+Future research is recommended to focus on five key directions as follows. (1) More
+infrastructure scenes can be included in the applications of Scan-to-BIM. For large‑scale
+infrastructure, it would be beneficial to enhance 3D point clouds with satellite or terrestrial
+Interferometric Synthetic Aperture Radar (InSAR) sensing to enable millimeter-accurate
+structural health analysis for bridges, tunnels, and dams. (2) Multi-source sensing data fusion
+
+735
+
+can enable novel scan-to-BIM applications. For example, high‑definition imagery can
+supplement 3D point cloud for small building elements, such as fire sprinklers, while
+ground‑penetrating radar can detect subsurface concrete details. Open accessible benchmark
+datasets can boost the reproducibility and trustworthiness of scan-to-BIM research findings to
+impact the industry. (3) In semantic segmentation, emerging generative AI methods may
+
+740
+
+open new opportunities for 3D point cloud segmentation in several ways, e.g., improving the
+automated data cleaning of incomplete or noisy 3D points of openings and glass and
+retrieval-augmented generation (RAG) segmentation. (4) For BIM ecosystems, a
+diversification of BIM authoring and analytic tools, e.g., OpenBIM and localized BIM
+beyond existing mainstream platforms, can better align with local technical standards and
+
+745
+
+cultural-economic contexts, for BIM resilience in a dynamic world. (5) Researchers are
+suggested to push the boundaries of CDT in applying novel simulation and reasoning for
+responding to global climate shocks and extreme weathers to buildings and infrastructure,
+and in energy efficiency in operational stage of buildings for lower carbon footprints.
+28
+
+This paper addresses a significant knowledge gap in the application of automated scan750
+
+to-BIM, by reviewing the status quo of technological areas, active development trends,
+practical guidelines, and future directions. The applicability of the automated scan-to-BIM
+guidelines is recommended in a broader range of construction scenarios, particularly
+infrastructure projects. From a long-term perspective, automated scan-to-BIM is not a one-off
+task, but a promising knowledge base for digital transformation and value cocreations in off-
+
+755
+
+site construction, operations and maintenance, and demolition stages.
+Acknowledgments
+The work presented in this study was supported by the Hong Kong Innovation and
+Technology Commission (ITC) (No. ITP/004/23LP) and the Hong Kong Research Grants
+
+760
+
+Council (No. 17201325).
+CRediT author statement
+Ke YOU: Conceptualization, Methodology, Software, Formal Analysis, Data Curation
+Writing – Original Draft, and Visualization.
+
+765
+
+Ke CHEN: Conceptualization, Methodology, and Supervision.
+Fan XUE: Conceptualization, Methodology, Writing – Review & Editing, Supervision, and
+Funding Acquisition
+All authors have approved the submitted version and agree to be personally accountable for
+their contribution
+
+770
+
+GenAI declaration
+This work was reviewed and edited for grammatical accuracy using university-hosted GenAI
+tools. After using this tool, the authors reviewed and edited the content selectively and took
+full responsibility for the publication’s content. The viewpoints and ideas expressed herein
+775
+
+are solely those of the human authors.
+References
+[1]
+
+780
+
+[2]
+
+A.E. Ikudayisi, A.P.C. Chan, A. Darko, Y.M.D. Adedeji. Integrated practices in the Architecture,
+Engineering, and Construction industry: Current scope and pathway towards Industry 5.0. Journal
+of Building Engineering. 2023, 73, pp. 21, https://doi.org/10.1016/j.jobe.2023.106788
+B. Becerik-Gerber, K. Kensek. Building Information Modeling in Architecture, Engineering, and
+Construction: Emerging Research Directions and Trends. Journal of Professional Issues in
+Engineering Education and Practice. 2010, 136, (3), pp. 139-147,
+https://doi.org/10.1061/(asce)ei.1943-5541.0000023
+29
+
+785
+
+[3]
+[4]
+
+790
+
+[5]
+[6]
+795
+
+[7]
+
+800
+
+[8]
+[9]
+805
+
+[10]
+[11]
+810
+
+[12]
+815
+
+[13]
+
+820
+
+[14]
+[15]
+
+825
+
+[16]
+
+[17]
+830
+
+[18]
+
+835
+
+[19]
+[20]
+
+840
+
+[21]
+
+A.O. Olanipekun, M. Sutrisna. Facilitating Digital Transformation in Construction-A Systematic
+Review of the Current State of the Art. Frontiers in Built Environment. 2021, 7, pp. 21,
+https://doi.org/10.3389/fbuil.2021.660758
+F. Xue, L.P.F. Wu, W.S. Lu. Semantic enrichment of building and city information models: A tenyear review. Advanced Engineering Informatics. 2021, 47, pp. 11,
+https://doi.org/10.1016/j.aei.2020.101245
+S.A. Adekunle, C.O. Aigbavboa, O. Ejohwomu, E.A. Adekunle, W.D. Thwala. Digital
+transformation in the construction industry: a bibliometric review. Journal of Engineering Design
+and Technology. 2021, pp. 29, https://doi.org/10.1108/jedt-08-2021-0442
+V. Patraucean, I. Armeni, M. Nahangi, J.M. Yeung, I. Brilakis, C. Haas. State of research in
+automatic as-built modelling. Advanced Engineering Informatics. 2015, 29, (2), pp. 162-171,
+https://doi.org/10.1016/j.aei.2015.01.001
+K. Abu Awwad, A. Shibani, M. Ghostin. Exploring the critical success factors influencing BIM
+level 2 implementation in the UK construction industry: the case of SMEs. International Journal of
+Construction Management. 2022, 22, (10), pp. 1894-1901,
+https://doi.org/10.1080/15623599.2020.1744213
+D.W.M. Chan, T.O. Olawumi, A.M.L. Ho. Perceived benefits of and barriers to Building
+Information Modelling (BIM) implementation in construction: The case of Hong Kong. Journal of
+Building Engineering. 2019, 25, pp. 10, https://doi.org/10.1016/j.jobe.2019.100764
+L. Tang, G. Chan, C. Chen, Z. Zhang, Y. Zheng, X. Yi, A. Mok, D. Mak. CIC BIM Adoption
+Survey 2020—Public-Facing Report. Construction Industry Council: Hong Kong, China. 2021
+A. Akcamete, B. Akinci, J.H. Garrett. Potential utilization of building information models for
+planning maintenance activities. In: Proceedings of the international conference on computing in
+civil and building engineering, 2010 pp. 151-157
+C. Gourguechon, H. Macher, T. Landes. AUTOMATION OF AS-BUILT BIM CREATION
+FROM POINT CLOUD: AN OVERVIEW OF RESEARCH WORKS FOCUSED ON INDOOR
+ENVIRONMENT. In: 24th ISPRS Congress on Imaging Today, Foreseeing Tomorrow, 2022 pp.
+193-200, https://doi.org/10.5194/isprs-archives-XLIII-B2-2022-193-2022
+A. Alsuhaibani, J. Rojas, C. Leffel, J.W. Ma, F. Leite. LivingBIM Dataset: As-Designed and AsBuilt Dataset for an Academic Building Including BIM 3D Models, Point Clouds, and Panoramic
+Images. In: ASCE International Conference on Computing in Civil Engineering (I3CE), 2023 pp.
+672-679
+J. Xu, L.Y. Ding, P.E.D. Love. Digital reproduction of historical building ornamental components:
+From 3D scanning to 3D printing. Automation in Construction. 2017, 76, pp. 85-96,
+https://doi.org/10.1016/j.autcon.2017.01.010
+Q. Wang, J.J. Guo, M.K. Kim. An Application Oriented Scan-to-BIM Framework. Remote
+Sensing. 2019, 11, (3), pp. 27, https://doi.org/10.3390/rs11030365
+A. Ursini, A. Grazzini, F. Matrone, M. Zerbinatti. From scan-to-BIM to a structural finite elements
+model of built heritage for dynamic simulation. Automation in Construction. 2022, 142, pp. 13,
+https://doi.org/10.1016/j.autcon.2022.104518
+I. Skrzypczak, G. Oleniacz, A. Lesniak, K. Zima, M. Mrówczynska, J.K. Kazak. Scan-to-BIM
+method in construction: assessment of the 3D buildings model accuracy in terms inventory
+measurements. Building Research and Information. 2022, 50, (8), pp. 859-880,
+https://doi.org/10.1080/09613218.2021.2011703
+M.C.P. Sing, Y.Y.L. Sophie, K.H.C. Chan, H.J. Liu, R. Humphrey. Scan-to-BIM technique in
+building maintenance projects: practicing quantity take-off. International Journal of Building
+Pathology and Adaptation. 2022, pp. 13, https://doi.org/10.1108/ijbpa-06-2022-0097
+Y. Xie, M.X. Teo, S.Y. Li, L.H. Huang, N.Y. Liang, Y.Y. Cai. As-built BIM reconstruction of
+piping systems using smartphone videogrammetry and terrestrial laser scanning. Automation in
+Construction. 2023, 156, pp. 21, https://doi.org/10.1016/j.autcon.2023.105120
+L. Yang, J.C.P. Cheng, Q. Wang. Semi-automated generation of parametric BIM for steel
+structures based on terrestrial laser scanning data. Automation in Construction. 2020, 112, pp. 17,
+https://doi.org/10.1016/j.autcon.2019.103037
+Y.J. Cheng, W.G. Qiu, D.Y. Duan. Automatic creation of as-is building information model from
+single-track railway tunnel point clouds. Automation in Construction. 2019, 106, pp. 16,
+https://doi.org/10.1016/j.autcon.2019.102911
+J. Park, J. Kim, D. Lee, K. Jeong, J. Lee, H. Kim, T. Hong. Deep Learning-Based Automation of
+30
+
+[22]
+845
+
+[23]
+
+850
+
+[24]
+
+855
+
+[25]
+[26]
+
+860
+
+[27]
+[28]
+
+865
+
+[29]
+[30]
+870
+
+[31]
+[32]
+875
+
+[33]
+[34]
+880
+
+[35]
+885
+
+[36]
+890
+
+[37]
+[38]
+895
+
+[39]
+[40]
+
+Scan-to-BIM with Modeling Objects from Occluded Point Clouds. Journal of Management in
+Engineering. 2022, 38, (4), pp. 11, https://doi.org/10.1061/(asce)me.1943-5479.0001055
+M. Intignano, S.A. Biancardo, C. Oreto, N. Viscione, R. Veropalumbo, F. Russo, G. Ausiello, G.
+Dell'Acqua. A Scan-to-BIM Methodology Applied to Stone Pavements in Archaeological Sites.
+Heritage. 2021, 4, (4), pp. 3032-3049, https://doi.org/10.3390/heritage4040169
+F. Banfi, C. Stanga, R. Brumana. A Digital Workflow for Built Heritage: From SCAN-to-BIM
+Process to the VR-Tour of the Basilica of Sant'Ambrogio in Milan. In: 7th European-Mediterranean
+International Conference (EuroMed), 2018 pp. 334-343, https://doi.org/10.1007/978-3-030-017620_28
+M.G. Angelini, V. Baiocchi, D. Costantino, F. Garzia. SCAN TO BIM FOR 3D
+RECONSTRUCTION OF THE PAPAL BASILICA OF SAINT FRANCIS IN ASSISI IN ITALY.
+In: 1st International Conference on Geomatics and Restoration - Conservation of Cultural Heritage
+in the Digital Era, 2017 pp. 47-54, https://doi.org/10.5194/isprs-archives-XLII-5-W1-47-2017
+J. Werbrouck, P. Pauwels, M. Bonduel, J. Beetz, W. Bekers. Scan-to-graph: Semantic enrichment
+of existing building geometry. Automation in Construction. 2020, 119, pp. 15,
+https://doi.org/10.1016/j.autcon.2020.103286
+T.W. Kang. Scan to BIM Mapping Process Description for Building Representation in 3D GIS.
+Applied Sciences-Basel. 2023, 13, (17), pp. 16, https://doi.org/10.3390/app13179986
+M.H. Ibrahimkhil, X.S. Shen, K. Barati, C.C. Wang. Dynamic Progress Monitoring of Masonry
+Construction through Mobile SLAM Mapping and As-Built Modeling. Buildings. 2023, 13, (4), pp.
+15, https://doi.org/10.3390/buildings13040930
+Q. Wang, J.J. Li, X.Y. Tang, X.C. Zhang. How data quality affects model quality in scan-to-BIM:
+A case study of MEP scenes. Automation in Construction. 2022, 144, pp. 14,
+https://doi.org/10.1016/j.autcon.2022.104598
+E. Valero, F. Bosché, M. Bueno. LASER SCANNING FOR BIM. Journal of Information
+Technology in Construction. 2022, 27, pp. 486-495, https://doi.org/10.36680/j.itcon.2022.023
+Y.X. Zhang, M. Rabbat, Ieee. A GRAPH-CNN FOR 3D POINT CLOUD CLASSIFICATION. In:
+IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2018 pp.
+6279-6283
+Q. Qiu, M.J. Wang, J.J. Guo, Z.W. Liu, Q. Wang. An adaptive down-sampling method of laser
+scan data for scan-to-BIM. Automation in Construction. 2022, 135, pp. 16,
+https://doi.org/10.1016/j.autcon.2022.104135
+M. Kellner, B. Stahl, A. Reiterer. Reconstructing Geometrical Models of Indoor Environments
+Based on Point Clouds. Remote Sensing. 2023, 15, (18), pp. 21,
+https://doi.org/10.3390/rs15184421
+G. Rocha, L. Mateus, J. Fernández, V. Ferreira. A Scan-to-BIM Methodology Applied to Heritage
+Buildings. Heritage. 2020, 3, (1), pp. 47-65, https://doi.org/10.3390/heritage3010004
+E. Acosta, F. Spettu, F. Fiorillo. A PROCEDURE TO IMPORT A COMPLEX GEOMETRY
+MODEL OF A HERITAGE BUILDING INTO BIM FOR ADVANCED ARCHITECTURAL
+REPRESENTATIONS. In: 9th International Workshop on 3D-ARCH 3D Virtual Reconstruction
+and Visualization of Complex Architectures, 2022 pp. 9-16, https://doi.org/10.5194/isprs-archivesXLVI-2-W1-2022-9-2022
+W.G. Zhao, Y.Y. Yan, C.L. Yang, J.N. Ye, X. Yang, K.Z. Huang, Ieee. Divide and Conquer: 3D
+Point Cloud Instance Segmentation With Point-Wise Binarization. In: IEEE/CVF International
+Conference on Computer Vision (ICCV), 2023 pp. 562-571,
+https://doi.org/10.1109/iccv51070.2023.00058
+Y. Perez-Perez, M. Golparvar-Fard, K. El-Rayes. Segmentation of point clouds via joint semantic
+and geometric features for 3D modeling of the built environment. Automation in Construction.
+2021, 125, pp. 19, https://doi.org/10.1016/j.autcon.2021.103584
+C. Morbidoni, R. Pierdicca, M. Paolanti, R. Quattrini, R. Mammoli. Learning from Synthetic Point
+Cloud Data for Historical Buildings Semantic Segmentation. Acm Journal on Computing and
+Cultural Heritage. 2020, 13, (4), pp. 16, https://doi.org/10.1145/3409262
+M. Nahangi, C.T. Haas. Automated 3D compliance checking in pipe spool fabrication. Advanced
+Engineering Informatics. 2014, 28, (4), pp. 360-369, https://doi.org/10.1016/j.aei.2014.04.001
+R. Schnabel, R. Wahl, R. Klein. Efficient RANSAC for point-cloud shape detection. Computer
+Graphics Forum. 2007, 26, (2), pp. 214-226, https://doi.org/10.1111/j.1467-8659.2007.01016.x
+F.C.D. Tsai. GEOMETRIC HASHING WITH LINE FEATURES. Pattern Recognition. 1994, 27,
+31
+
+900
+
+[41]
+[42]
+
+905
+
+[43]
+
+910
+
+[44]
+[45]
+
+915
+
+[46]
+
+920
+
+[47]
+
+925
+
+[48]
+[49]
+
+930
+
+[50]
+[51]
+935
+
+[52]
+
+940
+
+[53]
+945
+
+[54]
+[55]
+950
+
+[56]
+
+955
+
+(3), pp. 377-389, https://doi.org/10.1016/0031-3203(94)90115-5
+T. Kang, S. Patil, K. Kang, D. Koo, J. Kim. Rule-Based Scan-to-BIM Mapping Pipeline in the
+Plumbing System. Applied Sciences-Basel. 2020, 10, (21), pp. 18,
+https://doi.org/10.3390/app10217422
+X.Y. Chen, Y.J. Pan, V.J.L. Gan, K. Yan. 3D reconstruction of semantic-rich digital twins for
+ACMV monitoring and anomaly detection via scan-to-BIM and time-series data integration.
+Developments in the Built Environment. 2024, 19, pp. 18,
+https://doi.org/10.1016/j.dibe.2024.100503
+B. Quintana, S.A. Prieto, A. Adán, F. Bosché. Door detection in 3D coloured point clouds of indoor
+environments. Automation in Construction. 2018, 85, pp. 146-166,
+https://doi.org/10.1016/j.autcon.2017.10.016
+X.H. Xiong, A. Adan, B. Akinci, D. Huber. Automatic creation of semantically rich 3D building
+models from laser scanner data. Automation in Construction. 2013, 31, pp. 325-337,
+https://doi.org/10.1016/j.autcon.2012.10.006
+J. Schult, F. Engelmann, A. Hermans, O. Litany, S.Y. Tang, B. Leibe, Ieee. Mask3D: Mask
+Transformer for 3D Semantic Instance Segmentation. In: IEEE International Conference on
+Robotics and Automation (ICRA), 2023 pp. 8216-8223,
+https://doi.org/10.1109/icra48891.2023.10160590
+Y.Q. Dong, Y.H. Li, M.L. Hou. The Point Cloud Semantic Segmentation Method for the Ming and
+Qing Dynasties' Official-Style Architecture Roof Considering the Construction Regulations. Isprs
+International Journal of Geo-Information. 2022, 11, (4), pp. 20,
+https://doi.org/10.3390/ijgi11040214
+J. Park, B.K. Kim, J.S. Lee, M. Yoo, I.W. Lee, Y.M. Ryu. Automated semantic segmentation of 3D
+point clouds of railway tunnel using deep learning. In: ITA-AITES World Tunnel Congress (WTC)
+/ 49th General Assembly of the International-Tunnelling-and-Underground-Space-Association
+(ITA-AITES), 2023 pp. 2844-2852, https://doi.org/10.1201/9781003348030-343
+R. Volk, J. Stengel, F. Schultmann. Building Information Modeling (BIM) for existing buildings literature review and future needs. Automation in Construction. 2014, 38, pp. 109-127,
+https://doi.org/10.1016/j.autcon.2013.10.023
+R. Rashdi, J. Martínez-Sánchez, P. Arias, Z.Y. Qiu. Scanning Technologies to Building
+Information Modelling: A Review. Infrastructures. 2022, 7, (4), pp. 29,
+https://doi.org/10.3390/infrastructures7040049
+M. Bassier, M. Vergauwen. Unsupervised reconstruction of Building Information Modeling wall
+objects from point cloud data. Automation in Construction. 2020, 120, pp. 21,
+https://doi.org/10.1016/j.autcon.2020.103338
+J.W. Ma. Exploring the Feasibility of Deep Learning-Based Boundary Extraction for Scan-ToBIM: A Case Study Analysis. In: Annual Conference of the Canadian-Society-for-CivilEngineering (CSCE), 2023 pp. 167-179, https://doi.org/10.1007/978-3-031-61499-6_13
+M. Buldo, L. Agustín-Hernández, C. Verdoscia, R. Tavolare. A SCAN-TO-BIM WORKFLOW
+PROPOSAL FOR CULTURAL HERITAGE. AUTOMATIC POINT CLOUD SEGMENTATION
+AND PARAMETRIC-ADAPTIVE MODELLING OF VAULTED SYSTEMS. In: 29th CIPA
+Symposium on Documenting, Understanding, Preserving Cultural Heritage - Humanities and
+Digital Technologies for Shaping the Future, 2023 pp. 333-340, https://doi.org/10.5194/isprsarchives-XLVIII-M-2-2023-333-2023
+C.R. Qi, H. Su, K.C. Mo, L.J. Guibas, Ieee. PointNet: Deep Learning on Point Sets for 3D
+Classification and Segmentation. In: 30th IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR), 2017 pp. 77-85, https://doi.org/10.1109/cvpr.2017.16
+M. Mahmoud, W. Chen, Y. Yang, Y.X. Li. Automated BIM generation for large-scale indoor
+complex environments based on deep learning. Automation in Construction. 2024, 162, pp. 25,
+https://doi.org/10.1016/j.autcon.2024.105376
+M. Mahmoud, Z.B. Zhao, W. Chen, M. Adham, Y.X. Li. Automated Scan-to-BIM: A deep
+learning-based framework for indoor environments with complex furniture elements. Journal of
+Building Engineering. 2025, 106, pp. 20, https://doi.org/10.1016/j.jobe.2025.112596
+L.C. Luo, C.S. Cheng, W. Mobley, A. Novoselac, K. Lieberknecht, F. Leite. Scenario Generation
+for Built Environment Decision Support under Uncertainty: Case Studies of Airflow Modeling and
+Climate-Resilient Infrastructure System Design. Journal of Computing in Civil Engineering. 2025,
+39, (4), pp. 18, https://doi.org/10.1061/jccee5.Cpeng-6253
+32
+
+[57]
+[58]
+960
+
+[59]
+[60]
+965
+
+[61]
+
+970
+
+[62]
+[63]
+
+975
+
+[64]
+[65]
+
+980
+
+[66]
+
+985
+
+[67]
+[68]
+
+990
+
+[69]
+[70]
+995
+
+[71]
+1000
+
+[72]
+[73]
+1005
+
+[74]
+[75]
+1010
+
+[76]
+
+H. Elsharkawi, E. Elbeltagi, M.S. Eid, W. Alattyih, H. Wefki. Construction Payment Automation
+Through Scan-to-BIM and Blockchain-Enabled Smart Contract. Buildings. 2025, 15, (2), pp. 28,
+https://doi.org/10.3390/buildings15020213
+J. Patil, M. Kalantari. Automatic Scan-to-BIM-The Impact of Semantic Segmentation Accuracy.
+Buildings. 2025, 15, (7), pp. 30, https://doi.org/10.3390/buildings15071126
+Y.D. Liu, H. Huang, G. Gao, Z.Y. Ke, S.T. Li, M. Gu. Dataset and benchmark for as-built BIM
+reconstruction from real-world point cloud. Automation in Construction. 2025, 173, pp. 21,
+https://doi.org/10.1016/j.autcon.2025.106096
+S. Kang, S. Kim, S. Kim. Improvement of the defect inspection process of deteriorated buildings
+with scan to BIM and image-based automatic defect classification. Journal of Building
+Engineering. 2025, 99, pp. 13, https://doi.org/10.1016/j.jobe.2024.111601
+K. Cho, H. Park, C. Kim, T. Kim. Toward sustainable urban energy solutions: Introducing F
+NeCESSCity framework for energy-saving smart city configuration. Sustainable Cities and
+Society. 2024, 113, pp. 13, https://doi.org/10.1016/j.scs.2024.105674
+G. Rocha, L. Mateus. Using Dynamo for Automatic Reconstruction of BIM Elements from Point
+Clouds. Applied Sciences-Basel. 2024, 14, (10), pp. 41, https://doi.org/10.3390/app14104078
+L. Yang, Y.C. Lin, H.B. Cai, A. Habib. From Scans to Parametric BIM: An Enhanced Framework
+Using Synthetic Data Augmentation and Parametric Modeling for Highway Bridges. Journal of
+Computing in Civil Engineering. 2024, 38, (3), pp. 17, https://doi.org/10.1061/jccee5.Cpeng-5640
+X. Pan, Q. Lin, S.Y. Ye, L. Li, L. Guo, B. Harmon. Deep learning based approaches from semantic
+point clouds to semantic BIM models for heritage digital twin. Heritage Science. 2024, 12, (1), pp.
+17, https://doi.org/10.1186/s40494-024-01179-4
+M. Pepe, A.R. Garofalo, D. Costantino, F.F. Tana, D. Palumbo, V.S. Alfio, E. Spacone. From Point
+Cloud to BIM: A New Method Based on Efficient Point Cloud Simplification by Geometric
+Feature Analysis and Building Parametric Objects in Rhinoceros/Grasshopper Software. Remote
+Sensing. 2024, 16, (9), pp. 18, https://doi.org/10.3390/rs16091630
+B.Y. Wang, Z.Y. Chen, M.K. Li, Q. Wang, C. Yin, J.C.P. Cheng. Omni-Scan2BIM: A ready-to-use
+Scan2BIM approach based on vision foundation models for MEP scenes. Automation in
+Construction. 2024, 162, pp. 18, https://doi.org/10.1016/j.autcon.2024.105384
+G. Rocha, L. Mateus, V. Ferreira. Historical Heritage Maintenance via Scan-to-BIM Approaches:
+A Case Study of the Lisbon Agricultural Exhibition Pavilion. Isprs International Journal of GeoInformation. 2024, 13, (2), pp. 23, https://doi.org/10.3390/ijgi13020054
+A.A. Birkeland, M. Udnaes. Semi-automated dataset creation for semantic and instance
+segmentation of industrial point clouds. Computers in Industry. 2024, 155, pp. 11,
+https://doi.org/10.1016/j.compind.2023.104064
+H.M. Zhu, M.Q. Huang, Q.B. Zhang. TunGPR: Enhancing data-driven maintenance for tunnel
+linings through synthetic datasets, deep learning and BIM. Tunnelling and Underground Space
+Technology. 2024, 145, pp. 17, https://doi.org/10.1016/j.tust.2023.105568
+S. Kim, H. Kim, J.W. Lee, T. Hong, K. Jeong. An Integrated Assessment Framework of Economic,
+Environmental, and Human Health Impacts Using Scan-to-BIM and Life-Cycle Assessment in
+Existing Buildings. Journal of Management in Engineering. 2023, 39, (5), pp. 12,
+https://doi.org/10.1061/jmenea.Meeng-5600
+C. Stanga, F. Banfi, S. Roascio. Enhancing Building Archaeology: Drawing, UAV
+Photogrammetry and Scan-to-BIM-to-VR Process of Ancient Roman Ruins. Drones. 2023, 7, (8),
+pp. 27, https://doi.org/10.3390/drones7080521
+I. Aftab, K. Kapitány, T. Lovas. Automating Scan to BIM Operations Using Grasshopper.
+Periodica Polytechnica-Civil Engineering. 2023, pp. 6, https://doi.org/10.3311/PPci.22390
+M. Jarzabek-Rychard, H.G. Maas. Modeling of 3D geometry uncertainty in Scan-to-BIM automatic
+indoor reconstruction. Automation in Construction. 2023, 154, pp. 12,
+https://doi.org/10.1016/j.autcon.2023.105002
+N. Abreu, R. Souza, A. Pinto, A. Matos, M. Pires. Labelled Indoor Point Cloud Dataset for BIM
+Related Applications. Data. 2023, 8, (6), pp. 19, https://doi.org/10.3390/data8060101
+J. Martens, J. Blankenbach. VOX2BIM+-A Fast and Robust Approach for Automated Indoor Point
+Cloud Segmentation and Building Model Generation. Pfg-Journal of Photogrammetry Remote
+Sensing and Geoinformation Science. 2023, 91, (4), pp. 273-294, https://doi.org/10.1007/s41064023-00243-1
+D. Hu, V.J.L. Gan, C. Yin. Robot-assisted mobile scanning for automated 3D reconstruction and
+33
+
+1015
+
+[77]
+[78]
+
+1020
+
+[79]
+[80]
+1025
+
+[81]
+
+1030
+
+[82]
+[83]
+
+1035
+
+[84]
+[85]
+1040
+
+[86]
+1045
+
+[87]
+[88]
+1050
+
+[89]
+
+1055
+
+[90]
+[91]
+
+1060
+
+[92]
+
+1065
+
+[93]
+[94]
+
+point cloud semantic segmentation of building interiors. Automation in Construction. 2023, 152,
+pp. 21, https://doi.org/10.1016/j.autcon.2023.104949
+S. Kim, K. Jeong, T. Hong, J. Lee, J. Lee. Deep Learning-Based Automated Generation of Material
+Data with Object-Space Relationships for Scan to BIM. Journal of Management in Engineering.
+2023, 39, (3), pp. 13, https://doi.org/10.1061/jmenea.Meeng-5143
+V. Croce, G. Caroti, A. Piemonte, L. De Luca, P. Véron. H-BIM and Artificial Intelligence:
+Classification of Architectural Heritage for Semi-Automatic Scan-to-BIM Reconstruction. Sensors.
+2023, 23, (5), pp. 30, https://doi.org/10.3390/s23052497
+Y. Xie, S.Y. Li, T.R. Liu, Y.Y. Cai. As-built BIM reconstruction of piping systems using PipeNet.
+Automation in Construction. 2023, 147, pp. 19, https://doi.org/10.1016/j.autcon.2022.104735
+D. Campagnolo, E. Camuffo, U. Michieli, P. Borin, S. Milani, A. Giordano, Ieee. FULLY
+AUTOMATED SCAN-TO-BIM VIA POINT CLOUD INSTANCE SEGMENTATION. In: 30th
+IEEE International Conference on Image Processing (ICIP), 2023 pp. 291-295,
+https://doi.org/10.1109/icip49359.2023.10222064
+B.Y. Wang, Q. Wang, J.C.P. Cheng, C. Yin. Object verification based on deep learning point
+feature comparison for scan-to-BIM. Automation in Construction. 2022, 142, pp. 15,
+https://doi.org/10.1016/j.autcon.2022.104515
+Y.D. Pan, A. Braun, I. Brilakis. Enriching geometric digital twins of buildings with small objects
+by fusing laser scanning and AI-based image recognition. Automation in Construction. 2022, 140,
+pp. 19, https://doi.org/10.1016/j.autcon.2022.104375
+J.W. Ma, F. Leite. Performance boosting of conventional deep learning-based semantic
+segmentation leveraging unsupervised clustering. Automation in Construction. 2022, 136, pp. 14,
+https://doi.org/10.1016/j.autcon.2022.104167
+L. Truong-Hong, R. Lindenbergh. Extracting structural components of concrete buildings from
+laser scanning point clouds from construction sites. Advanced Engineering Informatics. 2022, 51,
+pp. 20, https://doi.org/10.1016/j.aei.2021.101490
+S. De Geyter, M. Bassier, M. Vergauwen. AUTOMATED TRAINING DATA CREATION FOR
+SEMANTIC SEGMENTATION OF 3D POINT CLOUDS. In: ISPRS WG V/7 Conference on
+Measurement, Visualisation and Processing in BIM for Design and Construction Management II,
+2022 pp. 59-67, https://doi.org/10.5194/isprs-archives-XLVI-5-W1-2022-59-2022
+Y. Perez-Perez, M. Golparvar-Fard, K. El-Rayes. Scan2BIM-NET: Deep Learning Method for
+Segmentation of Point Clouds for Scan-to-BIM. Journal of Construction Engineering and
+Management. 2021, 147, (9), pp. 14, https://doi.org/10.1061/(asce)co.1943-7862.0002132
+M. Andriasyan, J. Moyano, J.E. Nieto-Julián, D. Antón. From Point Cloud Data to Building
+Information Modelling: An Automatic Parametric Workflow for Heritage. Remote Sensing. 2020,
+12, (7), pp. 22, https://doi.org/10.3390/rs12071094
+J.W. Ma, J. Jung, F. Leite. Deep Learning-Based Scan-to-BIM Automation and Object Scope
+Expansion Using a Low-Cost 3D Scan Data. Journal of Computing in Civil Engineering. 2024, 38,
+(6), pp. 17, https://doi.org/10.1061/jccee5.Cpeng-5751
+E. Nieto-Julián, S. Bruno, J. Moyano. An Efficient Process for the Management of the
+Deterioration and Conservation of Architectural Heritage: The HBIM Project of the Duomo of
+Molfetta (Italy). Remote Sensing. 2024, 16, (23), pp. 33, https://doi.org/10.3390/rs16234542
+W.L. Cai, D.Q. Hua, S.H. Li, S.W. Xue, Z. Xu. 3D reconstruction of building interiors based on
+scan-to-BIM and generative design for as-built building. Engineering Construction and
+Architectural Management. 2024, pp. 21, https://doi.org/10.1108/ecam-07-2024-0984
+F. Bosché, M. Ahmed, Y. Turkan, C.T. Haas, R. Haas. The value of integrating Scan-to-BIM and
+Scan-vs-BIM techniques for construction monitoring using laser scanning and BIM: The case of
+cylindrical MEP components. Automation in Construction. 2015, 49, pp. 201-213,
+https://doi.org/10.1016/j.autcon.2014.05.014
+L. Barazzetti, F. Banfi, R. Brumana, M. Previtali, F. Roncoroni. BIM FROM LASER SCANS...
+NOT JUST FOR BUILDINGS: NURBS-BASED PARAMETRIC MODELING OF A
+MEDIEVAL BRIDGE. In: 23rd ISPRS Congress, 2016 pp. 51-56,
+https://doi.org/10.5194/isprsannals-III-5-51-2016
+D.F. Laefer, L. Truong-Hong. Toward automatic generation of 3D steel structures for building
+information modelling. Automation in Construction. 2017, 74, pp. 66-77,
+https://doi.org/10.1016/j.autcon.2016.11.011
+H. Macher, T. Landes, P. Grussenmeyer. From Point Clouds to Building Information Models: 3D
+34
+
+1070
+
+[95]
+
+1075
+
+[96]
+[97]
+
+1080
+
+[98]
+
+1085
+
+[99]
+[100]
+1090
+
+[101]
+
+1095
+
+[102]
+
+1100
+
+[103]
+[104]
+
+1105
+
+[105]
+1110
+
+[106]
+[107]
+1115
+
+[108]
+
+1120
+
+[109]
+[110]
+1125
+
+[111]
+
+Semi-Automatic Reconstruction of Indoors of Existing Buildings. Applied Sciences-Basel. 2017, 7,
+(10), pp. 30, https://doi.org/10.3390/app7101030
+A. Adán, B. Quintana, S.A. Prieto, F. Bosché. Scan-to-BIM for 'secondary' building components.
+Advanced Engineering Informatics. 2018, 37, pp. 119-138,
+https://doi.org/10.1016/j.aei.2018.05.001
+Q. Wang, H. Sohn, J.C.P. Cheng. Automatic As-Built BIM Creation of Precast Concrete Bridge
+Deck Panels Using Laser Scan Data. Journal of Computing in Civil Engineering. 2018, 32, (3), pp.
+17, https://doi.org/10.1061/(asce)cp.1943-5487.0000754
+M. Capone, E. Lanzara. SCAN-TO-BIM vs 3D IDEAL MODEL HBIM: PARAMETRIC TOOLS
+TO STUDY DOMES GEOMETRY. In: 8th International Workshop on 3D Virtual Reconstruction
+and Visualization of Complex Architectures (3D-ARCH), 2019 pp. 219-226,
+https://doi.org/10.5194/isprs-archives-XLII-2-W9-219-2019
+F. Mellado, P.F. Wong, K. Amano, C. Johnson, E.C.W. Lou. Digitisation of existing buildings to
+support building assessment schemes: viability of automated sustainability-led design scan-to-BIM
+process. Architectural Engineering and Design Management. 2020, 16, (2), pp. 84-99,
+https://doi.org/10.1080/17452007.2019.1674126
+M. Pepe, D. Costantino, A.R. Garofalo. An Efficient Pipeline to Obtain 3D Model for HBIM and
+Structural Analysis Purposes from 3D Point Clouds. Applied Sciences-Basel. 2020, 10, (4), pp. 19,
+https://doi.org/10.3390/app10041235
+V. Croce, G. Caroti, L. De Luca, K. Jacquot, A. Piemonte, P. Véron. From the Semantic Point
+Cloud to Heritage-Building Information Modeling: A Semiautomatic Approach Exploiting
+Machine Learning. Remote Sensing. 2021, 13, (3), pp. 34, https://doi.org/10.3390/rs13030461
+Y. Schatz, B. Domer. Semi-automated creation of IFC bridge models from point clouds for
+maintenance applications. Frontiers in Built Environment. 2024, 10, pp. 18,
+https://doi.org/10.3389/fbuil.2024.1375873
+A. Aglietti, C. Biagini, A. Bongini, P. Ottobri. HISTORIC BRIDGES MONITORING THROUGH
+SENSOR DATA MANAGEMENT WITH BIM METHODOLOGIES. In: 29th CIPA Symposium
+on Documenting, Understanding, Preserving Cultural Heritage - Humanities and Digital
+Technologies for Shaping the Future, 2023 pp. 33-41, https://doi.org/10.5194/isprs-archivesXLVIII-M-2-2023-33-2023
+M. Aricò, M. Lo Brutto, A. Maltese. A Scan-to-BIM Approach for the Management of Two ArabNorman Churches in Palermo (Italy). Heritage. 2023, 6, (2), pp. 1622-1644,
+https://doi.org/10.3390/heritage6020087
+R. Angeloni, C. Mariotti, L. Petetta, L. Coppetta. ENABLING SCAN-TO-BIM WORKFLOW
+FOR HERITAGE CONSERVATION AND MANAGEMENT PROCESS. In: 29th CIPA
+Symposium on Documenting, Understanding, Preserving Cultural Heritage - Humanities and
+Digital Technologies for Shaping the Future, 2023 pp. 79-86, https://doi.org/10.5194/isprsarchives-XLVIII-M-2-2023-79-2023
+Z.R. Wu, S.R. Song, A. Khosla, F. Yu, L.G. Zhang, X.O. Tang, J.X. Xiao, Ieee. 3D ShapeNets: A
+Deep Representation for Volumetric Shapes. In: IEEE Conference on Computer Vision and Pattern
+Recognition (CVPR), 2015 pp. 1912-1920
+C.R. Qi, L. Yi, H. Su, L.J. Guibas. PointNet plus plus : Deep Hierarchical Feature Learning on
+Point Sets in a Metric Space. In: 31st Annual Conference on Neural Information Processing
+Systems (NIPS), 2017
+D. Maturana, S. Scherer, Ieee. VoxNet: A 3D Convolutional Neural Network for Real-Time Object
+Recognition. In: IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS),
+2015 pp. 922-928
+Ö. Çiçek, A. Abdulkadir, S.S. Lienkamp, T. Brox, O. Ronneberger. 3D U-Net: learning dense
+volumetric segmentation from sparse annotation. In: Medical Image Computing and ComputerAssisted Intervention–MICCAI 2016: 19th International Conference, Athens, Greece, October 1721, 2016, Proceedings, Part II 19, 2016 pp. 424-432
+C. Chen, L.Z. Fragonara, A. Tsourdos. GAPointNet: Graph attention based point neural network
+for exploiting local feature of point cloud. Neurocomputing. 2021, 438, pp. 122-132
+M. Pepe, D. Costantino, V.S. Alfio, A.G. Restuccia, N.M. Papalino. Scan to BIM for the digital
+management and representation in 3D GIS environment of cultural heritage site. Journal of Cultural
+Heritage. 2021, 50, pp. 115-125, https://doi.org/10.1016/j.culher.2021.05.006
+Y. Li, H. Sheng. A single-stage point cloud cleaning network for outlier removal and denoising.
+35
+
+1130
+
+1135
+
+1140
+
+1145
+
+1150
+
+1155
+
+1160
+
+1165
+
+1170
+
+1175
+
+1180
+
+Pattern Recognition. 2023, 138, pp. 109366
+[112] A. Yerokhin, V. Semenets, A. Nechyporenko, O. Turuta, A. Babii. F-transform 3D point cloud
+filtering algorithm. In: 2018 IEEE Second International Conference on Data Stream Mining &
+Processing (DSMP), 2018 pp. 524-527
+[113] P. Szutor, M. Zichar. Fast Radius Outlier Filter Variant for Large Point Clouds. Data. 2023, 8, (10),
+pp. 149
+[114] X. Li, Z. Gao, X. Chen, S. Sun, J. Liu. Research on estimation method of geometric features of
+structured negative obstacle based on single-frame 3d laser point cloud. Information. 2021, 12, (6),
+pp. 235
+[115] T. Huang, J. Chen, J. Zhang, Y. Liu, J. Liang. Fast Point Cloud Sampling Network. Pattern
+Recognition Letters. 2022, 164, pp. 216-223
+[116] E. Nezhadarya, E. Taghavi, R. Razani, B. Liu, J. Luo. Adaptive hierarchical down-sampling for
+point cloud classification. In: Proceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, 2020 pp. 12956-12964
+[117] L. Yu, X. Li, C.-W. Fu, D. Cohen-Or, P.-A. Heng. Pu-net: Point cloud upsampling network. In:
+Proceedings of the IEEE conference on computer vision and pattern recognition, 2018 pp. 27902799
+[118] Y. Li, R. Bu, M. Sun, W. Wu, X. Di, B. Chen. PointCNN: Convolution on x-transformed points.
+Advances in neural information processing systems. 2018, 31
+[119] W.Y. Wang, R. Yu, Q.G. Huang, U. Neumann, Ieee. SGPN: Similarity Group Proposal Network
+for 3D Point Cloud Instance Segmentation. In: 31st IEEE/CVF Conference on Computer Vision
+and Pattern Recognition (CVPR), 2018 pp. 2569-2578, https://doi.org/10.1109/cvpr.2018.00272
+[120] L. Yi, W. Zhao, H. Wang, M. Sung, L.J. Guibas. Gspn: Generative shape proposal network for 3d
+instance segmentation in point cloud. In: Proceedings of the IEEE/CVF conference on computer
+vision and pattern recognition, 2019 pp. 3947-3956
+[121] J. Hou, A. Dai, M. Nießner. 3d-sis: 3d semantic instance segmentation of rgb-d scans. In:
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 2019 pp.
+4421-4430
+[122] Z. Ding, X. Han, M. Niethammer. Votenet: A deep learning label fusion method for multi-atlas
+segmentation. In: Medical Image Computing and Computer Assisted Intervention–MICCAI 2019:
+22nd International Conference, Shenzhen, China, October 13–17, 2019, Proceedings, Part III 22,
+2019 pp. 202-210
+[123] L. Jiang, H.S. Zhao, S.S. Shi, S. Liu, C. Fu, J.Y. Jia, Ieee. PointGroup: Dual-Set Point Grouping for
+3D Instance Segmentation. In: IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR), 2020 pp. 4866-4875, https://doi.org/10.1109/cvpr42600.2020.00492
+[124] S. Shi, X. Wang, H. Li. Pointrcnn: 3d object proposal generation and detection from point cloud.
+In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 2019 pp.
+770-779
+[125] Z. Kang, J. Yang, Z. Yang, S. Cheng. A review of techniques for 3d reconstruction of indoor
+environments. Isprs International Journal of Geo-Information. 2020, 9, (5), pp. 330
+[126] F. Gherardini, F. Leali. A framework for 3D pattern analysis and reconstruction of Persian
+architectural elements. Nexus Network Journal. 2016, 18, pp. 133-167
+[127] C. Zou, A. Colburn, Q. Shan, D. Hoiem. Layoutnet: Reconstructing the 3d room layout from a
+single rgb image. In: Proceedings of the IEEE conference on computer vision and pattern
+recognition, 2018 pp. 2051-2059
+[128] L. Wang, X. Zhou, J. Liu, G. Cheng. Automated layout generation from sites to flats using GAN
+and transfer learning. Automation in Construction. 2024, 166, pp. 105668
+[129] K. Şekeroğlu, Ö.M. Soysal. Comparison of SIFT, Bi-SIFT, and Tri-SIFT and their frequency
+spectrum analysis. Machine Vision and Applications. 2017, 28, pp. 875-902
+[130] E. Oyallon, J. Rabin. An analysis of the SURF method. Image Processing On Line. 2015, 5, pp.
+176-218
+[131] S. Rusinkiewicz, M. Levoy. Efficient variants of the ICP algorithm. In: Proceedings third
+international conference on 3-D digital imaging and modeling, 2001 pp. 145-152
+[132] K. Koide, M. Yokozuka, S. Oishi, A. Banno. Voxelized GICP for fast and accurate 3D point cloud
+registration. In: 2021 IEEE International Conference on Robotics and Automation (ICRA), 2021
+pp. 11054-11059
+[133] Z. Gojcic, C. Zhou, J.D. Wegner, A. Wieser. The perfect match: 3d point cloud matching with
+36
+
+1185
+
+1190
+
+1195
+
+1200
+
+smoothed densities. In: Proceedings of the IEEE/CVF conference on computer vision and pattern
+recognition, 2019 pp. 5545-5554
+[134] A. Li, Z. Zhu, & M. Wei. GenPC: Zero-shot Point Cloud Completion via 3D Generative Priors. In:
+IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2025, pp. 1308-1318.
+https://doi.org/10.1109/CVPR52734.2025.00130
+[135] Z. Qi, Y. Fang, Z. Sun, X. Wu, T. Wu, J. Wang, et al., GPT4Point++: Advancing Unified PointLanguage Understanding and Generation. IEEE Transactions on Pattern Analysis and Machine
+Intelligence. 2025, pp.1-16, https://doi.org/10.1109/TPAMI.2025.3597938
+[136] P.A. Escudero. Scan-to-HBIM: automated transformation of point clouds into 3D BIM models for
+the digitization and preservation of historic buildings. Vitruvio-International Journal of
+Architectural Technology and Sustainability. 2023, 8, (2), pp. 52-63.
+https://doi.org/10.4995/vitruvio-ijats.2023.20413
+[137] Y. Fang, S. A. Mitoulis, D. Boddice, J. Yu, & J. Ninic. Scan-to-BIM-to-Sim: Automated
+reconstruction of digital and simulation models from point clouds with applications on bridges.
+Results in Engineering, 2025, 25, pp. 104289. https://doi.org/10.1016/j.rineng.2025.104289
+[138] T. Yang, Y. Zou , E. del Rey Castillo, L. Hou, & J. Zhong. Enhancing Scan-to-BIM for reinforced
+concrete bridges using point cloud completion techniques. Automation in Construction, 2026, 181,
+pp. 106606. https://doi.org/10.1016/j.autcon.2025.106606
+[139] K. Ostapska, R. Hingorani, W. Tecław, F. Kaufmann, K. Gradeci, & P. Rüther. Automated robotic
+deconstruction sequence planning from scan-to-BIM data for reinforced concrete structure reuse.
+Automation in Construction, 2025, 180, 106548. https://doi.org/10.1016/j.autcon.2025.106548
+
+1205
+
+37
+
+

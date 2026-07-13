@@ -1,0 +1,1332 @@
+From 3D pedestrian networks to wheelable networks: An
+automatic wheelability assessment method for high-density urban
+areas using contrastive deep learning of smartphone point clouds
+Siyuan Menga , Xian Sub , Guibo Sunc , Maosu Lid , Fan Xuea,∗
+a
+
+Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong, China
+b
+Guangxi Nanchong Railway Co., Ltd., No.152 Minzu Avenue, Nanning, Guangxi, China
+c
+Department of Planning, Property and Environmental Management, University of Manchester, UK
+d
+Department of Urban Planning and Design, The University of Hong Kong, Pokfulam, Hong Kong, China
+
+This is the shared (CC-NC-BY-4.0) author's version of the paper :
+Meng, S., Su, X., Sun, G., Li, M., & Xue, F. (2025). From 3D pedestrian networks to wheelable networks:
+An automatic wheelability assessment method for high-density urban areas using contrastive deep
+learning of smartphone point clouds. Computers, Environment and Urban Systems, 117, 102255.
+https://doi.org/10.1016/j.compenvurbsys.2025.102255
+
+Abstract
+This paper presents a contrastive deep learning-based wheelability assessment method bridging street-scale smartphone point clouds and a city-scale 3D pedestrian network (3DPN). 3DPN
+have been studied and mapped for wheelability and smart city applications. However, the citylevel scale of 3DPN in the literature was incomplete for assessing wheelchair accessibility (i.e.,
+wheelability) due to omitted pedestrian paths, undetected stairs, and oversimplified elevated
+walkways; these features could be better represented if the mapping scale was at a micro-level
+designed for wheelchair users. In this paper, we reinforced the city-scale 3DPN using smartphone point clouds, a promising data source for supplementing fine-grained details and temporal changes due to the centimeter-level accuracy, vivid color, high density, and crowd sourcing nature. The three-step method reconstructs pedestrian paths, stairs, and slope details and
+enriches the city-scale 3DPN for wheelability assessment. The experimental results on pedestrian paths demonstrated accurate 3DPN centerline position (mIoU = 88.81%), stairs detection
+(mIoU = 86.39%), and wheelability assessment (MAE = 0.09). This paper contributes an automatic, accurate, and crowd sourcing wheelability assessment method that bridges ubiquitous
+smartphones and 3DPN for barrier-free travels in high-density and hilly urban areas.
+Keywords: Wheelchair accessibility (wheelability), 3D pedestrian network, Smart mobility,
+Contrastive deep learning, Smartphone point cloud
+1. Introduction
+A multi-level 3D pedestrian network (3DPN) on the city-scale is increasingly recognized
+for its crucial role in smart city applications in high-density and hilly cities (Sun et al., 2021).
+Examples of novel applications are greenery exposure (Li et al., 2023b), walkability assessment
+(Zhao et al., 2021), and wheelchair accessibility (i.e., wheelability) (Ning et al., 2022).
+∗
+
+Corresponding author at: KB512, Knowles Building, Department of Real Estate and Construction, The University of Hong Kong, Pokfulam, Hong Kong, China.
+Email addresses: siyuanm@connect.hku.hk (Siyuan Meng), guibo.sun@manchester.ac.uk (Guibo
+Sun), maosuli@hku.hk (Maosu Li), xuef@hku.hk (Fan Xue)
+
+Preprint submitted to Computers, Environment and Urban Systems
+
+February 6, 2025
+
+Wheelability measures the degree to which the built environment is friendly for wheelchair
+users’ daily traveling (Mahmood et al., 2020). Narrow segments, slopes, and stairs on pedestrian paths increase the falling risks of wheelchairs (Ståhl and Berntman, 2007; Clarke et al.,
+2011; Schwartz et al., 2022). Temporary obstructions, such as road maintenance works that
+are not represented in 3DPN, could force wheelchair users to take alternate routes (Mahmood
+et al., 2020). Thus, accurate and up-to-date wheelability can guide wheelchair users in their
+daily travels, by providing them with street-level built-environment information, enabling equal
+access (Hassanpour et al., 2021; Eisenberg et al., 2024), in particular in high-density and hilly
+cities like Hong Kong.
+The assessment of wheelability involves both physical and non-physical factors to measure
+the extent to which wheelchair users can safely pass along a pedestrian network. The physical
+factors include the pure width (Chiang and Lei, 2016; Coppola and Marshall, 2021; Galanis
+and Eliou, 2011), cross and running slopes, stairs, and road surface quality (Soares Muller
+et al., 2023). In addition to the physical ones, some researchers take non-physical aspects
+(e.g., comfort, attractiveness) into account (de Freitas Pereira et al., 2014). However, 3DPN
+has insufficient details of the micro-level physical conditions of pedestrian paths (Rhoads et al.,
+2023) and segment types for wheelability assessment. One reason is that city-scale 3DPN
+focuses more on connectivity and coarse geometric features (e.g., average slope degrees along a
+path). Thus, a 3DPN needs semantics and details on the paths to enable wheelability assessment.
+3D LiDAR (light detection and ranging) technology can sense the micro-level physical conditions of pedestrian paths for 3DPN (Balado et al., 2019; Fernández-Arango et al., 2022). LiDAR data is also available on some modern smartphones at centimeter-level accuracy (Costantino
+et al., 2022), with vivid color, high density, and a crowd sourcing nature. In the literature, smartphones have been proven to be a feasible crowd sourcing data source (Saha et al., 2019; Wu
+et al., 2021), including LiDAR point cloud data (Torkan et al., 2023). Street-scale smartphone’s
+3D point clouds can be a promising data source to supplement 3DPN with fine-grained details
+and temporal changes of routes.
+This paper presents a contrastive deep learning-based wheelability assessment method, bridging street-scale smartphone 3D color point clouds and city-scale 3DPN. In our three-step method,
+first, point-level contrastive learning is applied to LiDAR point clouds for semantic labels, e.g.,
+stairs, flat areas, handrails, obstacles, and buildings. Then, enriched 3DPN is produced with
+path segments’ centerlines and physical attributes. Finally, the wheelability index is defined
+and assessed using the enriched 3DPN and street-scale segmented point cloud. The three-step
+method can assess up-to-date wheelability with 3DPN in an automated, crowd sourceable, and
+low-cost (both device and processing time) way.
+The upcoming sections of this paper are structured as follows. Section 2 systematically
+reviews related work in the literature. Section 3 introduces the research methods of this paper.
+Section 4 demonstrates the experiment results. Discussion and conclusion are given in Sections
+5 and 6, respectively.
+2. Literature Review
+2.1. Wheelability and assessment
+Wheelability refers to the level of environmental support for the mobility of individuals who
+utilize wheeled assistive devices (Mahmood et al., 2020). Assessing this crucial latent variable
+is essential for enhancing well-being and fostering social engagement for wheelchair users (Gan
+et al., 2022). Low-quality pedestrian paths influence their routine travels and activities (Lima
+and Machado, 2019). For example, permanent (e.g., narrow width, slopes, stairs) and temporary
+2
+
+(e.g., rubbish bin) barriers may result in falling and force wheelchair users to change routes or
+stop traveling (Ståhl and Berntman, 2007; Mahmood et al., 2020).
+Wheelability assessment focuses on micro-level built-environment attributes and involves
+manual and automatic inventory methods. Initially, survey frameworks were developed to evaluate the pedestrian path infrastructure (Aghaabbasi et al., 2018; Gan et al., 2022), including
+average width, obstacles, slope, pavement suitability, surface quality, safety, and connectivity.
+Based on the inventoried path conditions, the assessment system will give the road a wheelability score.
+Since manual inventory is time-consuming, Street View Image (SVI) was incorporated in
+the inventory system (Eisenberg et al., 2022). Besides, Li et al. (2024) proposed a crowd sourced
+method using smartphone images to collect data from wheelchair users. However, the imagebased methods were limited to visual information and did not include geometric attributes.
+Automated inventory methods were integrated into the inventory systems, such as using
+images collected by wheelchair users and employing a convolutional neural network to detect
+cracks in pedestrian paths (Yoon et al., 2022). Ning et al. (2022) utilized SVI and the associated
+depth images for encoding point clouds to overcome the lack of 3D information in imagebased methods. However, the depth images of SVI are limited to access, and width cannot be
+accurately assessed due to visual obstruction.
+Some researchers also have paved the way for measuring the street-scale physical conditions
+on the paths. For instance, Ai and Tsai (2016) utilized a LiDAR point cloud combined with
+video images to extract pedestrian path areas and evaluate the width, slope, and curb ramp
+slope. Hou and Ai (2020) utilized LiDAR point clouds and deep learning to detect the width
+and slopes of pedestrian paths. The centerlines can be concurrently established, along with
+newly detected information (Ai and Tsai, 2016; Hou and Ai, 2020; Ning et al., 2022). However,
+most of the large-scale LiDAR processing research did not detect stairs, major obstacles, and
+temporary construction works that invalidate wheelchair users’ routing.
+In summary, wheelability assessment is crucial for promoting barrier-free travel for wheelchair
+users. The pedestrian networks with wheelability and detailed path information are essential for
+guiding wheelchair users in their daily travels. In contrast, centerlines without wheelability information will mislead their routes. Thus, an automatic method is needed to extract pedestrian
+path centerlines in 3D urban environments and assess wheelability to aid wheelchair users.
+2.2. Point cloud-based road network and 3DPN mapping
+Two-dimensional general road network extraction involves thinning algorithms to derive the
+final centerlines following the identification of potential road areas (Chen et al., 2022). There
+are three groups of approaches, including geometry-based(Ai and Tsai, 2016), mobile mapping
+system-based (Fernández-Arango et al., 2022), and deep learning-based (Hou and Ai, 2020),
+for extracting road and pedestrian path areas from LiDAR point clouds. In comparison with
+the other two groups, deep learning-based methods are capable of learning representations from
+large datasets in complex environments. The literature confirmed deep learning-based methods
+were more robust and efficient in extracting road areas.
+A 2D road network was often refined based on extracted road areas in the literature. For
+example, previous methods generated centerlines through total least square line fitting (Li et al.,
+2016), mean shift with weighted Hough transform (Hu et al., 2014), hierarchical fusion and optimization(Hui et al., 2016), sequential extraction of center points through orthogonal vertical
+XOY grid (Husain and Vaishya, 2018), and Voronoi diagram-based extraction and simplification of skeletons from a pedestrian path area (Hosseini et al., 2023). Besides, road centerline
+detection prioritizes network connectivity accuracy, with emphasis on 2D centerline precision
+3
+
+rather than elevation alterations significant for pedestrians. Studies of street-scale 3DPN based
+on point clouds, in contrast, received little attention in the literature.
+Street-scale smartphone’s point cloud is a promising data source for supplementing cityscale 3DPN with fine-grained details and temporal changes. Smartphone scanning is fast,
+portable, and low-cost (Costantino et al., 2022). However, smartphone scanning received little attention in road scanning since vehicle travel often only focused on network 2D accuracy,
+accessibility, and connectivity (Xie and Levinson, 2005). For pedestrian paths that require 3D
+micro-level elevation, smartphones can be a good data source (Luaces et al., 2021). The effectiveness of achieving pedestrian paths’ element segmentation in high-density, hilly cities
+with varying slopes remained unproven. A general segmentation and 3D centerline extraction
+method based on street-scale smartphone point clouds is desirable.
+In short, studies in the current literature were limited in generating street-scale 3DPN due
+to the lack of up-to-date obstacles, missing 3D micro-level elevation, and occluded pedestrian
+path details. The street-scale smartphone’s point clouds have the potential to reinforce 3DPN
+with up-to-date, detailed information automatically.
+2.3. Contrastive deep learning of urban point clouds
+Studies of deep learning of urban point clouds included remapping 2D segmentation to 3D
+(Ning et al., 2022) and directly segmenting based on the 3D point cloud(Tchapmi et al., 2017).
+When 3D points were the input, abstract representations were effective for training efficiency
+of deep learning (Qi et al., 2017; Thomas et al., 2019). Examples of abstract representations
+included hierarchical point set feature learning, kernel, and sparse tensor (Thomas et al., 2019;
+Qi et al., 2017). Moreover, planar-based methods integrated with topological graphs have been
+demonstrated to be effective in segmenting road scenes based on LiDAR point cloud (Balado
+et al., 2018).
+Contrastive deep learning emerged as a promising method to address the restricted availability of labeled datasets and urban scene understanding. Contrastive learning methods have been
+applied in fields such as image segmentation and text extraction (Park et al., 2020). The nature
+of contrastive learning is to compare the similarity of input samples to learn the representation.
+To be more specific, for positive pairs, the pre-train model will map close together, while for
+negative pairs, the opposite will occur (Le-Khac et al., 2020). Through such operations, the
+model can summarize abstract representations and deeper relationships and concepts. Inspired
+by the applications of contrastive learning in language and vision, Xie et al. (2020) proposed
+PointContrast for solving high-level scene understanding tasks. However, the effectiveness of
+contrastive deep learning in smartphone point cloud segmentation was not verified in the related
+literature.
+In summary, wheelability assessment is essential for equal access for wheelchair users. The
+city-scale 3DPN is capable of assessing walkability because of the network connectivity. Yet, it
+falls short in wheelability assessment due to a lack of up-to-date obstacles and micro-level details. Smartphone point cloud scanning with contrastive deep learning method can supplement
+3DPN on wheelability with detailed geometry attributes.
+3. Research Methods
+The conceptual wheelable network composites of three parts, as shown in Figure 1: detailed 3D pedestrian network as the basis, semantic information (i.e., stairs or flat area) as the
+secondary information to assist the wheelability evaluation, and wheelability index, to guide
+wheelchair users. The method in this paper has three steps, as shown in Figure 2. First, we
+conduct semantic segmentation of smartphone scans of pedestrian paths using contrastive deep
+4
+
+learning. Then, enriched 3DPN is produced with centerlines of the segments and measured
+physical attributes. Finally, wheelability is assessed using the enriched 3DPN and street-scale
+segmented point cloud.
+
+Figure 1: The conceptual illustration of the wheelable network.
+
+Figure 2: The method workflow.
+
+3.1. Study area
+We chose urban Hong Kong as the research area in this paper. Hong Kong is a city famous
+for its high density of buildings and hilly terrain. The pedestrian network of urban Hong Kong
+comprises diverse path segments, such as footbridges, subways, and ground-level pedestrian
+paths. Diversity challenges the traditional methods of wheelability assessment. Besides, the
+pedestrian paths in the area represent a diversity of pavement materials (e.g., brick and cement)
+and slopes.
+Thirty-one ground-level pedestrian paths were selected in Central District, as listed in Table
+1 and Figure 3b. The total length of the 31 paths was 2,435.4 m. The pedestrian path’s LiDAR point cloud data was collected by a smartphone with a near-range LiDAR sensor (model:
+5
+
+Figure 3: Research area in Central, Hong Kong. (a) the location of Central, (b) the distribution of the scanned 31
+pedestrian paths.
+
+6
+
+Table 1: The classification of 31 pedestrian paths, the according path index are shown in Figure 3b.
+ID
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+
+Length (m)
+168.4
+75.1
+64.8
+16.1
+112.7
+89.5
+116.8
+17.8
+65.7
+76.2
+32.7
+29.2
+98.7
+146.6
+29.5
+53.3
+54.0
+30.5
+60.0
+55.7
+44.1
+62.2
+55.7
+40.1
+151.5
+83.1
+73.8
+92.6
+98.1
+139.7
+201.2
+
+Type
+Flat
+Flat
+Flat
+Combined
+Flat
+Flat
+Flat
+Flat
+Stairs
+Combined
+Flat
+Stairs
+Stairs
+Flat
+Combined
+Flat
+Stairs
+Combined
+Stairs
+Combined
+Combined
+Flat
+Flat
+Combined
+Stairs
+Flat
+Flat
+Combined
+Stairs
+Combined
+Combined
+
+Slope (Grad* <0.05)
+No
+No
+No
+No
+No
+No
+Yes
+No
+Yes
+Yes
+Yes
+Yes
+Yes
+No
+Yes
+No
+Yes
+Yes
+Yes
+Yes
+Yes
+No
+No
+Yes
+Yes
+Yes
+Yes
+Yes
+Yes
+Yes
+Yes
+
+Gradient
+0.018
+0.001
+0.013
+0.013
+0.004
+0.007
+0.067
+0.003
+0.108
+0.116
+0.259
+0.183
+0.276
+0.034
+0.212
+0.009
+0.277
+0.192
+0.179
+0.134
+0.359
+0.014
+0.009
+0.128
+0.11
+0.164
+0.171
+0.144
+0.129
+0.228
+0.194
+
+7
+
+Function
+Commercial
+Commercial
+Commercial
+Commercial
+Commercial
+Commercial
+Commercial
+Commercial
+Commercial
+Commercial
+Commercial
+Commercial
+Residential
+Commercial
+Commercial
+Commercial
+Commercial
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+Residential
+
+Material
+Brick
+Brick
+Brick
+Brick
+Brick
+Brick
+Cement
+Cement
+Cement
+Cement
+Brick
+Cement
+Brick
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+Cement
+
+Lenovo Phab 2 with Android OS). The data set in Table 1 includes three representative types of
+footways in Hong Kong. They are (i) 14 flat paths, (ii) 7 paths containing continuous stairs, and
+(iii) 10 paths consisting of a few stairs only, as shown in Figure 3. The 31 Paths connect various
+land functions in urban areas, such as residential and commercial areas, as shown in Table 1.
+Our pedestrian path dataset was manually pre-processed and annotated. Noise filters in an
+open-source software CloudCompare (ver. 2.14) were applied to remove noisy and isolated
+points. Five possible semantic labels were manually annotated for each point: stairs, flat areas,
+handrails, buildings, and obstacles, as shown in Figure 4. The semantic labels aim to identify
+elements that impact wheelchair users’ routes. For example, stairs, inappropriately positioned
+handrails, and narrow pedestrian paths may cause safety risks.
+3.2. Contrastive deep learning of point semantics
+
+Figure 4: The backbone architecture of PointContrast and the workflow to obtain 3D pedestrian path semantic
+segmentation results. (a) Backbone architecture, (b) workflow.
+
+The first step, as shown in Figure 2, aims to assign every point in the smartphone’s point
+cloud with a semantic label. PointContrast was adopted as the contrastive learning algorithm,
+due to its high accuracy and efficiency reported in 3D contrastive learning in the literature
+(Xie et al., 2020). PointContrast utilizes Sparse Residual U-Net as its backbone network, comprising a 34-layer U-Net architecture with 21 convolutional encoder layers and 13 convolutional/deconvolutional decoder layers. Each ResNet block adheres to a structure consisting of
+a convolutional/deconvolutional layer, Batch Normalization, and ReLU activation, as shown in
+Figure 4a.
+The adopted PointContrast has two stages, i.e., pre-training and re-training, as shown in 4b.
+The pretext task of PointContrast is to use the xyz and RGB of the points as input features,
+to compute point features of matched point pairs between different frames in the RGBD point
+8
+
+cloud video, and update the backbone architecture Sparse Residual U-Net weights using designed contrastive loss. The output of this pretext task is a pre-train model. Then, based on the
+same backbone architecture neural network and the trained pre-train model, the segmentation
+of different datasets can be fine-tuned.
+The Kitti dataset was chosen as the pre-training dataset. Kitti is a well-known computer
+vision dataset of streets collected by smart cars from urban and rural scenarios. Kitti includes
+realistic image and point cloud data collected from urban, rural, and highway scenes (Geiger
+et al., 2013). We randomly extracted 20% of overlapping frame pairs (1,533 pairs) from Kitti
+and pre-train a model for 60,000 iterations using the algorithm of PointContrast.
+The pre-trained model was re-trained and evaluated using the annotated dataset of 31 pedestrian paths. 10-fold cross-validation was adopted to verify training accuracy and segmentation
+dynamically based on mean Intersection over Union (mIoU). The dataset was randomly divided
+into ten subsets, and the training was repeated ten times. The ith subset served as the validation
+dataset throughout the training process, while the remaining nine subsets were utilized for training. Overall Accuracy (OA), mean class Accuracy (mAcc), and mIoU were utilized to evaluate
+10-fold cross-validation results comprehensively.
+
+Figure 5: The enrichment of 3DPN using results of contrastive learning. (a) 2D centerline extraction of a pedestrian
+path; (b) segmented point cloud; (c) plane detection; (d) path strip sections; (e) filtered walkable area; (f) the
+generation of 3D centerline.
+
+3.3. Enrichment of 3DPN
+This step supplements 3DPN by extracting the 2D centerline, detecting 3D primitives, and
+generating the according to 3D centerline, as shown in Figure 5.
+3.3.1. 2D centerline extraction
+First, 2D centerlines are extracted from the 2D point cloud. The skeleton axis is generated
+based on the 2D alpha-shape of the point cloud by using 2D straight-line skeleton and polygon
+offsetting provided by CGAL (version 5.6) (Aichholzer and Aurenhammer, 1996). The refined
+2D polyline based on the skeleton axis’s sampling points is reconstructed using the optimal
+transportation curve reconstruction function from CGAL (version 5.6) (de Goes et al., 2011).
+The main parameter of this function is the Wasserstein tolerance, which is suggested to be set to
+0.9 for the simplified 2D centerlines. Figure 5a shows an example of 2D centerline extraction
+from the segmented street-level point cloud. The 2D centerline finally obtained can have fewer
+inflection points while ensuring the main direction of the path.
+3.3.2. 3D primitives detection
+Figure 5c shows a sample of 3D primitive detection. RANSAC is utilized to detect planes
+based on the semantic segmentation result from Section 3.2. The normal threshold was set to
+9
+
+Figure 6: The illustration of position validation of 3D centerlines, where TP indicates the successful case in which
+D is smaller than 0.5 m, FP indicates D is larger than 0.5 m, and FN indicates pedestrian path segment is not found.
+
+0.95, the minimum number of support points in shapes was 50 (roughly 0.02 m2 area), and
+the Euclidean distance epsilon between points and shapes was equal to 0.01 m to detect planar
+shapes. The density-based spatial clustering of applications with noise (DBSCAN) method
+clusters planes at different positions. The fourth neighboring point distance mean value plus
+two standard deviations (Riquelme et al., 2014) is employed as the Euclidean distance epsilon
+between point clusters.
+3.3.3. 3D centerline extraction
+As shown in Figure 5b-f, the 3D centerline is generated with reference to the 2D centerline
+and semantically segmented point cloud results. The process starts with evenly sampling the
+2D reference polyline at 0.2m intervals into stripes for centerline extraction. Each point in the
+clustered point cloud is cropped using the strip bounding box, and the noise is filtered based on
+the distance to the plane group to obtain a refined point cloud segment. Each stripe and its center
+point are analyzed to examine if they belong to the flat areas or stairs class. If one strip contains
+both classes, the strip is identified as an intersection. Subsequently, the 3D polyline points
+around the 2D centerline are connected in sequence, and the 3D centerline is then simplified
+based on a perpendicular distance of 0.1 m, as shown in Figure 5f.
+There are 21 pedestrian paths in the training dataset used for point-level segmentation validation, and each type of path (i.e., paths with continuous stairs, flat areas, and a few stairs)
+contains seven pedestrian paths (1745.16m in total). IoU is set as the evaluation metric for
+validation from both position and semantic accuracy.
+The accuracy of the position is validated by comparing it with manually extracted ground
+truth pedestrian path centerlines. We extract line segments based on the extracted pedestrian
+path centerline at regular intervals of 0.1 m. If the distance between the segment and ground
+10
+
+truth is less than the 0.5 m criterion, the pedestrian path segment is considered true positive (TP);
+otherwise, it is classified as false positive (FP). In cases where no corresponding pedestrian path
+segment is generated, it is classified as a false negative (FN), as shown in Figure 6.
+The semantic information results of the extracted pedestrian path centerlines are compared
+with the corresponding ground truth target labels. Meanwhile, the Hong Kong 3DPN (HKLandsD, 2020; Sun et al., 2021), at the city scale, is selected to compare the effectiveness of our
+extracted result at the micro scale. The Hong Kong 3DPN includes a variety of attributes, such
+as segment types (e.g., footway and staircase). However, the network simplifies some small
+staircases on the pedestrian path because the presentation of city-level scale is different from
+micro-level for wheelchair users. Therefore, we quantitatively evaluate the segment types of
+city-scale 3DPN.
+3.4. Automatic wheelability assessment
+In this paper, the wheelability index is defined as the chance of the physical conditions
+of pedestrian paths allowing wheelchair users to pass safely. For each strip acquired in the
+previous step, two geometry attributes, i.e., pure width and total slope, are measured, and the
+wheelability is calculated based on Eq. 1. When the line segments’ class label is Stairs, the
+wheelability index is set as 0. The range of wheelability is from 0 to 1.
+ω = ωw × ωs
+s=
+
+q
+
+s2cross + s2running
+
+(1)
+(2)
+
+Figure 7: The input map functions of width and total slope.
+
+w and s are the input width and total slope. ω is the calculated wheelability of a segment.
+ωw and ωs are the wheelability sub-indices of width and total slope of the segment. scross and
+srunning are measured cross slope and running slope, respectively.
+The cross slope (scross ) and running slope (srunning ) are measured. HKArchSD (2004) suggests that the cross slope should be lower than 2 % when the running slope exceeds 10 %.
+Therefore, this paper uses total slope to evaluate a single strip’s slope, as shown in Eq. 2. The
+pure width of each strip is measured based on the obstacles and handrails-filtered walkable area.
+We utilized probability distribution to evaluate the wheelability of a given pedestrian path
+strip and simulate the actual wheelchair users’ passing ability. Wheelability is calculated based
+
+11
+
+on the probability distribution of a given path strip, which is contingent on the geometry attributes of the path and the input upper and bottom bound of geometry attributes. The wheelability width index of a path strip with a width less than 1.05 m was assigned a value of 0,
+whereas a path strip with a width greater than 1.5 m was assigned a value of 1 (HKArchSD,
+2004). Besides, the wheelability total slope index was set as 1 when the total slope was less than
+5 % and gradually decreased when the total slope was greater than 10 % (assistance required)
+(HKBD, 2021), as shown in Figure 7.
+The geometry attributes of pedestrian paths are verified by manually measuring attributes
+such as width, cross slope, running slope, and total slope from each point cloud segment, and
+the ground truth wheelability is subsequently determined. Validation metrics include the rootmean-squared error (RMSE), the mean absolute error (MAE), and the R-squared (R2 ). Stair
+segments are excluded when validating geometry attributes because wheelability was directly
+assigned as 0. Three types of pedestrian paths (i.e., Flat, Stairs, and Combined) are analyzed
+to compare the performance of the proposed method. The resulting wheelability indices of path
+segments are analyzed for town blocks in different functions (e.g., 10 paths in commercial and
+11 paths in residential areas).
+4. Experiments
+4.1. Experimental settings
+The experimental environment of contrastive learning was set up in a high-performance
+computing cluster. A node on the cluster had dual Intel Xeon 6226R (16-core), 384GB RAM,
+and Nvidia V100 (32GB) GPU. We completed training based on PyTorch (Version 1.9) and
+Python (Version 3.8). PyTorch Points 3D was used as the network library to compare deep
+learning model accuracy (Chaton et al., 2020; Li et al., 2023a). The enrichment to 3DPN and
+automatic wheelability assessments were tested in single threading mode on a desktop computer
+with Intel Core i7-13700K (3.40 GHz), 128 GB RAM, and Nvidia RTX A4000 GPU.
+4.2. Results
+4.2.1. Contrastive deep learning of point semantics
+Table 2 shows satisfactory point-level semantic segmentation results of contrastive deep
+learning on the prepared dataset. The first row of results indicates that our re-trained PointContrast model based on the pre-training on Kitti was evaluated as OA at 88.23 %, mAcc at
+75.18 %, and mIoU at 65.10 %. In contrast, the second row shows the PointContrast model
+pre-trained on ScanNet received consistently worse scores than the first row.
+Table 2 also shows comparisons with 6 more deep learning algorithms in 3 categories, i.e.,
+voxel-based, MLP-based, and Kernel-based. Note that Minkowski also serves as the backbone
+of PointContrast training. Compared with Minkowski, our contrastive deep learning received a
+higher accuracy by up to 8 % in terms of mIoU. The kernel-based algorithm KPConv showed
+satisfactory results in detecting certain classes, such as stairs and flat areas. In contrast, MLPbased methods, such as PointNet, presented the least satisfactory segmentation results in general.
+PointContrast demonstrated excellent segmentation performance for classes with continuous surfaces, as shown in the flat areas at 88.45 % and buildings at 80.26 %. The segmentation
+result of class stairs, which consists of vertical and horizontal surfaces, was acceptable but relatively lower (62.68 %) compared to class flat areas and buildings. For scattered, smaller, or
+less frequent objects on the walkable footway, such as class obstacles, the segmentation performance was poor, as low as 37.03 %. The 3 % gap of mIoU between the two pre-trained datasets,
+12
+
+Figure 8: The example result of semantic segmentation of PointContrast.
+
+i.e., Kitti from road scenes and ScanNet from indoor scenes, indicates that contrastive learning
+is relatively sensitive to the context of pre-train datasets.
+Figure 8 visualizes the segmentation of an example path (No.28). PointContrast classified
+areas with one stair-step as flat areas due to the limited training samples of one-stair-step cases
+in the dataset. The mistakenly classified points around the stairs boundary caused one more
+segmentation error about the stairs; fortunately, the 3D centerline extraction step could correct
+the small point-level errors. Therefore, the point-level segmentation results of PointContrast are
+satisfactory overall for further 3DPN enrichment.
+Table 2: List of contrastive learning (15 million points of 31 paths, 10-fold cross-validation, best in each column
+in bold) and six other common point cloud deep learning methods.
+Type
+
+Model
+
+Pretrain dataset
+
+OA (%)
+
+mAcc (%)
+
+mIoU (%)
+
+Contrast.
+Contrast.
+Voxel
+Voxel
+Voxel
+MLP
+MLP
+Kernel
+
+PointContrast
+PointContrast
+SparseConvNet
+Minkowski
+PPNet
+PointNet
+PointNet++
+KPConv
+
+Kitti
+ScanNet
+\
+\
+\
+\
+\
+\
+
+88.23
+87.11
+84.50
+84.45
+85.08
+62.32
+66.60
+84.70
+
+75.18
+72.65
+72.07
+71.10
+71.11
+37.96
+43.79
+69.47
+
+65.10
+62.68
+58.52
+57.54
+59.47
+26.85
+31.64
+57.71
+
+Stairs
+62.68
+60.43
+50.04
+48.59
+53.50
+15.45
+18.83
+58.42
+
+Flat areas
+88.45
+86.54
+83.63
+83.86
+85.31
+65.06
+68.40
+86.48
+
+Per class IoU (%)
+Handrail Buildings
+57.05
+80.26
+55.65
+79.55
+51.82
+74.62
+51.06
+74.68
+48.05
+74.70
+4.16
+43.68
+10.96
+51.22
+37.07
+72.73
+
+Obstacles
+37.03
+31.21
+32.48
+29.53
+35.77
+5.90
+8.77
+33.87
+
+4.2.2. Pedestrian path centerlines position accuracy
+The results of 3D centerlines’ positions were also satisfactory, with an IoU of 88.81 %.
+Since the position accuracy of city-scale 3DPN depends on the mapping scale and is focused
+on network connectivity, comparing the accuracy of the position between city-scale 3DPN and
+our result is not meaningful. Our proposed method demonstrates a significantly accurate 3D
+pedestrian path centerline extraction.
+4.2.3. Pedestrian path centerlines semantic segmentation accuracy
+The semantics results are shown in Table 3. The semantics results were as follows: Stairs
+at 70.23 %, Flat areas at 92.62 %, and mIoU at 86.39 %. The semantic classification accuracy
+of the Hong Kong 3DPN was low, with only 25.04 % for Stairs and 71.85 % for Flat areas.
+The primary reason was the Hong Kong 3DPN’s incorrect manual annotation and loss of details
+
+13
+
+Table 3: The classification results of the extracted 3D pedestrian path centerlines regarding two critical semantic
+labels for wheelability.
+Stairs(%)
+70.23
+25.04
+
+Semantic result
+Hong Kong 3DPN
+
+Flat area(%)
+92.62
+71.85
+
+mIoU(%)
+86.39
+59.15
+
+Figure 9: The illustration of the generated 3D centerline compared with the segmented filtered point cloud and
+ground truth point cloud, which highlights the examples of error semantic results. (a) Stairs with long-step surfaces;
+(c) incomplete stairs segmentation; (d) curb area that is assigned as stairs.
+
+due to excessive mapping scale. Figure 10 demonstrates the semantic extracted result of the 3D
+pedestrian path centerline from the top view.
+The assigned semantic information result relied on the point cloud segmentation result.
+For example, PointContrast segmented stairs with long step surfaces into two separated stairs
+connected by a shared landing area, and the corresponding centerlines followed the point-level
+segmentation result, as shown in Figure 9a. Stair areas with unclear vertical and horizontal
+surface transitions (Figure 9b) and curb (Figure 9c) were misclassified even with 3D primitive
+extraction and filter. When the boundary of the point cloud segmentation result was not a
+straight line, the semantic matching of the centerline at the boundary of the stairs and flat areas
+was confused, resulting in errors in semantic information labeling. To conclude, the significant
+improvement in IoU results demonstrates that our method effectively detects stairs on pedestrian
+paths, providing more information for barrier-free travel guidance.
+4.2.4. Pedestrian path wheelability assessment
+Table 4: The comparison among different types of pedestrian paths regarding the RMSE, MAE, and R2 scores for
+the measured attributes and wheelability index.
+Width(m)
+
+Cross slope(%)
+
+Running slope(%)
+
+Total slope(%)
+
+Wheelability
+
+RMSE
+
+MAE
+
+R2
+
+RMSE
+
+MAE
+
+R2
+
+RMSE
+
+MAE
+
+R2
+
+RMSE
+
+MAE
+
+R2
+
+RMSE
+
+MAE
+
+R2
+
+Flat
+Stairs
+Combined
+
+0.29
+0.39
+0.32
+
+0.16
+0.18
+0.12
+
+0.81
+0.72
+0.84
+
+3.68
+3.49
+3.36
+
+2.40
+2.09
+1.61
+
+0.62
+0.27
+0.28
+
+3.43
+6.07
+3.93
+
+1.99
+2.57
+2.40
+
+0.80
+0.57
+0.83
+
+4.20
+6.31
+3.99
+
+2.68
+2.95
+2.51
+
+0.73
+0.55
+0.82
+
+0.26
+0.22
+0.14
+
+0.14
+0.09
+0.03
+
+0.66
+0.68
+0.81
+
+All
+
+0.32
+
+0.15
+
+0.80
+
+3.53
+
+2.07
+
+0.54
+
+4.33
+
+2.26
+
+0.79
+
+4.71
+
+2.69
+
+0.74
+
+0.22
+
+0.09
+
+0.70
+
+Table 4 shows that the proposed method accurately assesses wheelability indices. Specifically, for width measurement, the MAE was only 0.15m. For slope measurement, the resulting
+validation metrics of MAE were: cross slope MAE 2.07%; running slope MAE 2.26%; total
+slope 2.69%; and wheelability 0.09. The RMSE of wheelability was 0.22, mainly due to the
+wrong measures of the total slope of the segments with tiny curbs in the complex built environment that cannot be filtered by the algorithm.
+14
+
+Figure 10: Top view of segmented centerline results of 3 paths.
+
+We then compared the result of wheelability indices of three types of pedestrian paths (i.e.,
+Flat, Stairs, and Combined), as shown in Table 4. The type of Combined paths achieved high
+results in each sub-indices. The R2 score of Combined and Stairs for cross slope were 0.28
+and 0.27, respectively, even though the RMSE and MAE values were relatively low. This
+was attributed to the presence of curbs with varying heights commonly found in the Combined
+and Stairs paths (with an average gradient of 0.18), which posed challenges for the proposed
+method regarding effective filtering of walkable areas, as stated before. Besides, the RMSE of
+the running slope for type Stairs was up to 6.07%. The outliers of type Stairs’s running slope
+appeared in areas with uneven ground, leading to incorrect plane filtering and relatively high
+detected running slope values.
+Our wheelability index achieved satisfactory MAE results on various types of paths, although the proposed method has some limitations in the way slope is measured. The RMSE
+and MAE results of Combined and Stairs’ paths were higher than Flat’s, which were mainly due
+to the semantic errors from centerlines in Sect. 4.2.3. Figure 11b-e demonstrate the zoom-in
+photos captured by a digital camera of segments with different levels of wheelability.
+Figure 12 shows an example of a pedestrian path with the measured segments’ width, cross
+slope, running slope, total slope, and wheelability. The path of the example was satisfactory in
+terms of width; however, the presence of stairs affected wheelability. The wheelability index
+result shows that the path is unsuitable for wheelchair users.
+Figure 13a-c demonstrate the distribution of width, total slope, and wheelability of type of
+Flat, Stairs, and Combined, respectively. The average wheelability index of each type was 0.24,
+0.21, and 0.12. Even though flat paths did not contain any stairs, their total slope still resulted
+in a large number of segments with a lower wheelability index. Besides, many segments had
+
+15
+
+Figure 11: 3D view of segmented pedestrian results with wheelability index and semantic information. Subfigure
+d-e showcase zoomed-in photos captured by a digital camera of segments exhibiting varying wheelability levels.
+
+narrow path widths, as shown in Figure 13a, which were not recommended for wheelchair users
+to pass through. In the case of combined paths, the presence of few stairs might result in a higher
+slope in the flat areas, which in turn influenced the wheelability outcomes, as demonstrated in
+Figure 13c. For Stairs paths, a greater number of stairs indicated that they had a lower slope in
+the flat area, resulting in the stair paths being less affected by the overall slope.
+The wheelability analysis according to various urban functional areas is demonstrated in
+Figure 13d and e. The average wheelability index of commercial and residential areas were 0.29
+and 0.13, respectively. As shown in Figure 13e, the wheelability of path segments in commercial
+areas was higher than in residential areas. The main reason is that commercial areas are mainly
+distributed around the coastline of Hong Kong. In contrast, residential areas are located closer
+to the slope and mountain terrain. Wheelchair users should be particularly mindful of the slopes
+in residential areas that could lead to falls. In summary, the 21 tested paths are unsuitable for
+wheelchair users, as displayed in Figure 13f. The Hong Kong government could improve the
+slope and width of pedestrian paths based on our results to enhance wheelability.
+4.2.5. Performance analysis
+Table 5 lists the computational time. For the proposed method, the average time cost per
+100 m of semantic segmentation was 1.36 s, the 2D centerline extraction lasted 5.81 s, the 3D
+primitive detection lasted 14.74 s, the 3D centerline extraction lasted 25.41 s, the wheelability
+assessment lasted 0.65 s, and the total meantime for processing one pedestrian path was 47.97
+s. The most time-consuming stage of the proposed method was 3D centerline extraction; at
+this stage, segment point clouds were refined and measured. Using the measured path segments
+enabled the quick generation of wheelability.
+
+16
+
+Figure 12: The illustration of the pedestrian path segments’ geometry attributes (i.e., width, cross slope, running
+slope, total slope, and wheelability).
+
+Table 5: Average time cost per 100m of the proposed method (21 paths), most time-consuming part in bold.
+Sections
+3.2
+3.3.1
+3.3.2
+3.3.3
+3.4
+
+Step
+Point cloud segmentation
+2D centerlines
+3D primitives detection
+3D centerline extraction
+Wheelability assessment
+Total
+
+Time (s)
+1.36
+5.81
+14.74
+25.41
+0.65
+47.97
+
+17
+
+Portion (%)
+2.84
+12.11
+30.73
+52.97
+1.35
+100
+
+Figure 13: Scatter charts and comparison of the path segments’ wheelability indices in different types and areas.
+(a) Flat paths, (b) Stairs paths, (c) Combined paths, (d) Residential area, (e) commercial area, and (f) all paths
+results.
+
+5. Discussion
+5.1. Significance
+3DPN for guiding barrier-free travel can be reinforced with the development of LiDAR and
+digital twinning (Xue et al., 2021; Consilvio et al., 2023). Smartphone scanning is a crowdsourceable RGB point cloud data for 3DPN. With the new smartphone data, we can extract 3D
+centerlines with fine-grained details (i.e., segment type, width, slope, and wheelability assessment) for wheelchair users. In summary, the experimental evidence proves the accuracy of the
+position, semantic information, and wheelability index based on the proposed method.
+High-definition, detailed, and completed 3DPN are valued for active travel by vulnerable
+people (e.g., the elderly and wheelchair users). For high-density and hilly cities like Hong Kong,
+accurately labeled pedestrian networks can provide safer, appropriate walking routes for a wide
+range of users (e.g., visually or physically impaired pedestrians, delivery service), ensuring
+barrier-free travel. Leveraging smartphones’ ease of use, fast speed, and low cost, our method
+enables crowdsourcing-based pedestrian path information collection for barrier-free travels.
+3DPN with fine-grained details can improve pedestrian path infrastructure assessment. The
+government can improve pedestrian path conditions and quality to better assist the wheelchair
+users (Meng and Zheng, 2023). Besides, the 3DPN with fine-grained details can widen data
+usage for pedestrians (Li et al., 2023b). The proposed method presents a cost-effective and
+efficient solution for walkability and barrier-free management.
+5.2. Limitations and future work
+The sample size of the training dataset was relatively small compared to large-scale datasets
+like Kitti. Besides, the device used to collect the point cloud data was based on an old model
+18
+
+smartphone. Labeling ground truth annotation is labor-intensive. Expanding the street-level
+pre-training dataset can help improve accuracy and reduce manual annotation work. A future
+direction could be expanding the dataset with the newest smartphone LiDAR to improve the
+point-level segmentation accuracy.
+The definition of the wheelability index in the proposed method only considers the geometry
+attribute of pedestrian paths that allow wheelchair users to pass through safely. The mapping
+model for the wheelability sub-indices is relatively simple, large-scale surveys of the sizes and
+climbing abilities of popular wheelchairs on the market can improve the practicality of the
+findings. Facilities (e.g., pavement quality and curb ramps) and connectivity were omitted in
+this paper. Another future direction is thus to study comprehensive wheelability assessment
+using multi-source data and a field survey of wheelchairs.
+User standards and public promotion methods are needed to promote the proposed crowd
+sourcing method at a large scale (refer to Appendix Table A.6 from Expert 1). The challenge of
+balancing accuracy and storage exists, given that the extracted centerline is fine-grained. This
+problem can be partially addressed by merging path segments with similar wheelability, thereby
+simplifying path segments in a route.
+Real-time data, such as crowdsourced geolocations and motions, can facilitate identifying
+temporary or movable obstacles, which can inform users of the motions of objects and width
+changes in real time (Liang et al., 2024). So, another research direction is integrating the Internet of Things and tracking changes into the future models of 3DPN (Kong et al., 2024).
+Currently, our method only focuses on single pedestrian path centerline generation as prototype research. In order to guide wheelchair routing in a complex 3DPN, the connectivity of
+facilities, such as elevators and air conditioning in summer, is essential. Therefore, researchers
+are also encouraged to apply network-level analysis, integrated with digital twin facilities and
+importance-based risk assessment (Chen et al., 2024), in future work for reliable and resilient
+routes for wheelchairs.
+6. Conclusion
+Wheelable networks are essential in promoting equal mobility for wheelchair users. Existing work in the literature neglected to incorporate missing paths, accurate micro-level elevations, fine-grained geometry details (e.g., width and slope), and the wheelability in 3DPN for
+wheelchair users. Meanwhile, a new data collection method, smartphone LiDAR, offers a novel
+opportunity to fine-grained map 3DPN for wheelchair accessibility.
+This paper presents an automatic wheelability assessment method in high-density urban
+areas using contrastive deep learning of smartphone point clouds. The wheelability index in
+this paper is defined as the probability of safe travel of wheelchairs regarding the width of flat
+footways and total slope. With the inputs of street-scale smartphone point clouds and city-scale
+3DPN, our output is the high-precision 3D pedestrian path centerlines with accurate semantic
+classes and wheelability indices for 3DPN enrichment and barrier-free mobility.
+The experimental results on pedestrian paths confirmed the feasibility and high accuracy
+of the proposed method. We found contrastive deep learning enhanced smartphone LiDARbased semantic segmentation compared to other popular deep learning methods; 3D semantic
+centerlines detailed and enriched the positions, semantic classes, and wheelability indices to
+Hong Kong’s 3DPN. The wheelability evaluation metrics of three path types confirmed that our
+method can detect the path segments’ wheelability accurately.
+The primary contribution is a precise, automatic method for enriching city-scale 3DPN and
+assessing wheelability using street-scale smartphone point clouds. Future research directions
+are recommended for improving deep learning with an enlarged dataset for pre-training and
+19
+
+training, creating a wheelability sub-indices mapping system, developing crowdsource user
+standard and promotion methods, identifying dynamic footway conditions in real-time, and
+developing a crowd-sourcing software system that automatically updates 3DPN for wheelchair
+users.
+Acknowledgements
+The work presented in this paper was supported by the Hong Kong Research Grants Council
+(RGC) (Nos. T22-504/21-R and 27200520), the Hong Kong Innovation and Technology Commission (ITC) (No. ITP/004/23LP), and in part by the Department of Science and Technology
+of Guangdong Province (GDST) (2023A1515010757). Ms. Xian Su’s work was done when
+she was affiliated with the University of Hong Kong.
+Appendix A. Expert comments
+This appendix serves to evaluate the proposed method from the perspective of six domain
+experts in the area of 3DPN and smart mobility. Five were from the land management department of the Government of Hong Kong SAR, while the other one was a university professor
+of urban network-based research. Before answering questions, we provided an overview of
+the research background and discussed the results and findings in terms of 3D accuracy and
+wheelability. The comments from experts were listed in A.6.
+Table A.6: The summary of comments from six domain experts regarding the pros and cons of the proposed
+method
+
+Expert
+
+Pros.
+
+Expert
+
+Cons.
+
+1-6
+
+Detect Obstacles, gradients for visually or
+physically impaired users
+Facilitate large-scale network updating using crowdsourced-based method
+Improve the current HK3DPN
+Benefit wide range of users (e.g., delivery
+services)
+Enable more smart-city-based applications
+(e.g., planning, transportation navigation)
+Improve efficiency
+
+1-6
+
+Need network connectivity (e.g., elevator)
+
+1
+
+Require crowdsource-based standards
+
+1
+2
+
+Need public promotion method
+Balance between data accuracy and storage
+
+6
+1-5
+1-5
+1-5
+1-5
+
+References
+Aghaabbasi, M., Moeinaddini, M., Zaly Shah, M., Asadi-Shekari, Z., Arjomand Kermani, M.,
+2018. Evaluating the capability of walkability audit tools for assessing sidewalks. Sustainable
+Cities and Society 37, 475–484. doi:10.1016/j.scs.2017.12.001.
+Ai, C., Tsai, Y.J., 2016. Automated sidewalk assessment method for americans with disabilities
+act compliance using three-dimensional mobile lidar. Transportation Research Record 2542,
+25–32. doi:10.3141/2542-04.
+Aichholzer, O., Aurenhammer, F., 1996. Straight skeletons for general polygonal figures
+in the plane, in: Computing and Combinatorics, Springer. pp. 117–126. doi:10.1007/
+3-540-61332-3_144.
+20
+
+Balado, J., Díaz-Vilariño, L., Arias, P., González-Jorge, H., 2018. Automatic classification of
+urban ground elements from mobile laser scanning data. Automation in Construction 86,
+226–239. doi:10.1016/j.autcon.2017.09.004.
+Balado, J., Díaz-Vilariño, L., Arias, P., Lorenzo, H., 2019. Point clouds for direct pedestrian
+pathfinding in urban environments. ISPRS Journal of Photogrammetry and Remote Sensing
+148, 184–196. doi:10.1016/j.isprsjprs.2019.01.004.
+Chaton, T., Chaulet, N., Horache, S., Landrieu, L., 2020. Torch-points3d: A modular multitask framework for reproducible deep learning on 3D point clouds, in: 2020 International
+Conference on 3D Vision (3DV), IEEE. pp. 1–10. doi:10.1109/3DV50981.2020.00029.
+Chen, Z., Deng, L., Luo, Y., Li, D., Junior, J.M., Gonçalves, W.N., Nurunnabi, A.A.M., Li,
+J., Wang, C., Li, D., 2022. Road extraction in remote sensing data: A survey. International
+Journal of Applied Earth Observation and Geoinformation 112, 102833. doi:10.1016/j.
+jag.2022.102833.
+Chen, Z., Zhang, S., Dui, H., 2024. Importance-based risk evaluation methodology in transportation cyber-physical systems. Frontiers of Engineering Management (Accepted, in
+press). doi:10.1007/s42524-024-4026-6.
+Chiang, Y.C., Lei, H.Y., 2016. Using expert decision-making to establish indicators of urban
+friendliness for walking environments: A multidisciplinary assessment. International journal
+of health geographics 15, 1–12. doi:10.1186/s12942-016-0071-7.
+Clarke, P.J., Ailshire, J.A., Nieuwenhuijsen, E.R., de Kleijn-de Vrankrijker, M.W., 2011. Participation among adults with disability: The role of the urban environment. Social Science &
+Medicine 72, 1674–1684. doi:10.1016/j.socscimed.2011.03.025.
+Consilvio, A., Hernández, J.S., Chen, W., Brilakis, I., Bartoccini, L., Di Gennaro, F., van Welie,
+M., 2023. Towards a digital twin-based intelligent decision support for road maintenance.
+Transportation Research Procedia 69, 791–798. doi:10.1016/j.trpro.2023.02.237.
+Coppola, N.A., Marshall, W.E., 2021. Sidewalk static obstructions and their impact on clear
+width. Transportation Research Record 2675, 200–212. doi:10.1177/0361198121991833.
+Costantino, D., Vozza, G., Pepe, M., Alfio, V.S., 2022. Smartphone LiDAR technologies for
+surveying and reality modelling in urban scenarios evaluation methods, performance and
+challenges. Applied System Innovation 5. doi:10.3390/asi5040063.
+Eisenberg, Y., Heider, A., Labbe, D., Gould, R., Jones, R., 2024. Planning accessible cities:
+Lessons from high quality barrier removal plans. Cities 148, 104837. doi:10.1016/j.
+cities.2024.104837.
+Eisenberg, Y., Hofstra, A., Berquist, S., Gould, R., Jones, R., 2022. Barrier-removal plans and
+pedestrian infrastructure equity for people with disabilities. Transportation Research Part D:
+Transport and Environment 109, 103356. doi:10.1016/j.trd.2022.103356.
+Fernández-Arango, D., Varela-García, F.A., González-Aguilera, D., Lagüela-López, S., 2022.
+Automatic generation of urban road 3D models for pedestrian studies from LiDAR data.
+Remote Sensing 14, 1102. doi:10.3390/rs14051102.
+
+21
+
+de Freitas Pereira, L., de Albuquerque, M.S., da Silva Portugal, L., 2014. Access of wheelchair
+users in sportive mega events: the case of confederation cup. Procedia-Social and Behavioral
+Sciences 162, 148–157. doi:10.1016/j.apgeog.2020.102327.
+Galanis, A., Eliou, N., 2011. Evaluation of the pedestrian infrastructure using walkability
+indicators. WSEAS Transactions on Environment and Development 7, 385–394. URL:
+http://www.wseas.us/e-library/transactions/environment/2011/54-653.pdf.
+Gan, D.R., Mahmood, A., Routhier, F., Mortenson, W.B., 2022. Walk/wheelability: An inclusive instrument pair for participatory age-friendly research and practice. The Gerontologist
+62, e39–e47. doi:10.1093/geront/gnab079.
+Geiger, A., Lenz, P., Stiller, C., Urtasun, R., 2013. Vision meets robotics the kitti
+dataset. The International Journal of Robotics Research 32, 1231–1237. doi:10.1177/
+0278364913491297.
+de Goes, F., Cohen-Steiner, D., Alliez, P., Desbrun, M., 2011. An optimal transport approach to
+robust reconstruction and simplification of 2d shapes. Computer Graphics Forum 30, 1593–
+1602. doi:10.1111/j.1467-8659.2011.02033.x.
+Hassanpour, A., Bigazzi, A., MacKenzie, D., 2021. Equity of access to uber’s wheelchair
+accessible service. Computers, Environment and Urban Systems 89, 101688. doi:10.1016/
+j.compenvurbsys.2021.101688.
+HKArchSD, 2004. Universal Accessibility: Best Practices and Guidelines. Architectural
+Services Department, The government of Hong Kong SAR, Hong Kong. URL: https:
+//www.archsd.gov.hk/archsd/html/ua/06a-chapter6.pdf.
+HKBD, 2021. Design Manual: Barrier Free Access 2009 (2021 Edition). Building Department,
+The government of Hong Kong SAR, Hong Kong. URL: https://www.bd.gov.hk/
+doc/en/resources/codes-and-references/code-and-design-manuals/BFA2008_
+e.pdf.
+HKLandsD, 2020.
+3D pedestrian network.
+geoportal/#metadataInfoPanel.
+
+URL: https://portal.csdi.gov.hk/
+
+Hosseini, M., Sevtsuk, A., Miranda, F., Cesar, R.M., Silva, C.T., 2023. Mapping the walk:
+A scalable computer vision approach for generating sidewalk network datasets from aerial
+imagery. Computers, Environment and Urban Systems 101, 101950. doi:10.1016/j.
+compenvurbsys.2023.101950.
+Hou, Q., Ai, C., 2020. A network-level sidewalk inventory method using mobile LiDAR and
+deep learning. Transportation Research Part C: Emerging Technologies 119, 102772. doi:10.
+1016/j.trc.2020.102772.
+Hu, X., Li, Y., Shan, J., Zhang, J., Zhang, Y., 2014. Road centerline extraction in complex
+urban scenes from lidar data based on multiple features. IEEE Transactions on Geoscience
+and Remote Sensing 52, 7448–7456. doi:10.1109/TGRS.2014.2312793.
+Hui, Z., Hu, Y., Jin, S., Yevenyo, Y.Z., 2016. Road centerline extraction from airborne LiDAR
+point cloud based on hierarchical fusion and optimization. ISPRS Journal of Photogrammetry
+and Remote Sensing 118, 22–36. doi:10.1016/j.isprsjprs.2016.04.003.
+22
+
+Husain, A., Vaishya, R.C., 2018. Road surface and its center line and boundary lines detection
+using terrestrial lidar data. The Egyptian Journal of Remote Sensing and Space Science 21,
+363–374. doi:10.1016/j.ejrs.2017.12.005.
+Kong, L., Zhao, R., Anumba, C., Lu, W., Xue, F., 2024. Open BIM exchange on Blockchain 3.0
+virtual disk: A traceable semantic differential transaction approach. Frontiers of Engineering
+Management (Accepted, in press). doi:10.1007/s42524-024-4006-x.
+Le-Khac, P.H., Healy, G., Smeaton, A.F., 2020. Contrastive representation learning: A framework and review. IEEE Access 8, 193907–193934. doi:10.1109/ACCESS.2020.3031549.
+Li, C., Ma, K.O.Y., Saugstad, M., Fujii, K., Delaney, M., Eisenberg, Y., Labbé, D., Shanley,
+J.L., Snyder, D., Thomas, F.P.P., Froehlich, J.E., 2024. "i never realized sidewalks were a big
+deal": A case study of a community-driven sidewalk accessibility assessment using project
+sidewalk, in: Proceedings of the CHI Conference on Human Factors in Computing Systems,
+ACM. pp. 1–18. doi:10.1145/3613904.3642003.
+Li, M., Wu, Y., Yeh, A.G., Xue, F., 2023a. HRHD-HK: A benchmark dataset of high-rise and
+high-density urban scenes for 3D semantic segmentation of photogrammetric point clouds,
+in: 2023 IEEE International Conference on Image Processing Challenges and Workshops
+(ICIPCW), pp. 3714–3718. doi:10.1109/ICIPC59416.2023.10328383.
+Li, M., Xue, F., Yeh, A.G.O., 2023b. Bi-objective analytics of 3D visual-physical nature exposures in high-rise high-density cities for landscape and urban planning. Landscape and Urban
+Planning 233, 104714. doi:10.1016/j.landurbplan.2023.104714.
+Li, Y., Hu, X., Guan, H., Liu, P., 2016. An efficient method for automatic road extraction
+based on multiple features from lidar data. The International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences XLI-B3, 289–293. doi:10.5194/
+isprs-archives-XLI-B3-289-2016.
+Liang, D., Chen, S.H., Chen, Z., Wu, Y., Chu, L.Y., Xue, F., 2024. 4D point cloud-based
+spatial-temporal semantic registration for monitoring mobile crane construction activities.
+Automation in Construction 165, 105576. doi:10.1016/j.autcon.2024.105576.
+Lima, J.P., Machado, M.H., 2019. Walking accessibility for individuals with reduced mobility:
+A Brazilian case study. Case Studies on Transport Policy 7, 269–279. doi:10.1016/j.
+sbspro.2014.12.195.
+Luaces, M.R., Fisteus, J.A., Sänchez-Fernändez, L., Munoz-Organero, M., Balado, J., DìazVilariño, L., Lorenzo, H., 2021. Accessible routes integrating data from multiple sources.
+ISPRS International Journal of Geo-Information 10, 7. doi:10.3390/ijgi10010007.
+Mahmood, A., O’Dea, E., Bigonnesse, C., Labbe, D., Mahal, T., Qureshi, M., Mortenson,
+W.B., 2020. Stakeholders walkability/wheelability audit in neighbourhoods (swan): Userled audit and photographic documentation in canada. Disability & Society 35, 902–925.
+doi:10.1080/09687599.2019.1649127.
+Meng, S., Zheng, H., 2023. A personalized bikeability-based cycling route recommendation
+method with machine learning. International Journal of Applied Earth Observation and
+Geoinformation 121, 103373. doi:10.1016/j.jag.2023.103373.
+
+23
+
+Ning, H., Li, Z., Wang, C., Hodgson, M.E., Huang, X., Li, X., 2022. Converting street view
+images to land cover maps for metric mapping: A case study on sidewalk network extraction
+for the wheelchair users. Computers, Environment and Urban Systems 95, 101808. doi:10.
+1016/j.compenvurbsys.2022.101808.
+Park, T., Efros, A.A., Zhang, R., Zhu, J.Y., 2020. Contrastive learning for unpaired image-toimage translation, in: Computer Vision–ECCV 2020, Springer. pp. 319–345. doi:10.1007/
+978-3-030-58545-7_19.
+Qi, C.R., Yi, L., Su, H., Guibas, L.J., 2017. Pointnet++: Deep hierarchical feature learning on
+point sets in a metric space, in: Advances in Neural Information Processing Systems, Curran Associates, Inc.. pp. 5105–5114. URL: https://proceedings.neurips.cc/paper_
+files/paper/2017/file/d8bf84be3800d12f74d8b05e9b89836f-Paper.pdf.
+Rhoads, D., Rames, C., Solê-Ribalta, A., Gonzälez, M.C., Szell, M., Borge-Holthoefer, J.,
+2023. Sidewalk networks Review and outlook. Computers, Environment and Urban Systems
+106, 102031. doi:10.1016/j.compenvurbsys.2023.102031.
+Riquelme, A.J., Abellän, A., Tomäs, R., Jaboyedoff, M., 2014. A new approach for semiautomatic rock mass joints recognition from 3D point clouds. Computers & Geosciences 68,
+38–52. doi:10.1016/j.cageo.2014.03.014.
+Saha, M., Saugstad, M., Maddali, H.T., Zeng, A., Holland, R., Bower, S., Dash, A., Chen, S.,
+Li, A., Hara, K., Froehlich, J., 2019. Project sidewalk: A web-based crowdsourcing tool for
+collecting sidewalk accessibility data at scale, in: Proceedings of the 2019 CHI Conference
+on Human Factors in Computing Systems, ACM, New York, NY, USA. pp. 1–14. doi:10.
+1145/3290605.3300292.
+Schwartz, N., Buliung, R., Daniel, A., Rothman, L., 2022. Disability and pedestrian road traffic
+injury: A scoping review. Health & Place 77, 102896. doi:10.1016/j.healthplace.2022.
+102896.
+Soares Muller, A.P., Goulart Dorneles, V., Ruiz-Padillo, A., Vieira Romano, F., 2023. Sidewalk
+assessment from the perspective of accessibility: A systematic literature review. Journal of
+Urban Planning and Development 149, 04023032. doi:10.1061/juppdm.upeng-4412.
+Ståhl, A., Berntman, M., 2007.
+Falls in the outdoor environment among older
+persons. a tool to predict accessibility, in: Proceedings of the 11th International Conference on Mobility and Transport for Elderly and Disabled Persons,
+p. . URL: https://www.ictct.net/wp-content/uploads/20-Valencia-2007/ictct_
+document_nr_482_St%C3%A5hl.pdf.
+Sun, G., Webster, C., Zhang, X., 2021. Connecting the city: A three-dimensional pedestrian
+network of Hong Kong. Environment and Planning B: Urban Analytics and City Science 48,
+60–75. doi:10.1177/2399808319847204.
+Tchapmi, L., Choy, C., Armeni, I., Gwak, J., Savarese, S., 2017. Segcloud: Semantic segmentation of 3d point clouds, in: 2017 international conference on 3D vision (3DV), IEEE. pp.
+537–547. doi:10.1109/3DV.2017.00067.
+
+24
+
+Thomas, H., Qi, C.R., Deschaud, J.E., Marcotegui, B., Goulette, F., Guibas, L.J., 2019. Kpconv: Flexible and deformable convolution for point clouds, in: 2019 IEEE/CVF International Conference on Computer Vision (ICCV), IEEE Computer Society. pp. 6411–6420.
+doi:10.1109/ICCV.2019.00651.
+Torkan, M., Janiszewski, M., Uotinen, L., Rinne, M., 2023. Method to obtain 3d point clouds
+of tunnels using smartphone lidar and comparison to photogrammetry, in: IOP Conference Series: Earth and Environmental Science, IOP Publishing. p. 012016. doi:10.1088/
+1755-1315/1124/1/012016.
+Wu, Y., Shang, J., Xue, F., 2021. RegARD: Symmetry-based coarse registration of smartphone’s
+colorful point clouds with cad drawings for low-cost digital twin buildings. Remote Sensing
+13, 1882. doi:10.3390/rs13101882.
+Xie, F., Levinson, D., 2005. Measuring the structure of road networks. Geographical Analysis
+39. doi:10.1111/j.1538-4632.2007.00707.x.
+Xie, S., Gu, J., Guo, D., Qi, C.R., Guibas, L., Litany, O., 2020. Pointcontrast: Unsupervised
+pre-training for 3D point cloud understanding, in: Computer Vision–ECCV 2020, Springer.
+pp. 574–591. doi:10.1007/978-3-030-58580-8_34.
+Xue, F., Wu, L., Lu, W., 2021. Semantic enrichment of building and city information models:
+A ten-year review. Advanced Engineering Informatics 47, 101245. doi:10.1016/j.aei.
+2020.101245.
+Yoon, H.Y., Kim, J.H., Jeong, J.W., 2022. Classification of the sidewalk condition using selfsupervised transfer learning for wheelchair safety driving. Sensors 22, 380. doi:10.3390/
+s22010380.
+Zhao, J., Sun, G., Webster, C., 2021. Walkability scoring: Why and how does a threedimensional pedestrian network matter? Environment and Planning B: Urban Analytics
+and City Science 48, 2418–2435. doi:10.1177/2399808320977871.
+
+25
+
+

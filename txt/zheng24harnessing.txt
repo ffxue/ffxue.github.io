@@ -1,0 +1,1259 @@
+Harnessing geographic information system and street view
+imagery for thermal gradient distribution auditing
+Lang Zhenga, Weisheng Lu*, Jianxiang Huangb, Fan Xuea
+a
+
+5
+
+Department of Real Estate and Construction, Knowles Building, The University of Hong Kong,
+Pokfulam, Hong Kong SAR, China
+Corresponding author, KB503, 5/f, Department of Real Estate and Construction, Knowles Building,
+The University of Hong Kong, Pokfulam, Hong Kong SAR, China, wilsonlu@hku.hk
+
+*
+
+b
+
+Department of Urban Planning and Design, Knowles Building, The University of Hong Kong,
+Pokfulam, Hong Kong SAR, China
+
+This is the peer-reviewed post-print version of the paper:
+Zheng, L., Lu, W., Huang, J., & Xue, F. (2025). Harnessing geographic information
+system and street view imagery for thermal gradient distribution auditing. Urban
+Climate, 59, 102248. Doi: 10.1016/j.uclim.2024.102248.
+The final version of this paper is available at: https://doi.org/10.1016/j.uclim.2024.102248
+The use of this file must follow the Creative Commons Attribution NonCommercial No Derivatives License, as required by Elsevier's policy.
+10
+
+Abstract
+
+15
+
+20
+
+25
+
+30
+
+Assessing and managing the thermal environment within urban streetscapes is of paramount
+importance for the health, livability, and ecological sustainability of metropolitan regions.
+However, due to a scarcity of high-precision historical street thermal environment data for
+prediction and modeling, existing urban thermal environment classification assessment studies
+suffer from low resolution (> 30m) or limited research scope (e.g., community-level), resulting
+in less accurate and comprehensive insights. This study introduces an innovative framework
+for constructing large-scale urban street-level thermal gradients using classified samples
+derived from the spatial structural features of street points. The core of this framework lies in
+the k-means unsupervised classification algorithm. This approach integrates detailed local
+geographic information system (GIS) data with street view features, calculated through
+semantic segmentation of Google Street-View-Panorama using the DeepLabV3 model. This
+allows for the categorization of a vast array of high-precision street points based on spatial
+structural similarity, a key factor influencing the similarity of street thermal environment
+features. By selecting appropriate samples for on-site thermal environment measurements
+within each category and subsequently extrapolating this knowledge to the thermal
+environment classification of each category, this framework facilitates the rapid creation of
+high-precision street-level thermal gradient models across extensive urban areas.
+Keywords: Street view panoramas; Geographic information system, Semantic segmentation;
+K-means; Thermal gradient
+1. Introduction
+
+35
+
+Urban spatial structure is an abstract or generalized description of phenomena within
+geographical spaces, encompassing aspects such as the distribution of elements, their
+proportions, and relative positions [1]. These spatial geometric concepts play a crucial role in
+understanding and interpreting the mechanisms underlying urban environments, transportation,
+and socio-economic developments [2, 3]. However, with the acceleration of urbanization and
+
+1
+
+the expansion of urban scale, the complexity of the urban spatial structure is constantly growing,
+making the collection, analysis, and interpretation of urban data increasingly challenging [4].
+40
+
+45
+
+50
+
+55
+
+60
+
+65
+
+70
+
+75
+
+80
+
+In the past few decades, the incorporation of geographic information systems (GIS) into urban
+spatial analysis has significantly advanced research endeavors. GIS facilitates the visualization,
+analysis, and interpretation of urban space by integrating various types of data [5]. For instance,
+remote sensing data obtained via satellites and airborne sensors are presented in the form of
+regular pixel arrays (i.e., raster), with each pixel representing a specific geographical area and
+containing attribute information about that region, can be utilized for monitoring environmental
+changes, urban development, land use, and so on [6, 7]. Numerous research methodologies
+have emerged around these data, including place syntax and spacematrix [8, 9]. By extracting
+shape, size, and location data of urban elements (e.g., street greenery, street networks,
+transportation nodes, and public facilities), indices such as building density, public space ratio,
+and mixed-use distribution are calculated, revealing detailed urban characteristics
+encompassing sustainability, livability, and vibrancy [10]. Although GIS possesses notable
+advantages and value in addressing large-scale urban research issues, limitations in data
+perspective and format may impact its ability to discern nuances in urban environments.
+Specifically, the top-down viewpoint and raster data format imply a limited level of detail in
+the geographic space, potentially leading to inaccuracies and errors when analyzing urban
+spatial structures and morphology [11].
+With the proliferation of mobile devices, the widespread application of wireless
+communication technology, and the development of services such as Google Street View, street
+view data volume has been increasing continuously [12]. Meanwhile, virtual audits have
+gradually emerged, progressively replacing traditional on-site inspections. By leveraging
+advanced data analysis technologies, such as machine learning and computer vision, it is
+possible to automatically extract from street view imagery (SVI) datasets detailed urban spatial
+structure features unattainable from satellite images and other frequently used data sources [13].
+Furthermore, SVI offers a visual experience that originates from the human perspective, which
+plays a pivotal role in evaluating research questions involving psychological perception such
+as the urban thermal environment [14].
+Although significant progress has been made in recent years in urban spatial analysis using
+SVI, there remain two main limitations that urgently need to be addressed. Firstly, in extracting
+street view features from SVI, numerous studies primarily focus on the most intuitive
+perceptual experiences in urban spaces, such as the sky view factor (SVF), tree view factor
+(TVF), and building view factor (BVF), while neglecting the potential effects generated by
+other diverse urban characteristics (e.g., urban functions, building materials) and surrounding
+geographical conditions. In cities with complex functional zoning and geographical
+environments, such as Hong Kong, these features may vary significantly from street to street.
+Such an approach is incapable of holistically assessing the genuine characteristics of urban
+spaces, potentially resulting in biases in the actual analysis. Secondly, current SVI research
+typically concentrates on urban features that are easily quantifiable or have complete historical
+data, such as a city's GDP, population growth, traffic flow, and household poverty levels.
+However, for more complex or subjective urban features, such as the distribution of thermal
+gradient in cities, the lack of street-level high-resolution historical thermal data and unified
+evaluation criteria makes the extraction of urban spatial thermal environmental characteristics
+based on SVI challenging.
+This study aims to develop a comprehensive urban street thermal gradient classification
+framework that integrates GIS and street feature data calculated from DeepLabV3 semantic
+segmentation model, complementing the strengths of both to provide a high-precision solution
+2
+
+85
+
+90
+
+95
+
+100
+
+for urban thermal environment classification. These data are used as inputs to the k-means
+unsupervised classification model. Appropriate samples are selected from each classified
+category, and their on-site thermal environment data are collected to establish the thermal
+gradient for each category of street space. This framework addresses the difficulty and
+inaccuracy of urban street thermal gradient classification where the labeled data is unavailable
+or scarce. In addition, the study conducts a detailed statistical analysis of the individual data
+for each category, aiming to provide comprehensive and detailed guidance and reference
+information for different populations in seeking, planning, and constructing cool spaces in
+urban environments.
+The remainder of this paper is organized as follows: Section 2 offers a concise review of prior
+research on urban spatial feature auditing, with emphasis on urban thermal environment.
+Section 3 elaborates each sub-stage within the proposed methodology. Section 4 outlines the
+datasets used for experimentation, and Section 5 reports the research results and findings.
+Section 6 discusses the implications and limitations of the study, while Section 7 presents the
+conclusion, summarizing the main insights.
+2. Related works
+2.1 GIS-based urban thermal pattern modeling
+
+105
+
+110
+
+115
+
+120
+
+125
+
+130
+
+GIS-based urban thermal pattern mapping encompasses two primary research streams. Thermal
+infrared (TIR) remote sensing techniques are employed to directly retrieve land surface
+temperature (LST) [15]. LST plays a pivotal role in regulating the temperature of the lower
+layer urban atmosphere, as it determines the radiation and energy exchange at surface level,
+the internal climate of buildings, and the comfort level of urban dwellers [16]. Consequently,
+comparative analyses of the relationships between LST and other urban features can further
+reveal intricacies and diversity within the urban thermal environment [17]. Roth, et al. [18]
+pioneered exploration of the potential of TIR technology for detecting land surface radiant
+temperature in three coastal cities and explored its relationship with land use. The field has
+since garnered widespread attention and continuous refinement and improvement in related
+method (e.g., emissivity correction). Lo, et al. [19] matched LST with the complexity of urban
+environment factors such as land use and land cover (LULC) and normalized difference
+vegetation index (NDVI) to spatially model the urban heat island effect. Weng, et al. [20]
+discussed the relationship between LST and vegetation abundance in the urban heat island
+context. In addition to LULC and NDVI, Huanchun, et al. [21] investigated the correlations
+between LST and several other factors, including modified normalized water index, point of
+interest density, green space and plot ratio, as well as building and road density.
+Unlike the direct acquisition of LST, prediction-based methods build on conclusions of data
+correlation derived from previous studies, indirectly estimating urban thermal patterns through
+related GIS data. This typically involves establishing models such as regression models,
+machine learning models, and so on. For example, Iino and Hoyano [22] utilized weather
+parameters (e.g., air temperature, relative humidity, solar radiation, wind velocity) along with
+GIS data (e.g., base map of urban planning, traffic information, vegetation map) to numerically
+simulate surface temperature distributions through a heat balance algorithm. Equere, et al. [23]
+integrated terrain factors and other morphological parameters to develop an artificial neural
+network (ANN) model to predict LST. In addition, some studies predict future changes in urban
+thermal patterns based on historical data. Maduako, et al. [24] did so based on 28 years of LST
+data, with a 7-year interval. Kafy, et al. [25] integrated LST, LULC, normalized difference
+built-up index, and normalized difference bare soil index data from 1999, 2009, and 2019 as
+inputs for an ANN model to predict the urban thermal field variance index for 2029 and 2039.
+3
+
+2.2 SVI for urban thermal feature auditing
+
+135
+
+140
+
+145
+
+150
+
+155
+
+While LST has been used as the most common assessment metric for modelling urban thermal
+pattern in the recent literature, the limited ability of top-view raster GIS data to capture details
+of urban spatial features makes it potentially unrepresentative of the level of warming at the
+street level [26]. Therefore, recent studies have extensively employed computer vision
+techniques to retrieve three-dimensional object information from two-dimensional SVI and
+establish a comprehensive understanding of this imagery. Thermal environment modeling is
+an important research branch in this field, with numerous studies utilizing various street view
+features, among which SVF is one of the most critical as it directly affects the canyon’s radiant
+temperature and indirectly impacts its air temperature [27]. For example, Bourbia and
+Boucheriba [28] and Johansson [29] sketched urban heat islands and thermal comfort based on
+SVF and height to width (H/W) ratios derived from fisheye images. Carrasco-Hernandez, et al.
+[30] used fisheye images constructed from GSV to calculate SVF and estimated short-wave
+global irradiance using the Rayman model. Richards and Edwards [31] analyzed the proportion
+of green canopy cover using GSV and estimated the shading effect of trees on the annual
+radiation reaching the ground.
+However, only a limited number of studies have considered the impact of both GIS and street
+view features on urban thermal patterns. For instance, Andrew, et al. [32] employed road,
+terrain, vegetation, and building attributes along with SVF to model road surface temperatures.
+Wei, et al. [33] integrated LULC, SVF, TVF, and BVF features and predicted LST using
+multiple linear regression and various machine learning models. All of these publications have,
+to varying extents, neglected certain GIS and street view features, and are limited in terms of
+the study area size and time available for data collection. This reveals existing research gaps
+while simultaneously offering insightful references for the evaluation of street thermal gradient.
+3. Research methodology
+
+160
+
+165
+
+The overall structure of the proposed framework is presented in Fig. 1. The coordinates of
+Google Street-View-Panorama (GSVP) acquisition points are first determined using urban road
+network data. GSVPs are generated by synthesizing street view perspectives from four
+directions at each coordinate point (phase 1: data collection and processing). Subsequently, for
+each coordinate point, the GIS data (i.e., LULC, elevation, and slope) are extracted from remote
+sensing data and digital elevation model using ArcMap software. The GSVPs are fed into a
+well-trained semantic segmentation model, the output of which is employed for extracting SVF,
+TVF, and BVF (phase 2: feature extraction and calculation). The collected GIS and street view
+feature data for each coordinate point will serve as input for an unsupervised classification
+model to facilitate data classification and subsequent analysis (phase 3: clustering analysis).
+The on-site measurement data of samples from each category will set the thermal levels of the
+respective categories (phase 4). The details of each sub-step are introduced as follows.
+
+4
+
+170
+
+Fig. 1 The proposed framework for street thermal gradient classification
+3.1 Data collection and processing
+
+175
+
+180
+
+185
+
+190
+
+The vector data of the road network in the study area is obtained from OpenStreetMap, an
+open-source global geographic information repository featuring a data structure using basic
+elements such as nodes, ways, and relations. Subsequently, the downloaded road data is
+imported into the ArcMap software for data filtering and editing. Roads where people are less
+likely to remain for extended periods according to attributes such as steps, tunnels, bridges and
+those under construction are excluded. Data collection points are generated every 50 meters
+along the remaining roads, assigned a unique ID, and their geographical coordinates (longitude
+and latitude) are recorded. This information serves as the basis for obtaining panoramic images
+from the GSV service.
+In order to achieve bulk acquisition and management of GSVPs, the unique IDs of each
+previously acquired data collection point are traversed, and based on their corresponding
+geographical coordinates, street view images at four angles (0°, 90°, 180°, 270°) are fetched
+from the GSV service. These images are then stitched together to form a panoramic image. In
+this step, distortion correction, image alignment, and smoothing of transition areas is applied
+to the street view images, which are projected onto the spherical coordinate system to eliminate
+distortions caused by perspective projection. Next, the overlapping areas between adjacent
+images are automatically detected and matched to achieve precise image alignment. To further
+improve the stitching effect, transition areas are smoothed at different scales, ensuring that the
+final generated GSVPs possess high quality and reliability.
+3.2 Feature extraction and calculation
+5
+
+3.2.1 GIS feature extraction
+
+195
+
+200
+
+205
+
+210
+
+215
+
+220
+
+LULC data within the GIS parameters is derived from remote sensing data, specifically from
+Landsat 8/9 OLI/TIRS C2 L1 (operational land imager/thermal infrared sensor collection 2
+level 1) [34]. L1 remote sensing data encompasses the fundamental tier of spectral information.
+Through the data collected by multispectral and hyperspectral sensors, the spectral reflectance
+characteristics of various surface materials and ecosystems (i.e., LULC) across different bands
+can be captured, identified, and differentiated. To improve the sensitivity and accuracy of the
+data, several common metadata filters are employed, with cloud cover percentage, for instance,
+restricted between 0% and 10%.
+The obtained multi-band raster datasets are imported into ArcMap software and processed by
+creating a composite band file. Subsequently, a supervised classification approach is employed
+for the LULC analysis. This procedure encompasses two critical steps. The first is training
+sample generation. To ensure accuracy of the classification results, a minimum of 10 training
+samples are created for each LULC type. The creation of these samples is based on the training
+sample manager function within the ArcMap image classification tools. Each LULC type is
+assigned a unique name (e.g., urban, bare surface, vegetation, water) and corresponding value
+(e.g., 1, 2, 3, 4) for identification during the subsequent classification process. The second step
+is conducting supervised classification using the interactive supervised classification function
+for classification. Input parameters include the composite band file and the training sample
+management file. Ultimately, a classified raster dataset comprising four land-use types is
+generated.
+Elevation data within the GIS parameters is directly obtained from the digital elevation model,
+which originates from the advanced spaceborne thermal emission and reflection radiometer
+(ASTER) global digital elevation model (DEM) dataset [35]. Based on the acquired elevation
+data, slope information for the study area is extracted using the slope function in the ArcMap
+spatial analyst tools. This process involves calculating spatial derivatives on the DEM data to
+obtain slope values for each grid cell.
+Upon acquiring the three GIS parameters for the study area, corresponding values are extracted
+using the ArcMap extract multi values to points tool according to the collection point
+coordinates in section 3.1. Ultimately, these GIS values, along with geographical coordinates,
+are stored in a CSV file, facilitating their retrieval during the subsequent creation of an
+unsupervised classification task dataset.
+3.2.2 Street view feature calculation
+
+225
+
+230
+
+Street view features are derived from semantically segmented GSVPs, which are obtained from
+the DeepLabV3 model [36]. At the core of the DeepLabV3’s architecture lies ResNet50 [37],
+a 50-layer deep residual network that incorporates residual modules to alleviate the vanishing
+gradient issue, thereby facilitating the network's ability to delve deeper into learning image
+features (Fig. 2). Within ResNet50, residual modules serve as the fundamental building blocks,
+permeating the entire network structure. Each residual block consists of multiple convolutional
+layers, and by incorporating an identity mapping following the convolutional operation, the
+input feature map is combined with the convolutional result through element-wise addition,
+subsequently generating the output feature map.
+
+6
+
+235
+
+240
+
+Fig. 2 (a) DeepLabV3 structure for semantic segmentation of GSVPs; (b) ResNet50
+backbone structure to extract hierarchical features of GSVPs
+The output feature map from ResNet50 is fed into the atrous spatial pyramid pooling (ASPP)
+module (Fig. 3), which is a sophisticated method for multi-scale context information fusion.
+ASPP employs dilated convolutions with varying dilation rates to capture feature information
+at different scales while preserving the resolution of the feature map. The outputs of the five
+sub-modules in ASPP are concatenated along the channel dimension, forming a richer feature
+representation. Subsequently, a 1x1 convolutional layer is employed to fuse these features,
+resulting in the final ASPP output.
+
+7
+
+245
+
+250
+
+255
+
+260
+
+265
+
+Fig. 3 ASPP structure to capture multi-scale contextual information
+In the latter architecture of the DeepLabV3 model, a 3x3 convolutional layer is employed
+initially to attain a smoother and more continuous feature representation while retaining multiscale features. Subsequently, a 1x1 convolutional layer is utilized to reduce the dimensionality
+of the feature map, thereby decreasing the computational burden and the number of model
+parameters, which in turn enhances computational efficiency. Ultimately, a bilinear
+interpolation up-sampling operation is adopted to restore the low-resolution feature map to the
+original image resolution, facilitating the extraction of street view features.
+In this study, the open source Cityscapes Dataset is employed to train the DeepLabV3 model
+[38], which encompasses high-quality annotated urban street view images captured under
+various weather conditions and illumination levels across multiple cities. This enables the
+DeepLabV3 model to learn and generalize effectively across different scenarios. The 34
+original label classes within the Cityscapes dataset are remapped to 20 distinct training label
+classes, which may exhibit considerable disparities in pixel count across images. For example,
+classes such as road and building may predominantly occupy the pixels within an image,
+whereas classes like pedestrian and bicycle may account for only a minor portion.
+Consequently, during the training process, the model may exhibit a proclivity for prioritizing
+classes with a higher pixel count, neglecting those with a lower count. This tendency could
+lead to suboptimal performance in less frequently occurring classes. To address this issue, it is
+necessary to balance the contributions of each class within the loss function by incorporating
+weights for each class. This involves assigning greater weights to classes with fewer pixels,
+thus ensuring increased attention during the training process and ultimately enhancing overall
+performance. Specifically, it is essential to quantify the pixel count of each class within the
+training set and subsequently calculate the respective weights [39]:
+𝑤𝑤𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐 =
+
+1
+ln(1.02 + 𝑝𝑝𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐 )
+8
+
+(1)
+
+270
+
+275
+
+280
+
+285
+
+290
+
+295
+
+300
+
+305
+
+310
+
+315
+
+in which 𝑤𝑤𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐 represents the weight of a specific class, and 𝑝𝑝𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐 denotes the proportion of
+the pixel count of a certain class relative to the total pixel count. In the training process, the
+DeepLabV3 model utilizes a weighted cross-entropy loss as the model’s loss function. The loss
+function measures the difference between the predicted segmentation map and the true labels,
+guiding the model to minimize this difference by adjusting its weights during training. The
+entire procedure takes 1000 epochs, with a batch size of eight and an initial learning rate set to
+1×10−4.
+Upon completing the training process of the DeepLabV3 model, the appropriate epoch training
+weights are utilized for precise semantic segmentation of the collected GSVPs, ensuring the
+optimal performance of the model while avoiding overfitting and underfitting. Subsequently,
+the segmented GSVPs undergo a hemispherical projection transformation, as it can capture the
+scenes in all directions from the observer's position, providing a more accurate environmental
+representation. As a result, the calculated view factors for the sky, tree, and buildings will more
+accurately reflect the coverage range of each category within the environment. These SVFs are
+saved in a CSV file to facilitate the next step of unsupervised classification.
+3.3 Clustering analysis
+The k-means algorithm is employed to categorize the features of each collection point stored
+in the CSV file. Each feature vector consists of eight dimensions, encompassing five GIS data
+points and three street view factors. Prior to executing the k-means classification, it is
+imperative to conduct absolute normalization on each feature vector to eliminate discrepancies
+in the data dimensions, thereby ensuring that the influence of each dimension on the
+classification outcome is equitably weighted and ultimately enhancing the classification
+accuracy.
+K-means is an unsupervised learning algorithm employed for data clustering. Its fundamental
+concept involves partitioning the dataset into 𝐾𝐾 categories, with each category represented by
+a centroid [40]. The objective of the algorithm is to minimize the sum of distances between
+each data point and the centroid of its corresponding category. Compared to other clustering
+algorithms, such as hierarchical clustering, which tends to be computationally expensive for
+large datasets, and density-based spatial clustering of applications with noise (DBSCAN),
+which suffers from sensitivity to noise and difficulties in defining optimal parameters, k-means
+has been proven to have low computational complexity, rapid convergence, and effective
+performance on large-scale datasets. However, it is sensitive to the selection of initial centroids,
+which may lead to local optima. Therefore, to determine the optimal 𝐾𝐾 value, both the elbow
+method and silhouette coefficient are utilized [41].
+
+The elbow method identifies the optimal 𝐾𝐾 value by examining the changes in the sum of
+squared errors (SSE) corresponding to different 𝐾𝐾 values [42]. As 𝐾𝐾 increases, the SSE
+gradually decreases, but when 𝐾𝐾 reaches a certain point, the decline in SSE significantly slows
+down. This point, referred to as the elbow, corresponds to the optimal 𝐾𝐾 value. However, in
+some cases, the inflection point may not be apparent. To compensate for the potential
+limitations of using a single method, the silhouette coefficient [43], which considers both
+cohesion and separation in clustering, is also employed to find the optimal 𝐾𝐾 value. The
+silhouette coefficient ranges between -1 and 1, with larger values indicating better clustering
+performance. By comparing the results of these two methods, a more balanced and rational
+optimal 𝐾𝐾 value can be determined.
+Upon determining the optimal 𝐾𝐾 value, a statistical analysis of the k-means classification
+results is conducted. This includes the number of instances in each category and the mean
+9
+
+values of each dimension in the corresponding feature vectors, facilitating a more intuitive
+observation of the data differences between categories.
+3.4 On-site thermal environmental data collection
+320
+
+325
+
+330
+
+335
+
+340
+
+345
+
+350
+
+355
+
+To evaluate the thermal comfort associated with the 𝐾𝐾 distinct categories derived from the
+previous step, 10 representative sampling locations are randomly selected from each category.
+These locations will undergo in situ measurements of air temperature 𝑇𝑇 (unit: F) and relative
+humidity 𝑅𝑅𝑅𝑅 (unit: percentage).
+
+Data collection is carried out using a Kestrel 4000 Weather and Environmental Meter, a stateof-the-art, portable instrument designed for precise measurements of meteorological variables.
+Measurements are taken every 15 minutes between 12:00 PM and 2:00 PM, a period when
+ambient temperatures typically reach their daily peaks. The average of these readings is
+calculated to ensure data accuracy. This time frame is chosen to better understand the potential
+heat stress faced by individuals during the hottest part of the day. The data collection process
+spans one month, with the exclusion of days when data acquisition is rendered infeasible due
+to adverse weather conditions, such as rainfall. However, due to uncontrollable factors such as
+varying levels of human activity, some uncertainty in the measurement data may still persist.
+Upon completion of the data collection, the average heat index for each of the 𝐾𝐾 categories is
+calculated using equation 2. By focusing primarily on the impact of air temperature and
+humidity on human perception, the heat index has been demonstrated to be a practical and
+straightforward approach to assessing the level of thermal comfort experienced by individuals
+in areas characterized by a predominantly hot and humid climate [44, 45]. Subsequently, a heat
+map representing the thermal gradient of the study area is generated, based on the average heat
+index corresponding to each category.
+𝐻𝐻𝑒𝑒𝑒𝑒𝑒𝑒 𝑖𝑖𝑖𝑖𝑖𝑖𝑖𝑖𝑖𝑖 = −42.379 + 2.04901523𝑇𝑇 + 10.14333127𝑅𝑅𝑅𝑅 − 0.22475541𝑇𝑇𝑇𝑇𝑇𝑇 −
+0.00683783𝑇𝑇 2 − 0.05481717𝑅𝑅𝑅𝑅 2 + 0.00122874𝑇𝑇 2 𝑅𝑅𝑅𝑅 +
+(2)
+0.00085282𝑇𝑇𝑅𝑅𝑅𝑅 2 − 0.00000199𝑇𝑇 2 𝑅𝑅𝑅𝑅 2
+
+4. Study area and datasets
+
+This study concentrates on the Central and Western District and Wan Chai District in Hong
+Kong, both with their northern sides bordering the sea. This geographical condition subjects
+the local climate to a strong maritime influence, characterized by high humidity and rapid heat
+transfer. In this context, the high-density urban layout leads to particularly pronounced thermal
+discrepancies between streets. The southern sides of these two districts are built along
+mountains, resulting in a complex and varied urban structure with considerable variations in
+elevation and slope. To a certain extent, these prominent topographical features also affect the
+distribution and variation of the urban thermal environment. For instance, areas with steeper
+slopes may have less urban heat accumulation due to reduced direct sunlight exposure, while
+areas with higher elevation may be influenced by airflows, forming unique urban thermal
+environments. Hence, given the combined influences of a humid and hot climate, high-density
+urban layout, and complex and varied topography, these regions offer substantial reference
+value for examining the distribution of thermal gradient among urban streets.
+Over the past 15 years, a substantial body of research has been dedicated to identifying more
+precise and efficient proxy parameters to achieve improved predictions and assessments of
+Hong Kong’s urban thermal environments, ranging from building scale (<100m) to mesoscale
+(<200km) [46-48]. Conducting accurate and efficient thermal environment modeling on microscale (<2 km) samples and subsequently extending this knowledge to a broader context of
+urban street thermal environment classification is pivotal to advancing our understanding of
+10
+
+360
+
+the street thermal gradient distribution in complex urban morphologies under typical climate
+conditions.
+5. Data analyses, results, and findings
+5.1 GIS data of collection points
+
+365
+
+370
+
+375
+
+According to the road network attributes of the study area, roads where people do not remain
+for a long time were removed, and a total of 11,675 GSVPs collection points were generated
+based on the remaining road network. To ensure quality of the panoramic images, all collected
+images were screened to exclude those with obvious abnormalities. For example, some roads
+were too narrow, resulting in excessively distorted perspectives in the panoramic images, or
+vehicles obscured the lens. After processing, a total of 8,538 GSVPs were collected. The
+locations of these collection points are shown in Fig. 4(a), distributed throughout the entire
+research area. The LULC of the research area consists of four categories: water, vegetation,
+urban, and bare surface, as shown in Fig. 4(b). The elevation and slope data of the whole
+research area are shown in Fig. 4(c) and (d). The elevation in the whole study area ranges from
+0 to 1,245 meters, while the elevation of the collection points varies from 0 to 519 meters. As
+for the slope, it ranges from 0 to 64.43 degrees in the whole study area, and from 0 to 51.32
+degrees at the collection points.
+
+Fig 4. Five collected GIS data (i.e., longitude, latitude, LULC, elevation, and slope) in the
+study area
+380
+
+385
+
+5.2 Street view factor of collection points
+The DeepLabV3 semantic segmentation model and k-means unsupervised classification model
+are trained using the Pytorch on a Nvidia GeForce RTX 3060 GPU. It took 56.5 hours to train
+DeepLabV3 for 1000 epochs. The training and validation loss of DeepLabV3 are depicted in
+Fig 5. After the 200th epoch, the validation loss surpasses the training loss, and the training
+loss continues to decline, while the validation loss remains stagnant. This indicates that the
+model is learning the noise within the training data rather than the underlying patterns, resulting
+in poor generalization capabilities on unseen data. Therefore, the weight parameters obtained
+from training at the 200th epoch are utilized for semantic segmentation of the collected GSVPs.
+
+11
+
+390
+
+395
+
+400
+
+405
+
+410
+
+415
+
+420
+
+Fig 5. Training and validation loss in DeepLabV3 training process
+The distribution of SVF, TVF, and BVF in the study area, as calculated from 8,538
+semantically segmented GSVPs, is illustrated in Fig. 6. It is evident from the figure that the
+distribution of view factors exhibits geographical patterns. Specifically, coastal regions, owing
+to the limited obstructions and relatively open views, demonstrate better SVF performance.
+Additionally, sporadically distributed areas with higher SVF values can be observed in the
+main urban areas and elevated mountainous regions. These areas may benefit from the
+configuration of surrounding buildings and natural topography. Distribution of TVF presents a
+markedly different characteristic. Attributable to the natural advantages of mountainous areas,
+regions with better TVF performance are primarily concentrated in the southern hillside areas
+with considerable terrain undulations and lush vegetation. As for BVF, areas with larger values
+are predominantly situated in the central research area, characterized by high building density
+and relatively close distances between edifices. These distribution patterns reveal a certain
+clustering effect of view factors in geographic space, highlighting the crucial supporting and
+guiding role of view factors and geographic data in elucidating urban spatial structure and
+thermal environment classification.
+In addition to the distribution characteristics in geographical space, to observe the gradient
+distribution of data more intuitively, the scale set on the color bar represents the view factor
+threshold of every 20% of the data in all 8358 GSVPs, revealing the changing trend and
+concentration area of the view factor values. For the data proportion of the three view factors,
+a notable common feature is that as the value decreases, the proportion of data gradually
+increases. This implies that in the studied urban space, these elements usually appear
+independently or in pairs in the majority of GSVPs pixels with a larger proportion. The
+balanced distribution of the three elements in the GSVPs is relatively rare, revealing the
+distinctiveness and extremeness of the urban element proportions. For instance, coastal urban
+areas generally exhibit better SVF performance, but due to poor soil and geological conditions
+and visual and landscape considerations, the corresponding TVF value is lower. Conversely,
+mountainous areas with better TVF performance may not be suitable for habitation, resulting
+in a lower corresponding BVF value. On the other hand, areas located in the city center, due to
+high building density, experience a certain degree of view limitation, with the maximum BVF
+reaching 92.95%, and the corresponding SVF and TVF values are smaller. This distinct and
+extreme element proportion characteristic exacerbates the clustering phenomenon in urban
+spaces, further corroborating the significant contribution of view factors and geographic data
+in the classification of Hong Kong's thermal environment.
+
+12
+
+425
+
+Fig 6. (a) SVF gradient distribution in the study area; (b) TVF gradient distribution in the
+study area; (c) BVF gradient distribution in the study area
+5.3 Thermal environment classification of collection points
+
+430
+
+435
+
+The variations in SSE and silhouette coefficient with respect to the number of clusters are
+depicted in Fig 7. In terms of the SSE calculated using the elbow method, although no distinct
+elbow point can be observed, a notable deceleration in the reduction of SSE occurs within the
+range of 3 to 5 clusters, suggesting that a relatively suitable 𝐾𝐾 value might exist around these
+cluster numbers. Regarding the silhouette coefficient, two prominent peaks are observed as the
+number of clusters increases, specifically when 𝐾𝐾 = 3 and 𝐾𝐾 = 7, with values ranging from 0.4
+to 0.45. This outcome demonstrates that, at these two cluster numbers, the distances between
+the sample points and other points within the same cluster are comparatively small, while the
+distances between different clusters are relatively large, resulting in a superior clustering effect.
+Therefore, after holistically considering the analysis results of the elbow method and silhouette
+coefficient, the optimal 𝐾𝐾 value is determined to be 4.
+13
+
+440
+
+445
+
+It is worth noting that, although the geographical distribution of SVF, TVF, and BVF in the
+previous step allows for an intuitive division of the data into three clusters, corresponding to
+the coastal area, mountainous area, and urban center, these three view factors may not fully
+capture the complexity of spatial distribution, making it still challenging to define the clusters
+of over-urbanized regions. Upon incorporating multiscale and multilevel spatial information
+data, richer contextual information can be provided during the clustering process. By
+synergistically utilizing view factors and GIS data, the internal spatial relationships of the data
+are more accurately unveiled, leading to more rational clustering results.
+
+Fig 7. SSE and silhouette coefficient versus number of clusters
+450
+
+455
+
+460
+
+465
+
+470
+
+Upon determining the optimal 𝐾𝐾 value, the average values of the clustering features for the
+8358 GSVPs are presented in Table 1, and the feature distribution is shown in Fig 8. By
+examining the average feature values and their distribution in each category, a more detailed
+and comprehensive summary of the spatial characteristics of each cluster can be achieved
+compared to solely relying on the distribution of view factors. In cluster 0, excluding outliers,
+the identification values of LULC features for all the collected points are 1, indicating that this
+cluster consists entirely of urban areas. Taking into account factors such as elevation, slope,
+and view factor, it can be observed that the urban spaces represented by cluster 0 are
+characterized by relatively low elevations, gentle slopes, and the smallest average sky and tree
+coverage as well as the largest building coverage among the four clusters. These features
+suggest that cluster 0 embodies typical high-density urban center spaces or under-bridge spaces
+with limited greenery and obstructed sightlines. Hong Kong, as a quintessential high-density
+city, has a substantial amount of data for such spaces. Same as in cluster 0, the LULC
+identification values for all points in cluster 1 are also 1, representing urban areas. However,
+in terms of elevation and slope, cluster 1 is lower and more level compared to cluster 0, and
+the data distribution is more concentrated. Simultaneously, cluster 1 exhibits a larger sky
+coverage, indicating that these spaces tend to be located in urban areas with a relatively open
+field of vision (e.g., coastal areas, urban park, historic districts). The common characteristics
+of these areas include wide roads, a predominance of mid-rise buildings (4 to 12 stories), and
+ample space allocated for greening. These regions constitute the largest proportion within the
+study area.
+Differing from the first two clusters, cluster 2 encompasses a diverse range of LULC
+classifications. The elevation and slope in this category are higher compared to the previous
+two classes, thus including areas with undeveloped or abandoned bare land surfaces. These
+areas are typically located at the urban fringes or the foot and mid-slopes of mountains, with
+14
+
+475
+
+480
+
+views predominantly consisting of the sky and trees. Cluster 3 exhibits the most distinct
+features, with a noticeable decrease in latitude and longitude compared to the first three clusters,
+and the highest elevation and steepest slopes. These spaces are largely mountain trails on the
+southern side of the study area, with minimal human intervention, resulting in a relatively
+smaller number of data collection points. In these regions, the natural environment is relatively
+well-preserved, with views primarily composed of native trees, and buildings being the least
+common sight.
+Table 1. Number of collection points and average feature values for each category
+Cluster
+0
+1
+2
+3
+
+Count
+2886
+3039
+1924
+689
+
+Lng
+114.16
+114.16
+114.16
+114.15
+
+Lat
+22.28
+22.28
+22.27
+22.26
+
+LULC
+1.06
+1.28
+2.05
+2.56
+
+Elevation
+32.14
+17.10
+109.80
+346.85
+
+Slope
+11.66
+7.41
+17.73
+19.96
+
+SVF
+4.94
+19.14
+11.07
+10.90
+
+TVF
+5.05
+10.69
+30.46
+43.80
+
+BVF
+30.64
+6.27
+4.82
+2.22
+
+Fig 8. Boxplot of feature distribution for each cluster
+485
+
+5.4 Thermal gradient of collection points
+In Fig 9, one example from 10 selected samples from each cluster for on-site measurements
+and its semantic segmentation results are presented. The data collection period spanned from
+1–31 August, 2023. The heat index values are shown in Table 2, and the data distribution can
+be seen in Fig 10.
+
+490
+
+495
+
+500
+
+Regarding the average heat index and median line, although cluster 0 possesses the highest
+BVF (i.e., building density), its thermal environment is comparatively superior to that of cluster
+1. Potential reasons for this include the extensive architectural shadows generated by high-rise
+buildings and aerial bridges, which obstruct or reflect a substantial amount of solar radiation,
+significantly mitigating the thermal environment of these types of street spaces. Conversely,
+cluster 1, with fewer obstructions, is exposed to direct sunlight for extended periods, resulting
+in the poorest thermal environment. Apart from the shading effect, the evapotranspiration of
+trees and their absorption of solar radiation notably enhance the thermal environments of
+clusters 2 and 3. Focusing on the maximum, minimum, and concentration of data, the data
+points in cluster 0 are predominantly situated in the urban center, where urban functions vary
+considerably, leading to a larger fluctuation range in the heat index. In contrast, the data within
+cluster 3, characterized by a relatively uniform morphological function, exhibits the most
+focused heat index.
+
+15
+
+Fig 9. Samples and corresponding semantic segmentation results from each cluster
+505
+
+Table 2. Heat index values (°F) for samples of each category
+Cluster
+0
+1
+2
+3
+
+Maximum value
+109.92
+108.69
+104.02
+100.02
+
+Average value
+97.6
+99.39
+96.45
+91.71
+
+Minimum value
+83.44
+85.84
+84.08
+83.03
+
+Fig 10. Boxplot of on-site heat index distribution for each cluster
+510
+
+515
+
+The thermal gradient distribution of the four categories, as shown in Figure 11, confirms the
+earlier discussion. Data points in cluster 0, with the highest data fluctuations, are dispersed
+throughout the urban center, while data points included in cluster 3, with the most concentrated
+value, are predominantly located in the southern mountainous area of the study site. The data
+contained in cluster 1 are mostly located in the seashore and historical area while the data in
+cluster 2 are mostly located in the foothills. Moreover, the inclusion of detailed GIS data and
+the application of the k-means algorithm reveal a more distinct and clearer categorization of
+the spatial structure (i.e., thermal environment) within the urban area. Through this approach,
+the previously mixed street points within the over-urbanized area are effectively categorized
+into three separate categories.
+
+16
+
+Fig 11. Street thermal gradient distribution in the study area
+
+520
+
+6. Discussion
+6.1 Significance of the GIS-street view feature integration and k-means clustering
+
+525
+
+530
+
+535
+
+540
+
+545
+
+550
+
+In multi-faceted metropolises, a vast array of urban transitional zones can be observed, such as
+coastal areas leading to high-density city centers and extending to mountainous regions, as well
+as the discrete distribution of older urban districts. These urban spaces exhibit diverse
+morphologies and functions, making it challenging to comprehensively depict these street
+spaces using only macro-scale GIS data or micro-scale street view features. This study
+effectively integrates these two types of data to provide a more in-depth understanding of the
+formation mechanisms underlying urban street thermal environments. Compared to existing
+thermal environment classification studies that rely solely on one type of data, this approach
+allows for a more comprehensive characterization of urban features. For instance, cluster 1,
+potentially representing coastal cities, can be defined by its higher latitude, lower elevation,
+and larger SVF. This enables a more accurate identification of the factors contributing to its
+poor thermal environment, offering targeted recommendations for future urban planning and
+management.
+By employing the k-means clustering algorithm to categorize data with similar characteristics,
+knowledge pertaining to thermal environments can be extracted from the samples within each
+category and subsequently mapped onto the corresponding street categories. This approach
+ensures analytical accuracy while significantly mitigating the extensive time required for onsite measurements in previous SVI-based urban thermal environment classification studies due
+to the lack of historical data. As a result, it alleviates the tension between the low resolution
+associated with large-scale modeling and the extensive time investment required for highprecision modeling.
+Based on the research findings, several key urban planning and design recommendations have
+been summarized to enhance overall street thermal comfort. Specifically, compared to cluster
+2 and cluster 3, which have relatively favorable thermal environments due to large areas of
+vegetation coverage, cluster 1 has the poorest thermal comfort due to direct sunlight exposure,
+making it the most critical area for improvement. The lower BVF and highest SVF indicate
+that this area has substantial open space. Therefore, tree planting to reduce the SVF is an
+effective strategy to improve street thermal comfort in these regions. For cluster 0, although its
+average heat index is slightly better than that of cluster 1, the wide fluctuations suggest that
+17
+
+555
+
+certain streets also require urgent improvement. Streets in this cluster feature the highest BVF
+and the lowest TVF and SVF, indicating limited space for tree planting. Consequently,
+improving urban design or reducing building heat dissipation becomes a priority. Examples of
+recommended measures include designing shading structures with high-reflectivity materials
+to reduce street heat exposure or optimizing heating, ventilation, and air conditioning (HVAC)
+system operations to minimize heat emissions.
+6.2 Limitations and future works
+
+560
+
+565
+
+570
+
+575
+
+This study considers the multi-scale spatial structural features of streets to determine their
+corresponding thermal environment levels. However, previous research has found that different
+spatial features have varying degrees of impact on the street thermal environment [49, 50]. For
+example, the degree of street greening and building density have a more significant impact on
+the thermal environment, while the influence of latitude and longitude is relatively smaller.
+Future work could focus on incorporating feature weights to enhance the accuracy and
+reliability of clustering results. One potential approach is to use principal component analysis
+(PCA) to reduce dimensionality while preserving key information, thereby identifying and
+prioritizing the most influential features. Alternatively, feature importance scores obtained
+from machine learning models, such as random forest or gradient boosting, could be utilized
+to assign weights to each feature based on their relative impact on the thermal environment.
+These weights could then be integrated into the clustering process, either by modifying the
+distance metric in k-means clustering or by adopting weighted clustering algorithms, thereby
+enhancing the interpretability of the results. In addition, future work could explore hybrid
+clustering techniques, such as combining traditional k-means clustering with hierarchical or
+density-based clustering, to further improve the stability and robustness of the classification.
+To ensure the representativeness and reliability of the data, more rigorous on-site measurement
+methods, including the use of structured questionnaires or stricter data collection protocols,
+could be implemented to reduce uncertainties in the measurements.
+7. Conclusion
+
+580
+
+585
+
+590
+
+595
+
+In this study, a comprehensive framework for high-precision urban street-level thermal
+gradient distribution auditing is proposed. The framework addresses the challenges of low
+resolution and inaccuracies due to large research scopes in previous urban thermal environment
+classification studies, as well as the inefficiencies caused by repetitive modelling of thermal
+environments or data collection. The backbone of the proposed framework is the k-means
+unsupervised clustering algorithm for grouping data points with similar structures. The
+algorithm takes the spatial structural features of street points (i.e., coordinate, LULC, elevation,
+slope, SVF, TVF, BVF) as input, derived from GIS and the DeepLabV3 model. Given the
+strong interdependence and mutual influence between street spatial structure and thermal
+environment, the thermal environment grade for each category is represented by the on-site
+measured data of representative samples within the category.
+Compared to the rough, subjective classification of street spatial structural features (i.e.,
+thermal environments) based solely on partial spatial structural features of street points (e.g.,
+SVF, TVF, BVF), the comprehensive integration of high-precision GIS data and the k-means
+algorithm demonstrates significant improvement in differentiating performance. This is
+particularly evident in over-urbanized areas with complex and varied morphologies. It is
+recommended that future research incorporates weights for each spatial structural feature of
+street points to further enhance the performance of the k-means clustering algorithm and
+achieve higher precision in urban thermal gradient distribution modeling.
+Acknowledgments
+18
+
+600
+
+The study is supported by a Theme-Based Research Scheme (TRS) grant (Project No.: T22504/21-R) and a Collaborative Research Fund (CRF) (Project No.: C7080-22GF), both from
+the Hong Kong Research Grant Council (RGC).
+References
+[1]
+
+605
+
+[2]
+[3]
+
+610
+
+[4]
+[5]
+
+615
+
+[6]
+[7]
+
+620
+
+[8]
+[9]
+[10]
+
+625
+
+[11]
+[12]
+
+630
+
+635
+
+[13]
+[14]
+[15]
+
+640
+
+[16]
+[17]
+
+645
+
+650
+
+[18]
+[19]
+
+F.E. Horton, D.R. Reynolds, Effects of Urban Spatial Structure on Individual Behavior,
+Economic Geography 47(1) (1971) 36-48. https://doi.org/10.2307/143224
+A. Anas, R. Arnott, K.A. Small, Urban Spatial Structure, Journal of Economic Literature
+36(3) (1998) 1426-1464.
+P. Rickwood, G. Glazebrook, G. Searle, Urban Structure and Energy—A Review, Urban
+Policy and Research 26(1) (2008) 57-81. https://doi.org/10.1080/08111140701629886
+M.M. Rathore, A. Paul, W.-H. Hong, H. Seo, I. Awan, S. Saeed, Exploiting IoT and big data
+analytics: Defining Smart Digital City using real-time urban data, Sustainable Cities and
+Society 40 (2018) 600-610. https://doi.org/https://doi.org/10.1016/j.scs.2017.12.022
+M.F. Goodchild, Geographic information systems, Progress in Human Geography 15(2)
+(1991) 194-200. https://doi.org/10.1177/030913259101500205
+G.G. Wilkinson, A review of current issues in the integration of GIS and remote sensing data,
+International journal of geographical information systems 10(1) (1996) 85-101.
+https://doi.org/10.1080/02693799608902068
+J.C. Hinton, GIS and remote sensing integration for environmental applications, International
+journal of geographical information systems 10(7) (1996) 877-890.
+https://doi.org/10.1080/02693799608902114
+B. Hillier, J. Hanson, The social logic of space, Cambridge university press1989.
+A. Ståhle, L. Marcus, A. Karlström, Place Syntax: Geographic accessibility with axial lines in
+GIS, Fifth international space syntax symposium, Techne Press, 2005, pp. 131-144.
+Y. Ye, A.v.N. Nes, Quantitative tools in urban morphology: combining space syntax,
+spacematrix and mixed-use index in a GIS framework, Urban Morphology 18(2) (2014) 97118. https://doi.org/10.51347/jum.v18i2.3997
+M.F. Goodchild, Scale in GIS: An overview, Geomorphology 130(1) (2011) 5-9.
+https://doi.org/https://doi.org/10.1016/j.geomorph.2010.10.004
+A.G. Rundle, M.D.M. Bader, C.A. Richards, K.M. Neckerman, J.O. Teitler, Using Google
+Street View to Audit Neighborhood Environments, American Journal of Preventive Medicine
+40(1) (2011) 94-100. https://doi.org/https://doi.org/10.1016/j.amepre.2010.09.034
+N. He, G. Li, Urban neighbourhood environment assessment based on street view image
+processing: A review of research trends, Environmental Challenges 4 (2021) 100090.
+https://doi.org/https://doi.org/10.1016/j.envc.2021.100090
+F. Biljecki, K. Ito, Street view imagery in urban analytics and GIS: A review, Landscape and
+Urban Planning 215 (2021) 104217.
+https://doi.org/https://doi.org/10.1016/j.landurbplan.2021.104217
+D.A. Quattrochi, J.C. Luvall, Thermal infrared remote sensing for analysis of landscape
+ecological processes: methods and applications, Landscape Ecology 14(6) (1999) 577-598.
+https://doi.org/10.1023/A:1008168910634
+J.A. Voogt, T.R. Oke, Effects of urban surface geometry on remotely-sensed surface
+temperature, International Journal of Remote Sensing 19(5) (1998) 895-920.
+https://doi.org/10.1080/014311698215784
+Q. Weng, Thermal infrared remote sensing for urban climate and environmental studies:
+Methods, applications, and trends, ISPRS Journal of Photogrammetry and Remote Sensing
+64(4) (2009) 335-344. https://doi.org/https://doi.org/10.1016/j.isprsjprs.2009.03.007
+M. Roth, T.R. Oke, W.J. Emery, Satellite-derived urban heat islands from three coastal cities
+and the utilization of such data in urban climatology, International Journal of Remote Sensing
+10 (1989) 1699-1720. https://doi.org/10.1080/01431168908904002
+C.P. Lo, D.A. Quattrochi, J.C. Luvall, Application of high-resolution thermal infrared remote
+sensing and GIS to assess the urban heat island effect, International Journal of Remote
+Sensing 18(2) (1997) 287-304. https://doi.org/10.1080/014311697219079
+19
+
+[20]
+655
+
+660
+
+[21]
+
+[22]
+[23]
+
+665
+
+[24]
+[25]
+
+670
+[26]
+675
+
+[27]
+[28]
+
+680
+
+685
+
+[29]
+[30]
+
+[31]
+690
+
+695
+
+700
+
+[32]
+[33]
+
+[34]
+[35]
+[36]
+[37]
+
+705
+
+[38]
+
+Q. Weng, D. Lu, J. Schubring, Estimation of land surface temperature–vegetation abundance
+relationship for urban heat island studies, Remote Sensing of Environment 89(4) (2004) 467483. https://doi.org/https://doi.org/10.1016/j.rse.2003.11.005
+H. Huanchun, Y. Hailin, D. Xin, H. Cui, L. Zhifeng, L. Wei, Z. Peng, Analyzing the
+Influencing Factors of Urban Thermal Field Intensity Using Big-Data-Based GIS, Sustainable
+Cities and Society 55 (2020) 102024.
+https://doi.org/https://doi.org/10.1016/j.scs.2020.102024
+A. Iino, A. Hoyano, Development of a method to predict the heat island potential using
+remote sensing and GIS data, Energy and Buildings 23(3) (1996) 199-205.
+https://doi.org/https://doi.org/10.1016/0378-7788(95)00945-0
+V. Equere, P.A. Mirzaei, S. Riffat, Y. Wang, Integration of topological aspect of city terrains
+to predict the spatial distribution of urban heat island using GIS and ANN, Sustainable Cities
+and Society 69 (2021) 102825. https://doi.org/https://doi.org/10.1016/j.scs.2021.102825
+I. Maduako, Z. Yun, B. Patrick, Simulation and prediction of land surface temperature (LST)
+dynamics within Ikom City in Nigeria using artificial neural network (ANN), Journal of
+Remote Sensing & GIS 5(1) (2016) 1-7.
+A.A. Kafy, F. Abdullah Al, M.S. Rahman, M. Islam, A. Al Rakib, M.A. Islam, M.H.H. Khan,
+M.S. Sikdar, M.H.S. Sarker, J. Mawa, G.S. Sattar, Prediction of seasonal urban thermal field
+variance index using machine learning algorithms in Cumilla, Bangladesh, Sustainable Cities
+and Society 64 (2021) 102542. https://doi.org/https://doi.org/10.1016/j.scs.2020.102542
+J. Huang, X. Tang, P. Jones, T. Hao, R. Tundokova, C. Walmsley, S. Lannon, P. Frost, J.
+Jackson, Mapping pedestrian heat stress in current and future heatwaves in Cardiff, Newport,
+and Wrexham in Wales, UK, Building and Environment 251 (2024) 111168.
+https://doi.org/https://doi.org/10.1016/j.buildenv.2024.111168
+T.R. Oke, Canyon geometry and the nocturnal urban heat island: comparison of scale model
+and field observations, Journal of climatology 1(3) (1981) 237-254.
+F. Bourbia, F. Boucheriba, Impact of street design on urban microclimate for semi arid
+climate (Constantine), Renewable Energy 35(2) (2010) 343-347.
+https://doi.org/https://doi.org/10.1016/j.renene.2009.07.017
+E. Johansson, Influence of urban geometry on outdoor thermal comfort in a hot dry climate: A
+study in Fez, Morocco, Building and Environment 41(10) (2006) 1326-1338.
+https://doi.org/https://doi.org/10.1016/j.buildenv.2005.05.022
+R. Carrasco-Hernandez, A.R.D. Smedley, A.R. Webb, Using urban canyon geometries
+obtained from Google Street View for atmospheric studies: Potential applications in the
+calculation of street level total shortwave irradiances, Energy and Buildings 86 (2015) 340348. https://doi.org/https://doi.org/10.1016/j.enbuild.2014.10.001
+D.R. Richards, P.J. Edwards, Quantifying street tree regulating ecosystem services using
+Google Street View, Ecological Indicators 77 (2017) 31-40.
+https://doi.org/https://doi.org/10.1016/j.ecolind.2017.01.028
+V.B. Andrew, E.T. John, C. Lee, U. David, R. Melanie, Modelling spatial and temporal road
+thermal climatology in rural and urban areas using a GIS, Climate Research 22(1) (2002) 4155.
+X. Wei, F. Guan, X. Zhang, N. Van de Weghe, H. Huang, Integrating planar and vertical
+environmental features for modelling land surface temperature based on street view images
+and land cover data, Building and Environment 235 (2023) 110231.
+https://doi.org/https://doi.org/10.1016/j.buildenv.2023.110231
+United States Geological Survey. https://earthexplorer.usgs.gov/. (Accessed 20 Nov 2023).
+National Aeronautics and Space Administration. https://www.earthdata.nasa.gov/. (Accessed
+20 Nov 2023).
+L.-C. Chen, G. Papandreou, F. Schroff, H. Adam, Rethinking Atrous Convolution for
+Semantic Image Segmentation, 2017, p. arXiv:1706.05587.
+K. He, X. Zhang, S. Ren, J. Sun, Deep residual learning for image recognition, Proceedings of
+the IEEE conference on computer vision and pattern recognition, 2016, pp. 770-778.
+Cityspaces. https://www.cityscapes-dataset.com/. (Accessed 13, Dec 2023).
+20
+
+[39]
+[40]
+710
+[41]
+715
+
+[42]
+[43]
+
+720
+
+[44]
+[45]
+
+725
+
+730
+
+[46]
+[47]
+[48]
+
+735
+
+[49]
+[50]
+
+740
+
+A. Paszke, A. Chaurasia, S. Kim, E. Culurciello, ENet: A Deep Neural Network Architecture
+for Real-Time Semantic Segmentation, 2016, p. arXiv:1606.02147.
+T. Kanungo, D.M. Mount, N.S. Netanyahu, C.D. Piatko, R. Silverman, A.Y. Wu, An efficient
+k-means clustering algorithm: analysis and implementation, IEEE Transactions on Pattern
+Analysis and Machine Intelligence 24(7) (2002) 881-892.
+https://doi.org/10.1109/TPAMI.2002.1017616
+C. Yuan, H. Yang, Research on K-Value Selection Method of K-Means Clustering
+Algorithm, J, 2019, pp. 226-235.
+M. Syakur, B. Khotimah, E. Rochman, B.D. Satoto, Integration k-means clustering method
+and elbow method for identification of the best customer profile cluster, IOP conference
+series: materials science and engineering, IOP Publishing, 2018, p. 012017.
+K.R. Shahapure, C. Nicholas, Cluster Quality Analysis Using Silhouette Score, 2020 IEEE
+7th International Conference on Data Science and Advanced Analytics (DSAA), 2020, pp.
+747-748.
+L.P. Rothfusz, N.S.R. Headquarters, The heat index equation (or, more than you ever wanted
+to know about heat index), Fort Worth, Texas: National Oceanic and Atmospheric
+Administration, National Weather Service, Office of Meteorology 9023 (1990) 640.
+G.B. Anderson, L. Bell Michelle, D. Peng Roger, Methods to Calculate the Heat Index as an
+Exposure Metric in Environmental Health Research, Environmental Health Perspectives
+121(10) (2013) 1111-1119. https://doi.org/10.1289/ehp.1206273
+V. Cheng, E. Ng, C. Chan, B. Givoni, Outdoor thermal comfort study in a sub-tropical
+climate: a longitudinal study based in Hong Kong, International Journal of Biometeorology
+56(1) (2012) 43-56. https://doi.org/10.1007/s00484-010-0396-z
+L. Zheng, W. Lu, L. Wu, Q. Zhou, A review of integration between BIM and CFD for
+building outdoor environment simulation, Building and Environment 228 (2023) 109862.
+https://doi.org/https://doi.org/10.1016/j.buildenv.2022.109862
+L. Zheng, W. Lu, Q. Zhou, Weather image-based short-term dense wind speed forecast with a
+ConvLSTM-LSTM deep learning model, Building and Environment 239 (2023) 110446.
+https://doi.org/https://doi.org/10.1016/j.buildenv.2023.110446
+A.J. Arnfield, Two decades of urban climate research: a review of turbulence, exchanges of
+energy and water, and the urban heat island, International Journal of Climatology 23(1)
+(2003) 1-26. https://doi.org/https://doi.org/10.1002/joc.859
+E. Ng, L. Chen, Y. Wang, C. Yuan, A study on the cooling effects of greening in a highdensity city: An experience from Hong Kong, Building and Environment 47 (2012) 256-271.
+https://doi.org/https://doi.org/10.1016/j.buildenv.2011.07.014
+
+21
+
+
